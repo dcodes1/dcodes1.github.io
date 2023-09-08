@@ -56,16 +56,8 @@
                 // Get the HTML content from the textarea
                 var htmlContent = document.getElementById("html-input").textContent;
 
-                // Create a new element to display the rendered HTML
-                var renderedContent = document.createElement("div");
-                renderedContent.innerHTML = htmlContent;
-
-                // Clear the existing rendered content
-                var outputContent = document.getElementById("output-content");
-                outputContent.innerHTML = '';
-
-                // Append the new rendered content
-                outputContent.appendChild(renderedContent);
+                // Display the entered HTML code as text
+                document.getElementById("output-content").textContent = htmlContent;
             });
         </script>
     </section>
