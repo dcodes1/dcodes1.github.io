@@ -4,47 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0; 
-            background-color: #f0f0f0;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 36px;
-        }
-
-        p {
-            font-size: 18px;
-        }
-
-        section {
-            background-color: #fff;
-            padding: 20px;
-            margin: 20px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-
-        a {
-            color: #007BFF;
-            text-decoration: none;
-        }
+        /* Your existing CSS styles here */
     </style>
     <title>David Milov - Cybersecurity Student</title>
 </head>
@@ -52,7 +12,7 @@
     <header>
         <h1>David Milov</h1>
         <p>I'm a Cybersecurity student</p>
-        <h3>Im passionate about protecting our digital world! Check our my projects Ive developed in my freetime to do this!</h3>
+        <h3>Im passionate about protecting our digital world! Check out my projects I've developed in my freetime to do this!</h3>
     </header>
 
     <section id="contact">
@@ -67,8 +27,39 @@
             <li>Project 2: Description of Project 2</li>
             <li>Project 3: Description of Project 3</li>
         </ul>
-        <h4>Follow this link to see my projects on GitHub! <a href="https://github.com/dcodes1/cyber>GitHub</a></h4>
-        
+        <h4>Follow this link to see my projects on GitHub! <a href="https://github.com/dcodes1/cyber">GitHub</a></h4>
+    </section>
+
+    <!-- New section for HTML input and rendering -->
+    <section id="html-editor">
+        <h2>Edit HTML Content</h2>
+        <p>Enter HTML code below:</p>
+
+        <!-- HTML input textarea -->
+        <textarea id="html-input" rows="10" cols="50" contenteditable="true">
+            <!-- You can input HTML content here -->
+            <h2>This is a sample heading</h2>
+            <p>This is a sample paragraph.</p>
+        </textarea>
+
+        <button id="submit-button">Submit</button>
+
+        <div id="output">
+            <h3>Rendered Output</h3>
+            <div id="output-content">
+                <!-- Rendered HTML content will be displayed here -->
+            </div>
+        </div>
+
+        <script>
+            document.getElementById("submit-button").addEventListener("click", function () {
+                // Get the HTML content from the textarea
+                var htmlContent = document.getElementById("html-input").innerHTML;
+
+                // Set the HTML content in the output div
+                document.getElementById("output-content").innerHTML = htmlContent;
+            });
+        </script>
     </section>
 </body>
 </html>
