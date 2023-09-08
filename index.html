@@ -37,7 +37,9 @@
 
         <!-- HTML input textarea -->
         <textarea id="html-input" rows="10" cols="50" contenteditable="true">
-          
+            <!-- You can input HTML content here -->
+            <h2>This is a sample heading</h2>
+            <p>This is a sample paragraph.</p>
         </textarea>
 
         <button id="submit-button">Submit</button>
@@ -52,10 +54,18 @@
         <script>
             document.getElementById("submit-button").addEventListener("click", function () {
                 // Get the HTML content from the textarea
-                var htmlContent = document.getElementById("html-input").innerHTML;
+                var htmlContent = document.getElementById("html-input").textContent;
 
-                // Set the HTML content in the output div
-                document.getElementById("output-content").innerHTML = htmlContent;
+                // Create a new element to display the rendered HTML
+                var renderedContent = document.createElement("div");
+                renderedContent.innerHTML = htmlContent;
+
+                // Clear the existing rendered content
+                var outputContent = document.getElementById("output-content");
+                outputContent.innerHTML = '';
+
+                // Append the new rendered content
+                outputContent.appendChild(renderedContent);
             });
         </script>
     </section>
