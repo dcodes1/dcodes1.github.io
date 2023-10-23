@@ -4,17 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-       html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+        }
+
+        section {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        ul {
+            list-style: disc;
+            margin-left: 20px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
 
     </style>
     <title>David Milov - Cybersecurity Student</title>
@@ -23,7 +71,7 @@ body {
     <header>
         <h1>David Milov</h1>
         <p>I'm a Cybersecurity student</p>
-        <h3>Im passionate about protecting our digital world! Check out my projects I've developed in my freetime to do this!</h3>
+        <h3>I'm passionate about protecting our digital world! Check out my projects I've developed in my freetime to do this!</h3>
     </header>
 
     <section id="contact">
@@ -39,38 +87,6 @@ body {
             <li>Project 3: Description of Project 3</li>
         </ul>
         <h4>Follow this link to see my projects on GitHub! <a href="https://github.com/dcodes1/cyber">GitHub</a></h4>
-    </section>
-
-    <!-- New section for HTML input and rendering -->
-    <section id="html-editor">
-        <h2>Edit HTML Content</h2>
-        <p>Enter HTML code below:</p>
-
-        <!-- HTML input textarea -->
-        <textarea id="html-input" rows="10" cols="50" contenteditable="true">
-            <!-- You can input HTML content here -->
-            <h2>This is a sample heading</h2>
-            <p>This is a sample paragraph.</p>
-        </textarea>
-
-        <button id="submit-button">Submit</button>
-
-        <div id="output">
-            <h3>Rendered Output</h3>
-            <div id="output-content">
-                <!-- Rendered HTML content will be displayed here -->
-            </div>
-        </div>
-
-        <script>
-            document.getElementById("submit-button").addEventListener("click", function () {
-                // Get the HTML content from the textarea
-                var htmlContent = document.getElementById("html-input").textContent;
-
-                // Display the entered HTML code as text
-                document.getElementById("output-content").textContent = htmlContent;
-            });
-        </script>
     </section>
 </body>
 </html>
