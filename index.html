@@ -16,11 +16,30 @@
             color: #333;
         }
 
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
         header {
             text-align: center;
-            background-color: #1a1a1a;
-            color: #fff;
-            padding: 40px 20px;
+            color: white;
+            padding: 20px;
             background-image: linear-gradient(45deg, #6D5ACF 50%, #1a1a1a 50%);
         }
 
@@ -84,6 +103,11 @@
     <title>David Milov - Cybersecurity Student</title>
 </head>
 <body>
+    <div class="navbar">
+        <a href="#home">Menu</a>
+        <a href="#blog">Blog Posts</a>
+    </div>
+
     <header>
         <h1>David Milov</h1>
         <p>I'm a Cybersecurity student</p>
