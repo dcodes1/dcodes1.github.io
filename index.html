@@ -11,48 +11,51 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
         }
 
         header {
             text-align: center;
-            background-color: #333;
-            color: white;
-            padding: 20px;
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 40px 20px;
+            background-image: linear-gradient(45deg, #6D5ACF 50%, #1a1a1a 50%);
         }
 
         section {
-            padding: 20px;
+            padding: 40px 20px;
             background-color: white;
-            margin: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+        }
+
+        h1, h2, h3, h4 {
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 3rem;
         }
 
         h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
         }
 
         h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
         }
 
         h4 {
-            font-size: 1rem;
-            margin-top: 10px;
+            font-size: 1.2rem;
         }
 
         ul {
             list-style: disc;
-            margin-left: 20px;
+            margin-left: 40px;
         }
 
         a {
@@ -64,6 +67,19 @@
             text-decoration: underline;
         }
 
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #6D5ACF;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #5741D9;
+        }
     </style>
     <title>David Milov - Cybersecurity Student</title>
 </head>
@@ -75,7 +91,7 @@
     </header>
 
     <section id="contact">
-        <h2>Contact me here</h2>
+        <h2>Contact Me</h2>
         <p>Email: <a href="mailto:davidmilov2@gmail.com">davidmilov2@gmail.com</a></p>
     </section>
 
@@ -86,12 +102,16 @@
             <li>Port Scanner: It allows you to scan a range of TCP ports on a target host to determine whether those ports are open or closed</li>
             <li>IDS Tool: This Python script is an advanced Intrusion Detection System (IDS) tool that captures network packets on a specified interface for a given duration, terminates the capture, and then analyzes the captured packets using the Suricata IDS tool.</li>
         </ul>
-        <h4>Follow this link to see my projects on GitHub! <a href="https://github.com/dcodes1/cyber">GitHub</a></h4>
+        <a href="https://github.com/dcodes1/cyber" class="btn">View My Projects on GitHub</a>
     </section>
-    <section id="Real World Experience">
-        <h3>Real World Experience</h3>
-        <ul>
-            Home Network: Arranged my own home network and implemented network filter features 
-        </ul>
+
+    <section id="experience">
+        <h2>Real World Experience</h2>
+        <p>Home Network: Arranged my own home network and implemented network filter features</p>
+    </section>
+
+    <script>
+        // Add any JavaScript interactivity here if needed
+    </script>
 </body>
 </html>
