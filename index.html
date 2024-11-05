@@ -99,13 +99,30 @@
         .btn:hover {
             background-color: #5741D9;
         }
+
+        /* Dark mode styles */
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .dark-mode .navbar {
+            background-color: #1a1a1a;
+        }
+        .dark-mode .btn {
+            background-color: #444;
+        }
+        .dark-mode .btn:hover {
+            background-color: #555;
+        }
     </style>
     <title>David Milov - Cybersecurity Student</title>
 </head>
 <body>
     <div class="navbar">
         <a href="#home">Menu</a>
-        <a href="#blog">Blog Posts</a>
+        <a href="#projects">My Projects</a>
+        <a href="#contact">Contact</a>
+        <a href="javascript:void(0);" class="toggle-theme">Toggle Dark Mode</a>
     </div>
 
     <header>
@@ -116,16 +133,34 @@
 
     <section id="contact">
         <h2>Contact Me</h2>
-        <p>Email: <a href="mailto:davidmilov2@gmail.com">davidmilov2@gmail.com</a></p>
+        <form onsubmit="return validateForm()" id="contactForm">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <br><br>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            <br><br>
+            <button type="submit">Send Message</button>
+        </form>
     </section>
 
     <section id="projects">
         <h2>My Projects</h2>
-        <ul>
-            <li>Password Generator: Script to generate passwords based off of user input</li>
-            <li>Port Scanner: It allows you to scan a range of TCP ports on a target host to determine whether those ports are open or closed</li>
-            <li>IDS Tool: This Python script is an advanced Intrusion Detection System (IDS) tool that captures network packets on a specified interface for a given duration, terminates the capture, and then analyzes the captured packets using the Suricata IDS tool.</li>
-        </ul>
+        <div class="project">
+            <h3>Password Generator</h3>
+            <p class="description" style="display: none;">Script to generate passwords based on user input.</p>
+            <button onclick="toggleDescription(this)">Details</button>
+        </div>
+        <div class="project">
+            <h3>Port Scanner</h3>
+            <p class="description" style="display: none;">Scans a range of TCP ports on a target host to determine whether they are open or closed.</p>
+            <button onclick="toggleDescription(this)">Details</button>
+        </div>
+        <div class="project">
+            <h3>IDS Tool</h3>
+            <p class="description" style="display: none;">This Python script is an advanced Intrusion Detection System (IDS) tool that captures network packets on a specified interface and analyzes them.</p>
+            <button onclick="toggleDescription(this)">Details</button>
+        </div>
         <a href="https://github.com/dcodes1/cyber" class="btn">View My Projects on GitHub</a>
     </section>
 
@@ -135,7 +170,44 @@
     </section>
 
     <script>
-        // Add any JavaScript interactivity here if needed
+        // Smooth scroll to section when navbar link is clicked
+        document.querySelectorAll('.navbar a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                document.getElementById(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Toggle dark mode
+        document.querySelector('.toggle-theme').addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Toggle project description visibility
+        function toggleDescription(button) {
+            const description = button.previousElementSibling;
+            if (description.style.display === 'none') {
+                description.style.display = 'block';
+                button.innerText = 'Hide Details';
+            } else {
+                description.style.display = 'none';
+                button.innerText = 'Details';
+            }
+        }
+
+        // Contact form validation
+        function validateForm() {
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            if (!email || !message) {
+                alert("Please fill in all fields.");
+                return false;
+            }
+            return true; // Form submission proceeds if validation passes
+        }
     </script>
 </body>
 </html>
