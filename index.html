@@ -1,213 +1,1046 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAVID // RED TEAM OPS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080b08;
+    --bg2:       #0d110d;
+    --bg3:       #111611;
+    --border:    #1e2e1e;
+    --green:     #3a7d44;
+    --green-hi:  #5cba6a;
+    --green-dim: #1f4025;
+    --red:       #b03030;
+    --red-hi:    #e05050;
+    --amber:     #c8922a;
+    --text:      #a8c4a8;
+    --text-dim:  #4a664a;
+    --text-hi:   #d4ecd4;
+    --mono:      'Share Tech Mono', monospace;
+    --display:   'Barlow Condensed', sans-serif;
+  }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .navbar {
-            background-color: #333;
-            overflow: hidden;
-        }
+  html { scroll-behavior: smooth; }
 
-        .navbar a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 20px;
-            text-decoration: none;
-            transition: background-color 0.2s;
-        }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
 
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
+  /* Scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
 
-        header {
-            text-align: center;
-            color: white;
-            padding: 20px;
-            background-image: linear-gradient(45deg, #6D5ACF 50%, #1a1a1a 50%);
-        }
+  /* Noise texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.4;
+  }
 
-        section {
-            padding: 40px 20px;
-            background-color: white;
-            margin: 20px auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-        }
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 52px;
+    background: rgba(8,11,8,0.92);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
 
-        h1, h2, h3, h4 {
-            margin-bottom: 20px;
-        }
+  .nav-logo {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.25em;
+    color: var(--green-hi);
+    text-transform: uppercase;
+  }
 
-        h1 {
-            font-size: 3rem;
-        }
+  .nav-logo span { color: var(--red-hi); }
 
-        h2 {
-            font-size: 2rem;
-        }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
 
-        h3 {
-            font-size: 1.5rem;
-        }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
 
-        h4 {
-            font-size: 1.2rem;
-        }
+  .nav-links a:hover { color: var(--green-hi); }
 
-        ul {
-            list-style: disc;
-            margin-left: 40px;
-        }
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+  }
 
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green-hi);
+    animation: pulse 2s infinite;
+  }
 
-        a:hover {
-            text-decoration: underline;
-        }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(92,186,106,0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(92,186,106,0); }
+  }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #6D5ACF;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 5rem 2.5rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
 
-        .btn:hover {
-            background-color: #5741D9;
-        }
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.4;
+  }
 
-        /* Dark mode styles */
-        .dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        .dark-mode .navbar {
-            background-color: #1a1a1a;
-        }
-        .dark-mode .btn {
-            background-color: #444;
-        }
-        .dark-mode .btn:hover {
-            background-color: #555;
-        }
-    </style>
-    <title>David Milov - Cybersecurity Student</title>
+  .hero-grid-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 30% 50%, rgba(58,125,68,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 80% at 80% 20%, rgba(176,48,48,0.04) 0%, transparent 60%);
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 900px;
+  }
+
+  .hero-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.3s forwards;
+  }
+
+  .hero-name {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: var(--text-hi);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s forwards;
+  }
+
+  .hero-name .accent { color: var(--green-hi); }
+  .hero-name .dim { color: var(--text-dim); }
+
+  .hero-subtitle {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(1rem, 2.5vw, 1.6rem);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.7s forwards;
+  }
+
+  .hero-bio {
+    max-width: 560px;
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.85;
+    border-left: 2px solid var(--green-dim);
+    padding-left: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.9s forwards;
+  }
+
+  .hero-bio strong { color: var(--green-hi); font-weight: normal; }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s 1.1s forwards;
+  }
+
+  .btn {
+    padding: 0.65rem 1.6rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid;
+    cursor: crosshair;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: var(--green-hi);
+  }
+
+  .btn-primary:hover {
+    background: var(--green);
+    color: var(--bg);
+    box-shadow: 0 0 20px rgba(92,186,106,0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text-dim);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--text-dim);
+    color: var(--text);
+  }
+
+  .hero-corner {
+    position: absolute;
+    bottom: 3rem;
+    right: 2.5rem;
+    text-align: right;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.6s 1.3s forwards;
+  }
+
+  .hero-corner .hi { color: var(--green); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTION WRAPPER ─── */
+  section {
+    padding: 5rem 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    scroll-margin-top: 52px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .section-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    text-transform: uppercase;
+    color: var(--text-hi);
+    letter-spacing: 0.05em;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* ─── PROJECTS ─── */
+  #projects { padding-top: 2rem; }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+  }
+
+  .project-card {
+    background: var(--bg2);
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--green-hi);
+    transition: height 0.3s ease;
+  }
+
+  .project-card:hover { background: var(--bg3); }
+  .project-card:hover::before { height: 100%; }
+
+  .project-card.active-dev::after {
+    content: 'ACTIVE';
+    position: absolute;
+    top: 1.2rem; right: 1.2rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--green-hi);
+    border: 1px solid var(--green-dim);
+    padding: 0.2rem 0.5rem;
+    background: rgba(58,125,68,0.1);
+  }
+
+  .project-card.wip::after {
+    content: 'WIP';
+    position: absolute;
+    top: 1.2rem; right: 1.2rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    border: 1px solid rgba(200,146,42,0.3);
+    padding: 0.2rem 0.5rem;
+    background: rgba(200,146,42,0.05);
+  }
+
+  .project-card.planned::after {
+    content: 'PLANNED';
+    position: absolute;
+    top: 1.2rem; right: 1.2rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.5rem;
+  }
+
+  .project-id {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.6rem;
+  }
+
+  .project-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-hi);
+    margin-bottom: 0.6rem;
+  }
+
+  .project-type {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 1rem;
+  }
+
+  .project-desc {
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.75;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .tag {
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.02);
+  }
+
+  .tag.lang { border-color: var(--green-dim); color: var(--green); }
+
+  .project-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+  }
+
+  .project-links a {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .project-links a:hover { color: var(--green-hi); }
+
+  /* ─── SKILLS ─── */
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  @media (max-width: 700px) {
+    .skills-layout { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    #hero { padding: 5rem 1.2rem 3rem; }
+    section { padding: 3rem 1.2rem; }
+
+    /* Hero corner: hide absolute position, show inline below bio */
+    .hero-corner {
+      position: static;
+      text-align: left;
+      margin-top: 1.5rem;
+      opacity: 1;
+      animation: none;
+    }
+
+    /* Prevent skill name from overflowing */
+    .skill-name {
+      flex: 0 0 130px;
+      font-size: 0.72rem;
+    }
+
+    /* Certs grid single column */
+    .certs-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Contact grid single column */
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+
+    /* Intel box value wrapping */
+    .intel-val {
+      max-width: 180px;
+      font-size: 0.72rem;
+    }
+
+    /* Hero name line spacing */
+    .hero-name {
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    /* Buttons stack */
+    .hero-cta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .skills-group { margin-bottom: 2rem; }
+
+  .skills-group-title {
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .skills-group-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-name {
+    flex: 0 0 160px;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+
+  .skill-bar-wrap {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    position: relative;
+  }
+
+  .skill-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--green-hi));
+    position: relative;
+  }
+
+  .skill-bar::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -2px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green-hi);
+    box-shadow: 0 0 6px var(--green-hi);
+  }
+
+  /* Certs */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .cert-card {
+    background: var(--bg2);
+    padding: 1.2rem;
+    transition: background 0.2s;
+  }
+
+  .cert-card:hover { background: var(--bg3); }
+
+  .cert-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-hi);
+    margin-bottom: 0.3rem;
+  }
+
+  .cert-issuer {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .cert-status {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .cert-status.earned { color: var(--green-hi); }
+  .cert-status.in-progress { color: var(--amber); }
+  .cert-status.planned { color: var(--text-dim); }
+
+  /* ─── ABOUT ─── */
+  #about {
+    border-top: 1px solid var(--border);
+    max-width: 1200px;
+  }
+
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 800px) {
+    .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .about-text p {
+    font-size: 0.86rem;
+    line-height: 1.9;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text strong { color: var(--green-hi); font-weight: normal; }
+
+  .intel-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+  }
+
+  .intel-box-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .intel-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid rgba(30,46,30,0.5);
+    font-size: 0.75rem;
+  }
+
+  .intel-key { color: var(--text-dim); letter-spacing: 0.1em; }
+  .intel-val { color: var(--text-hi); text-align: right; max-width: 160px; }
+  .intel-val.green { color: var(--green-hi); }
+
+  /* ─── CONTACT ─── */
+  #contact {
+    border-top: 1px solid var(--border);
+    max-width: 1200px;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .contact-card {
+    background: var(--bg2);
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: block;
+  }
+
+  .contact-card:hover { background: var(--bg3); }
+
+  .contact-platform {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-handle {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-hi);
+    text-transform: uppercase;
+  }
+
+  .contact-note {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-top: 0.4rem;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer .hi { color: var(--green); }
+
+  /* ─── TERMINAL CURSOR ─── */
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.1em;
+    background: var(--green-hi);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+    margin-left: 3px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Typewriter */
+  .typewriter { overflow: hidden; white-space: nowrap; }
+
+  /* Divider line */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 2.5rem;
+  }
+</style>
 </head>
 <body>
-    <div class="navbar">
-        <a href="#home">Menu</a>
-        <a href="#projects">My Projects</a>
-        <a href="#contact">Contact</a>
-        <a href="javascript:void(0);" class="toggle-theme">Toggle Dark Mode</a>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DAVID <span>//</span> SEC</div>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#about">Intel</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    OPERATOR ONLINE
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="max-width:100%; padding-top:6rem;">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">// Penetration Tester &nbsp;|&nbsp; Red Team Operator &nbsp;|&nbsp; AppSec</div>
+    <h1 class="hero-name">
+      <span class="dim">D</span><span class="accent">AVI</span>D<br>
+      <span style="color:var(--text-dim);font-size:0.55em;letter-spacing:0.05em;">OFFENSIVE SECURITY</span>
+    </h1>
+    <div class="hero-subtitle">Red Team &nbsp;·&nbsp; Exploit Dev &nbsp;·&nbsp; Cloud Ops</div>
+    <p class="hero-bio">
+      <strong>~4 years</strong> of offensive security experience. 
+      Specializing in <strong>offensive tooling</strong> and <strong>low level research</strong>.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">[ View Projects ]</a>
+      <a href="https://github.com/" target="_blank" class="btn btn-ghost">[ GitHub ]</a>
+      <a href="#contact" class="btn btn-ghost">[ Contact ]</a>
+    </div>
+  </div>
+  <div class="hero-corner">
+    <div class="hi">STATUS: ACTIVE</div>
+    <div>LOCATION: IL / REMOTE</div>
+    <div style="margin-top:0.5rem; color: var(--green-dim);">[ <span class="cursor"></span> ]</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <span class="section-label">// 01</span>
+    <h2 class="section-title">Operations</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- FogJack -->
+    <div class="project-card active-dev">
+      <div class="project-id">OP-001</div>
+      <div class="project-name">FogJack</div>
+      <div class="project-type">Offensive Framework &nbsp;·&nbsp; Python</div>
+      <p class="project-desc">
+        Modular Python-based offensive security framework built for Kali Linux. 
+        Covers network scanning, vulnerability flagging, and post exploitation 
+        capabilities. Expanding into cloud misconfiguration exploitation across 
+        AWS, Azure, and GCP.
+      </p>
+      <div class="project-tags">
+        <span class="tag lang">Python</span>
+        <span class="tag">Network Scanning</span>
+        <span class="tag">Post Exploitation</span>
+        <span class="tag">Cloud Abuse</span>
+        <span class="tag">AWS</span>
+        <span class="tag">Azure</span>
+        <span class="tag">GCP</span>
+        <span class="tag">Kali Linux</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/" target="_blank">→ GitHub</a>
+        <a href="#">→ Docs</a>
+      </div>
     </div>
 
-    <header>
-        <h1>David Milov</h1>
-        <p>I'm a Cybersecurity student</p>
-        <h3>I'm passionate about protecting our digital world! Check out my projects I've developed in my freetime to do this!</h3>
-    </header>
+  </div>
+</section>
 
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <form onsubmit="return validateForm()" id="contactForm">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <br><br>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" required></textarea>
-            <br><br>
-            <button type="submit">Send Message</button>
-        </form>
-    </section>
+<hr class="divider">
 
-    <section id="projects">
-        <h2>My Projects</h2>
-        <div class="project">
-            <h3>Password Generator</h3>
-            <p class="description" style="display: none;">Script to generate passwords based on user input.</p>
-            <button onclick="toggleDescription(this)">Details</button>
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-label">// 02</span>
+    <h2 class="section-title">Capabilities</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="skills-layout">
+    <div>
+      <div class="skills-group">
+        <div class="skills-group-title">Reverse Engineering</div>
+        <div class="skill-item"><span class="skill-name">Static Analysis</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:82%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Dynamic Analysis</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div></div>
+      </div>
+
+      <div class="skills-group">
+        <div class="skills-group-title">Binary Exploitation</div>
+        <div class="skill-item"><span class="skill-name">Stack Buffer Overflow</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:78%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Kernel Research</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:60%"></div></div></div>
+      </div>
+
+      <div class="skills-group">
+        <div class="skills-group-title">Malware Development</div>
+        <div class="skill-item"><span class="skill-name">AV / EDR Evasion</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Initial Access</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:78%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Post Exploitation</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:74%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Shellcode Injection</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div></div>
+      </div>
+
+      <div class="skills-group">
+        <div class="skills-group-title">Programming</div>
+        <div class="skill-item"><span class="skill-name">Python</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">C / C++</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:68%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Bash / Shell</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:52%"></div></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="skills-group">
+        <div class="skills-group-title">Current Projects</div>
+        <div class="certs-grid">
+          <div class="cert-card">
+            <div class="cert-name">FogJack</div>
+            <div class="cert-issuer">Offensive Framework</div>
+            <div class="cert-status in-progress">⟳ Active Dev</div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-name">Kernel Research</div>
+            <div class="cert-issuer">Binary Exploitation</div>
+            <div class="cert-status in-progress">⟳ Active</div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-name">Project+</div>
+            <div class="cert-issuer">CompTIA</div>
+            <div class="cert-status in-progress">⟳ In Progress</div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-name">B.S. Cyber</div>
+            <div class="cert-issuer">WGU</div>
+            <div class="cert-status in-progress">⟳ In Progress</div>
+          </div>
         </div>
-        <div class="project">
-            <h3>Port Scanner</h3>
-            <p class="description" style="display: none;">Scans a range of TCP ports on a target host to determine whether they are open or closed.</p>
-            <button onclick="toggleDescription(this)">Details</button>
-        </div>
-        <div class="project">
-            <h3>IDS Tool</h3>
-            <p class="description" style="display: none;">This Python script is an advanced Intrusion Detection System (IDS) tool that captures network packets on a specified interface and analyzes them.</p>
-            <button onclick="toggleDescription(this)">Details</button>
-        </div>
-        <a href="https://github.com/dcodes1/cyber" class="btn">View My Projects on GitHub</a>
-    </section>
+      </div>
 
-    <section id="experience">
-        <h2>Real World Experience</h2>
-        <p>Home Network: Arranged my own home network and implemented network filter features</p>
-    </section>
+      <div class="skills-group" style="margin-top:2rem;">
+        <div class="skills-group-title">Toolset</div>
+        <div class="project-tags" style="gap:0.5rem;">
+          <span class="tag lang">Kali Linux</span>
+          <span class="tag lang">PwnTools</span>
+          <span class="tag">Metasploit</span>
+          <span class="tag">Nmap</span>
+          <span class="tag">Sliver C2</span>
+          <span class="tag">Burp Suite</span>
+          <span class="tag">Wireshark</span>
+          <span class="tag">BloodHound</span>
+          <span class="tag">Impacket</span>
+          <span class="tag">GDB / PEDA</span>
+          <span class="tag">Ghidra</span>
+          <span class="tag">MITRE ATT&CK</span>
+          <span class="tag">Docker</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script>
-        // Smooth scroll to section when navbar link is clicked
-        document.querySelectorAll('.navbar a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                document.getElementById(targetId).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+<hr class="divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-label">// 03</span>
+    <h2 class="section-title">Intel File</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="about-layout">
+    <div class="about-text">
+      <p>
+        I'm a <strong>red teamer with ~4 years</strong> of hands-on application security 
+        and red team experience, currently completing a <strong>B.S. in Cybersecurity at WGU</strong>. 
+        My work lives at the intersection of offensive tooling, adversary simulation, and 
+        practical exploit development.
+      </p>
+      <p>
+        Beyond the technical, I'm passionate about researching <strong>cognitive science</strong> 
+        and how it can be applied to absorb information faster and more effectively. 
+        I also enjoy <strong>learning languages</strong>, currently working across Hebrew, Arabic, and reviving the language of my diaspora, Bukhori.
+      </p>
+      <p>
+        Currently focused on: expanding my <strong>low level C/C++ capabilities</strong>, 
+        <strong>improving efficiency in cyber operations</strong>, and advanced cloud attack 
+        surface research.
+      </p>
+    </div>
+    <div>
+      <div class="intel-box">
+        <div class="intel-box-title">// Subject File</div>
+        <div class="intel-row"><span class="intel-key">ROLE</span><span class="intel-val green">Red Teamer</span></div>
+        <div class="intel-row"><span class="intel-key">EXP</span><span class="intel-val">~4 Years AppSec/RT</span></div>
+        <div class="intel-row"><span class="intel-key">STATUS</span><span class="intel-val green">Active Operator</span></div>
+        <div class="intel-row"><span class="intel-key">EDUCATION</span><span class="intel-val">WGU B.S. Cyber</span></div>
+        <div class="intel-row"><span class="intel-key">PLATFORM</span><span class="intel-val">HackTheBox</span></div>
+        <div class="intel-row"><span class="intel-key">LANGUAGES</span><span class="intel-val">EN · HE · AR · RU · Bukhori</span></div>
+        <div class="intel-row"><span class="intel-key">LOCATION</span><span class="intel-val">Israel</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-label">// 04</span>
+    <h2 class="section-title">Establish Comms</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="contact-grid">
+    <a class="contact-card" href="https://github.com/dcodes1" target="_blank">
+      <div class="contact-platform">// GitHub</div>
+      <div class="contact-handle">github.com/dcodes1</div>
+      <div class="contact-note">Source code &amp; projects</div>
+    </a>
+    <a class="contact-card" href="https://www.linkedin.com/in/davidgmilov/" target="_blank">
+      <div class="contact-platform">// LinkedIn</div>
+      <div class="contact-handle">davidgmilov</div>
+      <div class="contact-note">Professional network</div>
+    </a>
+    <div class="contact-card">
+      <div class="contact-platform">// TryHackMe</div>
+      <div class="contact-handle" style="margin-bottom:0.8rem;">TryHackMe Profile</div>
+      <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=2575342" style="border:none; max-width:100%;"></iframe>
+    </div>
+    <a class="contact-card" href="mailto:davidmilov2@gmail.com">
+      <div class="contact-platform">// Email</div>
+      <div class="contact-handle">davidmilov2@gmail.com</div>
+      <div class="contact-note">For engagements &amp; collab</div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>DAVID <span class="hi">//</span> RED TEAM OPS &nbsp;·&nbsp; <span class="hi">2025</span></div>
+  <div>ALL TOOLS FOR AUTHORIZED USE ONLY &nbsp;·&nbsp; <span class="hi">ETHICAL HACKING</span></div>
+  <div>[ <span class="hi">OPERATOR ONLINE</span> <span class="cursor" style="width:7px;"></span> ]</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Animate skill bars on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.skill-bar').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0%';
+          setTimeout(() => {
+            bar.style.transition = 'width 1s cubic-bezier(0.4,0,0.2,1)';
+            bar.style.width = w;
+          }, 100);
         });
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
 
-        // Toggle dark mode
-        document.querySelector('.toggle-theme').addEventListener('click', function () {
-            document.body.classList.toggle('dark-mode');
-        });
+  const skillsSection = document.querySelector('#skills');
+  if (skillsSection) observer.observe(skillsSection);
 
-        // Toggle project description visibility
-        function toggleDescription(button) {
-            const description = button.previousElementSibling;
-            if (description.style.display === 'none') {
-                description.style.display = 'block';
-                button.innerText = 'Hide Details';
-            } else {
-                description.style.display = 'none';
-                button.innerText = 'Details';
-            }
-        }
-
-        // Contact form validation
-        function validateForm() {
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            if (!email || !message) {
-                alert("Please fill in all fields.");
-                return false;
-            }
-            return true; // Form submission proceeds if validation passes
-        }
-    </script>
-</body>
-</html>
+  // Glitch effect on hero name hover
+  const heroName = document.querySelector('.hero-name');
+  if (heroName) {
+    heroName.addEventListener('mouseover', () => {
+      heroName.style.textShadow = '2px 0 var(--red), -2px 0 var(--green)';
+      setTimeout(() => {
