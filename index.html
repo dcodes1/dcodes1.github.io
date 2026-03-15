@@ -668,6 +668,75 @@
   .intel-val { color: var(--text-hi); text-align: right; max-width: 160px; }
   .intel-val.green { color: var(--green-hi); }
 
+  /* ─── POSTS ─── */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+  }
+
+  .post-card {
+    background: var(--bg2);
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+
+  .post-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--green-hi);
+    transition: height 0.3s ease;
+  }
+
+  .post-card:hover { background: var(--bg3); }
+  .post-card:hover::before { height: 100%; }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .post-date {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+  }
+
+  .post-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green);
+    border: 1px solid var(--green-dim);
+    padding: 0.15rem 0.5rem;
+    background: rgba(58,125,68,0.07);
+  }
+
+  .post-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-hi);
+    margin-bottom: 0.7rem;
+  }
+
+  .post-excerpt {
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.75;
+  }
+
   /* ─── CONTACT ─── */
   #contact {
     border-top: 1px solid var(--border);
@@ -765,6 +834,7 @@
   <ul class="nav-links">
     <li><a href="#projects">Projects</a></li>
     <li><a href="#skills">Skills</a></li>
+    <li><a href="#posts">Posts</a></li>
     <li><a href="#about">Intel</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -780,7 +850,7 @@
   <div class="hero-content">
     <div class="hero-tag">// Penetration Tester &nbsp;|&nbsp; Red Team Operator &nbsp;|&nbsp; AppSec</div>
     <h1 class="hero-name">
-      <span class="dim">D</span><span class="accent">AVI</span>D<br>
+      <span class="dim">D</span><span class="accent">AVI</span>D <span class="dim">M</span><span class="accent">ILO</span>V<br>
       <span style="color:var(--text-dim);font-size:0.55em;letter-spacing:0.05em;">OFFENSIVE SECURITY</span>
     </h1>
     <div class="hero-subtitle">Red Team &nbsp;·&nbsp; Exploit Dev &nbsp;·&nbsp; Cloud Ops</div>
@@ -790,7 +860,7 @@
     </p>
     <div class="hero-cta">
       <a href="#projects" class="btn btn-primary">[ View Projects ]</a>
-      <a href="https://github.com/" target="_blank" class="btn btn-ghost">[ GitHub ]</a>
+      <a href="https://github.com/dcodes1" target="_blank" class="btn btn-ghost">[ GitHub ]</a>
       <a href="#contact" class="btn btn-ghost">[ Contact ]</a>
     </div>
   </div>
@@ -814,7 +884,7 @@
   <div class="projects-grid">
 
     <!-- FogJack -->
-    <div class="project-card active-dev">
+    <div class="project-card active-dev" style="cursor:pointer;" onclick="window.open('https://github.com/dcodes1/redteam','_blank')">
       <div class="project-id">OP-001</div>
       <div class="project-name">FogJack</div>
       <div class="project-type">Offensive Framework &nbsp;·&nbsp; Python</div>
@@ -835,7 +905,7 @@
         <span class="tag">Kali Linux</span>
       </div>
       <div class="project-links">
-        <a href="https://github.com/" target="_blank">→ GitHub</a>
+        <a href="https://github.com/dcodes1" target="_blank">→ GitHub</a>
         <a href="#">→ Docs</a>
       </div>
     </div>
@@ -978,10 +1048,38 @@
 
 <hr class="divider">
 
+<!-- POSTS -->
+<section id="posts">
+  <div class="section-header">
+    <span class="section-label">// 04</span>
+    <h2 class="section-title">Posts</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="posts-grid">
+
+    <div class="post-card" style="cursor:pointer;" onclick="window.location='posts/index.html'">
+      <div class="post-meta">
+        <span class="post-date">— Coming Soon</span>
+        <span class="post-tag">Red Team</span>
+      </div>
+      <div class="post-title">First post coming soon</div>
+      <p class="post-excerpt">Write-ups, research notes, and operational breakdowns will be published here.</p>
+    </div>
+
+  </div>
+
+  <div style="margin-top:1.5rem;">
+    <a href="posts/index.html" class="btn btn-ghost">[ View All Posts ]</a>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-header">
-    <span class="section-label">// 04</span>
+    <span class="section-label">// 05</span>
     <h2 class="section-title">Establish Comms</h2>
     <div class="section-line"></div>
   </div>
@@ -1002,9 +1100,9 @@
       <div class="contact-handle" style="margin-bottom:0.8rem;">TryHackMe Profile</div>
       <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=2575342" style="border:none; max-width:100%;"></iframe>
     </div>
-    <a class="contact-card" href="mailto:davidmilov2@gmail.com">
+    <a class="contact-card" href="/cdn-cgi/l/email-protection#d8bcb9aeb1bcb5b1b4b7aeea98bfb5b9b1b4f6bbb7b5">
       <div class="contact-platform">// Email</div>
-      <div class="contact-handle">davidmilov2@gmail.com</div>
+      <div class="contact-handle"><span class="__cf_email__" data-cfemail="0b6f6a7d626f666267647d394b6c666a626725686466">[email&#160;protected]</span></div>
       <div class="contact-note">For engagements &amp; collab</div>
     </a>
   </div>
@@ -1017,7 +1115,7 @@
   <div>[ <span class="hi">OPERATOR ONLINE</span> <span class="cursor" style="width:7px;"></span> ]</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Animate skill bars on scroll
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -1027,20 +1125,4 @@
           bar.style.width = '0%';
           setTimeout(() => {
             bar.style.transition = 'width 1s cubic-bezier(0.4,0,0.2,1)';
-            bar.style.width = w;
-          }, 100);
-        });
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.3 });
-
-  const skillsSection = document.querySelector('#skills');
-  if (skillsSection) observer.observe(skillsSection);
-
-  // Glitch effect on hero name hover
-  const heroName = document.querySelector('.hero-name');
-  if (heroName) {
-    heroName.addEventListener('mouseover', () => {
-      heroName.style.textShadow = '2px 0 var(--red), -2px 0 var(--green)';
-      setTimeout(() => {
+            bar.style.width =
