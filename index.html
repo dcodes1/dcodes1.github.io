@@ -783,6 +783,123 @@
     margin-top: 0.4rem;
   }
 
+  /* ─── CERTIFICATIONS CAROUSEL ─── */
+  .carousel-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .carousel-track-wrap {
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 1.5px;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .carousel-card {
+    flex: 0 0 calc(25% - 1.5px);
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 1.8rem 1.5rem;
+    text-align: center;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .carousel-card:hover { background: var(--bg3); }
+
+  .carousel-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: var(--green-hi);
+  }
+
+  .carousel-cert-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-hi);
+    margin-bottom: 0.3rem;
+  }
+
+  .carousel-issuer {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .carousel-status {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid;
+    display: inline-block;
+  }
+
+  .carousel-status.earned {
+    color: var(--green-hi);
+    border-color: var(--green-dim);
+    background: rgba(58,125,68,0.08);
+  }
+
+  .carousel-status.in-progress {
+    color: var(--amber);
+    border-color: rgba(200,146,42,0.3);
+    background: rgba(200,146,42,0.05);
+  }
+
+  .carousel-btn {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 1rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: crosshair;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .carousel-btn:hover {
+    border-color: var(--green);
+    color: var(--green-hi);
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+  }
+
+  .carousel-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: crosshair;
+    transition: background 0.2s;
+    border: none;
+  }
+
+  .carousel-dot.active { background: var(--green-hi); }
+
+  @media (max-width: 700px) {
+    .carousel-card { flex: 0 0 calc(50% - 1.5px); }
+  }
+
   /* ─── FOOTER ─── */
   footer {
     border-top: 1px solid var(--border);
@@ -848,7 +965,7 @@
 <section id="hero" style="max-width:100%; padding-top:6rem;">
   <div class="hero-grid-bg"></div>
   <div class="hero-content">
-    <div class="hero-tag">// Penetration Tester &nbsp;|&nbsp; Red Team Operator &nbsp;|&nbsp; AppSec</div>
+    <div class="hero-tag">// Penetration Tester &nbsp;|&nbsp; Red Team Operator</div>
     <h1 class="hero-name">
       <span class="dim">D</span><span class="accent">AVI</span>D <span class="dim">M</span><span class="accent">ILO</span>V<br>
       <span style="color:var(--text-dim);font-size:0.55em;letter-spacing:0.05em;">OFFENSIVE SECURITY</span>
@@ -968,7 +1085,7 @@
             <div class="cert-status in-progress">⟳ Active</div>
           </div>
           <div class="cert-card">
-            <div class="cert-name">Project+</div>
+            <div class="cert-name">CySA+</div>
             <div class="cert-issuer">CompTIA</div>
             <div class="cert-status in-progress">⟳ In Progress</div>
           </div>
@@ -1004,19 +1121,80 @@
 
 <hr class="divider">
 
-<!-- ABOUT -->
-<section id="about">
+<!-- CERTIFICATIONS CAROUSEL -->
+<section id="certifications" style="max-width:1200px;">
   <div class="section-header">
     <span class="section-label">// 03</span>
-    <h2 class="section-title">Intel File</h2>
+    <h2 class="section-title">Certifications</h2>
     <div class="section-line"></div>
   </div>
 
-  <div class="about-layout">
+  <div class="carousel-wrap">
+    <button class="carousel-btn carousel-prev" onclick="slideCarousel(-1)">&#8592;</button>
+    <div class="carousel-track-wrap">
+      <div class="carousel-track" id="carouselTrack">
+
+        <div class="carousel-card">
+          <div class="carousel-icon">✓</div>
+          <div class="carousel-cert-name">A+</div>
+          <div class="carousel-issuer">CompTIA</div>
+          <div class="carousel-status earned">Earned</div>
+        </div>
+
+        <div class="carousel-card">
+          <div class="carousel-icon">✓</div>
+          <div class="carousel-cert-name">Network+</div>
+          <div class="carousel-issuer">CompTIA</div>
+          <div class="carousel-status earned">Earned</div>
+        </div>
+
+        <div class="carousel-card">
+          <div class="carousel-icon">✓</div>
+          <div class="carousel-cert-name">Security+</div>
+          <div class="carousel-issuer">CompTIA</div>
+          <div class="carousel-status earned">Earned</div>
+        </div>
+
+        <div class="carousel-card">
+          <div class="carousel-icon">✓</div>
+          <div class="carousel-cert-name">Project+</div>
+          <div class="carousel-issuer">CompTIA</div>
+          <div class="carousel-status earned">Earned</div>
+        </div>
+
+        <div class="carousel-card">
+          <div class="carousel-icon">⟳</div>
+          <div class="carousel-cert-name">CySA+</div>
+          <div class="carousel-issuer">CompTIA</div>
+          <div class="carousel-status in-progress">In Progress</div>
+        </div>
+
+        <div class="carousel-card">
+          <div class="carousel-icon">⟳</div>
+          <div class="carousel-cert-name">B.S. Cyber</div>
+          <div class="carousel-issuer">WGU</div>
+          <div class="carousel-status in-progress">In Progress</div>
+        </div>
+
+      </div>
+    </div>
+    <button class="carousel-btn carousel-next" onclick="slideCarousel(1)">&#8594;</button>
+  </div>
+
+  <div class="carousel-dots" id="carouselDots"></div>
+</section>
+
+<hr class="divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-label">// 04</span>
+    <h2 class="section-title">Intel File</h2>
+    <div class="section-line"></div>
     <div class="about-text">
       <p>
-        I'm a <strong>red teamer with ~4 years</strong> of hands-on application security 
-        and red team experience, currently completing a <strong>B.S. in Cybersecurity at WGU</strong>. 
+        I'm a <strong>red teamer with ~4 years</strong> of hands-on red team experience, currently completing a <strong>B.S. in Cybersecurity at WGU</strong>. 
         My work lives at the intersection of offensive tooling, adversary simulation, and 
         practical exploit development.
       </p>
@@ -1035,7 +1213,7 @@
       <div class="intel-box">
         <div class="intel-box-title">// Subject File</div>
         <div class="intel-row"><span class="intel-key">ROLE</span><span class="intel-val green">Red Teamer</span></div>
-        <div class="intel-row"><span class="intel-key">EXP</span><span class="intel-val">~4 Years AppSec/RT</span></div>
+        <div class="intel-row"><span class="intel-key">EXP</span><span class="intel-val">~4 Years Red Team</span></div>
         <div class="intel-row"><span class="intel-key">STATUS</span><span class="intel-val green">Active Operator</span></div>
         <div class="intel-row"><span class="intel-key">EDUCATION</span><span class="intel-val">WGU B.S. Cyber</span></div>
         <div class="intel-row"><span class="intel-key">PLATFORM</span><span class="intel-val">HackTheBox</span></div>
@@ -1125,4 +1303,66 @@
           bar.style.width = '0%';
           setTimeout(() => {
             bar.style.transition = 'width 1s cubic-bezier(0.4,0,0.2,1)';
-            bar.style.width =
+            bar.style.width = w;
+          }, 100);
+        });
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const skillsSection = document.querySelector('#skills');
+  if (skillsSection) observer.observe(skillsSection);
+
+  // Glitch effect on hero name hover
+  const heroName = document.querySelector('.hero-name');
+  if (heroName) {
+    heroName.addEventListener('mouseover', () => {
+      heroName.style.textShadow = '2px 0 var(--red), -2px 0 var(--green)';
+      setTimeout(() => { heroName.style.textShadow = 'none'; }, 150);
+    });
+  }
+
+  // Live clock in nav
+  const statusEl = document.querySelector('.nav-status');
+  if (statusEl) {
+    setInterval(() => {
+      const now = new Date();
+      const t = now.toISOString().replace('T', ' ').substring(0, 19);
+      statusEl.innerHTML = `<div class="status-dot"></div>${t}Z`;
+    }, 1000);
+  }
+
+  // Carousel
+  const track = document.getElementById('carouselTrack');
+  const dotsContainer = document.getElementById('carouselDots');
+  if (track) {
+    const cards = track.querySelectorAll('.carousel-card');
+    const visibleCount = window.innerWidth <= 700 ? 2 : 4;
+    const total = cards.length;
+    const maxIndex = Math.max(0, total - visibleCount);
+    let current = 0;
+
+    for (let i = 0; i <= maxIndex; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', (idx => () => goTo(idx))(i));
+      dotsContainer.appendChild(dot);
+    }
+
+    function goTo(index) {
+      current = Math.max(0, Math.min(index, maxIndex));
+      const cardWidth = cards[0].offsetWidth + 1.5;
+      track.style.transform = 'translateX(-' + (current * cardWidth) + 'px)';
+      dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    window.slideCarousel = function(dir) { goTo(current + dir); };
+    window.addEventListener('resize', function() { goTo(current); });
+  }
+
+</script>
+</body>
+</html>
