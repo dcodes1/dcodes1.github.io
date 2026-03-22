@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAVID MILOV // POSTS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080b08;
+    --bg2:       #0d110d;
+    --bg3:       #111611;
+    --border:    #1e2e1e;
+    --green:     #3a7d44;
+    --green-hi:  #5cba6a;
+    --green-dim: #1f4025;
+    --red:       #b03030;
+    --red-hi:    #e05050;
+    --text:      #a8c4a8;
+    --text-dim:  #4a664a;
+    --text-hi:   #d4ecd4;
+    --mono:      'Share Tech Mono', monospace;
+    --display:   'Barlow Condensed', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 52px;
+    background: rgba(8,11,8,0.92);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.25em;
+    color: var(--green-hi);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--red-hi); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active { color: var(--green-hi); }
+
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green-hi);
+    animation: pulse 2s infinite;
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(92,186,106,0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(92,186,106,0); }
+  }
+
+  /* PAGE */
+  .page-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 7rem 2.5rem 5rem;
+  }
+
+  .page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 0.6rem;
+  }
+
+  .page-title {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    text-transform: uppercase;
+    color: var(--text-hi);
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+  }
+
+  .page-title span { color: var(--green-hi); }
+
+  .page-desc {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* FILTER TAGS */
+  .filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: crosshair;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--green);
+    color: var(--green-hi);
+    background: rgba(58,125,68,0.07);
+  }
+
+  /* POST LIST */
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+  }
+
+  .post-item {
+    background: var(--bg2);
+    padding: 1.8rem;
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+
+  .post-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--green-hi);
+    transition: height 0.3s ease;
+  }
+
+  .post-item:hover { background: var(--bg3); }
+  .post-item:hover::before { height: 100%; }
+
+  .post-item-date {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .post-item-body {}
+
+  .post-item-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-hi);
+    margin-bottom: 0.35rem;
+  }
+
+  .post-item-excerpt {
+    font-size: 0.78rem;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  .post-item-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green);
+    border: 1px solid var(--green-dim);
+    padding: 0.2rem 0.6rem;
+    background: rgba(58,125,68,0.07);
+    white-space: nowrap;
+  }
+
+  /* Empty state */
+  .empty-state {
+    background: var(--bg2);
+    border: 1.5px solid var(--border);
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .empty-state-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+
+  .empty-state-sub {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .empty-state-sub span { color: var(--green); }
+
+  /* BACK LINK */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    margin-top: 3rem;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--green-hi); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer .hi { color: var(--green); }
+
+  @media (max-width: 700px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .page-wrap { padding: 6rem 1.2rem 3rem; }
+    .post-item { grid-template-columns: 1fr; gap: 0.6rem; }
+    .post-item-date { font-size: 0.65rem; }
+    footer { padding: 1.5rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">DAVID <span>//</span> SEC</a>
+  <ul class="nav-links">
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#skills">Skills</a></li>
+    <li><a href="index.html" class="active">Posts</a></li>
+    <li><a href="../index.html#about">Intel</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;font-size:0.7rem;color:var(--text-dim);">
+    <span class="status-dot"></span>OPERATOR ONLINE
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="page-label">// David Milov</div>
+    <h1 class="page-title"><span>POST</span>S</h1>
+    <p class="page-desc">Write-ups · Research notes · Operational breakdowns</p>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Red Team</button>
+    <button class="filter-btn">Exploit Dev</button>
+    <button class="filter-btn">Malware</button>
+    <button class="filter-btn">Research</button>
+    <button class="filter-btn">Tools</button>
+  </div>
+
+  <!-- POST LIST — add new <a class="post-item"> entries here -->
+  <div class="post-list" id="post-list">
+
+    <a class="post-item" href="fogjack.html">
+      <div class="post-item-date">2025</div>
+      <div class="post-item-body">
+        <div class="post-item-title">FogJack: Building a Python Offensive Framework</div>
+        <div class="post-item-excerpt">What FogJack is, why I built it, and how the modular architecture handles multi-cloud exploitation across AWS, Azure, and GCP.</div>
+      </div>
+      <span class="post-item-tag">Offensive Tooling</span>
+    </a>
+
+  </div>
+  <!-- END POST LIST -->
+
+  <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+</div>
+
+<footer>
+  <div>DAVID <span class="hi">//</span> RED TEAM OPS &nbsp;·&nbsp; <span class="hi">2025</span></div>
+  <div>ALL TOOLS FOR AUTHORIZED USE ONLY &nbsp;·&nbsp; <span class="hi">ETHICAL HACKING</span></div>
+</footer>
+
+<script>
+  // Filter buttons (for when posts exist)
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
