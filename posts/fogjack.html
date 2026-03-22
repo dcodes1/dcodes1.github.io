@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAVID MILOV // FogJack: Building a Python Offensive Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080b08;
+    --bg2:       #0d110d;
+    --bg3:       #111611;
+    --border:    #1e2e1e;
+    --green:     #3a7d44;
+    --green-hi:  #5cba6a;
+    --green-dim: #1f4025;
+    --red:       #b03030;
+    --red-hi:    #e05050;
+    --amber:     #c8922a;
+    --text:      #a8c4a8;
+    --text-dim:  #4a664a;
+    --text-hi:   #d4ecd4;
+    --mono:      'Share Tech Mono', monospace;
+    --display:   'Barlow Condensed', sans-serif;
+    --prose:     'Courier Prime', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 52px;
+    background: rgba(8,11,8,0.92);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.25em;
+    color: var(--green-hi);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--red-hi); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active { color: var(--green-hi); }
+
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green-hi);
+    animation: pulse 2s infinite;
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(92,186,106,0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(92,186,106,0); }
+  }
+
+  .page-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 7rem 2.5rem 5rem;
+  }
+
+  .post-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-breadcrumb {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    margin-bottom: 1.2rem;
+  }
+
+  .post-breadcrumb a {
+    color: var(--green);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .post-breadcrumb a:hover { color: var(--green-hi); }
+
+  .post-title {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    text-transform: uppercase;
+    color: var(--text-hi);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-bottom: 1.2rem;
+  }
+
+  .post-title span { color: var(--green-hi); }
+
+  .post-meta-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .post-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green);
+    border: 1px solid var(--green-dim);
+    padding: 0.2rem 0.6rem;
+    background: rgba(58,125,68,0.07);
+  }
+
+  .post-body {
+    font-family: var(--prose);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--text);
+  }
+
+  .post-body h2 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-hi);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-body h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--green-hi);
+    margin: 2rem 0 0.8rem;
+  }
+
+  .post-body p { margin-bottom: 1.2rem; }
+
+  .post-body strong { color: var(--text-hi); font-weight: 700; }
+
+  .post-body a {
+    color: var(--green-hi);
+    text-decoration: none;
+    border-bottom: 1px solid var(--green-dim);
+    transition: border-color 0.2s;
+  }
+
+  .post-body a:hover { border-color: var(--green-hi); }
+
+  .post-body code {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 0.1rem 0.4rem;
+    color: var(--green-hi);
+  }
+
+  .post-body pre {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    padding: 1.2rem 1.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--text-hi);
+  }
+
+  .post-body pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  .post-body ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .post-body li { margin-bottom: 0.5rem; }
+
+  .post-body hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  /* Module breakdown table */
+  .module-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .module-cell {
+    background: var(--bg2);
+    padding: 1rem 1.2rem;
+  }
+
+  .module-cell:hover { background: var(--bg3); }
+
+  .module-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--green-hi);
+    margin-bottom: 0.3rem;
+  }
+
+  .module-desc {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    gap: 1rem;
+  }
+
+  .post-nav a {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .post-nav a:hover { color: var(--green-hi); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer .hi { color: var(--green); }
+
+  @media (max-width: 700px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .page-wrap { padding: 6rem 1.2rem 3rem; }
+    .module-grid { grid-template-columns: 1fr; }
+    .post-nav { flex-direction: column; }
+    footer { padding: 1.5rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">DAVID <span>//</span> SEC</a>
+  <ul class="nav-links">
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#skills">Skills</a></li>
+    <li><a href="index.html" class="active">Posts</a></li>
+    <li><a href="../index.html#about">Intel</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;font-size:0.7rem;color:var(--text-dim);">
+    <span class="status-dot"></span>OPERATOR ONLINE
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="post-header">
+    <div class="post-breadcrumb">
+      <a href="../index.html">Home</a> &nbsp;/&nbsp;
+      <a href="index.html">Posts</a> &nbsp;/&nbsp;
+      FogJack
+    </div>
+    <h1 class="post-title"><span>Fog</span>Jack</h1>
+    <div class="post-meta-row">
+      <span>// 2025</span>
+      <span class="post-tag">Offensive Tooling</span>
+      <span class="post-tag">Cloud</span>
+      <span class="post-tag">Python</span>
+      <span>6 min read</span>
+    </div>
+  </div>
+
+  <div class="post-body">
+
+    <p>
+      Most offensive tooling falls into one of two categories: purpose-built frameworks that are heavily signatured and trivial for defenders to detect, or scattered scripts that require significant glue work before they're useful in an engagement. <strong>FogJack</strong> started as a solution to that problem, a modular Python based offensive security framework designed to operate on Kali Linux with a focus on flexibility, extensibility, and multi-environment coverage.
+    </p>
+
+    <p>
+      This post covers what FogJack is, why I built it, and how it's architected internally. It isn't a full technical disclosure, but enough to explain the design decisions behind it.
+    </p>
+
+    <h2>Why I Built It</h2>
+
+    <p>
+      The motivation was straightforward. As companies increasingly migrate their infrastructure to the cloud, the attack surface shifts with them. On-prem perimeter defenses become less relevant when the real assets are sitting in S3 buckets, IAM roles, and managed identities across AWS, Azure, and GCP.
+    </p>
+
+    <p>
+      I wanted to understand that shift from an offensive perspective, and the best way to understand something is to build tooling around it. FogJack started as a side project driven by that curiosity, a way to map out what cloud misconfigurations actually look like in practice and how they can be chained together into a full attack path.
+    </p>
+
+    <p>
+      It's still a side project. But it's grown into something with real structure, and the cloud exploitation modules in particular reflect genuine research into how attackers move through misconfigured cloud environments.
+    </p>
+
+    <h2>Architecture</h2>
+
+    <p>
+      FogJack is built around a modular core. Each capability lives in its own module and exposes a consistent interface to the framework. This means modules can be loaded, swapped, or extended without touching the core. The CLI handles argument parsing and routes execution to the appropriate module.
+    </p>
+
+    <p>
+      At a high level, the framework is organized into three layers:
+    </p>
+
+    <ul>
+      <li><strong>Core engine</strong> — handles module loading, session state, output formatting, and logging</li>
+      <li><strong>Module layer</strong> — individual capability modules that inherit from a base class</li>
+      <li><strong>Interface layer</strong> — CLI entry point that routes commands and manages execution flow</li>
+    </ul>
+
+    <p>
+      The module layer is where the actual offensive capabilities live. Current modules break down as follows:
+    </p>
+
+    <div class="module-grid">
+      <div class="module-cell">
+        <div class="module-name">Network Scanner</div>
+        <div class="module-desc">Host discovery, port scanning, and service fingerprinting. Wraps raw socket operations and integrates with downstream modules for target selection.</div>
+      </div>
+      <div class="module-cell">
+        <div class="module-name">Cloud Enum</div>
+        <div class="module-desc">Enumerates AWS, Azure, and GCP environments for misconfigurations. Checks IAM role permissions, exposed storage buckets, and overly permissive policies.</div>
+      </div>
+      <div class="module-cell">
+        <div class="module-name">Credential Harvesting</div>
+        <div class="module-desc">Extracts credentials from common storage locations and environment variables across cloud provider CLIs and SDKs.</div>
+      </div>
+      <div class="module-cell">
+        <div class="module-name">Post Exploitation</div>
+        <div class="module-desc">Post-access modules for persistence, lateral movement, and data staging across compromised cloud and on-prem environments.</div>
+      </div>
+    </div>
+
+    <h2>Multi-Cloud Coverage</h2>
+
+    <p>
+      One of the more interesting engineering challenges was building consistent cloud enumeration across three providers with fundamentally different APIs and permission models. AWS, Azure, and GCP each have their own SDK, authentication flow, and resource naming conventions.
+    </p>
+
+    <h3>AWS Attack Vectors</h3>
+    <p>
+      The AWS module targets IAM role abuse as a primary vector. Misconfigured trust policies that allow cross-account assumption, overly permissive inline policies, and roles with wildcard resource access are all common findings. The module also checks for publicly exposed S3 buckets and unencrypted snapshots, which remain surprisingly prevalent.
+    </p>
+
+    <pre><code># Example: IAM role enumeration flow
+fogJack --module cloud-enum --provider aws --check iam-roles
+# Enumerates attached policies, inline policies, and trust relationships</code></pre>
+
+    <h3>Azure Attack Vectors</h3>
+    <p>
+      Azure enumeration focuses on storage account exposure and service principal misconfiguration. Publicly accessible blob containers and storage accounts without access restrictions are common entry points. The module also checks for overprivileged managed identities, which can often be leveraged for lateral movement within a tenant.
+    </p>
+
+    <h3>GCP Attack Vectors</h3>
+    <p>
+      GCP coverage targets exposed Cloud Storage buckets and service account key abuse. Service accounts with the <code>editor</code> or <code>owner</code> primitive roles at the project level are a reliable escalation path when combined with a foothold inside the environment.
+    </p>
+
+    <h2>Design Decisions</h2>
+
+    <p>
+      A few deliberate choices shaped how FogJack is built:
+    </p>
+
+    <ul>
+      <li><strong>Shared session state</strong> — modules write to a shared context object so downstream modules can consume upstream findings without re-running enumeration</li>
+      <li><strong>Structured output</strong> — all module output is normalized to a consistent format, making it easy to pipe results into reports or other tools</li>
+      <li><strong>Authorization flag</strong> — the framework requires an explicit acknowledgment of authorized use before execution, which is a deliberate design choice for responsible tooling</li>
+      <li><strong>Minimal dependencies</strong> — core functionality avoids heavy third party libraries where possible to keep the install footprint small on target platforms</li>
+    </ul>
+
+    <h2>Where It's Going</h2>
+
+    <p>
+      FogJack is still actively in development. Planned additions include deeper Active Directory integration, additional evasion capabilities at the network layer, and expanded post-exploitation modules for cloud-native persistence techniques. The goal is a framework that covers the full attack chain from initial enumeration through post-access operations, all within a single coherent tool.
+    </p>
+
+    <p>
+      The source is available on <a href="https://github.com/dcodes1/redteam" target="_blank">GitHub</a> for those authorized to test in their own environments.
+    </p>
+
+  </div>
+
+  <div class="post-nav">
+    <a href="index.html">← All Posts</a>
+    <a href="index.html">Next Post →</a>
+  </div>
+
+</div>
+
+<footer>
+  <div>DAVID <span class="hi">//</span> RED TEAM OPS &nbsp;·&nbsp; <span class="hi">2025</span></div>
+  <div>ALL TOOLS FOR AUTHORIZED USE ONLY &nbsp;·&nbsp; <span class="hi">ETHICAL HACKING</span></div>
+</footer>
+
+</body>
+</html>
