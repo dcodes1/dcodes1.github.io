@@ -322,6 +322,134 @@ def build_splits(pairs: list[dict], seed: int = 1337) -> dict:
 
 
 # --------------------------------------------------------------------------- #
+# Grammar model (for the offline grammar-aware translator)
+# --------------------------------------------------------------------------- #
+# A compact, dataset-derived model that lets the browser engine conjugate verbs
+# and order words per the grammar the TSV itself documents (verb-final order,
+# me-+stem+ending present, droppable copula, ba/az prepositions, ezafe linking).
+# It is NOT a neural model: it is rules + a mined verb table, a few KB, fully
+# offline, no API key. Output is clearly labelled as an unverified draft.
+
+STEM_RE = re.compile(r"stem\s+-([^-;,\]]+)-", re.I)
+VOWELS = "aeiouüöáéíü"
+
+# Curated grammar tables, each verified against the dataset's own grammar rows
+# (cited in translator/README.md). Kept small and explicit on purpose.
+SUBJECTS = {
+    # english subject -> {bux, person key for endings}
+    "i": {"bux": "Man", "p": "1s"},
+    "you": {"bux": "Shumo", "p": "2p"},   # default to polite/plural Shumo
+    "he": {"bux": "Ü", "p": "3s"},
+    "she": {"bux": "Ü", "p": "3s"},
+    "it": {"bux": "Ü", "p": "3s"},
+    "we": {"bux": "Mo", "p": "1p"},
+    "they": {"bux": "Inho", "p": "3p"},
+}
+# Present-tense personal endings (consonant stem); vowel stems take the -y- form.
+PRESENT_ENDINGS = {  # person -> [consonant, vowel]
+    "1s": ["am", "yam"], "2s": ["i", "yi"], "2p": ["ed", "yed"],
+    "3s": ["ad", "yad"], "1p": ["em", "yem"], "3p": ["and", "yand"],
+}
+PAST_ENDINGS = {
+    "1s": "am", "2s": "i", "2p": "ed", "3s": "", "1p": "em", "3p": "and",
+}
+PREPOSITIONS = {
+    "in": "ba", "at": "ba", "to": "ba", "into": "ba", "on": "boli",
+    "from": "az", "with": "qati", "of": "",  # 'of' handled via ezafe
+}
+CONNECTIVES = {"and": "va", "or": "yo", "but": "lekin", "that": "ki", "because": "baroi ki"}
+TIME_ADVERBS = {
+    "now": "aknun", "today": "imrüz", "tomorrow": "pagah", "yesterday": "dina",
+    "tonight": "imshav", "always": "hama vaqt", "never": "hej",
+    "here": "insun", "there": "unsun",
+}
+ARTICLES = {"a", "an", "the"}                # dropped in Bukhori
+COPULA = {"is", "am", "are", "be", "'m", "'re", "'s", "being"}
+# Minimal English lemmatiser for verbs (surface -> lemma) for irregular forms.
+IRREGULAR_LEMMA = {
+    "is": "be", "am": "be", "are": "be", "was": "be", "were": "be", "been": "be",
+    "goes": "go", "went": "go", "gone": "go", "going": "go",
+    "has": "have", "had": "have", "having": "have",
+    "does": "do", "did": "do", "done": "do", "doing": "do",
+    "says": "say", "said": "say", "eats": "eat", "ate": "eat", "eaten": "eat",
+    "comes": "come", "came": "come", "coming": "come",
+    "buys": "buy", "bought": "buy", "sells": "sell", "sold": "sell",
+    "sees": "see", "saw": "see", "seen": "see", "gives": "give", "gave": "give",
+    "knows": "know", "knew": "know", "takes": "take", "took": "take",
+    "lives": "live", "lived": "live", "living": "live",
+    "works": "work", "worked": "work", "speaks": "speak", "spoke": "speak",
+    "wants": "want", "wanted": "want", "reads": "read", "makes": "make", "made": "make",
+}
+
+
+def build_grammar(rows: list[dict], index: dict) -> dict:
+    """Mine a verb table (infinitive -> present stem, with compound-verb parts)
+    and bundle it with the curated grammar tables for the browser engine."""
+    verbs: dict[str, dict] = {}
+    aux_stems: dict[str, str] = {}      # 1-word bukhori infinitive -> stem
+
+    def verb_key(en: str) -> str:
+        key = normalize_english(en)
+        if key.startswith("to "):
+            key = key[3:]
+        return key.split(";")[0].strip()   # "to have; to catch" -> "have"
+
+    # Pass 1: single-word infinitive stems (the auxiliaries compound verbs use:
+    # kardan -> kun, zadan -> zan, ...).
+    for r in rows:
+        en = (r.get("english") or "").strip()
+        bux = (r.get("bukhori") or "").strip()
+        m = STEM_RE.search(r.get("notes") or "")
+        if en.lower().startswith("to ") and bux and m and len(bux.split()) == 1:
+            aux_stems[bux.lower()] = m.group(1).strip().split()[0]
+
+    # Pass 2: simple verbs (with a stem) + compound "noun + auxiliary" verbs.
+    for r in rows:
+        en = (r.get("english") or "").strip()
+        bux = (r.get("bukhori") or "").strip()
+        notes = r.get("notes") or ""
+        if not en.lower().startswith("to ") or not bux:
+            continue
+        key = verb_key(en)
+        if not key or key in verbs:
+            continue
+        bux_words = bux.split()
+        m = STEM_RE.search(notes)
+
+        if len(bux_words) == 2 and (aux_stems.get(bux_words[1].lower()) or "+" in notes):
+            aux = bux_words[1]
+            aux_stem = aux_stems.get(aux.lower())
+            if not aux_stem:
+                continue
+            verbs[key] = {
+                "inf": bux, "noun": bux_words[0], "aux": aux, "stem": aux_stem,
+                "vowel": 1 if aux_stem[-1].lower() in VOWELS else 0,
+                "compound": 1,
+                "no_me": 1 if aux.lower().startswith("doshtan") else 0,
+            }
+        elif m:
+            stem = m.group(1).strip().split()[0]
+            verbs[key] = {
+                "inf": bux, "stem": stem,
+                "vowel": 1 if (stem and stem[-1].lower() in VOWELS) else 0,
+                "no_me": 1 if ("no me-" in notes or bux.lower() == "doshtan") else 0,
+            }
+
+    return {
+        "verbs": verbs,
+        "subjects": SUBJECTS,
+        "present_endings": PRESENT_ENDINGS,
+        "past_endings": PAST_ENDINGS,
+        "prepositions": PREPOSITIONS,
+        "connectives": CONNECTIVES,
+        "time_adverbs": TIME_ADVERBS,
+        "articles": sorted(ARTICLES),
+        "copula": sorted(COPULA),
+        "irregular_lemma": IRREGULAR_LEMMA,
+    }
+
+
+# --------------------------------------------------------------------------- #
 # Summary / quality report
 # --------------------------------------------------------------------------- #
 
@@ -368,6 +496,7 @@ def main():
     rows = load_rows(args.tsv)
     pairs = build_pairs(rows)
     index = build_index(pairs)
+    grammar = build_grammar(rows, index)
     splits = build_splits(pairs)
     summary = build_summary(rows, pairs, index, splits)
 
@@ -385,6 +514,9 @@ def main():
                    "spell_accept": 0.72, "spell_review": 0.6, "max_input_chars": 2000},
         "exact": index_tv["exact"], "words": index_tv["words"],
         "phrases": index_tv["phrases"], "retrieval": index_tv["retrieval"],
+        # grammar is rule knowledge (verb stems, endings), not held-out pairs,
+        # so including it here does not leak test examples into evaluation.
+        "grammar": grammar,
     }
     with open(os.path.join(args.out, "index_train.json"), "w", encoding="utf-8") as f:
         json.dump(eval_payload, f, ensure_ascii=False, separators=(",", ":"))
@@ -404,11 +536,13 @@ def main():
             "words": len(index["words"]),
             "phrases": len(index["phrases"]),
             "retrieval": len(index["retrieval"]),
+            "verbs": len(grammar["verbs"]),
         },
         "exact": index["exact"],
         "words": index["words"],
         "phrases": index["phrases"],
         "retrieval": index["retrieval"],
+        "grammar": grammar,
     }
 
     with open(os.path.join(args.out, "index.json"), "w", encoding="utf-8") as f:

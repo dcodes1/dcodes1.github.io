@@ -115,6 +115,7 @@
     this.words = (index && index.words) || {};
     this.phrases = (index && index.phrases) || [];
     this.retrievalEx = (index && index.retrieval) || [];
+    this.grammar = (index && index.grammar) || null;
     this.cache = {};
 
     // Precompute lightweight per-key features for fuzzy matching.
@@ -281,6 +282,180 @@
     return scored.slice(0, k);
   };
 
+  // L2.7 Grammar engine ------------------------------------------------------
+  // A compact, offline, dataset-derived translator that conjugates verbs and
+  // orders words per the grammar the TSV documents (verb-final; me-+stem+ending
+  // present; droppable copula; ba/az prepositions). No neural net, no network,
+  // no key. Handles simple pronoun-subject sentences; returns null otherwise so
+  // the caller falls back to the word-by-word layer. Output is a labelled draft.
+  var NEG = { "not": 1, "don't": 1, "dont": 1, "doesn't": 1, "doesnt": 1,
+              "didn't": 1, "didnt": 1, "won't": 1, "wont": 1, "cannot": 1, "can't": 1 };
+  var SKIP_AUX = { "do": 1, "does": 1, "did": 1, "will": 1, "would": 1, "can": 1 };
+  var PAST_SURFACE = { went: 1, bought: 1, sold: 1, saw: 1, gave: 1, took: 1,
+    made: 1, said: 1, came: 1, ate: 1, was: 1, were: 1, had: 1, knew: 1, spoke: 1 };
+
+  Engine.prototype._lemma = function (w) {
+    var G = this.grammar;
+    if (G.irregular_lemma[w]) return G.irregular_lemma[w];
+    var v = G.verbs;
+    var cands = [];
+    if (w.length > 4 && /ing$/.test(w)) cands.push(w.slice(0, -3), w.slice(0, -3) + "e");
+    if (w.length > 3 && /es$/.test(w)) cands.push(w.slice(0, -2));
+    if (w.length > 3 && /ed$/.test(w)) cands.push(w.slice(0, -2), w.slice(0, -1));
+    if (w.length > 2 && /s$/.test(w)) cands.push(w.slice(0, -1));
+    for (var i = 0; i < cands.length; i++) if (v[cands[i]]) return cands[i];
+    return w;
+  };
+
+  // Conjugate a verb entry for person/tense/polarity using the dataset rules.
+  Engine.prototype._conjugate = function (v, person, tense, neg) {
+    var G = this.grammar, form;
+    if (tense === "past") {
+      // simple past: past stem = infinitive minus "-an"; add past ending.
+      var inf = (v.inf || "").toLowerCase().split(" ").pop();
+      var pstem = /an$/.test(inf) ? inf.slice(0, -2) : v.stem;
+      form = pstem + (G.past_endings[person] || "");
+      if (neg) form = "na" + form;
+    } else {
+      var end = (G.present_endings[person] || ["", ""])[v.vowel ? 1 : 0];
+      form = v.no_me ? (v.stem + end) : ("me" + v.stem + end);
+      if (neg) form = "na" + form;
+    }
+    if (v.compound) form = v.noun.toLowerCase() + " " + form;
+    return form;
+  };
+
+  // Translate one complement word (object/place noun) from the dataset only.
+  Engine.prototype._glossWord = function (w) {
+    if (this.words[w]) return this.words[w];
+    var e = this.exact[w];
+    if (e) return e.bux;
+    return null;
+  };
+
+  Engine.prototype.grammarTranslate = function (text) {
+    var G = this.grammar;
+    if (!G || !G.verbs) return null;
+    var toks = tokenize(text);
+    if (toks.length < 2) return null;
+
+    var subj = G.subjects[toks[0]];
+    if (!subj) return null;                 // v1: needs a pronoun subject
+
+    // Proper nouns: words capitalised in the input (except the first) stay
+    // capitalised in the output; common nouns are lower-cased mid-sentence.
+    var proper = {};
+    var rawWords = String(text).trim().split(/\s+/);
+    for (var rw = 1; rw < rawWords.length; rw++) {
+      if (/^[A-Z]/.test(rawWords[rw])) proper[normEn(rawWords[rw])] = 1;
+    }
+
+    var i = 1, neg = false, tense = "present";
+    while (i < toks.length) {
+      var t = toks[i];
+      if (NEG[t]) { neg = true; i++; continue; }
+      if (SKIP_AUX[t]) { if (t === "did") tense = "past"; i++; continue; }
+      break;
+    }
+
+    // locate the main verb
+    var vIdx = -1, verb = null;
+    for (var j = i; j < toks.length; j++) {
+      if (G.copula.indexOf(toks[j]) !== -1) continue;
+      var lemma = this._lemma(toks[j]);
+      if (G.verbs[lemma]) { vIdx = j; verb = G.verbs[lemma]; if (PAST_SURFACE[toks[j]]) tense = "past"; break; }
+    }
+
+    var steps = [];   // explanation steps
+    var out = [subj.bux];
+    steps.push("Subject “" + toks[0] + "” → " + subj.bux + ".");
+
+    // Copula sentence: "I am happy / he is a doctor" -> drop the copula.
+    var hasCopula = false;
+    for (var c = i; c < toks.length; c++) if (G.copula.indexOf(toks[c]) !== -1) hasCopula = true;
+    if (!verb) {
+      if (!hasCopula) return null;
+      var compTokens = [];
+      for (var k = i; k < toks.length; k++) {
+        if (G.copula.indexOf(toks[k]) !== -1) continue;
+        compTokens.push(toks[k]);
+      }
+      var comp = this._renderComplements(compTokens, steps, proper);
+      out = out.concat(comp);
+      steps.push("Bukhori drops “to be” in the present tense.");
+      return this._grammarResult(out, steps, text, neg, hasUnknown(comp));
+    }
+
+    // Verb sentence: English S V O  ->  Bukhori S O V (verb last).
+    var preVerb = toks.slice(i, vIdx);               // adverbs before the verb
+    var postVerb = toks.slice(vIdx + 1);             // objects / places / time
+    var complements = this._renderComplements(preVerb.concat(postVerb), steps, proper);
+    var vform = this._conjugate(verb, subj.p, tense, neg);
+    out = out.concat(complements);
+    out.push(vform);
+
+    steps.push("Verb “" + toks[vIdx] + "” → " + vform + " ("
+      + (tense === "past" ? "simple past" : "present")
+      + (verb.no_me ? "" : ", me- + " + verb.stem + " + ending")
+      + (verb.compound ? ", compound verb keeps “" + verb.noun.toLowerCase() + "”" : "")
+      + (neg ? ", negated with na-" : "") + ").");
+    steps.push("Word order: the verb moves to the end of the sentence.");
+    return this._grammarResult(out, steps, text, neg, hasUnknown(complements));
+
+    function hasUnknown(arr) {
+      for (var a = 0; a < arr.length; a++) if (arr[a] && arr[a].__unknown) return true;
+      return false;
+    }
+  };
+
+  // Render complement tokens (objects, prepositional phrases, time words) into
+  // ordered Bukhori pieces. Prepositions become ba/az/qati; articles drop;
+  // unknown content words are kept as the English word (flagged).
+  Engine.prototype._renderComplements = function (tokens, steps, proper) {
+    var G = this.grammar, out = [];
+    proper = proper || {};
+    for (var i = 0; i < tokens.length; i++) {
+      var t = tokens[i];
+      if (G.articles.indexOf(t) !== -1) continue;             // a/an/the dropped
+      if (G.time_adverbs[t]) { out.push(str(G.time_adverbs[t])); continue; }
+      if (Object.prototype.hasOwnProperty.call(G.prepositions, t)) {
+        var prep = G.prepositions[t];
+        if (prep) { out.push(str(prep)); if (steps) steps.push("“" + t + "” → " + prep + "."); }
+        continue;
+      }
+      if (G.connectives[t]) { out.push(str(G.connectives[t])); continue; }
+      var g = this._glossWord(t);
+      if (g) {
+        // common nouns lower-case mid-sentence; proper nouns keep their case
+        out.push(str(proper[t] ? g : g.charAt(0).toLowerCase() + g.slice(1)));
+      } else {
+        var u = str(t); u.__unknown = true; out.push(u);
+      }
+    }
+    return out;
+    function str(s) { return new String(s); }   // boxed so we can tag __unknown
+  };
+
+  Engine.prototype._grammarResult = function (outPieces, steps, text, neg, unknown) {
+    var words = outPieces.map(function (p) { return p.toString(); });
+    var bux = words.join(" ").replace(/\s+/g, " ").trim();
+    // Capitalise the first word only.
+    bux = bux.charAt(0).toUpperCase() + bux.slice(1);
+    return {
+      status: "grammar",
+      bux: bux,
+      confidence: unknown ? 0.45 : 0.6,
+      source: "grammar-engine",
+      detail: {
+        steps: steps,
+        unknown: unknown,
+        warning: "Built offline from your dataset's grammar rules (verb "
+          + "conjugation, word order, prepositions). An unverified draft — "
+          + "useful and usually close, but not a verified source translation.",
+      },
+    };
+  };
+
   // Main entry ----------------------------------------------------------------
   Engine.prototype.translate = function (text) {
     var raw = (text == null ? "" : String(text));
@@ -317,6 +492,13 @@
                   review: !!fz.entry.review, variants: fz.entry.variants || null },
       };
       this.cache[key] = res; return res;
+    }
+
+    // L2.7 grammar engine: conjugated, verb-final draft for pronoun sentences.
+    if (this.grammar) {
+      var gr = null;
+      try { gr = this.grammarTranslate(raw); } catch (e) { gr = null; }
+      if (gr && gr.bux) { this.cache[key] = gr; return gr; }
     }
 
     // L2.5 compositional (for multi-word input)

@@ -66,8 +66,43 @@ A **hybrid, retrieval-first** engine (`engine.js`), chosen to fit the data:
 |---|---|---|
 | **L1 Exact** | normalised input == an indexed English key → return the verified Buxori verbatim | highest, authoritative |
 | **L2 Fuzzy** | closest key by char-trigram + token-overlap + edit distance, with per-path thresholds (strict for multi-word, spelling-based for single-word typos) | medium, flagged |
+| **L2.7 Grammar engine** | a local, offline translator for simple pronoun sentences: conjugates verbs (`me-`+stem+ending / past stem), drops the copula, maps prepositions (`ba`/`az`/`qati`), orders the verb last. Compiled from the dataset's own grammar rows. | medium, flagged "grammar draft" |
 | **L2.5 Compositional** | cover the input with indexed phrases (longest-match) + word glosses; **report any token it can't source** | low, flagged word-by-word |
 | **L3 Retrieval-augmented (optional)** | for out-of-coverage input, retrieve the most similar dataset pairs and let a server-side model translate *grounded on them* | optional, AI-assisted |
+
+### The offline grammar engine (local, no key, ~22 KB)
+
+For simple sentences with a pronoun subject (e.g. *"I live in Israel now"*,
+*"he is a doctor"*, *"I do not eat meat"*), the engine produces conjugated,
+verb-final Buxori **entirely in the browser** — no model download, no API key:
+
+```
+I live in Israel now  →  Man ba Isroel aknun zindagi mekunam
+```
+
+It is compiled by `preprocess.py` into a compact grammar model shipped inside
+`index.json`:
+
+* **229 verbs** mined from the TSV with their present stems (`to go → Raftan,
+  stem -rav-`) and compound forms (`to live → Zindagi kardan`).
+* **Conjugation tables** (present `me-`+stem+personal-ending, simple past via the
+  infinitive-minus-`-an` stem, negation `na-`) taken from the dataset's paradigm
+  rows.
+* **Curated rules** verified against the dataset's grammar rows: verb-final word
+  order, droppable present copula, `ba/az/qati` prepositions, dropped articles,
+  ezafe-aware glossing, time adverbs.
+
+It is **not** a neural network and makes no attempt to be one — it is classic
+rule-based MT. Output is always labelled a "grammar draft": usually close and
+genuinely useful, but unverified. It explains each result step by step (subject,
+verb conjugation, preposition mapping, word order), so it doubles as a learning
+aid. Questions, multi-clause sentences, and non-pronoun subjects fall through to
+the word-by-word layer.
+
+Why not an in-browser neural model (Transformers.js / WebLLM)? Evaluated and
+rejected: no small model supports Buxori (they emit Tajik/Persian), the weights
+are 300 MB–1 GB (not "small"), and training on ~2,800 lexicon pairs would not
+generalise. A dataset-derived grammar engine is the honest local option.
 
 **Why no fine-tuned NLLB/mT5/etc.** It was evaluated and rejected, honestly:
 

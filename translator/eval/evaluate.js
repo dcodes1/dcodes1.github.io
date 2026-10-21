@@ -109,7 +109,7 @@ for (const p of test) {
   if (res.status === "exact" || res.status === "fuzzy") {
     committed++; if (isCorrect) committedCorrect++;
     committedRefs.push(p.bux); committedHyps.push(res.bux);
-  } else if (res.status === "compositional") {
+  } else if (res.status === "compositional" || res.status === "grammar") {
     draft++; if (isCorrect) draftCorrect++;
     draftRefs.push(p.bux); draftHyps.push(res.bux);
   }
