@@ -152,11 +152,19 @@ Pages site automatically. `index.html` loads `/translator/engine.js` and fetches
 `/translator/data/index.json`; committing the repo is the whole deploy. No
 environment variables, no model downloads, no API keys required.
 
-### Optional: enable Layer 3 (AI-assisted fallback)
+### Enabling full sentence translation + explanations (AI layer)
 
-Only needed if you want best-effort translations for phrases outside the
-dataset. The API key stays server-side in a Cloudflare Worker; the browser never
-sees it.
+The offline engine (L1–L2.5) translates **words and phrases that exist in the
+dataset** and, for multi-word input, shows a clean word-by-word draft with any
+untranslated word kept inline (no gap markers) plus a dataset gloss. It cannot
+fluently translate arbitrary sentences or explain grammar — a ~2,800-entry
+lesson lexicon has no copula/preposition coverage for that.
+
+To get **Google-Translate-style fluent translations with sentence
+explanations**, enable the AI layer. It calls Claude with your dataset examples
+as grounding and returns `{translation, explanation}`. The API key stays
+server-side in a Cloudflare Worker; the browser never sees it. Exact dataset
+matches stay authoritative and never hit the network.
 
 ```bash
 cd translator/worker

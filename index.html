@@ -1075,6 +1075,7 @@
   .tr-badge.exact  { border-color: var(--green);   color: var(--green-hi); }
   .tr-badge.fuzzy  { border-color: var(--amber);   color: var(--amber); }
   .tr-badge.compositional { border-color: var(--amber); color: var(--amber); }
+  .tr-badge.ai     { border-color: var(--green);   color: var(--green-hi); }
   .tr-badge.none   { border-color: var(--red);     color: var(--red-hi); }
 
   .tr-note {
@@ -1097,12 +1098,56 @@
     padding: 0 0.3rem;
   }
 
+  .tr-output .tr-untranslated { color: var(--amber); opacity: 0.85; }
+
   .tr-disclaimer {
     margin-top: 1.2rem;
     font-size: 0.66rem;
     color: var(--text-dim);
     line-height: 1.6;
   }
+
+  /* ─── EXPLANATION PANEL ─── */
+  .tr-explain { margin-top: 1.2rem; }
+  .tr-explain[hidden] { display: none; }
+
+  .tr-explain-head {
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 0.8rem;
+  }
+
+  .tr-explain-text {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .tr-gloss {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .tr-gloss-item {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 0.4rem 0.7rem;
+    min-width: 0;
+  }
+  .tr-gloss-en {
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .tr-gloss-bux { font-size: 0.86rem; color: var(--text-hi); }
+  .tr-gloss-item.miss .tr-gloss-bux { color: var(--amber); }
 
   @media (max-width: 800px) {
     .tr-panes { grid-template-columns: 1fr; }
@@ -1548,12 +1593,13 @@
 
     <div id="trNote"></div>
 
+    <div id="trExplain" class="tr-explain" hidden></div>
+
     <p class="tr-disclaimer">
-      Translations are drawn directly from a curated Bukharian (Judeo-Tajik)
-      dataset — exact matches are verified source entries. Fuzzy and
-      word-by-word results are clearly flagged and may be imperfect. When a
-      phrase is outside the dataset, the tool says so rather than guessing.
-      Bukhori here uses the Latin transliteration of the source material.
+      Translations are grounded in a curated Bukharian (Judeo-Tajik) dataset.
+      Exact matches are verified source entries; AI-assisted and word-by-word
+      results are clearly flagged and may be imperfect. Bukhori here uses the
+      Latin transliteration of the source material.
     </p>
   </div>
 </section>
@@ -1658,6 +1704,7 @@
   var $conf = document.getElementById("trConf");
   var $status = document.getElementById("trStatus");
   var $note = document.getElementById("trNote");
+  var $explain = document.getElementById("trExplain");
 
   if (!$in || !$go) return;  // section not present
 
@@ -1697,6 +1744,7 @@
     $out.textContent = "Translation will appear here.";
     $out.classList.add("tr-empty");
     $conf.textContent = ""; $note.innerHTML = "";
+    if ($explain) { $explain.hidden = true; $explain.innerHTML = ""; }
     $copy.disabled = true; $in.focus();
   });
 
@@ -1722,20 +1770,66 @@
 
   var BADGE = {
     exact: "verified", fuzzy: "closest match",
-    compositional: "word-by-word", none: "no match",
+    compositional: "word-by-word", ai: "ai-assisted", none: "no match",
   };
 
-  function render(res) {
+  // Build the explanation panel: AI explanation when present, otherwise a
+  // dataset-grounded word-by-word gloss. Never invents meanings.
+  function renderExplain(res, text) {
+    if (!$explain) return;
+    var det = res.detail || {};
+    var html = '<div class="tr-explain-head">// Explanation</div>';
+    var body = "";
+
+    if (det.explanation) {
+      body += '<div class="tr-explain-text">' + esc(det.explanation) + "</div>";
+    } else if (res.status === "exact") {
+      var bits = ["Verified entry from the dataset" +
+        (det.type ? " (" + esc(det.type) + ")" : "") + "."];
+      if (det.notes) bits.push(esc(det.notes) + ".");
+      if (det.spoken) bits.push("Spoken form: " + esc(det.spoken) + ".");
+      body += '<div class="tr-explain-text">' + bits.join(" ") + "</div>";
+    } else if (res.status === "compositional") {
+      body += '<div class="tr-explain-text">Assembled word-by-word from the '
+           + 'dataset. Bukhori grammar and word order are not applied, so this '
+           + 'is a glossing aid, not a fluent sentence'
+           + (RAG_ENDPOINT ? "" : " — enable the AI translator for a full "
+              + "fluent translation and grammar explanation")
+           + ".</div>";
+    }
+
+    // Word-by-word gloss (available for any input via the dataset).
+    var gloss = [];
+    try { gloss = engine.glossTokens(text) || []; } catch (e) {}
+    if (gloss.length) {
+      body += '<div class="tr-gloss">' + gloss.map(function (g) {
+        var miss = !g.bux;
+        return '<span class="tr-gloss-item' + (miss ? " miss" : "") + '">'
+             + '<span class="tr-gloss-en">' + esc(g.en) + "</span>"
+             + '<span class="tr-gloss-bux">' + (miss ? "— not in dataset —" : esc(g.bux))
+             + "</span></span>";
+      }).join("") + "</div>";
+    }
+
+    if (!body) { $explain.hidden = true; $explain.innerHTML = ""; return; }
+    $explain.innerHTML = html + body;
+    $explain.hidden = false;
+  }
+
+  function render(res, text) {
     $note.innerHTML = "";
     $conf.textContent = "";
+    if ($explain) { $explain.hidden = true; $explain.innerHTML = ""; }
 
     if (res.status === "none" || !res.bux) {
       $out.classList.add("tr-empty");
-      $out.textContent = "— no verified translation —";
+      $out.textContent = "— no reliable translation —";
       $copy.disabled = true;
       var d = res.detail || {};
       var html = '<div class="tr-note miss"><span class="tr-badge none">no match</span>'
-               + esc(d.reason || "This phrase is not in the dataset.") + "</div>";
+               + esc(d.reason || "This phrase is not in the dataset.")
+               + (RAG_ENDPOINT ? "" : " Enable the AI translator (see setup) to "
+                  + "translate full sentences.") + "</div>";
       if (d.suggestion) {
         html += '<div class="tr-note">Did you mean <strong>' + esc(d.suggestion.english)
              + '</strong> → <code>' + esc(d.suggestion.bux) + "</code>?</div>";
@@ -1747,21 +1841,24 @@
                }).join("") + "</ul></div>";
       }
       $note.innerHTML = html;
+      renderExplain(res, text);
       return;
     }
 
     $out.classList.remove("tr-empty");
-    if (res.status === "compositional") {
-      // Highlight gap markers.
-      $out.innerHTML = esc(res.bux).replace(/…/g, '<span class="tr-gap">…</span>');
+    if (res.status === "compositional" && res.detail && res.detail.breakdown) {
+      // Render untranslated words dimmed (no jarring gap markers).
+      $out.innerHTML = res.detail.breakdown.map(function (b) {
+        return b.bux ? esc(b.bux)
+          : '<span class="tr-untranslated">' + esc(b.en) + "</span>";
+      }).join(" ");
     } else {
       $out.textContent = res.bux;
     }
     $copy.disabled = false;
 
     var badge = BADGE[res.status] || res.status;
-    var cls = res.status;
-    $conf.innerHTML = '<span class="tr-badge ' + cls + '">' + badge + "</span>"
+    $conf.innerHTML = '<span class="tr-badge ' + res.status + '">' + badge + "</span>"
                     + (res.confidence ? "conf " + res.confidence : "");
 
     var det = res.detail || {};
@@ -1769,8 +1866,7 @@
       var extra = [];
       if (det.spoken) extra.push("spoken: <code>" + esc(det.spoken) + "</code>");
       if (det.alt)    extra.push("alt: <code>" + esc(det.alt) + "</code>");
-      var parts = "";
-      if (extra.length) parts += extra.join(" &nbsp; ");
+      var parts = extra.length ? extra.join(" &nbsp; ") : "";
       if (det.variants && det.variants.length) {
         parts += '<div style="margin-top:0.4rem;">Other attested forms: '
               + det.variants.map(function (v) { return "<code>" + esc(v.bux) + "</code>"; }).join(" · ")
@@ -1782,6 +1878,10 @@
       } else if (parts) {
         $note.innerHTML = '<div class="tr-note">' + parts + "</div>";
       }
+    } else if (res.status === "ai") {
+      $note.innerHTML = '<div class="tr-note warn"><span class="tr-badge ai">ai-assisted</span>'
+        + "Generated by the AI translator, grounded on dataset examples. Fluent "
+        + "but not a verified source entry — double-check important text.</div>";
     } else if (res.status === "fuzzy") {
       $note.innerHTML = '<div class="tr-note warn"><span class="tr-badge fuzzy">closest match</span>'
         + "Not an exact entry — matched to <strong>" + esc(det.matchedEnglish)
@@ -1790,12 +1890,13 @@
       var warn = '<div class="tr-note warn"><span class="tr-badge compositional">word-by-word</span>'
         + esc(det.warning || "Assembled from individual dataset entries.");
       if (det.unknown && det.unknown.length) {
-        warn += " Untranslated (not in dataset): "
+        warn += " Not in dataset: "
              + det.unknown.map(function (w) { return "<code>" + esc(w) + "</code>"; }).join(" ");
       }
       warn += "</div>";
       $note.innerHTML = warn;
     }
+    renderExplain(res, text);
   }
 
   function run() {
@@ -1817,13 +1918,16 @@
         catch (e) { res = { status: "none", bux: null, detail: { reason: "Engine error: " + e.message } }; }
 
         var finish = function (r) {
-          render(r);
+          render(r, text);
           busy = false; $go.disabled = false; $go.textContent = label;
           $status.textContent = "Ready";
         };
 
-        // Layer 3: only when out of coverage AND a backend is configured.
-        if (res.status === "none" && RAG_ENDPOINT) {
+        // AI layer: for anything that isn't a verified exact match, prefer the
+        // grounded AI translation+explanation when a backend is configured.
+        // Exact dataset matches stay authoritative and skip the network call.
+        if (RAG_ENDPOINT && res.status !== "exact") {
+          $status.textContent = "Translating with AI…";
           ragTranslate(text, res).then(finish).catch(function () { finish(res); });
         } else {
           finish(res);
@@ -1832,9 +1936,9 @@
     });
   }
 
-  // Optional retrieval-augmented call. Sends the input + dataset examples to a
-  // server that holds the API key; the browser never sees a key. Result is
-  // clearly flagged as AI-assisted, not a verified dataset entry.
+  // Retrieval-augmented call. Sends the input + dataset examples to a server
+  // that holds the API key; the browser never sees a key. Returns a fluent
+  // translation plus an explanation, both grounded on the examples.
   function ragTranslate(text, fallback) {
     var examples = engine.retrieve(text, 8);
     return fetch(RAG_ENDPOINT, {
@@ -1844,12 +1948,13 @@
     })
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
       .then(function (data) {
-        if (!data || !data.bux) return fallback;
+        var out = data && (data.translation || data.bux);
+        if (!out) return fallback;
         return {
-          status: "fuzzy", bux: data.bux,
-          confidence: data.confidence || 0.5,
+          status: "ai", bux: String(out),
+          confidence: typeof data.confidence === "number" ? Math.round(data.confidence * 100) / 100 : 0.5,
           source: "rag",
-          detail: { matchedEnglish: text, type: "ai-assisted", review: true },
+          detail: { matchedEnglish: text, explanation: data.explanation || "" },
         };
       });
   }

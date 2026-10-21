@@ -227,18 +227,44 @@
     }
     if (pieces.every(function (x) { return x === null; })) return null;
 
-    var out = [], i2 = 0, knownTokens = 0;
+    // Walk the tokens left to right building:
+    //   out        - the assembled line (untranslated words kept as-is, no gaps)
+    //   breakdown  - per-segment [{en, bux|null}] for the explanation panel
+    var out = [], breakdown = [], i2 = 0, knownTokens = 0;
     while (i2 < toks.length) {
-      if (pieces[i2]) { out.push(pieces[i2].bux); knownTokens += pieces[i2].span; i2 += pieces[i2].span; }
-      else { out.push("…"); i2 += 1; }  // gap marker
+      if (pieces[i2]) {
+        out.push(pieces[i2].bux);
+        breakdown.push({ en: pieces[i2].en, bux: pieces[i2].bux });
+        knownTokens += pieces[i2].span;
+        i2 += pieces[i2].span;
+      } else {
+        // Untranslated word: keep the English word inline (readable, no "…").
+        out.push(toks[i2]);
+        breakdown.push({ en: toks[i2], bux: null });
+        i2 += 1;
+      }
     }
     var coverage = knownTokens / toks.length;
     return {
       bux: out.join(" "),
       coverage: coverage,
       unknown: unknown,
+      breakdown: breakdown,
       pieces: pieces.filter(Boolean),
     };
+  };
+
+  // Word-by-word dataset gloss for the explanation panel. Independent of which
+  // layer produced the main translation; shows what each English word maps to
+  // in the dataset (or marks it as not found). Never invents a gloss.
+  Engine.prototype.glossTokens = function (text) {
+    var c = this.compose(text);
+    if (c && c.breakdown) return c.breakdown;
+    // single-token input: direct word lookup
+    var toks = tokenize(text);
+    return toks.map(function (t) {
+      return { en: t, bux: this.words[t] || null };
+    }, this);
   };
 
   // L3 ------------------------------------------------------------------------
@@ -295,7 +321,7 @@
 
     // L2.5 compositional (for multi-word input)
     var comp = tokenize(raw).length >= 2 ? this.compose(raw) : null;
-    if (comp && comp.coverage >= 0.6) {
+    if (comp && comp.coverage >= 0.5) {
       res = {
         status: "compositional",
         bux: comp.bux,
@@ -303,7 +329,7 @@
         source: "tsv-compositional",
         detail: {
           coverage: round(comp.coverage), unknown: comp.unknown,
-          pieces: comp.pieces,
+          breakdown: comp.breakdown, pieces: comp.pieces,
           warning: "Assembled word-by-word from the dataset; not a verified "
                  + "sentence translation. Grammar and word order are not applied.",
         },

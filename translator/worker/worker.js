@@ -64,18 +64,28 @@ export default {
       .join("\n\n");
 
     const system =
-      "You translate English into Buxori (Bukharian, a Judeo-Tajik language), " +
-      "written in the Latin transliteration used by the reference examples. " +
-      "You MUST ground every choice in the provided English->Buxori examples: " +
-      "reuse their vocabulary, spelling, diacritics (ü, á, é, í, ö, etc.), and " +
-      "word order. Do NOT substitute Standard Tajik, Persian, Dari, or Russian " +
-      "words. If the examples do not cover a needed word, keep the English word " +
-      "as-is rather than inventing Buxori. Output ONLY the Buxori translation, " +
-      "no explanations, no quotes.";
+      "You are a translator and tutor for Buxori (Bukharian, a Judeo-Tajik " +
+      "language), written in the Latin transliteration used by the reference " +
+      "examples. Translate English into natural, fluent Buxori and briefly " +
+      "explain it.\n\n" +
+      "Rules:\n" +
+      "- Ground every word choice in the provided English->Buxori examples: " +
+      "reuse their vocabulary, spelling and diacritics (ü, á, é, í, ö, ...).\n" +
+      "- Produce idiomatic Buxori word order and grammar (verb-final; no copula " +
+      "'to be' in the simple present; prepositions like 'ba'/'dar' as the " +
+      "examples show), NOT a word-for-word gloss.\n" +
+      "- Do NOT substitute Standard Tajik, Persian, Dari or Russian words. If no " +
+      "example covers a needed word, choose the closest attested form and say so " +
+      "in the explanation rather than inventing vocabulary.\n" +
+      "- Respond with STRICT JSON only, no markdown, no code fence:\n" +
+      '  {"translation": "<Buxori>", "explanation": "<2-4 sentences: the overall ' +
+      'meaning, then the key words/grammar, in plain English>", "confidence": ' +
+      "<0..1 number reflecting how well the examples supported the translation>}";
 
     const user =
       `Reference English->Buxori examples from the dataset:\n\n${exampleBlock}\n\n` +
-      `Translate this English into Buxori, following the examples' vocabulary and style:\n"${sanitize(text)}"`;
+      `Translate and explain this English sentence in Buxori, following the ` +
+      `examples' vocabulary and style:\n"${sanitize(text)}"`;
 
     try {
       const resp = await fetch("https://api.anthropic.com/v1/messages", {
@@ -87,7 +97,7 @@ export default {
         },
         body: JSON.stringify({
           model: env.MODEL || MODEL,
-          max_tokens: 300,
+          max_tokens: 600,
           temperature: 0,
           system,
           messages: [{ role: "user", content: user }],
@@ -98,9 +108,25 @@ export default {
         return json({ error: "upstream " + resp.status, detail: t.slice(0, 200) }, 502, cors);
       }
       const data = await resp.json();
-      const bux = (data.content && data.content[0] && data.content[0].text || "").trim();
-      if (!bux) return json({ error: "empty model output" }, 502, cors);
-      return json({ bux, confidence: 0.5, source: "rag", grounded_on: examples.length }, 200, cors);
+      const raw = (data.content && data.content[0] && data.content[0].text || "").trim();
+      if (!raw) return json({ error: "empty model output" }, 502, cors);
+
+      // The model is asked for strict JSON; parse defensively.
+      let parsed = null;
+      try { parsed = JSON.parse(raw); }
+      catch (e) {
+        const m = raw.match(/\{[\s\S]*\}/);
+        if (m) { try { parsed = JSON.parse(m[0]); } catch (e2) {} }
+      }
+      const translation = parsed && parsed.translation ? String(parsed.translation).trim() : raw;
+      const explanation = parsed && parsed.explanation ? String(parsed.explanation).trim() : "";
+      const confidence = parsed && typeof parsed.confidence === "number"
+        ? Math.max(0, Math.min(1, parsed.confidence)) : 0.5;
+
+      return json({
+        translation, explanation, confidence,
+        source: "rag", grounded_on: examples.length,
+      }, 200, cors);
     } catch (err) {
       return json({ error: "request failed", detail: String(err).slice(0, 200) }, 502, cors);
     }
