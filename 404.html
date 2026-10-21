@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirecting…</title>
+<!--
+  GitHub Pages single-page-app fallback.
+  Unknown paths (e.g. /translator) are served this file. We remember the
+  requested path and bounce to "/", where the in-page router restores it.
+  This makes direct visits and shared links to /translator work in production.
+-->
+<script>
+  (function () {
+    try { sessionStorage.setItem("spa-redirect", location.pathname + location.search + location.hash); }
+    catch (e) {}
+    location.replace("/");
+  })();
+</script>
+<meta http-equiv="refresh" content="0; url=/">
+<style>
+  html, body { background: #080b08; color: #5cba6a; margin: 0; height: 100%; }
+  .m { font-family: 'Share Tech Mono', monospace; font-size: 14px;
+       display: flex; align-items: center; justify-content: center; height: 100%; }
+</style>
+</head>
+<body>
+  <div class="m">Redirecting… if you are not redirected, <a href="/" style="color:#5cba6a;">return to the portfolio</a>.</div>
+</body>
+</html>

@@ -88,6 +88,7 @@
     letter-spacing: 0.25em;
     color: var(--green-hi);
     text-transform: uppercase;
+    text-decoration: none;
   }
 
   .nav-logo span { color: var(--red-hi); }
@@ -1108,26 +1109,95 @@
     .tr-pane { min-height: 170px; }
     .tr-status { margin-left: 0; width: 100%; text-align: left; }
   }
+
+  /* ─── VIEW ROUTING (portfolio ⇄ translator) ─── */
+  .nav-logo { cursor: pointer; }
+
+  .nav-links a.active {
+    color: var(--green-hi);
+    text-shadow: 0 0 8px rgba(92,186,106,0.35);
+  }
+
+  /* Persistent translator entry — visible on mobile where .nav-links hides. */
+  .nav-cta {
+    display: none;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--green-hi);
+    border: 1px solid var(--green-dim);
+    padding: 0.3rem 0.7rem;
+    background: rgba(92,186,106,0.06);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--green-dim); }
+  .nav-cta.active { background: var(--green-dim); border-color: var(--green); }
+
+  /* View switching with a fast cross-fade. */
+  .view { animation: view-in 0.22s ease both; }
+  .view[hidden] { display: none; }
+  @keyframes view-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Dedicated translator view header + back control. */
+  #view-translator { padding-top: 52px; }
+
+  .tr-page-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.4rem;
+  }
+  .tr-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 0.45rem 0.9rem;
+    cursor: crosshair;
+    transition: all 0.2s;
+  }
+  .tr-back:hover { border-color: var(--green); color: var(--green-hi); }
+
+  @media (max-width: 700px) {
+    .nav-cta { display: inline-block; }
+  }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">DAVID <span>//</span> SEC</div>
+  <a class="nav-logo" href="/" data-route="/">DAVID <span>//</span> SEC</a>
   <ul class="nav-links">
     <li><a href="#projects">Projects</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="posts/index.html">Posts</a></li>
     <li><a href="#about">Intel</a></li>
-    <li><a href="#translator">Translator</a></li>
+    <li><a href="/translator" data-route="/translator">Buxori Translator</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <a class="nav-cta" href="/translator" data-route="/translator">◆ Translator</a>
   <div class="nav-status">
     <div class="status-dot"></div>
     OPERATOR ONLINE
   </div>
 </nav>
+
+<!-- ══ PORTFOLIO VIEW ══ -->
+<div id="view-portfolio" class="view">
 
 <!-- HERO -->
 <section id="hero" style="max-width:100%; padding-top:6rem;">
@@ -1394,10 +1464,48 @@
 
 <hr class="divider">
 
-<!-- TRANSLATOR -->
-<section id="translator">
+<!-- CONTACT -->
+<section id="contact">
   <div class="section-header">
     <span class="section-label">// 05</span>
+    <h2 class="section-title">Establish Comms</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="contact-grid">
+    <a class="contact-card" href="https://github.com/dcodes1" target="_blank">
+      <div class="contact-platform">// GitHub</div>
+      <div class="contact-handle">github.com/dcodes1</div>
+      <div class="contact-note">Source code &amp; projects</div>
+    </a>
+    <a class="contact-card" href="https://www.linkedin.com/in/davidgmilov/" target="_blank">
+      <div class="contact-platform">// LinkedIn</div>
+      <div class="contact-handle">davidgmilov</div>
+      <div class="contact-note">Professional network</div>
+    </a>
+    <div class="contact-card">
+      <div class="contact-platform">// TryHackMe</div>
+      <div class="contact-handle" style="margin-bottom:0.8rem;">TryHackMe Profile</div>
+      <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=2575342" style="border:none; max-width:100%;"></iframe>
+    </div>
+    <a class="contact-card" href="/cdn-cgi/l/email-protection#492d283f202d242025263f7b092e24282025672a2624">
+      <div class="contact-platform">// Email</div>
+      <div class="contact-handle"><span class="__cf_email__" data-cfemail="6b0f0a1d020f060207041d592b0c060a020745080406">[email&#160;protected]</span></div>
+      <div class="contact-note">For inquiries</div>
+    </a>
+  </div>
+</section>
+
+</div><!-- ══ /PORTFOLIO VIEW ══ -->
+
+<!-- ══ TRANSLATOR VIEW (route: /translator) ══ -->
+<div id="view-translator" class="view" hidden>
+<section id="translator">
+  <div class="tr-page-head">
+    <a class="tr-back" href="/" data-route="/">← Portfolio</a>
+  </div>
+  <div class="section-header">
+    <span class="section-label">// TOOL</span>
     <h2 class="section-title">English → Buxori</h2>
     <div class="section-line"></div>
   </div>
@@ -1449,40 +1557,7 @@
     </p>
   </div>
 </section>
-
-<hr class="divider">
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section-header">
-    <span class="section-label">// 06</span>
-    <h2 class="section-title">Establish Comms</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="contact-grid">
-    <a class="contact-card" href="https://github.com/dcodes1" target="_blank">
-      <div class="contact-platform">// GitHub</div>
-      <div class="contact-handle">github.com/dcodes1</div>
-      <div class="contact-note">Source code &amp; projects</div>
-    </a>
-    <a class="contact-card" href="https://www.linkedin.com/in/davidgmilov/" target="_blank">
-      <div class="contact-platform">// LinkedIn</div>
-      <div class="contact-handle">davidgmilov</div>
-      <div class="contact-note">Professional network</div>
-    </a>
-    <div class="contact-card">
-      <div class="contact-platform">// TryHackMe</div>
-      <div class="contact-handle" style="margin-bottom:0.8rem;">TryHackMe Profile</div>
-      <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=2575342" style="border:none; max-width:100%;"></iframe>
-    </div>
-    <a class="contact-card" href="/cdn-cgi/l/email-protection#492d283f202d242025263f7b092e24282025672a2624">
-      <div class="contact-platform">// Email</div>
-      <div class="contact-handle"><span class="__cf_email__" data-cfemail="6b0f0a1d020f060207041d592b0c060a020745080406">[email&#160;protected]</span></div>
-      <div class="contact-note">For inquiries</div>
-    </a>
-  </div>
-</section>
+</div><!-- ══ /TRANSLATOR VIEW ══ -->
 
 <!-- FOOTER -->
 <footer>
@@ -1778,6 +1853,117 @@
         };
       });
   }
+})();
+</script>
+
+<!-- CLIENT-SIDE ROUTER (portfolio ⇄ /translator) -->
+<script>
+(function () {
+  "use strict";
+  var PORT = document.getElementById("view-portfolio");
+  var TRANS = document.getElementById("view-translator");
+  if (!PORT || !TRANS) return;
+
+  var TITLES = {
+    "/": document.title,
+    "/translator": "Buxori Translator // DAVID",
+  };
+
+  function norm(path) {
+    if (!path) return "/";
+    path = path.replace(/\/+$/, "");          // strip trailing slash
+    return path === "/translator" ? "/translator" : "/";
+  }
+
+  function setActive(route) {
+    var links = document.querySelectorAll('[data-route="/translator"]');
+    for (var i = 0; i < links.length; i++) {
+      links[i].classList.toggle("active", route === "/translator");
+    }
+  }
+
+  // Show a view. scrollToId: optional portfolio anchor to scroll to.
+  function show(route, scrollToId) {
+    route = norm(route);
+    var toTranslator = route === "/translator";
+    TRANS.hidden = !toTranslator;
+    PORT.hidden = toTranslator;
+    // Re-trigger the fade each time the active view changes.
+    var active = toTranslator ? TRANS : PORT;
+    active.style.animation = "none";
+    // force reflow so the animation restarts
+    void active.offsetWidth;
+    active.style.animation = "";
+    setActive(route);
+    document.title = TITLES[route] || TITLES["/"];
+
+    if (scrollToId) {
+      var el = document.getElementById(scrollToId);
+      if (el) { el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    }
+    window.scrollTo(0, 0);
+    if (toTranslator) {
+      var inp = document.getElementById("trInput");
+      if (inp) { try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); } }
+    }
+  }
+
+  function navigate(route, scrollToId) {
+    route = norm(route);
+    if (norm(location.pathname) !== route) {
+      history.pushState({ route: route }, "", route);
+    }
+    show(route, scrollToId);
+  }
+
+  // Intercept explicit route links (logo, translator tab, back button).
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("a[data-route]") : null;
+    if (!a) return;
+    // allow new-tab / modified clicks to behave normally
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    navigate(a.getAttribute("data-route"));
+  });
+
+  // In-page anchor links (#projects …): if we're on the translator view,
+  // switch back to the portfolio first, then scroll to the target.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest('.nav-links a[href^="#"]') : null;
+    if (!a) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    var id = a.getAttribute("href").slice(1);
+    e.preventDefault();
+    if (norm(location.pathname) === "/translator") {
+      history.pushState({ route: "/" }, "", "/#" + id);
+      show("/", id);
+    } else {
+      // already on portfolio: just smooth-scroll, keep hash in URL
+      history.replaceState(history.state, "", "#" + id);
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+
+  window.addEventListener("popstate", function () {
+    show(location.pathname);
+  });
+
+  // Direct-visit support: 404.html stores the intended path here, then lands
+  // on "/". Restore the real URL without adding a history entry.
+  try {
+    var redirect = sessionStorage.getItem("spa-redirect");
+    if (redirect) {
+      sessionStorage.removeItem("spa-redirect");
+      var target = norm(redirect);
+      if (target !== norm(location.pathname)) {
+        history.replaceState({ route: target }, "", target);
+      }
+    }
+  } catch (e) {}
+
+  // Initial route from the current URL.
+  show(location.pathname);
 })();
 </script>
 </body>
