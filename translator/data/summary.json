@@ -1,0 +1,40 @@
+{
+  "source_rows": 3519,
+  "entry_types": {
+    "vocab": 1766,
+    "example": 526,
+    "phrase": 512,
+    "exercise": 291,
+    "paradigm": 202,
+    "grammar": 106,
+    "reading": 77,
+    "proverb": 39
+  },
+  "rows_missing_bukhori": {
+    "exercise": 171,
+    "grammar": 106,
+    "reading": 11
+  },
+  "clean_pairs": 2835,
+  "unique_english_keys": 2537,
+  "english_keys_with_multiple_bukhori": 208,
+  "single_word_lexicon": 900,
+  "multiword_phrases": 1582,
+  "retrieval_examples": 974,
+  "english_token_count_histogram": {
+    "1": 1037,
+    "2": 721,
+    "3": 340,
+    "4": 248,
+    "5": 140,
+    "6": 126,
+    "7": 223
+  },
+  "review_flagged_pairs": 7,
+  "split_sizes": {
+    "train": 2249,
+    "val": 291,
+    "test": 295
+  },
+  "notes": "Bukhori is Latin-transliterated Bukharian (Judeo-Tajik); script, spelling and diacritics are preserved exactly from the source. grammar/paradigm/exercise rows are intentionally excluded from the lookup index (headers, conjugation fragments, answerless prompts)."
+}

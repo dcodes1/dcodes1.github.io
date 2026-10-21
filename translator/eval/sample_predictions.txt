@@ -1,0 +1,162 @@
+Manual inspection sample -- held-out test set
+================================================
+
+EN:   Clean the chicken according to Kashrut.
+GOLD: Murgha dahiyoi kuned
+PRED: (abstained)  [none]
+
+EN:   You were going
+GOLD: Tu rafsoda budi
+PRED: (abstained)  [none 0.64]
+
+EN:   to lie (down)
+GOLD: Daroz kashidan
+PRED: Ba Sheqer  [compositional 0.6]
+
+EN:   to subtract
+GOLD: Kam kardan
+PRED: (abstained)  [none]
+
+EN:   gum
+GOLD: Kom
+PRED: (abstained)  [none]
+
+EN:   My milk got sour.
+GOLD: Shiram buride
+PRED: -i man Shir … Turush  [compositional 0.38]
+
+EN:   red apple
+GOLD: sevi surx
+PRED: (abstained)  [none]
+
+EN:   husband's brother
+GOLD: Dodarshü
+PRED: (abstained)  [none]
+
+EN:   Their friendship is as thick as thieves (an informal relationship).
+GOLD: Ino pashaxürda
+PRED: (abstained)  [none]
+
+EN:   to croak
+GOLD: Qar-qar zadan
+PRED: (abstained)  [none]
+
+EN:   to cook
+GOLD: Puxtan
+PRED: Ba Oshpaz  [compositional 0.6]
+
+EN:   time; watch; clock
+GOLD: So'at
+PRED: (abstained)  [none]
+
+EN:   Thanks, be well.
+GOLD: Rahmat, salomat boshet!
+PRED: (abstained)  [none]
+
+EN:   zero
+GOLD: nol
+PRED: (abstained)  [none]
+
+EN:   cheeky
+GOLD: 'Ayghoq
+PRED: (abstained)  [none]
+
+EN:   You (sing.) don't go
+GOLD: tu nameri
+PRED: Tu narov  [compositional 0.6]
+
+EN:   father-in-law (husband's father); uncle (father's brother)
+GOLD: 'Amak
+PRED: (abstained)  [none]
+
+EN:   to miss (somebody)
+GOLD: Pazmon mondan
+PRED: (abstained)  [none]
+
+EN:   you must have gone (pol.)
+GOLD: Boyad rafta boshed
+PRED: (abstained)  [none 0.67]
+
+EN:   incendiary; provocateur
+GOLD: Ighvogar
+PRED: (abstained)  [none]
+
+EN:   books
+GOLD: kitovho
+PRED: (abstained)  [none 0.64]
+
+EN:   I have
+GOLD: Man doram
+PRED: (abstained)  [none]
+
+EN:   kiddush and blessing over bread
+GOLD: qudushoyu nüt
+PRED: … Va Baroxo … Non  [compositional 0.3]
+
+EN:   They don't know
+GOLD: Inho namedonand
+PRED: (abstained)  [none]
+
+EN:   I used to go
+GOLD: Man meraftam
+PRED: Man … Raftan  [compositional 0.38]
+
+EN:   wisdom
+GOLD: Hohmo
+PRED: (abstained)  [none]
+
+EN:   You have gone/been
+GOLD: Tu raftayi
+PRED: (abstained)  [none 0.74]
+
+EN:   their grandmother
+GOLD: Biviyashon
+PRED: -i inho Bivi  [compositional 0.6]
+
+EN:   to wash hands (before the prayer)
+GOLD: Natilo kardan
+PRED: Shushtan …  [compositional 0.33]
+
+EN:   his/her grandmother
+GOLD: bivesh
+PRED: -i ü Bivi  [compositional 0.6]
+
+EN:   He/she is very arrogant.
+GOLD: Qushbegi qati shüla namexura
+PRED: (abstained)  [none]
+
+EN:   The house is going to be built.
+GOLD: Xona soxta meshü
+PRED: (abstained)  [none]
+
+EN:   My mother bought a golden chain.
+GOLD: Modaram zanjiri tilo xarid.
+PRED: (abstained)  [none]
+
+EN:   How are you? (polite)
+GOLD: Chitüyed?
+PRED: Chixel? … Tu  [compositional 0.33]
+
+EN:   the biggest
+GOLD: kalontarin
+PRED: (abstained)  [none]
+
+EN:   expensive
+GOLD: Qimat
+PRED: (abstained)  [none 0.67]
+
+EN:   brown
+GOLD: Jigarrang
+PRED: (abstained)  [none]
+
+EN:   Yesterday we cooked and ate pilaf.
+GOLD: Dina mo oshi palov puxta xürdem
+PRED: Dina Mo … Va … Palov  [compositional 0.33]
+
+EN:   nickname
+GOLD: Laqam
+PRED: (abstained)  [none]
+
+EN:   there
+GOLD: Unsun
+PRED: (abstained)  [none 0.64]

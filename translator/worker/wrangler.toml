@@ -1,0 +1,22 @@
+# Cloudflare Worker config for the optional Layer-3 RAG translator.
+# Deploy only if you want AI-assisted fallback for out-of-dataset phrases.
+#
+#   cd translator/worker
+#   npm i -g wrangler
+#   wrangler secret put ANTHROPIC_API_KEY     # paste your key when prompted
+#   wrangler deploy
+#
+# Then set RAG_ENDPOINT in index.html to the printed *.workers.dev URL
+# (or your custom route).
+
+name = "buxori-rag"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+[vars]
+# Restrict to your own origin in production, e.g. "https://davidmilov.com".
+ALLOW_ORIGIN = "*"
+MODEL = "claude-opus-4-8"
+
+# ANTHROPIC_API_KEY is NOT set here. Store it as an encrypted secret:
+#   wrangler secret put ANTHROPIC_API_KEY

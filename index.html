@@ -941,6 +941,173 @@
     border-top: 1px solid var(--border);
     margin: 0 2.5rem;
   }
+
+  /* ─── TRANSLATOR (English → Buxori) ─── */
+  .tr-wrap { margin-top: 0.5rem; }
+
+  .tr-panes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+  }
+
+  .tr-pane {
+    background: var(--bg2);
+    display: flex;
+    flex-direction: column;
+    min-height: 240px;
+  }
+
+  .tr-pane-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .tr-pane-head .tr-sub {
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    font-size: 0.6rem;
+  }
+
+  .tr-input, .tr-output {
+    flex: 1;
+    padding: 1.2rem;
+    font-family: var(--mono);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-hi);
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    width: 100%;
+  }
+
+  .tr-input::placeholder { color: var(--text-dim); }
+
+  .tr-output {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .tr-output.tr-empty { color: var(--text-dim); }
+  .tr-output .tr-gap { color: var(--amber); }
+
+  .tr-pane-foot {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 1.2rem;
+    border-top: 1px solid var(--border);
+    min-height: 44px;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+  }
+
+  .tr-count { margin-left: auto; letter-spacing: 0.1em; }
+
+  .tr-iconbtn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.7rem;
+    cursor: crosshair;
+    transition: all 0.2s;
+  }
+  .tr-iconbtn:hover { border-color: var(--text-dim); color: var(--text); }
+  .tr-iconbtn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .tr-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .tr-controls .btn { cursor: crosshair; }
+
+  .tr-spinner {
+    width: 13px;
+    height: 13px;
+    border: 2px solid var(--green-dim);
+    border-top-color: var(--green-hi);
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    animation: tr-spin 0.7s linear infinite;
+  }
+  @keyframes tr-spin { to { transform: rotate(360deg); } }
+
+  .tr-status {
+    margin-left: auto;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    text-align: right;
+  }
+
+  .tr-badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-right: 0.5rem;
+  }
+  .tr-badge.exact  { border-color: var(--green);   color: var(--green-hi); }
+  .tr-badge.fuzzy  { border-color: var(--amber);   color: var(--amber); }
+  .tr-badge.compositional { border-color: var(--amber); color: var(--amber); }
+  .tr-badge.none   { border-color: var(--red);     color: var(--red-hi); }
+
+  .tr-note {
+    margin-top: 1rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--green-dim);
+    background: var(--bg2);
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+  .tr-note strong { color: var(--text); }
+  .tr-note.warn { border-left-color: var(--amber); }
+  .tr-note.miss { border-left-color: var(--red); }
+  .tr-note ul { margin: 0.4rem 0 0 1.1rem; }
+  .tr-note code {
+    color: var(--green-hi);
+    background: rgba(92,186,106,0.08);
+    padding: 0 0.3rem;
+  }
+
+  .tr-disclaimer {
+    margin-top: 1.2rem;
+    font-size: 0.66rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 800px) {
+    .tr-panes { grid-template-columns: 1fr; }
+    .tr-pane { min-height: 170px; }
+    .tr-status { margin-left: 0; width: 100%; text-align: left; }
+  }
 </style>
 </head>
 <body>
@@ -953,6 +1120,7 @@
     <li><a href="#skills">Skills</a></li>
     <li><a href="posts/index.html">Posts</a></li>
     <li><a href="#about">Intel</a></li>
+    <li><a href="#translator">Translator</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-status">
@@ -1226,10 +1394,68 @@
 
 <hr class="divider">
 
+<!-- TRANSLATOR -->
+<section id="translator">
+  <div class="section-header">
+    <span class="section-label">// 05</span>
+    <h2 class="section-title">English → Buxori</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="tr-wrap">
+    <div class="tr-panes">
+      <!-- INPUT -->
+      <div class="tr-pane">
+        <div class="tr-pane-head">
+          <span>English</span>
+          <span class="tr-sub">source</span>
+        </div>
+        <textarea id="trInput" class="tr-input" rows="6" maxlength="2000"
+          placeholder="Type English text to translate into Buxori…"
+          spellcheck="false" autocomplete="off"></textarea>
+        <div class="tr-pane-foot">
+          <button id="trClear" class="tr-iconbtn" type="button">Clear</button>
+          <span class="tr-count"><span id="trCount">0</span>/2000</span>
+        </div>
+      </div>
+
+      <!-- OUTPUT -->
+      <div class="tr-pane">
+        <div class="tr-pane-head">
+          <span>Buxori</span>
+          <span class="tr-sub">Bukharian · Judeo-Tajik</span>
+        </div>
+        <div id="trOutput" class="tr-output tr-empty">Translation will appear here.</div>
+        <div class="tr-pane-foot">
+          <button id="trCopy" class="tr-iconbtn" type="button" disabled>Copy</button>
+          <span id="trConf" class="tr-count"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tr-controls">
+      <button id="trGo" class="btn btn-primary" type="button">[ Translate ]</button>
+      <span id="trStatus" class="tr-status">Loading dataset…</span>
+    </div>
+
+    <div id="trNote"></div>
+
+    <p class="tr-disclaimer">
+      Translations are drawn directly from a curated Bukharian (Judeo-Tajik)
+      dataset — exact matches are verified source entries. Fuzzy and
+      word-by-word results are clearly flagged and may be imperfect. When a
+      phrase is outside the dataset, the tool says so rather than guessing.
+      Bukhori here uses the Latin transliteration of the source material.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-header">
-    <span class="section-label">// 05</span>
+    <span class="section-label">// 06</span>
     <h2 class="section-title">Establish Comms</h2>
     <div class="section-line"></div>
   </div>
@@ -1326,4 +1552,233 @@
       current = Math.max(0, Math.min(index, maxIndex));
       const cardWidth = cards[0].offsetWidth + 1.5;
       track.style.transform = 'translateX(-' + (current * cardWidth) + 'px)';
-      dotsContainer.querySelectorAll('.carousel-dot').forEach((d
+      dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    window.slideCarousel = function (dir) { goTo(current + dir); };
+    goTo(0);
+  }
+</script>
+
+<!-- TRANSLATOR ENGINE (English → Buxori) -->
+<script src="/translator/engine.js"></script>
+<script>
+(function () {
+  "use strict";
+  // Optional retrieval-augmented backend (keeps any API key server-side).
+  // Empty string = disabled; the tool works fully offline without it.
+  // Set to your deployed worker URL to enable Layer 3 (see translator/worker/).
+  var RAG_ENDPOINT = "";
+
+  var INDEX_URL = "/translator/data/index.json";
+
+  var $in   = document.getElementById("trInput");
+  var $out  = document.getElementById("trOutput");
+  var $go   = document.getElementById("trGo");
+  var $copy = document.getElementById("trCopy");
+  var $clear= document.getElementById("trClear");
+  var $count= document.getElementById("trCount");
+  var $conf = document.getElementById("trConf");
+  var $status = document.getElementById("trStatus");
+  var $note = document.getElementById("trNote");
+
+  if (!$in || !$go) return;  // section not present
+
+  var engine = null;
+  var busy = false;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // Load the precomputed dataset index once.
+  fetch(INDEX_URL)
+    .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(function (data) {
+      engine = new window.BuxoriEngine(data);
+      var c = engine.count();
+      $status.textContent = "Ready · " + c.exact + " verified entries loaded";
+    })
+    .catch(function (err) {
+      $status.textContent = "Dataset failed to load (" + err.message + ")";
+      $go.disabled = true;
+    });
+
+  function setCount() { $count.textContent = $in.value.length; }
+  $in.addEventListener("input", setCount);
+  setCount();
+
+  $in.addEventListener("keydown", function (e) {
+    // Ctrl/Cmd+Enter translates.
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); run(); }
+  });
+
+  $clear.addEventListener("click", function () {
+    $in.value = ""; setCount();
+    $out.textContent = "Translation will appear here.";
+    $out.classList.add("tr-empty");
+    $conf.textContent = ""; $note.innerHTML = "";
+    $copy.disabled = true; $in.focus();
+  });
+
+  $copy.addEventListener("click", function () {
+    var text = $out.classList.contains("tr-empty") ? "" : $out.textContent;
+    if (!text) return;
+    var done = function () {
+      var old = $copy.textContent; $copy.textContent = "Copied";
+      setTimeout(function () { $copy.textContent = old; }, 1200);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fallbackCopy);
+    } else fallbackCopy();
+    function fallbackCopy() {
+      var ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); done(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  });
+
+  $go.addEventListener("click", run);
+
+  var BADGE = {
+    exact: "verified", fuzzy: "closest match",
+    compositional: "word-by-word", none: "no match",
+  };
+
+  function render(res) {
+    $note.innerHTML = "";
+    $conf.textContent = "";
+
+    if (res.status === "none" || !res.bux) {
+      $out.classList.add("tr-empty");
+      $out.textContent = "— no verified translation —";
+      $copy.disabled = true;
+      var d = res.detail || {};
+      var html = '<div class="tr-note miss"><span class="tr-badge none">no match</span>'
+               + esc(d.reason || "This phrase is not in the dataset.") + "</div>";
+      if (d.suggestion) {
+        html += '<div class="tr-note">Did you mean <strong>' + esc(d.suggestion.english)
+             + '</strong> → <code>' + esc(d.suggestion.bux) + "</code>?</div>";
+      }
+      if (d.retrieved && d.retrieved.length && d.retrieved[0].score > 0.05) {
+        html += '<div class="tr-note">Closest dataset examples:<ul>'
+             + d.retrieved.slice(0, 4).map(function (x) {
+                 return "<li>" + esc(x.en) + " → <code>" + esc(x.bux) + "</code></li>";
+               }).join("") + "</ul></div>";
+      }
+      $note.innerHTML = html;
+      return;
+    }
+
+    $out.classList.remove("tr-empty");
+    if (res.status === "compositional") {
+      // Highlight gap markers.
+      $out.innerHTML = esc(res.bux).replace(/…/g, '<span class="tr-gap">…</span>');
+    } else {
+      $out.textContent = res.bux;
+    }
+    $copy.disabled = false;
+
+    var badge = BADGE[res.status] || res.status;
+    var cls = res.status;
+    $conf.innerHTML = '<span class="tr-badge ' + cls + '">' + badge + "</span>"
+                    + (res.confidence ? "conf " + res.confidence : "");
+
+    var det = res.detail || {};
+    if (res.status === "exact") {
+      var extra = [];
+      if (det.spoken) extra.push("spoken: <code>" + esc(det.spoken) + "</code>");
+      if (det.alt)    extra.push("alt: <code>" + esc(det.alt) + "</code>");
+      var parts = "";
+      if (extra.length) parts += extra.join(" &nbsp; ");
+      if (det.variants && det.variants.length) {
+        parts += '<div style="margin-top:0.4rem;">Other attested forms: '
+              + det.variants.map(function (v) { return "<code>" + esc(v.bux) + "</code>"; }).join(" · ")
+              + "</div>";
+      }
+      if (det.review) {
+        $note.innerHTML = '<div class="tr-note warn"><span class="tr-badge fuzzy">review</span>'
+          + "Source marks this entry as uncertain" + (det.notes ? ": " + esc(det.notes) : "") + ".</div>";
+      } else if (parts) {
+        $note.innerHTML = '<div class="tr-note">' + parts + "</div>";
+      }
+    } else if (res.status === "fuzzy") {
+      $note.innerHTML = '<div class="tr-note warn"><span class="tr-badge fuzzy">closest match</span>'
+        + "Not an exact entry — matched to <strong>" + esc(det.matchedEnglish)
+        + "</strong> in the dataset. Verify before relying on it.</div>";
+    } else if (res.status === "compositional") {
+      var warn = '<div class="tr-note warn"><span class="tr-badge compositional">word-by-word</span>'
+        + esc(det.warning || "Assembled from individual dataset entries.");
+      if (det.unknown && det.unknown.length) {
+        warn += " Untranslated (not in dataset): "
+             + det.unknown.map(function (w) { return "<code>" + esc(w) + "</code>"; }).join(" ");
+      }
+      warn += "</div>";
+      $note.innerHTML = warn;
+    }
+  }
+
+  function run() {
+    if (!engine || busy) return;
+    var text = $in.value.trim();
+    if (!text) { $in.focus(); return; }
+
+    busy = true;
+    var label = $go.textContent;
+    $go.disabled = true;
+    $go.innerHTML = '<span class="tr-spinner"></span>Translating';
+    $status.textContent = "Translating…";
+
+    // Yield a frame so the spinner paints before the (sync) engine runs.
+    requestAnimationFrame(function () {
+      setTimeout(function () {
+        var res;
+        try { res = engine.translate(text); }
+        catch (e) { res = { status: "none", bux: null, detail: { reason: "Engine error: " + e.message } }; }
+
+        var finish = function (r) {
+          render(r);
+          busy = false; $go.disabled = false; $go.textContent = label;
+          $status.textContent = "Ready";
+        };
+
+        // Layer 3: only when out of coverage AND a backend is configured.
+        if (res.status === "none" && RAG_ENDPOINT) {
+          ragTranslate(text, res).then(finish).catch(function () { finish(res); });
+        } else {
+          finish(res);
+        }
+      }, 0);
+    });
+  }
+
+  // Optional retrieval-augmented call. Sends the input + dataset examples to a
+  // server that holds the API key; the browser never sees a key. Result is
+  // clearly flagged as AI-assisted, not a verified dataset entry.
+  function ragTranslate(text, fallback) {
+    var examples = engine.retrieve(text, 8);
+    return fetch(RAG_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: text, examples: examples }),
+    })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (data) {
+        if (!data || !data.bux) return fallback;
+        return {
+          status: "fuzzy", bux: data.bux,
+          confidence: data.confidence || 0.5,
+          source: "rag",
+          detail: { matchedEnglish: text, type: "ai-assisted", review: true },
+        };
+      });
+  }
+})();
+</script>
+</body>
+</html>
