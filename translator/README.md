@@ -96,8 +96,29 @@ It is **not** a neural network and makes no attempt to be one — it is classic
 rule-based MT. Output is always labelled a "grammar draft": usually close and
 genuinely useful, but unverified. It explains each result step by step (subject,
 verb conjugation, preposition mapping, word order), so it doubles as a learning
-aid. Questions, multi-clause sentences, and non-pronoun subjects fall through to
-the word-by-word layer.
+aid.
+
+It also handles:
+
+* **Questions** — *"Where are you from?"* → *"Shumo az kujo?"* (wh-words, copula
+  drop, pro-drop subject).
+* **Formal / informal** — when the 2nd person is involved it returns both
+  registers: *"You eat bread"* → informal *"Tu non mexuri"* / formal *"Shumo non
+  mexured"*.
+* **No English leakage** — any word it cannot source from the dataset is
+  **omitted** from the Buxori output and reported separately as "not in dataset",
+  so the output box only ever contains Buxori.
+
+### Statistical lexicon (IBM Model 1, trained on your data)
+
+`preprocess.py` also trains an **IBM Model 1 word-alignment model** (the EM
+algorithm) on the parallel pairs — genuine unsupervised machine learning, pure
+stdlib, a few seconds. It learns a probabilistic English→Buxori dictionary
+(~360 entries) that covers content words appearing only *inside* phrases (never
+as a standalone vocab row), e.g. `friend → hoveri`, `child → bacha`, `big →
+kalon`. Inference is a dictionary lookup in the browser (a few KB), used as a
+fallback after the explicit vocab so fewer words are left untranslated. English
+function words are excluded so copulas/articles are never mistranslated.
 
 Why not an in-browser neural model (Transformers.js / WebLLM)? Evaluated and
 rejected: no small model supports Buxori (they emit Tajik/Persian), the weights

@@ -85,6 +85,32 @@ check("all " + checked + " exact keys resolve to a real dataset value",
         r.detail && Array.isArray(r.detail.steps) && r.detail.steps.length > 0, r.detail);
 })();
 
+// --- questions: no English leaks, copula dropped --------------------------
+(function () {
+  const r = eng.translate("Where are you from?");
+  check("question: formal/informal variants", r.status === "grammar" && Array.isArray(r.variants) && r.variants.length === 2, r);
+  const all = (r.variants || []).map(v => v.bux).join(" ");
+  check("question: no English 'are' leaks", !/\bare\b/i.test(all) && !/\byou\b/i.test(all), all);
+  check("question: informal Tu / formal Shumo",
+        /tu/i.test(r.variants[0].bux) && /shumo/i.test(r.variants[1].bux), r.variants);
+})();
+
+// --- only Buxori in the output (untranslatable words omitted) -------------
+(function () {
+  const r = eng.translate("water and zzxqq");     // no subject -> compositional
+  check("compositional: untranslatable word omitted from output",
+        r.bux.indexOf("zzxqq") === -1, r);
+  check("compositional: reports it as not-in-dataset",
+        (r.detail.unknown || []).indexOf("zzxqq") !== -1, r.detail);
+})();
+
+// --- formal/informal for 2nd-person statement -----------------------------
+(function () {
+  const r = eng.translate("You eat bread");
+  check("formal/informal: Tu non mexuri / Shumo non mexured",
+        r.variants && r.variants[0].bux === "Tu non mexuri" && r.variants[1].bux === "Shumo non mexured", r.variants);
+})();
+
 // --- out of coverage: never fabricate -------------------------------------
 (function () {
   const r = eng.translate("quantum chromodynamics supercollider");

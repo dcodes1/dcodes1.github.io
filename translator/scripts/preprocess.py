@@ -322,6 +322,87 @@ def build_splits(pairs: list[dict], seed: int = 1337) -> dict:
 
 
 # --------------------------------------------------------------------------- #
+# Statistical lexicon: IBM Model 1 word alignment (the EM algorithm)
+# --------------------------------------------------------------------------- #
+# Trains an unsupervised word-translation model on the parallel pairs to learn
+# an English->Bukhori probabilistic dictionary. This covers content words that
+# only ever appear *inside* phrases (never as a standalone vocab row), so the
+# browser engine can translate them instead of leaving English in the output.
+# Pure stdlib, a few seconds, deterministic. Shipped as a compact JSON map.
+
+def _bux_tokens(s: str) -> list[str]:
+    s = unicodedata.normalize("NFC", s or "").lower()
+    return [t for t in re.split(r"[^a-z0-9üöáéíćġ']+", s) if t]
+
+
+def train_ibm1(pairs: list[dict], iterations: int = 20) -> dict:
+    """IBM Model 1 EM. Returns {english_word: {"bux": best, "p": prob, "n": support}}
+    for confident, well-supported entries only."""
+    # Build tokenised bitext.
+    bitext = []
+    cooc = defaultdict(lambda: defaultdict(int))     # eng -> bux -> co-occurrence
+    vocab_bux = set()
+    for p in pairs:
+        e_toks = [t for t in tokenize(p["en_key"]) if t]
+        b_toks = _bux_tokens(p["bux"])
+        if not e_toks or not b_toks:
+            continue
+        bitext.append((e_toks, b_toks))
+        for e in set(e_toks):
+            for b in set(b_toks):
+                cooc[e][b] += 1
+        vocab_bux.update(b_toks)
+
+    NULL = "∅"
+    # t[b][e] initialised uniformly.
+    t = defaultdict(lambda: defaultdict(float))
+    for e_toks, b_toks in bitext:
+        src = e_toks + [NULL]
+        for b in b_toks:
+            for e in src:
+                t[b][e] = 1.0 / len(vocab_bux) if vocab_bux else 0.0
+
+    for _ in range(iterations):
+        count = defaultdict(lambda: defaultdict(float))
+        total = defaultdict(float)
+        for e_toks, b_toks in bitext:
+            src = e_toks + [NULL]
+            for b in b_toks:
+                z = sum(t[b][e] for e in src) or 1e-12
+                for e in src:
+                    c = t[b][e] / z
+                    count[b][e] += c
+                    total[e] += c
+        for b in count:
+            for e in count[b]:
+                if total[e]:
+                    t[b][e] = count[b][e] / total[e]
+
+    # English function words must never get a content translation (they are
+    # dropped or handled structurally by the grammar engine).
+    STOP = {"is", "are", "am", "be", "been", "being", "was", "were", "the",
+            "a", "an", "of", "do", "does", "did", "will", "would", "shall",
+            "it", "this", "that", "these", "those"}
+
+    # For each English word, pick the best Bukhori translation with support.
+    learned = {}
+    eng_vocab = set()
+    for e_toks, _ in bitext:
+        eng_vocab.update(e_toks)
+    for e in eng_vocab:
+        if e in STOP:
+            continue
+        best_b, best_p = None, 0.0
+        for b in cooc[e]:
+            p = t[b][e]
+            if p > best_p:
+                best_p, best_b = p, b
+        if best_b and best_p >= 0.45 and cooc[e][best_b] >= 2:
+            learned[e] = {"bux": best_b, "p": round(best_p, 3), "n": cooc[e][best_b]}
+    return learned
+
+
+# --------------------------------------------------------------------------- #
 # Grammar model (for the offline grammar-aware translator)
 # --------------------------------------------------------------------------- #
 # A compact, dataset-derived model that lets the browser engine conjugate verbs
@@ -497,6 +578,7 @@ def main():
     pairs = build_pairs(rows)
     index = build_index(pairs)
     grammar = build_grammar(rows, index)
+    learned = train_ibm1(pairs)
     splits = build_splits(pairs)
     summary = build_summary(rows, pairs, index, splits)
 
@@ -517,6 +599,7 @@ def main():
         # grammar is rule knowledge (verb stems, endings), not held-out pairs,
         # so including it here does not leak test examples into evaluation.
         "grammar": grammar,
+        "learned": {e: v["bux"] for e, v in train_ibm1(trainval_pairs).items()},
     }
     with open(os.path.join(args.out, "index_train.json"), "w", encoding="utf-8") as f:
         json.dump(eval_payload, f, ensure_ascii=False, separators=(",", ":"))
@@ -543,6 +626,7 @@ def main():
         "phrases": index["phrases"],
         "retrieval": index["retrieval"],
         "grammar": grammar,
+        "learned": {e: v["bux"] for e, v in learned.items()},
     }
 
     with open(os.path.join(args.out, "index.json"), "w", encoding="utf-8") as f:

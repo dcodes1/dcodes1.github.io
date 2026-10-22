@@ -3,11 +3,11 @@ Manual inspection sample -- held-out test set
 
 EN:   Clean the chicken according to Kashrut.
 GOLD: Murgha dahiyoi kuned
-PRED: Toza the Chuja according Ba kashrut  [compositional 0.25]
+PRED: Toza Chuja Ba  [compositional 0.25]
 
 EN:   You were going
 GOLD: Tu rafsoda budi
-PRED: Shumo going buded  [grammar 0.45]
+PRED: Tu rafti  [grammar 0.6]
 
 EN:   to lie (down)
 GOLD: Daroz kashidan
@@ -15,7 +15,7 @@ PRED: Ba Sheqer  [compositional 0.6]
 
 EN:   to subtract
 GOLD: Kam kardan
-PRED: Ba subtract  [compositional 0.25]
+PRED: Ba  [compositional 0.25]
 
 EN:   gum
 GOLD: Kom
@@ -23,23 +23,23 @@ PRED: (abstained)  [none]
 
 EN:   My milk got sour.
 GOLD: Shiram buride
-PRED: -i man Shir got Turush  [compositional 0.38]
+PRED: -i man Shir Turush  [compositional 0.38]
 
 EN:   red apple
 GOLD: sevi surx
-PRED: Surx apple  [compositional 0.25]
+PRED: Surx sev  [compositional 0.6]
 
 EN:   husband's brother
 GOLD: Dodarshü
-PRED: husband's Barodar  [compositional 0.25]
+PRED: Barodar  [compositional 0.25]
 
 EN:   Their friendship is as thick as thieves (an informal relationship).
 GOLD: Ino pashaxürda
-PRED: (abstained)  [none]
+PRED: -i inho düsti Borin Borin  [compositional 0.29]
 
 EN:   to croak
 GOLD: Qar-qar zadan
-PRED: Ba croak  [compositional 0.25]
+PRED: Ba  [compositional 0.25]
 
 EN:   to cook
 GOLD: Puxtan
@@ -63,19 +63,19 @@ PRED: (abstained)  [none]
 
 EN:   You (sing.) don't go
 GOLD: tu nameri
-PRED: Shumo nameraved  [grammar 0.6]
+PRED: Tu nameravi  [grammar 0.6]
 
 EN:   father-in-law (husband's father); uncle (father's brother)
 GOLD: 'Amak
-PRED: Padar in Din uncle  [compositional 0.25]
+PRED: Padar ba Din  [compositional 0.38]
 
 EN:   to miss (somebody)
 GOLD: Pazmon mondan
-PRED: Ba miss  [compositional 0.25]
+PRED: Ba  [compositional 0.25]
 
 EN:   you must have gone (pol.)
 GOLD: Boyad rafta boshed
-PRED: Shumo boyad rafta dored  [grammar 0.6]
+PRED: Tu boyad rafta dori  [grammar 0.6]
 
 EN:   incendiary; provocateur
 GOLD: Ighvogar
@@ -91,7 +91,7 @@ PRED: Man doram  [grammar 0.6]
 
 EN:   kiddush and blessing over bread
 GOLD: qudushoyu nüt
-PRED: kiddush Va Baroxo over Non  [compositional 0.3]
+PRED: Va Baroxo Non  [compositional 0.3]
 
 EN:   They don't know
 GOLD: Inho namedonand
@@ -99,7 +99,7 @@ PRED: Inho namedonand  [grammar 0.6]
 
 EN:   I used to go
 GOLD: Man meraftam
-PRED: Man used ba meravam  [grammar 0.45]
+PRED: Man ba meravam  [grammar 0.42]
 
 EN:   wisdom
 GOLD: Hohmo
@@ -107,7 +107,7 @@ PRED: (abstained)  [none]
 
 EN:   You have gone/been
 GOLD: Tu raftayi
-PRED: Shumo rafta been dored  [grammar 0.45]
+PRED: Tu rafta dori  [grammar 0.42]
 
 EN:   their grandmother
 GOLD: Biviyashon
@@ -115,7 +115,7 @@ PRED: -i inho Bivi  [compositional 0.6]
 
 EN:   to wash hands (before the prayer)
 GOLD: Natilo kardan
-PRED: Shushtan hands  [compositional 0.33]
+PRED: Shushtan  [compositional 0.33]
 
 EN:   his/her grandmother
 GOLD: bivesh
@@ -123,19 +123,19 @@ PRED: -i ü Bivi  [compositional 0.6]
 
 EN:   He/she is very arrogant.
 GOLD: Qushbegi qati shüla namexura
-PRED: Ü she very arrogant  [grammar 0.45]
+PRED: Ü ü  [grammar 0.42]
 
 EN:   The house is going to be built.
 GOLD: Xona soxta meshü
-PRED: (abstained)  [none]
+PRED: xoni rafta Soxta shudan  [compositional 0.46]
 
 EN:   My mother bought a golden chain.
 GOLD: Modaram zanjiri tilo xarid.
-PRED: oni man bought a golden Zanjir  [compositional 0.25]
+PRED: oni man Zanjir  [compositional 0.25]
 
 EN:   How are you? (polite)
 GOLD: Chitüyed?
-PRED: Chixel? are Tu  [compositional 0.33]
+PRED: Tu chixel  [grammar 0.6]
 
 EN:   the biggest
 GOLD: kalontarin
@@ -151,7 +151,7 @@ PRED: (abstained)  [none]
 
 EN:   Yesterday we cooked and ate pilaf.
 GOLD: Dina mo oshi palov puxta xürdem
-PRED: Dina Mo cooked Va ate Palov  [compositional 0.33]
+PRED: Dina Mo Va Palov  [compositional 0.33]
 
 EN:   nickname
 GOLD: Laqam

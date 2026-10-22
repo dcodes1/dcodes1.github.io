@@ -116,6 +116,7 @@
     this.phrases = (index && index.phrases) || [];
     this.retrievalEx = (index && index.retrieval) || [];
     this.grammar = (index && index.grammar) || null;
+    this.learned = (index && index.learned) || {};   // IBM-1 statistical lexicon
     this.cache = {};
 
     // Precompute lightweight per-key features for fuzzy matching.
@@ -218,18 +219,22 @@
         }
       }
     }
-    // Fill remaining single tokens from the word lexicon.
-    var unknown = [];
+    // Fill remaining single tokens: explicit vocab, then the learned lexicon.
+    // Articles and copulas are dropped (no Buxori surface form), not "unknown".
+    var G = this.grammar, unknown = [];
     for (var i = 0; i < toks.length; i++) {
       if (covered[i]) continue;
-      var w = this.words[toks[i]];
+      if (G && (G.articles.indexOf(toks[i]) !== -1 || G.copula.indexOf(toks[i]) !== -1)) {
+        covered[i] = true; continue;        // dropped function word, not unknown
+      }
+      var w = this._glossWord(toks[i]);
       if (w) { pieces[i] = { bux: w, span: 1, src: "word", en: toks[i] }; covered[i] = true; }
       else unknown.push(toks[i]);
     }
     if (pieces.every(function (x) { return x === null; })) return null;
 
     // Walk the tokens left to right building:
-    //   out        - the assembled line (untranslated words kept as-is, no gaps)
+    //   out        - Buxori only (untranslated words are OMITTED, never shown)
     //   breakdown  - per-segment [{en, bux|null}] for the explanation panel
     var out = [], breakdown = [], i2 = 0, knownTokens = 0;
     while (i2 < toks.length) {
@@ -239,9 +244,9 @@
         knownTokens += pieces[i2].span;
         i2 += pieces[i2].span;
       } else {
-        // Untranslated word: keep the English word inline (readable, no "…").
-        out.push(toks[i2]);
-        breakdown.push({ en: toks[i2], bux: null });
+        // Untranslated / dropped word: keep it out of the Buxori output; only
+        // record genuinely untranslated content words in the breakdown.
+        if (unknown.indexOf(toks[i2]) !== -1) breakdown.push({ en: toks[i2], bux: null });
         i2 += 1;
       }
     }
@@ -325,13 +330,22 @@
     return form;
   };
 
-  // Translate one complement word (object/place noun) from the dataset only.
+  // Translate one complement word from the dataset: explicit vocab first, then
+  // an exact single-word entry, then the learned (IBM-1) statistical lexicon.
+  // Returns null only when no source at all covers the word (never English).
   Engine.prototype._glossWord = function (w) {
     if (this.words[w]) return this.words[w];
     var e = this.exact[w];
-    if (e) return e.bux;
+    if (e && e.en && e.en.toLowerCase() === w) return e.bux;
+    if (this.learned[w]) return this.learned[w];
     return null;
   };
+
+  // wh-question words (single token).
+  var WH = { where: "kujo", what: "chi", who: "ki", whom: "ki", when: "kay",
+             which: "kadom", why: "charo" };
+  var QAUX = { do: 1, does: 1, did: 1, will: 1, would: 1, can: 1, could: 1,
+               is: 1, are: 1, am: 1, was: 1, were: 1, "'s": 1, "'re": 1, "'m": 1 };
 
   Engine.prototype.grammarTranslate = function (text) {
     var G = this.grammar;
@@ -339,115 +353,177 @@
     var toks = tokenize(text);
     if (toks.length < 2) return null;
 
-    var subj = G.subjects[toks[0]];
-    if (!subj) return null;                 // v1: needs a pronoun subject
-
-    // Proper nouns: words capitalised in the input (except the first) stay
-    // capitalised in the output; common nouns are lower-cased mid-sentence.
+    // Proper nouns: capitalised input words (not first) stay capitalised.
     var proper = {};
     var rawWords = String(text).trim().split(/\s+/);
-    for (var rw = 1; rw < rawWords.length; rw++) {
-      if (/^[A-Z]/.test(rawWords[rw])) proper[normEn(rawWords[rw])] = 1;
+    for (var rw = 0; rw < rawWords.length; rw++) {
+      if (rw > 0 && /^[A-Z]/.test(rawWords[rw])) proper[normEn(rawWords[rw])] = 1;
     }
 
-    var i = 1, neg = false, tense = "present";
-    while (i < toks.length) {
-      var t = toks[i];
-      if (NEG[t]) { neg = true; i++; continue; }
-      if (SKIP_AUX[t]) { if (t === "did") tense = "past"; i++; continue; }
-      break;
+    var isQuestion = /\?\s*$/.test(text) || !!WH[toks[0]] || !!QAUX[toks[0]];
+    var i = 0;
+
+    // Leading wh-word (where / what / how many / how much ...).
+    var wh = null;
+    if (WH[toks[0]]) { wh = { bux: WH[toks[0]], pre: false }; i = 1; }
+    else if (toks[0] === "how") {
+      if (toks[1] === "many") { wh = { bux: "chandta", pre: true }; i = 2; }
+      else if (toks[1] === "much") { wh = { bux: "chand", pre: true }; i = 2; }
+      else { wh = { bux: "chixel", pre: false }; i = 1; }   // "how ..." = chixel/chitü
     }
 
-    // locate the main verb
+    // Auxiliaries + negation can sit before the subject (questions: "do you
+    // eat?") or after it (declaratives: "I do not eat"), so consume them on
+    // both sides of the subject.
+    var state = { neg: false, tense: "present" };
+    var self0 = this;
+    function eatAux() {
+      while (i < toks.length) {
+        var t0 = toks[i];
+        if (NEG[t0]) { state.neg = true; i++; continue; }
+        if (QAUX[t0] || SKIP_AUX[t0]) {
+          if (t0 === "did" || t0 === "was" || t0 === "were") state.tense = "past";
+          i++; continue;
+        }
+        break;
+      }
+    }
+    eatAux();
+
+    // Subject pronoun (optional — Bukhori is pro-drop, esp. in questions).
+    var subjTok = null, subjInfo = null;
+    if (G.subjects[toks[i]]) { subjTok = toks[i]; subjInfo = G.subjects[toks[i]]; i++; }
+    eatAux();
+    var neg = state.neg, tense = state.tense;
+
+    // Main verb (skip copulas; they are dropped/handled structurally).
     var vIdx = -1, verb = null;
     for (var j = i; j < toks.length; j++) {
       if (G.copula.indexOf(toks[j]) !== -1) continue;
+      if (NEG[toks[j]]) { neg = true; continue; }
       var lemma = this._lemma(toks[j]);
       if (G.verbs[lemma]) { vIdx = j; verb = G.verbs[lemma]; if (PAST_SURFACE[toks[j]]) tense = "past"; break; }
     }
 
-    var steps = [];   // explanation steps
-    var out = [subj.bux];
-    steps.push("Subject “" + toks[0] + "” → " + subj.bux + ".");
+    // Need enough structure to be meaningful. A subject pronoun is required
+    // unless this is a question (where Bukhori drops the subject), so plain
+    // noun phrases fall through to the word-by-word layer instead of being
+    // forced into a sentence.
+    if (!subjTok && !isQuestion) return null;
+    if (!verb && !wh && !subjTok) return null;
 
-    // Copula sentence: "I am happy / he is a doctor" -> drop the copula.
-    var hasCopula = false;
-    for (var c = i; c < toks.length; c++) if (G.copula.indexOf(toks[c]) !== -1) hasCopula = true;
-    if (!verb) {
-      if (!hasCopula) return null;
-      var compTokens = [];
-      for (var k = i; k < toks.length; k++) {
-        if (G.copula.indexOf(toks[k]) !== -1) continue;
-        compTokens.push(toks[k]);
+    // Complement tokens: everything except the subject and the main verb
+    // (copulas and articles are dropped inside the renderer).
+    var compTokens = [];
+    for (var k = i; k < toks.length; k++) {
+      if (k === vIdx) continue;
+      if (G.copula.indexOf(toks[k]) !== -1) continue;
+      compTokens.push(toks[k]);
+    }
+
+    // Formal/informal only matters when 2nd person ("you") is involved.
+    var second = (subjTok === "you") || toks.indexOf("you") !== -1 || toks.indexOf("your") !== -1;
+    var self = this;
+
+    function build(register) {
+      var steps = [], unknown = [], pieces = [];
+      var person, subjBux = null;
+      if (subjTok === "you") {
+        person = register === "informal" ? "2s" : "2p";
+        subjBux = register === "informal" ? "Tu" : "Shumo";
+      } else if (subjInfo) {
+        person = subjInfo.p; subjBux = subjInfo.bux;
+      } else {
+        person = "3s";                      // pro-drop default
       }
-      var comp = this._renderComplements(compTokens, steps, proper);
-      out = out.concat(comp);
-      steps.push("Bukhori drops “to be” in the present tense.");
-      return this._grammarResult(out, steps, text, neg, hasUnknown(comp));
+      if (subjBux) { pieces.push(subjBux); steps.push("Subject “" + subjTok + "” → " + subjBux + "."); }
+
+      if (wh && wh.pre) pieces.push(wh.bux);        // "how many/much" leads the object
+      var comps = self._renderComplements(compTokens, steps, proper, unknown);
+      pieces = pieces.concat(comps);
+      if (wh && !wh.pre) pieces.push(wh.bux);        // "... kujo" before the verb / at end
+
+      if (verb) {
+        var vform = self._conjugate(verb, person, tense, neg);
+        pieces.push(vform);
+        steps.push("Verb “" + toks[vIdx] + "” → " + vform + " ("
+          + (tense === "past" ? "simple past" : "present")
+          + (verb.no_me ? "" : ", me- + " + verb.stem + " + ending")
+          + (verb.compound ? ", compound verb keeps “" + verb.noun.toLowerCase() + "”" : "")
+          + (neg ? ", negated with na-" : "") + ").");
+        steps.push("Word order: the verb goes to the end.");
+      } else {
+        steps.push("Bukhori drops “to be” here.");
+      }
+      return { pieces: pieces, steps: steps, unknown: unknown };
     }
 
-    // Verb sentence: English S V O  ->  Bukhori S O V (verb last).
-    var preVerb = toks.slice(i, vIdx);               // adverbs before the verb
-    var postVerb = toks.slice(vIdx + 1);             // objects / places / time
-    var complements = this._renderComplements(preVerb.concat(postVerb), steps, proper);
-    var vform = this._conjugate(verb, subj.p, tense, neg);
-    out = out.concat(complements);
-    out.push(vform);
-
-    steps.push("Verb “" + toks[vIdx] + "” → " + vform + " ("
-      + (tense === "past" ? "simple past" : "present")
-      + (verb.no_me ? "" : ", me- + " + verb.stem + " + ending")
-      + (verb.compound ? ", compound verb keeps “" + verb.noun.toLowerCase() + "”" : "")
-      + (neg ? ", negated with na-" : "") + ").");
-    steps.push("Word order: the verb moves to the end of the sentence.");
-    return this._grammarResult(out, steps, text, neg, hasUnknown(complements));
-
-    function hasUnknown(arr) {
-      for (var a = 0; a < arr.length; a++) if (arr[a] && arr[a].__unknown) return true;
-      return false;
+    if (second) {
+      var inf = build("informal"), formal = build("formal");
+      return this._grammarResult({
+        variants: [
+          { register: "informal", bux: finish(inf.pieces, isQuestion) },
+          { register: "formal", bux: finish(formal.pieces, isQuestion) },
+        ],
+        steps: formal.steps, unknown: formal.unknown,
+      });
     }
+    var one = build("default");
+    return this._grammarResult({
+      bux: finish(one.pieces, isQuestion), steps: one.steps, unknown: one.unknown,
+    });
   };
 
-  // Render complement tokens (objects, prepositional phrases, time words) into
-  // ordered Bukhori pieces. Prepositions become ba/az/qati; articles drop;
-  // unknown content words are kept as the English word (flagged).
-  Engine.prototype._renderComplements = function (tokens, steps, proper) {
+  // Join pieces into a clean sentence: trim dangling connectives/prepositions,
+  // capitalise the first word, add "?" for questions. Pieces are plain strings;
+  // unknown words were never added (they are reported separately), so the
+  // Buxori output contains only Buxori.
+  function finish(pieces, question) {
+    var words = pieces.map(function (p) { return p.toString(); })
+      .filter(function (w) { return w && w.length; });
+    // drop a trailing stray connective/preposition
+    while (words.length && /^(va|yo|ba|az|qati|boli)$/i.test(words[words.length - 1])) words.pop();
+    var bux = words.join(" ").replace(/\s+/g, " ").trim();
+    bux = bux.charAt(0).toUpperCase() + bux.slice(1);
+    if (question && !/\?$/.test(bux)) bux += "?";
+    return bux;
+  }
+
+  // Render complement tokens into ordered Buxori pieces. Prepositions become
+  // ba/az/qati; articles and copulas drop; unknown content words are OMITTED
+  // from the output (so no English leaks) and collected in `unknown`.
+  Engine.prototype._renderComplements = function (tokens, steps, proper, unknown) {
     var G = this.grammar, out = [];
-    proper = proper || {};
+    proper = proper || {}; unknown = unknown || [];
     for (var i = 0; i < tokens.length; i++) {
       var t = tokens[i];
       if (G.articles.indexOf(t) !== -1) continue;             // a/an/the dropped
-      if (G.time_adverbs[t]) { out.push(str(G.time_adverbs[t])); continue; }
+      if (G.copula.indexOf(t) !== -1) continue;               // is/are/am dropped
+      if (NEG[t]) continue;
+      if (G.time_adverbs[t]) { out.push(G.time_adverbs[t]); continue; }
       if (Object.prototype.hasOwnProperty.call(G.prepositions, t)) {
         var prep = G.prepositions[t];
-        if (prep) { out.push(str(prep)); if (steps) steps.push("“" + t + "” → " + prep + "."); }
+        if (prep) { out.push(prep); if (steps) steps.push("“" + t + "” → " + prep + "."); }
         continue;
       }
-      if (G.connectives[t]) { out.push(str(G.connectives[t])); continue; }
+      if (G.connectives[t]) { out.push(G.connectives[t]); continue; }
       var g = this._glossWord(t);
-      if (g) {
-        // common nouns lower-case mid-sentence; proper nouns keep their case
-        out.push(str(proper[t] ? g : g.charAt(0).toLowerCase() + g.slice(1)));
-      } else {
-        var u = str(t); u.__unknown = true; out.push(u);
-      }
+      if (g) out.push(proper[t] ? g : g.charAt(0).toLowerCase() + g.slice(1));
+      else unknown.push(t);                                   // omit, report later
     }
     return out;
-    function str(s) { return new String(s); }   // boxed so we can tag __unknown
   };
 
-  Engine.prototype._grammarResult = function (outPieces, steps, text, neg, unknown) {
-    var words = outPieces.map(function (p) { return p.toString(); });
-    var bux = words.join(" ").replace(/\s+/g, " ").trim();
-    // Capitalise the first word only.
-    bux = bux.charAt(0).toUpperCase() + bux.slice(1);
+  Engine.prototype._grammarResult = function (r) {
+    var unknown = r.unknown && r.unknown.length ? r.unknown : null;
     return {
       status: "grammar",
-      bux: bux,
-      confidence: unknown ? 0.45 : 0.6,
+      bux: r.bux || (r.variants && r.variants[0] && r.variants[0].bux) || "",
+      variants: r.variants || null,
+      confidence: unknown ? 0.42 : 0.6,
       source: "grammar-engine",
       detail: {
-        steps: steps,
+        steps: r.steps,
         unknown: unknown,
         warning: "Built offline from your dataset's grammar rules (verb "
           + "conjugation, word order, prepositions). An unverified draft — "
