@@ -5,66 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DAVID // RED TEAM OPS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:        #080b08;
-    --bg2:       #0d110d;
-    --bg3:       #111611;
-    --border:    #1e2e1e;
-    --green:     #3a7d44;
-    --green-hi:  #5cba6a;
-    --green-dim: #1f4025;
-    --red:       #b03030;
-    --red-hi:    #e05050;
-    --amber:     #c8922a;
-    --text:      #a8c4a8;
-    --text-dim:  #4a664a;
-    --text-hi:   #d4ecd4;
-    --mono:      'Share Tech Mono', monospace;
+    --bg:        #0a0e0d;
+    --bg2:       #101614;
+    --bg3:       #18211d;
+    --border:    #263029;
+    --border-hi: #35443b;
+    --green:     #3fb950;
+    --green-hi:  #56d364;
+    --green-dim: #16301e;
+    --red:       #cf5751;
+    --red-hi:    #ff7b72;
+    --amber:     #e3b341;
+    --text:      #c6d3cb;   /* body copy — high contrast */
+    --text-dim:  #8b9b92;   /* secondary — still readable */
+    --text-hi:   #f1f7f3;   /* headings & emphasis */
+    --mono:      'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
     --display:   'Barlow Condensed', sans-serif;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
   body {
     background: var(--bg);
     color: var(--text);
     font-family: var(--mono);
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.75;
+    letter-spacing: 0.005em;
     overflow-x: hidden;
-    cursor: crosshair;
+    cursor: default;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Scanline overlay */
+  /* Soft, non-distracting depth — no scanlines or noise over text. */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.08) 2px,
-      rgba(0,0,0,0.08) 4px
-    );
+    background:
+      radial-gradient(130% 80% at 50% -10%, rgba(63,185,80,0.06), transparent 55%),
+      radial-gradient(100% 60% at 100% 100%, rgba(63,185,80,0.03), transparent 60%);
     pointer-events: none;
-    z-index: 9999;
+    z-index: -1;
   }
 
-  /* Noise texture */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9998;
-    opacity: 0.4;
-  }
+  ::selection { background: rgba(63,185,80,0.28); color: var(--text-hi); }
 
   /* ─── NAV ─── */
   nav {
@@ -231,7 +223,7 @@
     text-transform: uppercase;
     text-decoration: none;
     border: 1px solid;
-    cursor: crosshair;
+    cursor: pointer;
     transition: all 0.2s;
   }
 
@@ -465,6 +457,8 @@
     .projects-grid { grid-template-columns: 1fr; }
     nav { padding: 0 1rem; }
     .nav-links { display: none; }
+    .nav-status { display: none; }          /* free room for logo + CTA */
+    .nav-logo { white-space: nowrap; font-size: 1rem; }
     #hero { padding: 5rem 1.2rem 3rem; }
     section { padding: 3rem 1.2rem; }
 
@@ -869,7 +863,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: crosshair;
+    cursor: pointer;
     flex-shrink: 0;
     transition: all 0.2s;
   }
@@ -890,7 +884,7 @@
     width: 6px; height: 6px;
     border-radius: 50%;
     background: var(--border);
-    cursor: crosshair;
+    cursor: pointer;
     transition: background 0.2s;
     border: none;
   }
@@ -1041,7 +1035,7 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 0.35rem 0.7rem;
-    cursor: crosshair;
+    cursor: pointer;
     transition: all 0.2s;
   }
   .tr-iconbtn:hover { border-color: var(--text-dim); color: var(--text); }
@@ -1055,7 +1049,7 @@
     flex-wrap: wrap;
   }
 
-  .tr-controls .btn { cursor: crosshair; }
+  .tr-controls .btn { cursor: pointer; }
 
   .tr-spinner {
     width: 13px;
@@ -1235,7 +1229,7 @@
     color: var(--text-dim);
     border: 1px solid var(--border);
     padding: 0.45rem 0.9rem;
-    cursor: crosshair;
+    cursor: pointer;
     transition: all 0.2s;
   }
   .tr-back:hover { border-color: var(--green); color: var(--green-hi); }
