@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAVID // BUXORI AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#080b08; --bg2:#0d110d; --bg3:#111611; --border:#1e2e1e;
+    --green:#3a7d44; --green-hi:#5cba6a; --green-dim:#1f4025;
+    --red:#b03030; --red-hi:#e05050; --amber:#c8922a;
+    --text:#a8c4a8; --text-dim:#4a664a; --text-hi:#d4ecd4;
+    --mono:'Share Tech Mono', monospace; --display:'Barlow Condensed', sans-serif;
+  }
+  *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:var(--bg); color:var(--text); font-family:var(--mono);
+    font-size:14px; line-height:1.6; min-height:100vh; padding:1.5rem;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:9999;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
+  }
+  .wrap { max-width:1000px; margin:0 auto; }
+
+  header { display:flex; align-items:baseline; gap:1rem; flex-wrap:wrap; margin-bottom:0.4rem; }
+  .logo { font-family:var(--display); font-weight:900; font-size:1.2rem; letter-spacing:0.2em; color:var(--green-hi); text-transform:uppercase; text-decoration:none; }
+  .logo span { color:var(--red-hi); }
+  .nav { margin-left:auto; display:flex; gap:1.2rem; }
+  .nav a { color:var(--text-dim); text-decoration:none; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; transition:color 0.2s; }
+  .nav a:hover { color:var(--green-hi); }
+
+  h1 { font-family:var(--display); font-weight:700; font-size:clamp(1.8rem,5vw,2.8rem); text-transform:uppercase; color:var(--text-hi); letter-spacing:0.04em; margin:0.8rem 0 0.2rem; }
+  .sub { color:var(--text-dim); font-size:0.78rem; letter-spacing:0.1em; margin-bottom:0.3rem; }
+  .tagline { color:var(--green); font-size:0.72rem; letter-spacing:0.08em; }
+  .hr { height:1px; background:linear-gradient(90deg,var(--border),transparent); margin:1.4rem 0; }
+
+  /* loader */
+  .loader { border:1.5px solid var(--border); background:var(--bg2); padding:1.2rem 1.3rem; margin-bottom:1.4rem; }
+  .loader-head { display:flex; align-items:center; gap:0.6rem; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--green); margin-bottom:0.8rem; }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--amber); }
+  .dot.on { background:var(--green-hi); box-shadow:0 0 8px var(--green-hi); }
+  .dot.err { background:var(--red-hi); }
+  .bar-track { height:10px; background:var(--bg); border:1px solid var(--border); overflow:hidden; }
+  .bar-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--green-dim),var(--green-hi)); transition:width 0.25s ease; }
+  .bar-label { display:flex; justify-content:space-between; margin-top:0.5rem; font-size:0.68rem; color:var(--text-dim); }
+  #statusText { color:var(--text); }
+  .loader.err { border-color:var(--red); }
+  .loader.err .bar-fill { background:var(--red); }
+
+  .btn {
+    padding:0.7rem 1.6rem; font-family:var(--mono); font-size:0.8rem; letter-spacing:0.15em;
+    text-transform:uppercase; border:1px solid var(--green); background:var(--green-dim);
+    color:var(--green-hi); cursor:pointer; transition:all 0.2s;
+  }
+  .btn:hover:not(:disabled) { background:var(--green); color:var(--bg); box-shadow:0 0 18px rgba(92,186,106,0.3); }
+  .btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+  .panes { display:grid; grid-template-columns:1fr 1fr; gap:1.5px; background:var(--border); border:1.5px solid var(--border); }
+  .pane { background:var(--bg2); display:flex; flex-direction:column; min-height:220px; }
+  .pane-head { display:flex; justify-content:space-between; align-items:center; padding:0.8rem 1.1rem; border-bottom:1px solid var(--border); font-size:0.66rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--green); }
+  .pane-head .s { color:var(--text-dim); letter-spacing:0.08em; font-size:0.6rem; }
+  textarea, .out { flex:1; padding:1.1rem; font-family:var(--mono); font-size:1rem; line-height:1.7; color:var(--text-hi); background:transparent; border:none; outline:none; resize:none; width:100%; white-space:pre-wrap; word-break:break-word; overflow-y:auto; }
+  textarea::placeholder { color:var(--text-dim); }
+  .out.empty { color:var(--text-dim); }
+  .pane-foot { padding:0.6rem 1.1rem; border-top:1px solid var(--border); min-height:40px; display:flex; align-items:center; gap:0.8rem; font-size:0.66rem; color:var(--text-dim); }
+  .iconbtn { background:transparent; border:1px solid var(--border); color:var(--text-dim); font-family:var(--mono); font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.3rem 0.65rem; cursor:pointer; transition:all 0.2s; }
+  .iconbtn:hover:not(:disabled) { border-color:var(--text-dim); color:var(--text); }
+  .iconbtn:disabled { opacity:0.35; cursor:not-allowed; }
+  .count { margin-left:auto; }
+
+  .controls { display:flex; align-items:center; gap:1rem; margin-top:1.2rem; flex-wrap:wrap; }
+  .gen-status { margin-left:auto; font-size:0.7rem; color:var(--text-dim); }
+  .spinner { width:12px; height:12px; border:2px solid var(--green-dim); border-top-color:var(--green-hi); border-radius:50%; display:inline-block; vertical-align:middle; margin-right:0.5rem; animation:spin 0.7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  .note { margin-top:1.3rem; padding:0.9rem 1.1rem; border:1px solid var(--border); border-left:2px solid var(--green-dim); background:var(--bg2); font-size:0.72rem; line-height:1.6; color:var(--text-dim); }
+  .note strong { color:var(--text); }
+  .note.warn { border-left-color:var(--amber); }
+  .note.err { border-left-color:var(--red); color:var(--text); }
+  .note a { color:var(--green-hi); }
+
+  @media (max-width:800px) { .panes { grid-template-columns:1fr; } body { padding:1rem; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="logo" href="/">DAVID <span>//</span> SEC</a>
+    <nav class="nav">
+      <a href="/">Portfolio</a>
+      <a href="/translator">Rule-based Translator</a>
+    </nav>
+  </header>
+
+  <h1>English → Buxori <span style="color:var(--green);font-size:0.4em;vertical-align:middle;">AI</span></h1>
+  <div class="sub">Bukharian · Judeo-Tajik &nbsp;·&nbsp; in-browser neural model (WebLLM + WebGPU)</div>
+  <div class="tagline">// Qwen2.5-1.5B runs entirely on your device — no server, no API key</div>
+
+  <div class="hr"></div>
+
+  <!-- MODEL LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-head"><span class="dot" id="dot"></span> <span id="loaderTitle">Model status</span></div>
+    <div class="bar-track"><div class="bar-fill" id="bar"></div></div>
+    <div class="bar-label"><span id="statusText">Checking WebGPU support…</span><span id="pct"></span></div>
+  </div>
+
+  <!-- TRANSLATOR -->
+  <div class="panes">
+    <div class="pane">
+      <div class="pane-head"><span>English</span><span class="s">source</span></div>
+      <textarea id="input" rows="7" maxlength="1200" placeholder="Type English text to translate into Buxori…" spellcheck="false"></textarea>
+      <div class="pane-foot">
+        <button class="iconbtn" id="clear">Clear</button>
+        <span class="count"><span id="count">0</span>/1200</span>
+      </div>
+    </div>
+    <div class="pane">
+      <div class="pane-head"><span>Buxori</span><span class="s">AI translation</span></div>
+      <div class="out empty" id="output">Load the model, then translate.</div>
+      <div class="pane-foot">
+        <button class="iconbtn" id="copy" disabled>Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="loadBtn" disabled>[ Load model ]</button>
+    <button class="btn" id="go" disabled>[ Translate ]</button>
+    <span class="gen-status" id="genStatus"></span>
+  </div>
+
+  <div class="note" id="info">
+    <strong>How this works:</strong> a 1.5B-parameter model (~1.1&nbsp;GB) downloads
+    once to your browser cache and runs locally on your GPU via WebGPU. First load
+    is slow; afterwards it starts fast. Your Bukhori dataset (grammar rules +
+    core vocabulary) is embedded as the model's instructions. This is experimental —
+    a small general model has limited Bukhori knowledge, so for verified
+    dictionary-grounded results use the
+    <a href="/translator">rule-based translator</a>.
+  </div>
+</div>
+
+<script type="module">
+import * as webllm from "https://esm.run/@mlc-ai/web-llm@0.2.79";
+
+// === Embedded Bukhori knowledge (parsed from the authoritative TSV) ===
+const SYSTEM_PROMPT = `You are a translator from English into Bukhori (also called Bukharian, a Judeo-Tajik language), written in the Latin transliteration used below. Translate the user's English text into Bukhori.
+
+STRICT RULES:
+- Use ONLY the Bukhori vocabulary and grammar given below. Do NOT substitute Standard Tajik, Persian, Dari, or Russian words.
+- Preserve the exact spelling and diacritics shown (ü, ö, á, é, í, ć, ġ).
+- If the sentence uses the 2nd person (you/your), give BOTH an informal (Tu) and a formal/polite (Shumo) version, each on its own line.
+- If a needed word is not in the vocabulary below, keep the English word rather than inventing Bukhori, and note it.
+- Output only the translation (and a one-line note if a word was missing). No explanations unless asked.
+
+GRAMMAR:
+- A Bukhori sentence begins with a pronoun or a noun, then an adjective, with the verb at the end. A simple sentence consists of a verb and one or more nouns marking subject, object, location, source, goal or instrument.
+- The simple present covers an action happening now or about to happen. Take the verb stem, add the prefix me-, then add the personal ending.
+- The Simple Past indicates an activity or situation that began and ended at a particular time in the past. Formation is on p54.
+- The Future Indefinite refers to a time later than now and states facts or certainty. It is formed exactly like the Present Indefinite from lesson four; context supplies the future meaning.
+- The Descriptive Past covers habitual or repeated past actions, English 'used to'. Take me-, add the verb without its infinitive ending, then add the ending. Negation is na- before me-.
+- For the negative, put na- in front of the me- prefix.
+- Compound verbs combine a noun with an auxiliary verb such as kardan (-kun-), dodan (-tiy-), zadan (-zan-) or xondan (-xon-). The noun comes before the verb.
+- The plural is formed with the suffix -ho, pronounced [o], for any noun; or with -on (-yon after a vowel), used mainly for animate nouns in literature and poetry.
+- Hast is the equivalent of English 'is', with negative nest. In conversation it is pronounced e, or left out entirely.
+- The imperative is built on the verb stem and exists only in the 2nd person. Singular uses the bare stem; polite and plural add a personal ending.
+- Like ki, there are adverbial and prepositional conjunctions of time, location, condition and so on. The conjunctions used with subordinate clauses of time are vaqte ki (lit.) and kay-ki.
+- Possession is expressed by adding a set of possessive endings to the noun representing the thing possessed.
+- Written -ayashon is pronounced -eshon; -oyashon is pronounced -oshon; -uyashon is pronounced -ushon.
+- The ending -em or -yem in the 1st person plural is always pronounced -im in conversation, so medonem is said medonim.
+- The final d of the 3rd person plural ending -and is silent in conversation: Ino dodan (they gave).
+- The 1st person plural ending -em is always pronounced -im in conversation: Mo dodim (we gave).
+
+VERBS (infinitive = Bukhori [present stem]; present tense = me- + stem + personal ending; simple past = past stem + ending; negation = na-):
+to know (a thing) = Donistan [stem -don-]
+to take = Giriftan [stem -gir-]
+to say = Guftan [stem -güy-]
+to know (a person) = Shinoxtan [stem -shinos-]
+to become = Shudan [stem -shav-]
+to rain = Boridan [stem -bor-]
+to give = Dodan [stem -tiy-]
+to come = Omadan [stem -biyo-]
+to go = Raftan [stem -rav-]
+to eat = Xürdan [stem -xur-]
+to have = Doshtan [stem -dor-]
+to be = Budan [stem -bosh-]
+to see = Didan [stem -bin-]
+to sell = Furüxtan [stem -furüsh-]
+to do = Kardan [stem -kun-]
+to bring = Ovardan [stem -biyor-]
+to sweep = Rüftan [stem -rüv-]
+to buy = Xaridan [stem -xar-]
+to read = Xondan [stem -xon-]
+to make tea = Choy kardan
+to boil tea = Choy mondan
+to drink tea = Choy nüshidan
+to teach (formal instruction) = Dars dodan
+to shake hands = Dast dodan
+to speak = Gap zadan
+to hear = Güsh kardan
+to work = Kor kardan
+to like = Naghz didan
+to wipe = Pok kardan
+to call by phone = Telefon dodan
+to pray = Tafilo xondan
+to clean = Toza kardan
+to teach (informal instruction) = Yod dodan
+to learn = Yod giriftan
+to live = Zindagi kardan
+to love = Naghz didan
+to let go = Sar dodan
+to suffer = Gham xürdan
+to circumcise = Milo kardan
+to invite = Taklif kardan
+to be shy = Izo kashidan
+to peel = Püst kandan
+to taste = Maza didan
+to talk = gap zadan
+to dance = bozi kardan
+to listen = güsh kardan
+to make dirty = Chirkin kardan
+to beautify = Rost kardan
+to hang = Avextan [stem -avez-]
+to lock = Bastan [stem -band-]
+to sew = Düxtan [stem -düz-]
+to satisfy = Foridan [stem -for-]
+to belch = Kandan [stem -kan-]
+to close = Püshidan [stem -püsh-]
+to dress (somebody) = Püshondan [stem -püsh-]
+to fit = Zevidan [stem -zev-]
+to lie (down) = Daroz kashidan
+to sign = Dast mondan
+to scream = Dod guftan
+to become angry = Jahl giriftan
+
+VOCABULARY (English = Bukhori):
+zero = nol
+one = yak
+two = du
+three = se
+four = chor
+five = panj
+six = shish
+seven = haft
+eight = hasht
+nine = nüh
+ten = dah
+eleven = yozdah
+twelve = duvozdah
+thirteen = senzdah
+fourteen = chordah
+fifteen = ponzdah
+sixteen = shonzdah
+seventeen = habdah
+eighteen = hazhdah
+nineteen = nuzdah
+twenty = bist
+twenty one = bistu yak
+thirty = si
+thirty one = siyu yak
+forty = chil
+fifty = panjoh
+sixty = shast
+seventy = haftod
+eighty = hashtod
+ninety = navad
+hundred = sad
+two hundred = dusad
+three hundred = sesad
+four hundred = chorsad
+five hundred = panjsad
+six hundred = shishsad
+seven hundred = haftsad
+eight hundred = hashtsad
+nine hundred = nühsad
+thousand = hazor
+million = million
+first = yakum
+second = duyum
+third = seyum
+fourth = chorum
+fifth = panjum
+sixth = shishtum
+twenty third = bistu seyum
+Sunday = Yakshanbe
+Monday = Dushanbe
+Tuesday = Seshanbe
+Wednesday = Chorshanbe
+Thursday = Panjshanbe
+Friday = Jum'a
+Saturday = Shabot
+September = Tishri
+October = Heshvan
+November = Kislev
+December = Tevet
+January = Shavot
+February = Odor
+March = Nison
+April = Iyar
+May = Sivan
+June = Tamuz
+July = Ov
+August = Elul
+calendar = Luvah
+early morning = Sahar
+morning = Pagohi
+noon = Peshin
+day = Rüz
+evening; night = Shav
+in the evening = Namozigar
+week = Hafta
+weekday = Mehafta
+month = Mah
+year = Sol
+last year = Porsol
+this year = Imsol
+next year = Insol
+today = Imrüz
+tonight = Imshav
+tomorrow = Pagah
+yesterday = Dina
+family = Mishpoho
+dad = Dada
+mom = Ocha
+father = Padar
+mother = Modar
+grandfather = Bovo
+grandmother = Bivi
+baby = Chaqaloq
+son; boy = Pisar
+daughter, girl = Duxtar
+brother = Barodar
+older brother = Aka
+younger brother = Dodar
+older sister = Apa
+younger sister = Xohar
+grandson, granddaughter = Navera
+great grandson = 'Avera
+nephew; niece = Jiyan
+uncle (mother's side) = Taghoyi
+aunt (father's side) = 'Ama
+aunt (mother's side) = Xola
+cousins through fathers = 'Amakbacha
+cousins through mothers = Xolabacha
+friend; boyfriend = Hover
+girlfriend = Dugona
+neighbor = Hamsoya
+teacher = Xalfa
+student; pupil = Shogird
+book = Kitov
+I = Man
+you = Tu
+you (polite form) = Shumo
+we = Mo
+he; she = Ü
+they = Inho
+mother-in-law = ochamo
+husband = shü
+G-d = Xudo
+health = Sihat-salomat
+good; nice = Naghz
+bad = Bad
+yes = Hov
+no = Ne
+not = Nest
+ok = Xay
+here = Insun
+there = Unsun
+this = In
+that = Vay
+these = Vayho
+this way; so = Haminxel
+other = Digar
+mine = Azini man
+can = Tavonistan
+now; soon = Aknun
+long ago = Kayho
+time = Vaqt
+early = Barmahal
+late = Bemahal
+time; watch; clock = So'at
+minute = Minut
+every day = Har rüz
+always = Hama vaqt
+never = Hej
+name = Nom
+last name = Familiya
+apple = sev
+color = Rang
+red = Surx
+very red; dark-red = Sub-surx
+yellow = Zard
+very yellow = Zab-zard
+pink = Gulovi
+red (about hair) = Mala
+green; blue = Kavud
+blue = Osmonrang
+brown = Jigarrang
+gray = Xokistarrang
+black = Siyoh
+very black = Sib-siyoh
+white = Safed
+very white = Sab-safed
+big = kalon
+ago = Pesh
+question = Savol
+answer = Javov
+who? = Ki?
+what? = Chi?
+when? = Kay?
+which? = Kadom?
+where? = Kujo
+since when? = Az kay
+until when? = To kay
+where from? = Az kujo?
+why? = Chuva?
+one third (1/3) = seyak
+one fourth (1/4) = choryak
+three quarters (3/4) = az chor se
+two thirds (2/3) = az se du
+my = -i man
+your = -i tu
+his, her = -i ü
+our = -i mo
+your (polite form) = -i shumo
+their = -i inho
+woman = zan
+Pinhos (man's name) = Pinhos
+Rohel (woman's name) = Rohel
+spring = Bahor
+summer = Toviston
+autumn; fall = Tiramoh
+winter = Zamiston
+climate = 'Iqlim
+seasons = Faslhoyi sol
+weather = Havo
+cold = Xunuk
+cool = Salqin
+warm; hot = Garm
+wind = Shamol
+air = Havo
+snow = Barf
+rain = Boron
+lightning = Otashak
+sky = Osmon
+Sun = Oftov
+Moon = Mahtov
+star; planet = Sitora
+fruit = Meva
+vegetable = Savzavot
+grape = Angur
+fig = Anjir
+pear = Noshpoti
+plum = Olu
+cherry; sweet cherry = Gelos
+mulberry = Tut
+peach = Shaftolu
+apricot = Zardolu
+pomegranate = Anor
+date = Xurmo
+watermelon = Tarbuz
+melon = Xarbuza
+pumpkin = Kadu
+potato = Kartüf
+onion = Piyoz
+carrot = Savzi
+tomato = Mandüra
+cucumber = Bodaring
+eggplant = Boyimjon
+cabbage = Karam
+cilantro = Alafi osh
+dill = Shivit
+lettuce = Kohu
+basil = Nozbüy
+beetroot = Lavlavu
+turnip = Shalgham
+radish = Turbcha
+bean = Lüviyo
+pungent pepper = Qalamfur
+tree = Daraxt
+rose; flower = Gul
+how much? = Chand?
+how many? = Chandta?
+money = Shohel
+need = Darkor
+pound = Qadoq
+taste = Maza
+tasteful; delicious = Bamaza
+not tasteful = Bemaza
+sweet = Shirin
+bitter = Talx
+salty = Shür
+insipid = Fach
+sour = Turush
+fresh; clean = Toza
+little plum = oluchi
+
+PHRASES / EXAMPLES (English = Bukhori):
+weather = Havo
+merry, happy = Xursand
+brother = barodár
+brotherhood = barodarí
+child = baćha
+your child = bachét
+I took = ġiriftam
+you made = kardí
+twenty one = bistu yak
+thirty two = siyu du
+four hundred twenty two = chorsadu bistu du
+two thousand three hundred forty one = du hazoru sesadu chilu yak
+Do you have money? = Shohel dored?
+How much money do you have? = Chand pul dored?
+I have five dollars. = Man panj dollar doram
+today is Saturday = Imrüz rüzi shabot
+today is Sunday = Imrüz rüzi yakshanbe
+evening of Saturday (Sabbath eve) = shavi shabot
+evening of Sunday = shavi yakshanbe
+My friend = hoveri man
+Your friend = hoveri tu
+His/her friend = hoveri ü
+My aunt = 'amayi man
+Your grandfather = bovoyi tu
+His/her grandmother = biviyi ü
+Our brother = akayi mo
+Your grandson/granddaughter (pol.) = naverayi shumo
+Our friend = hoveri mo
+Your friend (pol.) = hoveri shumo
+Their friend = hoveri inho
+My mother = oni man
+Your aunt = 'ami tu
+Our aunt = tüti mo
+Your aunt (pl.) = xoli shumo
+Their father = dadi inho
+my father = Padaram
+your father = Padarat
+his/her father = Padarash
+our father = Padaramo
+your father (pl.) = Padaraton
+my mom = Onim
+my grandmother = Bivim
+my grandfather = Bovom
+my mother-in-law = Modarshüm
+your mom = Onet
+your grandmother = Bibet
+your mother-in-law = Modarshüt
+his/her mother = Onesh
+his/her grandfather = Bovosh
+her mother-in-law = Modarshüsh
+our mom = Onimo
+our grandmother = Bivimo
+our grandfather = Bovomo
+our mother-in-law = Modarshümo
+their mom = Oneshon`;
+
+const MODEL_ID = "Qwen2.5-1.5B-Instruct-q4f16_1-MLC";
+
+const $ = (id) => document.getElementById(id);
+const loader = $("loader"), dot = $("dot"), bar = $("bar"), pct = $("pct");
+const statusText = $("statusText"), loaderTitle = $("loaderTitle");
+const input = $("input"), output = $("output"), go = $("go"), loadBtn = $("loadBtn");
+const copyBtn = $("copy"), clearBtn = $("clear"), count = $("count"), genStatus = $("genStatus");
+
+let engine = null, loading = false, generating = false, lastOut = "";
+
+function setBar(p) { bar.style.width = Math.round(p * 100) + "%"; pct.textContent = Math.round(p * 100) + "%"; }
+function fail(msg) { loader.classList.add("err"); dot.className = "dot err"; loaderTitle.textContent = "Unavailable"; statusText.textContent = msg; }
+
+// 1. WebGPU capability check.
+if (!navigator.gpu) {
+  fail("WebGPU is not available in this browser. Use Chrome/Edge 113+ or another WebGPU-enabled browser on desktop.");
+} else {
+  loaderTitle.textContent = "Model not loaded";
+  statusText.textContent = "Ready to download (~1.1 GB, cached after first load).";
+  loadBtn.disabled = false;
+}
+
+// 2. Load the model with a progress bar.
+loadBtn.addEventListener("click", async () => {
+  if (loading || engine) return;
+  loading = true; loadBtn.disabled = true;
+  dot.className = "dot"; loaderTitle.textContent = "Loading model";
+  try {
+    engine = await webllm.CreateMLCEngine(MODEL_ID, {
+      initProgressCallback: (r) => {
+        if (typeof r.progress === "number" && r.progress > 0) setBar(r.progress);
+        statusText.textContent = (r.text || "Loading…").replace(/\[\d+\/\d+\]\s*/, "");
+      },
+    });
+    setBar(1); dot.className = "dot on";
+    loaderTitle.textContent = "Model ready";
+    statusText.textContent = "Loaded and running locally on your GPU.";
+    go.disabled = false;
+  } catch (e) {
+    fail("Failed to load the model: " + (e && e.message ? e.message : e));
+    loadBtn.disabled = false;
+  } finally { loading = false; }
+});
+
+// 3. Translate (streaming).
+async function translate() {
+  if (!engine || generating) return;
+  const text = input.value.trim();
+  if (!text) { input.focus(); return; }
+  generating = true; go.disabled = true; copyBtn.disabled = true;
+  go.innerHTML = '<span class="spinner"></span>Translating';
+  genStatus.textContent = "Generating on-device…";
+  output.classList.remove("empty"); output.textContent = ""; lastOut = "";
+  try {
+    const stream = await engine.chat.completions.create({
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: "Translate this English into Buxori:\n\"" + text + "\"" },
+      ],
+      temperature: 0.2,
+      max_tokens: 400,
+      stream: true,
+    });
+    for await (const chunk of stream) {
+      const d = chunk.choices && chunk.choices[0] && chunk.choices[0].delta
+        ? (chunk.choices[0].delta.content || "") : "";
+      if (d) { lastOut += d; output.textContent = lastOut; }
+    }
+    if (!lastOut.trim()) { output.classList.add("empty"); output.textContent = "— no output —"; }
+    else copyBtn.disabled = false;
+  } catch (e) {
+    output.classList.add("empty");
+    output.textContent = "Generation error: " + (e && e.message ? e.message : e);
+  } finally {
+    generating = false; go.disabled = false; go.textContent = "[ Translate ]";
+    genStatus.textContent = "";
+  }
+}
+go.addEventListener("click", translate);
+input.addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); translate(); } });
+
+// 4. UI helpers.
+input.addEventListener("input", () => { count.textContent = input.value.length; });
+clearBtn.addEventListener("click", () => { input.value = ""; count.textContent = "0"; output.textContent = "Load the model, then translate."; output.classList.add("empty"); copyBtn.disabled = true; input.focus(); });
+copyBtn.addEventListener("click", () => {
+  if (!lastOut) return;
+  const done = () => { const o = copyBtn.textContent; copyBtn.textContent = "Copied"; setTimeout(() => copyBtn.textContent = o, 1200); };
+  if (navigator.clipboard) navigator.clipboard.writeText(lastOut).then(done, () => {}); else done();
+});
+</script>
+</body>
+</html>
