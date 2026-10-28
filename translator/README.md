@@ -108,6 +108,12 @@ It also handles:
 * **No English leakage** — any word it cannot source from the dataset is
   **omitted** from the Buxori output and reported separately as "not in dataset",
   so the output box only ever contains Buxori.
+* **Noun phrases** — a dedicated handler applies the dataset's noun-phrase rules:
+  ezafe adjective order (*cold water* → *maimi xunuk*, noun + `-i`/`-yi` + adj),
+  possessive endings (*my book* → *kitovam*; *your book* → informal *kitovat* /
+  formal *kitovaton*), and number/plural (*two red apples* → *du sevi surx*).
+  Grammatical suffix fragments in the source (e.g. a vocab row *"my = -i man"*)
+  are excluded from the word lexicon so they can never leak into output.
 
 ### Statistical lexicon (IBM Model 1, trained on your data)
 

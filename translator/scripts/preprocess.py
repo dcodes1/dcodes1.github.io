@@ -232,7 +232,13 @@ def build_index(pairs: list[dict]) -> dict:
             continue
         for p in by_key[key]:
             if p["type"] == "vocab":
-                word_lex.setdefault(key, choose_primary(by_key[key])["bux"])
+                bux = choose_primary(by_key[key])["bux"]
+                # Skip grammatical suffix/affix fragments ("-i man", "-am"):
+                # these are endings, not standalone words, and corrupt
+                # word-by-word output. They are handled by the grammar engine.
+                if bux.strip().startswith("-"):
+                    break
+                word_lex.setdefault(key, bux)
                 break
 
     # Phrase list (multi-word keys) for fuzzy + longest-substring matching.
@@ -397,7 +403,8 @@ def train_ibm1(pairs: list[dict], iterations: int = 20) -> dict:
             p = t[b][e]
             if p > best_p:
                 best_p, best_b = p, b
-        if best_b and best_p >= 0.45 and cooc[e][best_b] >= 2:
+        if (best_b and not best_b.startswith("-") and best_p >= 0.45
+                and cooc[e][best_b] >= 2):
             learned[e] = {"bux": best_b, "p": round(best_p, 3), "n": cooc[e][best_b]}
     return learned
 
@@ -516,6 +523,39 @@ def build_grammar(rows: list[dict], index: dict) -> dict:
                 "no_me": 1 if ("no me-" in notes or bux.lower() == "doshtan") else 0,
             }
 
+    # Adjectives + colours (English -> Buxori) for ezafe noun-phrase ordering.
+    adjectives: dict[str, str] = {}
+    for r in rows:
+        if r["entry_type"] != "vocab" or not r["bukhori"]:
+            continue
+        sect = (r.get("section") or "").lower()
+        if not ("adjectiv" in sect or "colour" in sect or "color" in sect):
+            continue
+        en = normalize_english(r["english"])
+        bux = r["bukhori"].strip()
+        # single/two-word adjective glosses only; skip sentences and fragments
+        if not en or len(en.split()) > 2 or len(bux.split()) > 2:
+            continue
+        if bux.startswith("-") or en.split()[0] in ("he", "she", "it", "they"):
+            continue
+        adjectives.setdefault(en, bux)
+
+    # Common adjectives often live outside the "adjectives" section (e.g. good =
+    # Naghz under common words). Pull them in from the clean word lexicon.
+    COMMON_ADJ = [
+        "good", "bad", "cold", "hot", "warm", "cool", "happy", "sad", "young",
+        "fast", "slow", "clean", "full", "empty", "hard", "soft", "sweet",
+        "sour", "bitter", "salty", "wet", "dry", "heavy", "light", "deep",
+        "sick", "healthy", "tired", "hungry", "thirsty", "easy", "difficult",
+        "true", "false", "right", "wrong", "same", "different", "ready",
+    ]
+    for en in COMMON_ADJ:
+        if en in adjectives:
+            continue
+        bux = index["words"].get(en)
+        if bux and not bux.startswith("-"):
+            adjectives[en] = bux
+
     return {
         "verbs": verbs,
         "subjects": SUBJECTS,
@@ -527,6 +567,13 @@ def build_grammar(rows: list[dict], index: dict) -> dict:
         "articles": sorted(ARTICLES),
         "copula": sorted(COPULA),
         "irregular_lemma": IRREGULAR_LEMMA,
+        "adjectives": adjectives,
+        # number words -> Buxori, for "two books" style phrases
+        "numbers": {w: (index["words"].get(w) or index["exact"].get(w, {}).get("bux"))
+                    for w in ["one", "two", "three", "four", "five", "six", "seven",
+                              "eight", "nine", "ten", "eleven", "twelve", "twenty",
+                              "thirty", "forty", "fifty", "hundred", "thousand"]
+                    if index["words"].get(w) or index["exact"].get(w)},
     }
 
 

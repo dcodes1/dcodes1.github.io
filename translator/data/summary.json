@@ -18,7 +18,7 @@
   "clean_pairs": 2835,
   "unique_english_keys": 2537,
   "english_keys_with_multiple_bukhori": 208,
-  "single_word_lexicon": 900,
+  "single_word_lexicon": 896,
   "multiword_phrases": 1582,
   "retrieval_examples": 974,
   "english_token_count_histogram": {

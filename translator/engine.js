@@ -334,11 +334,16 @@
   // an exact single-word entry, then the learned (IBM-1) statistical lexicon.
   // Returns null only when no source at all covers the word (never English).
   Engine.prototype._glossWord = function (w) {
-    if (this.words[w]) return this.words[w];
-    var e = this.exact[w];
-    if (e && e.en && e.en.toLowerCase() === w) return e.bux;
-    if (this.learned[w]) return this.learned[w];
-    return null;
+    var g = null;
+    if (this.words[w]) g = this.words[w];
+    else {
+      var e = this.exact[w];
+      if (e && e.en && e.en.toLowerCase() === w) g = e.bux;
+      else if (this.learned[w]) g = this.learned[w];
+    }
+    // Never return a grammatical suffix fragment ("-i man", "-am") as a word.
+    if (g && g.trim().charAt(0) === "-") return null;
+    return g;
   };
 
   // wh-question words (single token).
@@ -532,6 +537,122 @@
     };
   };
 
+  // Noun-phrase handler: ezafe adjective ordering, possessives, number/plural.
+  // Grounded in the dataset's documented rules (ezafe -i/-yi; possessive
+  // endings; number + singular noun). Returns null for anything that isn't a
+  // clean noun phrase, so sentences fall through to the other layers.
+  var POSS = {
+    my:    { end: "am",    pron: "man" },
+    your:  { end: "at",    pron: "tu", endF: "aton", pronF: "shumo" },
+    his:   { end: "ash",   pron: "u" },
+    her:   { end: "ash",   pron: "u" },
+    its:   { end: "ash",   pron: "u" },
+    our:   { end: "amo",   pron: "mo" },
+    their: { end: "ashon", pron: "ino" },
+  };
+  var VOWEL_END = /[aeiouüöáéíAEIOUÜÖÁÉÍ]$/;
+  function ezafeLink(w) { return VOWEL_END.test(w) ? "yi" : "i"; }
+  function lcFirst(s) { return s ? s.charAt(0).toLowerCase() + s.slice(1) : s; }
+  function singularize(w) {
+    if (/ies$/.test(w) && w.length > 4) return w.slice(0, -3) + "y";
+    if (/(ses|xes|zes|ches|shes)$/.test(w)) return w.slice(0, -2);
+    if (/s$/.test(w) && !/ss$/.test(w) && w.length > 2) return w.slice(0, -1);
+    return null;
+  }
+
+  // Resolve a noun to its cleanest base form, preferring the curated vocab
+  // (base forms) over the learned lexicon (which can carry ezafe/plural
+  // inflection). Returns {bux, pl} or null.
+  Engine.prototype._cleanNoun = function (t) {
+    var s = singularize(t);
+    var tryClean = function (self, w) {
+      if (self.words[w] && self.words[w].charAt(0) !== "-") return self.words[w];
+      var e = self.exact[w];
+      if (e && e.en && e.en.toLowerCase() === w && e.bux.charAt(0) !== "-") return e.bux;
+      return null;
+    };
+    var g = tryClean(this, t);
+    if (g) return { bux: g, pl: false };
+    if (s) { g = tryClean(this, s); if (g) return { bux: g, pl: true }; }
+    // learned lexicon last (may be inflected); prefer the singular form so a
+    // plural like "books" resolves to the base noun, not a learned plural.
+    if (s && this.learned[s]) return { bux: this.learned[s], pl: true };
+    if (this.learned[t]) return { bux: this.learned[t], pl: false };
+    return null;
+  };
+
+  Engine.prototype.nounPhrase = function (text) {
+    var G = this.grammar;
+    if (!G || !G.adjectives) return null;
+    var toks = tokenize(text);
+    if (toks.length < 2 || toks.length > 6) return null;
+
+    var proper = {};
+    var raw = String(text).trim().split(/\s+/);
+    for (var r = 1; r < raw.length; r++) if (/^[A-Z]/.test(raw[r])) proper[normEn(raw[r])] = 1;
+
+    var nums = [], poss = null, adjs = [], nounBux = null, nounEn = null,
+        plural = false, unknown = [];
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i];
+      if (G.articles.indexOf(t) !== -1) continue;
+      if (POSS[t]) { if (poss) return null; poss = t; continue; }
+      if (G.numbers[t]) { nums.push(lcFirst(G.numbers[t])); continue; }
+      if (G.adjectives[t]) { adjs.push(lcFirst(G.adjectives[t])); continue; }
+      var nf = this._cleanNoun(t);             // prefer clean base-form noun
+      if (nf) {
+        if (nounBux) return null;              // one head noun only (v1)
+        nounEn = t; nounBux = proper[t] ? nf.bux : lcFirst(nf.bux); plural = nf.pl;
+      } else unknown.push(t);
+    }
+    if (!nounBux || unknown.length) return null;             // keep output clean
+    var mods = nums.length + (poss ? 1 : 0) + adjs.length + (plural ? 1 : 0);
+    if (mods === 0) return null;                             // bare noun -> elsewhere
+    if (poss && adjs.length) return null;                    // combo too complex for v1
+
+    var self = this;
+    function build(register) {
+      var head = nounBux, steps = [];
+      if (poss) {
+        var p = POSS[poss];
+        if (VOWEL_END.test(head)) {
+          var pron = (register === "formal" && p.pronF) ? p.pronF : p.pron;
+          head = head + ezafeLink(head) + " " + pron;
+        } else {
+          head = head + ((register === "formal" && p.endF) ? p.endF : p.end);
+        }
+        steps.push("Possessive “" + poss + " " + nounEn + "” → " + head
+          + " (" + (VOWEL_END.test(nounBux) ? "ezafe + pronoun" : "possessive ending") + ").");
+      } else if (plural && nums.length === 0) {
+        head = head + "ho";
+        steps.push("Plural “" + nounEn + "” → " + head + " (suffix -ho).");
+      }
+      if (adjs.length) {
+        var before = head;
+        head = head + ezafeLink(head) + " " + adjs.join(" ");
+        steps.push("Adjective order: “" + nounEn + "” + " + adjs.join(", ")
+          + " → " + head + " (noun + ezafe -" + ezafeLink(before) + " + adjective).");
+      }
+      var words = nums.concat([head]);
+      if (nums.length) steps.push("Number stays before the noun; the noun is singular.");
+      var bux = words.join(" ").replace(/\s+/g, " ").trim();
+      return { bux: bux.charAt(0).toUpperCase() + bux.slice(1), steps: steps };
+    }
+
+    var warn = "Built offline from your dataset's noun-phrase rules (ezafe, "
+             + "possessives, number/plural). An unverified draft.";
+    if (poss === "your") {
+      var inf = build("informal"), fm = build("formal");
+      return { status: "grammar", bux: inf.bux,
+        variants: [{ register: "informal", bux: inf.bux }, { register: "formal", bux: fm.bux }],
+        confidence: 0.62, source: "noun-phrase",
+        detail: { steps: fm.steps, unknown: null, warning: warn } };
+    }
+    var one = build("default");
+    return { status: "grammar", bux: one.bux, variants: null, confidence: 0.62,
+      source: "noun-phrase", detail: { steps: one.steps, unknown: null, warning: warn } };
+  };
+
   // Main entry ----------------------------------------------------------------
   Engine.prototype.translate = function (text) {
     var raw = (text == null ? "" : String(text));
@@ -575,6 +696,13 @@
       var gr = null;
       try { gr = this.grammarTranslate(raw); } catch (e) { gr = null; }
       if (gr && gr.bux) { this.cache[key] = gr; return gr; }
+    }
+
+    // L2.8 noun-phrase handler: ezafe/possessive/number ordering.
+    if (this.grammar) {
+      var np = null;
+      try { np = this.nounPhrase(raw); } catch (e) { np = null; }
+      if (np && np.bux) { this.cache[key] = np; return np; }
     }
 
     // L2.5 compositional (for multi-word input)

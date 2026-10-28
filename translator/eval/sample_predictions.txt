@@ -23,11 +23,11 @@ PRED: (abstained)  [none]
 
 EN:   My milk got sour.
 GOLD: Shiram buride
-PRED: -i man Shir Turush  [compositional 0.38]
+PRED: Shir Turush  [compositional 0.25]
 
 EN:   red apple
 GOLD: sevi surx
-PRED: Surx sev  [compositional 0.6]
+PRED: Sevi surx  [grammar 0.62]
 
 EN:   husband's brother
 GOLD: Dodarshü
@@ -35,7 +35,7 @@ PRED: Barodar  [compositional 0.25]
 
 EN:   Their friendship is as thick as thieves (an informal relationship).
 GOLD: Ino pashaxürda
-PRED: -i inho düsti Borin Borin  [compositional 0.29]
+PRED: (abstained)  [none]
 
 EN:   to croak
 GOLD: Qar-qar zadan
@@ -111,7 +111,7 @@ PRED: Tu rafta dori  [grammar 0.42]
 
 EN:   their grandmother
 GOLD: Biviyashon
-PRED: -i inho Bivi  [compositional 0.6]
+PRED: Biviyi ino  [grammar 0.62]
 
 EN:   to wash hands (before the prayer)
 GOLD: Natilo kardan

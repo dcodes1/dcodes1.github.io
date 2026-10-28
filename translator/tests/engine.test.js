@@ -111,6 +111,25 @@ check("all " + checked + " exact keys resolve to a real dataset value",
         r.variants && r.variants[0].bux === "Tu non mexuri" && r.variants[1].bux === "Shumo non mexured", r.variants);
 })();
 
+// --- noun phrases: possessive, ezafe order, number/plural -----------------
+(function () {
+  check("possessive: my book -> Kitovam", eng.translate("my book").bux === "Kitovam", eng.translate("my book"));
+  check("possessive: his father -> Padarash", eng.translate("his father").bux === "Padarash", eng.translate("his father"));
+  const yb = eng.translate("your book");
+  check("possessive your: informal Kitovat / formal Kitovaton",
+        yb.variants && yb.variants[0].bux === "Kitovat" && yb.variants[1].bux === "Kitovaton", yb.variants);
+  check("ezafe: cold water -> Maimi xunuk (noun + -i + adj)", eng.translate("cold water").bux === "Maimi xunuk", eng.translate("cold water"));
+  check("ezafe + number: two red apples -> Du sevi surx", eng.translate("two red apples").bux === "Du sevi surx", eng.translate("two red apples"));
+})();
+
+// --- no suffix-fragment garbage leaks into output -------------------------
+(function () {
+  const r = eng.translate("my book");
+  check("no '-i' suffix fragment in output", !/\s-/.test(" " + r.bux) && r.bux.indexOf("-i ") === -1, r.bux);
+  // the old bug produced "-i man Kitov"
+  check("possessive is a single inflected word here", r.bux.split(/\s+/).length === 1, r.bux);
+})();
+
 // --- out of coverage: never fabricate -------------------------------------
 (function () {
   const r = eng.translate("quantum chromodynamics supercollider");
