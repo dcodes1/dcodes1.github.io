@@ -550,6 +550,7 @@
   .skill-bar { height: 100%; border-radius: inherit; background: var(--grad); box-shadow: 0 0 12px rgba(34, 211, 138, 0.45); }
 
   .certs-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+  .certs-grid > .cert-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .cert-card {
     padding: 1rem 1.05rem;
     border: 1px solid var(--border);
@@ -1065,7 +1066,7 @@
 <section id="projects">
   <div class="section-header">
     <span class="section-label">// 01</span>
-    <h2 class="section-title">Operations</h2>
+    <h2 class="section-title">Projects</h2>
     <div class="section-line"></div>
   </div>
 
@@ -1107,7 +1108,7 @@
 <section id="skills">
   <div class="section-header">
     <span class="section-label">// 02</span>
-    <h2 class="section-title">Capabilities</h2>
+    <h2 class="section-title">Skills</h2>
     <div class="section-line"></div>
   </div>
 
@@ -1154,11 +1155,6 @@
             <div class="cert-name">Kernel Research</div>
             <div class="cert-issuer">Binary Exploitation</div>
             <div class="cert-status in-progress">⟳ Active</div>
-          </div>
-          <div class="cert-card">
-            <div class="cert-name">CySA+</div>
-            <div class="cert-issuer">CompTIA</div>
-            <div class="cert-status in-progress">⟳ In Progress</div>
           </div>
           <div class="cert-card">
             <div class="cert-name">B.S. Cyber</div>
@@ -1234,10 +1230,10 @@
         </div>
 
         <div class="carousel-card">
-          <div class="carousel-icon">⟳</div>
+          <div class="carousel-icon">✓</div>
           <div class="carousel-cert-name">CySA+</div>
           <div class="carousel-issuer">CompTIA</div>
-          <div class="carousel-status in-progress">In Progress</div>
+          <div class="carousel-status earned">Earned</div>
         </div>
 
         <div class="carousel-card">
@@ -1303,7 +1299,7 @@
 <section id="contact">
   <div class="section-header">
     <span class="section-label">// 05</span>
-    <h2 class="section-title">Establish Comms</h2>
+    <h2 class="section-title">Contact</h2>
     <div class="section-line"></div>
   </div>
 
@@ -1318,11 +1314,6 @@
       <div class="contact-handle">davidgmilov</div>
       <div class="contact-note">Professional network</div>
     </a>
-    <div class="contact-card">
-      <div class="contact-platform">// TryHackMe</div>
-      <div class="contact-handle" style="margin-bottom:0.8rem;">TryHackMe Profile</div>
-      <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=2575342" style="border:none; max-width:100%;"></iframe>
-    </div>
     <a class="contact-card" href="/cdn-cgi/l/email-protection#492d283f202d242025263f7b092e24282025672a2624">
       <div class="contact-platform">// Email</div>
       <div class="contact-handle"><span class="__cf_email__" data-cfemail="6b0f0a1d020f060207041d592b0c060a020745080406">[email&#160;protected]</span></div>
