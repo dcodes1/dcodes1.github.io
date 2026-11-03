@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#06080b">
+<meta name="color-scheme" content="dark">
+<title>Dragon — A Spoiler-Free Reverse-Engineering Case Study · David Milov</title>
+<meta name="description" content="My reverse-engineering workflow on pwnable.kr's Dragon (Rookiss): recon, mapping the binary in Ghidra, and general memory-safety lessons, with no solution or flag.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dragon — A Spoiler-Free Reverse-Engineering Case Study">
+<meta property="og:description" content="Reverse-engineering workflow and memory-safety lessons from pwnable.kr's Dragon, without spoilers.">
+<meta property="og:url" content="https://davidmilov.com/research/dragon/">
+<link rel="canonical" href="https://davidmilov.com/research/dragon/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">DAVID <span>//</span> SEC</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="/translator">Buxori Translator</a></li>
+    <li><a href="/#projects">Projects</a></li>
+    <li><a href="/#skills">Skills</a></li>
+    <li><a href="/#certifications">Certs</a></li>
+    <li><a href="/research/" class="active" aria-current="page">Research</a></li>
+    <li><a href="/#about">Intel</a></li>
+    <li><a href="/#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    OPERATOR ONLINE
+  </div>
+  <a class="nav-cta" href="/translator">◆ Translator</a>
+  <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+</nav>
+
+<main class="page">
+<article class="article">
+  <div class="crumbs"><a href="/">home</a><span>/</span><a href="/research/">research</a><span>/</span><span>dragon</span></div>
+
+  <span class="section-label">// RE CASE STUDY</span>
+  <h1>Dragon — A Spoiler-Free Reverse-Engineering Case Study</h1>
+  <p class="lede">My reverse-engineering workflow on a pwnable.kr binary-exploitation challenge, and the general lessons I took away.</p>
+
+  <div class="article-meta">
+    <span class="hi">pwnable.kr</span>
+    <span>Rookiss</span>
+    <span>Binary exploitation</span>
+    <span>Ghidra / Linux ELF</span>
+    <span>~3 min read</span>
+  </div>
+
+  <div class="notice" role="note">
+    <b>NO SPOILERS</b>
+    <span>This is a learning reflection, not a solution or walkthrough. It deliberately omits the challenge's vulnerability, solution, payload, and flag.</span>
+  </div>
+
+  <div class="prose">
+    <h2 id="introduction">Introduction</h2>
+    <p>Dragon is a binary-exploitation challenge from pwnable.kr's Rookiss category. This article documents my reverse-engineering workflow and the general lessons I took away, without revealing the challenge's vulnerability, solution, payload, or flag. I deliberately omit details that would allow a reader to reconstruct the solve.</p>
+
+    <h2 id="recon">Initial reconnaissance</h2>
+    <p>I began by inspecting the supplied executable with standard Linux tooling. The <code>file</code> command identified a 32-bit, little-endian Intel x86 ELF for Linux. The executable is dynamically linked and retains symbols, making function-level exploration easier in a disassembler. I also used <code>checksec</code> to survey mitigations: my notes recorded NX enabled, a stack canary, partial RELRO, and no PIE.</p>
+
+    <div class="term" aria-label="Recon notes">
+      <div class="term-bar"><i></i><i></i><i></i><em>recon notes · file / checksec</em></div>
+      <div class="term-body">
+        <div><span class="k">format</span>ELF 32-bit LSB · Intel x86 · Linux</div>
+        <div><span class="k">linking</span>dynamic · symbols retained</div>
+        <div><span class="k">NX</span><span class="hi">enabled</span></div>
+        <div><span class="k">canary</span><span class="hi">present</span></div>
+        <div><span class="k">RELRO</span>partial</div>
+        <div><span class="k">PIE</span>no</div>
+      </div>
+    </div>
+
+    <h2 id="strings">From strings to hypotheses</h2>
+    <p>I used <code>strings</code> to identify possible user-facing prompts, imported library functions, and interesting execution paths. Strings are clues rather than proof: the presence of a function name or command-related string does not, by itself, establish exploitability. My next step was to check how those references were used in the actual control flow.</p>
+
+    <h2 id="ghidra">Mapping the program in Ghidra</h2>
+    <p>I loaded the executable into Ghidra and started at <code>main</code>, then followed the calls into the game's menu and combat routines. I mapped which functions accept user input, which ones modify program state, and where the program makes decisions about continuing or ending an interaction. Because the binary retains function symbols, I could organize the investigation around recognizable routines instead of starting entirely from unnamed addresses.</p>
+
+    <h2 id="evaluating">How I evaluated suspicious behavior</h2>
+    <p>I focused on the relationship between state transitions, memory ownership, and later uses of data. For each potentially interesting operation, I asked:</p>
+    <ul>
+      <li>What is the data type?</li>
+      <li>Who allocates or owns the object?</li>
+      <li>Which branches change its state?</li>
+      <li>Does a later operation assume an invariant that earlier code may have invalidated?</li>
+    </ul>
+    <p>I compared decompiled pseudocode against assembly whenever signedness, pointer arithmetic, or call behavior was ambiguous.</p>
+
+    <h2 id="low-level">Why low-level details matter</h2>
+    <p>This exercise reinforced that a C-like decompiler view can hide important distinctions. A narrow integer can behave differently from a wider one; signed and unsigned comparisons have different meanings; and an apparently simple structure access may depend on exact layout and lifetime. Rather than trusting a single decompiler expression, I learned to confirm the underlying instructions and reason about what the CPU actually reads or writes.</p>
+
+    <h2 id="memory-safety">General memory-safety lessons</h2>
+    <p>A useful habit in binary analysis is to trace allocation, mutation, release, and subsequent access as one connected lifecycle. Similarly, when reviewing arithmetic, track both the intended value range and the representation actually used in memory. These are general techniques for identifying classes of implementation mistakes; this article intentionally does not identify which observations, if any, form the solution to Dragon.</p>
+
+    <h2 id="workflow">My workflow going forward</h2>
+    <p>I would repeat this process in a structured order:</p>
+    <ol>
+      <li>Characterize the binary.</li>
+      <li>Inspect its external interfaces.</li>
+      <li>Build a high-level call graph.</li>
+      <li>Document state and ownership.</li>
+      <li>Verify suspicious decompiler output in assembly.</li>
+      <li>Test hypotheses in a debugger.</li>
+      <li>Keep separate notes for observations versus assumptions.</li>
+    </ol>
+    <p>This makes the investigation more reproducible without turning the public article into a walkthrough.</p>
+
+    <h2 id="closing">Closing</h2>
+    <p>The most valuable part of Dragon for me was practicing disciplined reverse engineering: following control flow, validating low-level semantics, and distinguishing a plausible hypothesis from something established by code. I am intentionally withholding challenge-specific findings, exploitation steps, addresses, and artifacts so others can investigate independently.</p>
+
+    <h2 id="publication-note">Publication note</h2>
+    <p>This is a spoiler-free learning reflection, not a solution or walkthrough. pwnable.kr asks participants to refrain from publishing solutions to challenges outside the Toddler's Bottle category, including Rookiss. Readers should consult the site's current rules before sharing challenge-specific material.</p>
+  </div>
+
+  <div class="article-foot">
+    <a class="btn btn-ghost" href="/research/">← All research</a>
+    <a class="btn btn-ghost" href="/research/dragon/Dragon_Writeup.pdf" download>Download PDF</a>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div>© <span id="year">2026</span> David Milov <span class="hi">//</span> Red Team Ops</div>
+  <div>All tools for authorized use only · <span class="hi">ethical hacking</span></div>
+  <div><span class="hi">operator online</span> <span class="cursor" style="width:7px;"></span></div>
+</footer>
+
+<script src="/assets/nav.js"></script>
+</body>
+</html>

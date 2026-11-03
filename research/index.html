@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#06080b">
+<meta name="color-scheme" content="dark">
+<title>Research · David Milov</title>
+<meta name="description" content="Write-ups and case studies on reverse engineering, binary exploitation, and offensive security by David Milov.">
+<link rel="canonical" href="https://davidmilov.com/research/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">DAVID <span>//</span> SEC</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="/translator">Buxori Translator</a></li>
+    <li><a href="/#projects">Projects</a></li>
+    <li><a href="/#skills">Skills</a></li>
+    <li><a href="/#certifications">Certs</a></li>
+    <li><a href="/research/" class="active" aria-current="page">Research</a></li>
+    <li><a href="/#about">Intel</a></li>
+    <li><a href="/#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    OPERATOR ONLINE
+  </div>
+  <a class="nav-cta" href="/translator">◆ Translator</a>
+  <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+</nav>
+
+<main class="page">
+<section id="research">
+  <div class="section-header">
+    <span class="section-label">// RESEARCH</span>
+    <h1 class="section-title">Research</h1>
+    <div class="section-line"></div>
+  </div>
+  <p class="page-intro">Write-ups and case studies from reverse engineering and binary exploitation work. Challenge write-ups are spoiler-free and follow each platform's publishing rules.</p>
+
+  <div class="post-list">
+    <a class="post-card" href="/research/dragon/">
+      <div class="post-kicker"><span class="hi">pwnable.kr · Rookiss</span><span>RE case study</span><span>~3 min read</span></div>
+      <h3>Dragon — A Spoiler-Free Reverse-Engineering Case Study</h3>
+      <p>My workflow on a 32-bit Linux ELF challenge: recon with <code>file</code> and <code>checksec</code>, mapping control flow in Ghidra, verifying decompiler output against assembly, and the general memory-safety lessons I took away. No solution or flag.</p>
+      <div class="project-tags">
+        <span class="tag lang">Ghidra</span>
+        <span class="tag">Binary Exploitation</span>
+        <span class="tag">Linux ELF</span>
+        <span class="tag">x86</span>
+        <span class="tag">Memory Safety</span>
+      </div>
+    </a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div>© <span id="year">2026</span> David Milov <span class="hi">//</span> Red Team Ops</div>
+  <div>All tools for authorized use only · <span class="hi">ethical hacking</span></div>
+  <div><span class="hi">operator online</span> <span class="cursor" style="width:7px;"></span></div>
+</footer>
+
+<script src="/assets/nav.js"></script>
+</body>
+</html>
