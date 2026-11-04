@@ -31,3 +31,4 @@ jobs:
           path: |
             dist/
             translator/eval/sample_predictions.txt
+            translator/eval/metrics.json

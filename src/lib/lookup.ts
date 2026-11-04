@@ -139,10 +139,60 @@ export function createLookup(index: BuxoriIndex) {
 
   /** Conjugated verb → infinitive, via the stems the compiler extracted (meravam → rav → Raftan). */
   function analyzeVerb(word: string): VerbAnalysis[] {
-    const k = canonicalKey(word).replace(/[\s-]/g, '');
+    const tokens = canonicalKey(word).split(/\s+/).filter(Boolean);
+    // Resolve compound preverbs before analyzing their auxiliary.
+    if (tokens.length > 1) {
+      const auxiliaryWord = tokens.at(-1) ?? '';
+      const preverb = tokens.slice(0, -1).join(' ');
+      const auxiliaryAnalyses = analyzeVerb(auxiliaryWord);
+      const compoundAnalyses: VerbAnalysis[] = [];
+      for (const e of Object.values(roots.entries)) {
+        const compound = e.verb?.compound;
+        if (!compound || canonicalKey(compound.preverb) !== preverb) continue;
+        for (const a of auxiliaryAnalyses) if (a.root.id === compound.auxiliary) {
+          compoundAnalyses.push({ ...a, root: e });
+        }
+      }
+      if (compoundAnalyses.length) return compoundAnalyses;
+      // Only the source-documented past participle + bud construction.
+      if (tokens.length === 2 && preverb.endsWith('a')) {
+        const past = preverb.slice(0, -1);
+        const out: VerbAnalysis[] = [];
+        for (const a of auxiliaryAnalyses) {
+          if (canonicalKey(a.root.lemma.text) !== 'budan' || a.stem !== 'past' || !a.ending) continue;
+          for (const st of roots.byStem[past] ?? []) if (st.stem === 'past') {
+            out.push({ ...a, root: root(st.root), stemText: past, tense: 'past_perfect' });
+          }
+        }
+        return out;
+      }
+      return [];
+    }
+    const k = (tokens[0] ?? '').replace(/-/g, '');
     const endings = Object.values(affixes.entries).filter((a) => a.category === 'person_ending');
     const out: VerbAnalysis[] = [];
     const seen = new Set<string>();
+    // Present continuous uses infinitive minus three letters + -sod- + ending
+    // (the TSV's cont.sod rule), not the ordinary present stem.
+    for (const e of Object.values(roots.entries)) {
+      if (!e.verb || e.verb.compound) continue;
+      const inf = canonicalKey(e.verb.infinitive.text);
+      if (!inf.endsWith('an')) continue;
+      const stem = inf.slice(0, -3);
+      for (const ending of endings) {
+        if (endingTense.get(ending.id) !== 'present_continuous') continue;
+        for (const al of ending.allomorphs) {
+          const suffix = affixForm(al.form);
+          for (const prefix of ['', 'na']) if (k === prefix + stem + 'sod' + suffix) {
+            const identity = e.id + '|' + ending.id + '|' + prefix;
+            if (seen.has(identity)) continue;
+            seen.add(identity);
+            out.push({ root: e, stem: 'present', stemText: stem,
+              prefixes: prefix ? [prefix] : [], ending, tense: 'present_continuous' });
+          }
+        }
+      }
+    }
     for (const prefixes of VERB_PREFIXES) {
       const p = prefixes.join('');
       if (!k.startsWith(p)) continue;

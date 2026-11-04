@@ -1,14 +1,9 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-
-// NOTE: the repo root index.html is the live portfolio, served as-is by GitHub
-// Pages. The React translator app will get its own HTML entry when the UI is
-// built, so `vite build` never replaces the portfolio.
+import { resolve } from 'node:path';
 export default defineConfig({
   plugins: [react()],
-  test: {
-    include: ['tests/**/*.test.ts'],
-    environment: 'node',
-  },
+  build: { rollupOptions: { input: { portfolio: resolve('index.html'), translator: resolve('translator/index.html') } } },
+  test: { include: ['tests/**/*.test.ts'], environment: 'node' },
 });

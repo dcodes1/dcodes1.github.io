@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit -p .",
     "check": "npm run typecheck && npm run compile && npm test",
     "dev": "vite",
-    "build": "vite build"
+    "build": "npm run compile && vite build && node scripts/build-site.mjs"
   },
   "dependencies": {
     "react": "19.2.9",

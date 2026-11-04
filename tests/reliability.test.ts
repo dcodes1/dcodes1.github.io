@@ -37,3 +37,17 @@ test('verb analysis preserves ending ambiguity', () => {
     expect(analyses.length).toBeGreaterThan(0);
   }
 });
+
+test('compound verbs analyze their auxiliary without losing the preverb', () => {
+  const index = JSON.parse(readFileSync(new URL('../src/data/buxori-index.json', import.meta.url), 'utf8')) as BuxoriIndex;
+  const lookup = createLookup(index);
+  expect(lookup.analyzeVerb('zindagi mekunam').some(a => a.root.verb?.compound?.preverb === 'zindagi')).toBe(true);
+  expect(lookup.analyzeVerb('zzxx mekunam')).toEqual([]);
+});
+test('duplicate copula rules retain all provenance in one semantic rule', () => {
+  const index = JSON.parse(readFileSync(new URL('../src/data/buxori-index.json', import.meta.url), 'utf8')) as BuxoriIndex;
+  const copulas = index.syntaxRules.filter(r => r.kind === 'copula');
+  const signatures = copulas.map(r => JSON.stringify([r.affirmative,r.negative,r.spoken,r.register]));
+  expect(new Set(signatures).size).toBe(signatures.length);
+  expect(copulas.some(r => r.sources.length > 1)).toBe(true);
+});
