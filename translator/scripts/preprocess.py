@@ -400,15 +400,22 @@ def train_ibm1(pairs: list[dict], iterations: int = 20) -> dict:
     eng_vocab = set()
     for e_toks, _ in bitext:
         eng_vocab.update(e_toks)
-    for e in eng_vocab:
+    for e in sorted(eng_vocab):
         if e in STOP:
             continue
-        best_b, best_p = None, 0.0
-        for b in cooc[e]:
-            p = t[b][e]
-            if p > best_p:
-                best_p, best_b = p, b
-        if (best_b and not best_b.startswith("-") and best_p >= 0.45
+        # Deterministic argmax. cooc[e] is filled from Python sets, whose order
+        # depends on the per-process hash seed, so an exact probability tie used
+        # to be broken differently on each run (e.g. "brothers" -> "uka" or
+        # "akayu", the two halves of "akayu uka"). A tie means the data cannot
+        # tell the candidates apart, so the word is not learned at all.
+        ranked = sorted(cooc[e], key=lambda b: (-round(t[b][e], 9), -cooc[e][b], b))
+        if not ranked:
+            continue
+        best_b = ranked[0]
+        best_p = t[best_b][e]
+        if len(ranked) > 1 and round(t[ranked[1]][e], 9) == round(best_p, 9):
+            continue
+        if (not best_b.startswith("-") and best_p >= 0.45
                 and cooc[e][best_b] >= 2):
             learned[e] = {"bux": best_b, "p": round(best_p, 3), "n": cooc[e][best_b]}
     return learned
