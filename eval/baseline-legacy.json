@@ -1,0 +1,1652 @@
+{
+ "report": {
+  "engine": "legacy engine.js (index_train.json)",
+  "items": 270,
+  "answered": 126,
+  "correct": 11,
+  "accuracy": 0.041,
+  "precision": 0.087,
+  "chrfAnswered": 0.331,
+  "chrfAll": 0.154,
+  "byStatus": {
+   "grammar": {
+    "n": 67,
+    "correct": 9
+   },
+   "none": {
+    "n": 144,
+    "correct": 0
+   },
+   "compositional": {
+    "n": 58,
+    "correct": 2
+   },
+   "fuzzy": {
+    "n": 1,
+    "correct": 0
+   }
+  }
+ },
+ "predictions": [
+  {
+   "en": "I took",
+   "bux": "Man giriftam",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "three",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "eighty",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "three hundred",
+   "bux": "seta sad",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "thousand",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "How much money do you have?",
+   "bux": "Chand shohel tu doram mekunad?",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "one third (1/3)",
+   "bux": "Yak seyum",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "three quarters (3/4)",
+   "bux": "seta",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "fifth",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Saturday",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "October",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "November",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "July",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "in the evening",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "today is Saturday",
+   "bux": "Imrüz shabot",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "grandfather",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "cousins through fathers",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "teacher",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "book",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "my",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Their father",
+   "bux": "Padarashon",
+   "status": "grammar",
+   "ok": true
+  },
+  {
+   "en": "Their father",
+   "bux": "Padarashon",
+   "status": "grammar",
+   "ok": true
+  },
+  {
+   "en": "their father",
+   "bux": "Padarashon",
+   "status": "grammar",
+   "ok": true
+  },
+  {
+   "en": "her mother-in-law",
+   "bux": "Modar ba Din",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "our grandfather",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "books",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "their father",
+   "bux": "Padarashon",
+   "status": "grammar",
+   "ok": true
+  },
+  {
+   "en": "Good evening!",
+   "bux": "Naghz",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "Are you all right? (polite)",
+   "bux": "Tu?",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "Feel well!; be healthy! (polite)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "I know",
+   "bux": "Man medonam",
+   "status": "grammar",
+   "ok": true
+  },
+  {
+   "en": "He/she doesn't know",
+   "bux": "Ü ü namedonad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "Congratulations! I'm glad to see you.",
+   "bux": "Man xursandam Didan Tu",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "July",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "October",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "November",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "long ago",
+   "bux": "Peshi daroz",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "last name",
+   "bux": "Nom",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "warm; hot",
+   "bux": "garm",
+   "status": "compositional",
+   "ok": true
+  },
+  {
+   "en": "come! (sing.)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "come! (polite)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "come! (pl.)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "be! (sing.)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "be! (polite)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "be! (pl.)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Tonight our evening has no morning; soul mate is not aware about my love.",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "lettuce",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "They go",
+   "bux": "Inho meravand",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "You (sing.) become",
+   "bux": "Tu meshavi",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "You (polite) become",
+   "bux": "Tu meshavi",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "You (plural) become",
+   "bux": "Tu meshavi",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "I don't have",
+   "bux": "Man nadoram",
+   "status": "grammar",
+   "ok": true
+  },
+  {
+   "en": "They have",
+   "bux": "Inho dorand",
+   "status": "grammar",
+   "ok": true
+  },
+  {
+   "en": "They don't come",
+   "bux": "Inho namebiyoyand",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "They don't become",
+   "bux": "Inho nameshavand",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "How much money do you have? (polite)",
+   "bux": "Chand shohel tu doram mekunad?",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "one apple",
+   "bux": "Yak sev",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "two pomegranates",
+   "bux": "Du anor",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she has six books.",
+   "bux": "Ü ü shish kitov dorad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "question",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "great-great grandson",
+   "bux": "'Avera",
+   "status": "fuzzy",
+   "ok": false
+  },
+  {
+   "en": "where?",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "where is?",
+   "bux": "Kujo?",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "to be",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "We didn't give",
+   "bux": "Mo nametiyem",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "I went",
+   "bux": "Man raftam",
+   "status": "grammar",
+   "ok": true
+  },
+  {
+   "en": "For whom did you bring it?",
+   "bux": "Baroyi ki tu mekunad?",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "Hey, Mr. Hisqiyo, hello! How are you? I didn't see you for two years.",
+   "bux": "Hisqiyo sholüm Chitüyed? Man Tu baroyi du shudam",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "religious school",
+   "bux": "Doti Maktav",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "garden",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "dust",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "pillow",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "glasses",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "down",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "near",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "tea",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "hand",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "phone",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "memory",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "they don't work",
+   "bux": "Inho kor namekunand",
+   "status": "grammar",
+   "ok": true
+  },
+  {
+   "en": "because",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "I will go to work after 2 hours.",
+   "bux": "Man ba kor ba'di meravam",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "thing",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "holiday",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Happy holiday!",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "to suffer; to worry",
+   "bux": "Ba Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to invite",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to taste",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "He/she is going",
+   "bux": "Ü ü meravad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she is going",
+   "bux": "Ü ü meravad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "We are going",
+   "bux": "Mo meravem",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "We are going",
+   "bux": "Mo meravem",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He is talking",
+   "bux": "Ü gap mezanad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "TV",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Good Saturday!",
+   "bux": "Shaboti naghz",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "Good Saturday, Mrs. Mazol! Welcome! How are you?",
+   "bux": "Naghz shabot apa Mazol Chitüyed?",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "knitted downy shawl",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "handkerchief",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "shirt; women's dress",
+   "bux": "kurta kurti",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "slippers",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "collar",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "diadem",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "net bracelet",
+   "bux": "Dastpona",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "silver",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "shoemaker",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "fisherman",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "magician",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "May you enjoy it!",
+   "bux": "May Tu",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "What the watchmaker does",
+   "bux": "So'atsoz chi mekunad?",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "What the launderer does",
+   "bux": "Jomshigar chi mekunad?",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "I used to watch this movie",
+   "bux": "Man ba in kino",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "You used to go",
+   "bux": "Tu ba meravi",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "You used to go (polite)",
+   "bux": "Tu ba meravi",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "The jeweler knows the value of the gold.",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "The bride is from Bukhara. I don't know their in-laws. People say that they are very rich.",
+   "bux": "Kalo Az Man namedonam ba qudo Mardum Ki Inho bisyor Boy",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "together",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "human",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "noble person",
+   "bux": "odamshavanda Kas",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "aristocrat",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "left",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "mouth",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "gum",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "skin",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "razor",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "stubborn",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "lazy",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "cheeky",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "to become angry",
+   "bux": "Shudan",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to kiss",
+   "bux": "Ba Muchi",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "call (somebody)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "His head is bald.",
+   "bux": "ü Sar",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "He/she was a pleasant talker, devoted to relatives and hospitable.",
+   "bux": "Ü ü ba hesho-tavor va bud",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "You hadn't said",
+   "bux": "Tu nagufta gufti",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "You hadn't said (polite)",
+   "bux": "Tu nagufta gufti",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "You (pl.) hadn't said",
+   "bux": "Tu nagufta gufti",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "I had said",
+   "bux": "Man gufta doshtam",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "We had said",
+   "bux": "Mo gufta doshtem",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "An honest work is not a shame!",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "revolution",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "factory",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "older and younger brothers",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "now",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "dog",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "hen; chicken",
+   "bux": "Chuja",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "duck",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "fish",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "flea",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "leather",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "down (feathers)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "island",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "natural life",
+   "bux": "'Umr",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "mill-cake",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "corn",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "patience",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "hunter",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "ax",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "pincers; tongs",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "to weigh",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to run",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to move",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to peck",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "He/she has gone/been",
+   "bux": "Ü ü rafta dorad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she has gone/been",
+   "bux": "Ü ü rafta dorad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "I have excused.",
+   "bux": "Man doram",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "Your daughter has come.",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "You had told me yourself.",
+   "bux": "Tu manba xudaton doshti",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "eating; meal",
+   "bux": "sa'udo",
+   "status": "compositional",
+   "ok": true
+  },
+  {
+   "en": "hard-boiled egg",
+   "bux": "Saxt Besim",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "Saturday's pilaf",
+   "bux": "Palov",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "a meal of rice, chick-peas and mung beans",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "a dish from leg bones",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "acrid soup",
+   "bux": "Shürbo",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "cream",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "rice",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "sugar",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "vinegar",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "saltcellar",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "so much",
+   "bux": "Ziyod",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "approximately",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "steam",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "sorrow; fury",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "smoke",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "to invite",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to get turned upside-down",
+   "bux": "Ba shudan chapa",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to pick",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to fire; to light",
+   "bux": "Ba Ba Chirogh",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to become warm",
+   "bux": "Shudan",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to raise",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "find and give",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "The man who left the house was my father.",
+   "bux": "Mard Ki? xoni Padaram",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "An empty sack will not stand straight.",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Land of Israel",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "fun",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "joke",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "chess",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "castle; rook",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "gambling",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "fighting",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "duet",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "tambourine; frame drum",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "nations",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "enemy of Jews",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Christian",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Russian",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Indian",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Samarkand",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Bukhara",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "I failed; I lost.",
+   "bux": "Man Man gum",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "I became happy.",
+   "bux": "Man",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "healer",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "ointment",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "filth",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "wound; abscess",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "skin disease",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "harm; injury",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "stutterer",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "scandalous person; dirty person",
+   "bux": "Kas Chirkin Kas",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to hurt",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to lose memory",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "I'm anxious.",
+   "bux": "man",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "I feel sudden pain in my spine.",
+   "bux": "Man",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "G-d forbid!",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "he/she must have gone",
+   "bux": "Ü ü boyad rafta dorad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "he/she had to go/should have gone",
+   "bux": "Ü ü ba boyad doram rafta dosht",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "publishing house",
+   "bux": "xoni",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "part; volume (of a book)",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "introduction; foreword",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "sentence",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "exercise",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "briefly",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "as if",
+   "bux": "Borin Agar",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "until now",
+   "bux": "to hozir",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "abuse; insult",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "history",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "to explain",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to multiply",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "He tells us from somebody's words.",
+   "bux": "Ü",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "saltcellar",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "magician",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "skillful",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "polite",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "fearless",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "act of visiting each other",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "devil",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "Torah",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "memorial candle or lamp",
+   "bux": "Sham' Yo Lampa",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "orphan",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "polite",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "to die",
+   "bux": "Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "He/she died in his/her sleep.",
+   "bux": "Ü ü ba ü manuho meyovad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "May peace fall upon the land of Israel, may there be no wars between the kings, may we not see any sorrows, may we get to Israel and live there!",
+   "bux": "May Sholümi Isroel May Unsun Ne May Mo Nest Yagon May Mo shudan Ba Isroel Va Unsun",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "He/she has megalomania.",
+   "bux": "Ü ü dorad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "In another lifetime.",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "He/she has euphoria.",
+   "bux": "Ü ü dorad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she is saying an untruth.",
+   "bux": "Ü ü megüyad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she is deaf in one ear and stupid as a donkey in the other.",
+   "bux": "Ü ü ba yak güsh va bema'ne borin xar ba digar",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she is a burden.",
+   "bux": "Ü ü",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she is mischievous and stubborn.",
+   "bux": "Ü ü",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she is good for nothing.",
+   "bux": "Ü ü naghz baroyi",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she is unconscionable; an unconcerned person.",
+   "bux": "Ü ü kas",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she has a smile on the face, but holds a knife behind the back.",
+   "bux": "Ü ü xanda boli rü lekin kord aqiv dorad",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "He/she is gluttonous.",
+   "bux": "Ü ü",
+   "status": "grammar",
+   "ok": false
+  },
+  {
+   "en": "May you have many children!",
+   "bux": "May Tu dori chandta",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "May G-d return your good deeds to you!",
+   "bux": "May xudo Naghz Ba Tu",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "To everybody's joy!",
+   "bux": "Ba simhoyi",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "May G-d give you a long life! (condolence)",
+   "bux": "May xudo Tu Daroz 'Umr",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "Happy New Year!",
+   "bux": "Rüsh Hashono",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "Bon appetit!",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  },
+  {
+   "en": "to come out; to leave",
+   "bux": "Omadan Ba",
+   "status": "compositional",
+   "ok": false
+  },
+  {
+   "en": "to collect; to pick up",
+   "bux": null,
+   "status": "none",
+   "ok": false
+  }
+ ]
+}

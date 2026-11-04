@@ -1,0 +1,2774 @@
+{
+ "description": "FROZEN held-out evaluation set. Do not regenerate. 270 English->Buxori pairs from the 2026-11 group split (seed 1337; groups joined by shared English key or shared Buxori form, so no near-duplicate leaks into training). Each item lists the TSV rows it comes from; the evaluator compiles an index WITHOUT these rows, so the engine has never seen them. A prediction is correct if it equals any attested Buxori form for that English key (refs).",
+ "rowNumbering": "1-based TSV line numbers (header = line 1), as in scripts/lib/tsv.ts",
+ "items": [
+  {
+   "en": "I took",
+   "type": "example",
+   "rows": [
+    11
+   ],
+   "refs": [
+    "ġiriftam"
+   ]
+  },
+  {
+   "en": "three",
+   "type": "vocab",
+   "rows": [
+    19
+   ],
+   "refs": [
+    "se"
+   ]
+  },
+  {
+   "en": "eighty",
+   "type": "vocab",
+   "rows": [
+    44
+   ],
+   "refs": [
+    "hashtod"
+   ]
+  },
+  {
+   "en": "three hundred",
+   "type": "vocab",
+   "rows": [
+    48
+   ],
+   "refs": [
+    "sesad"
+   ]
+  },
+  {
+   "en": "thousand",
+   "type": "vocab",
+   "rows": [
+    55
+   ],
+   "refs": [
+    "hazor"
+   ]
+  },
+  {
+   "en": "How much money do you have?",
+   "type": "phrase",
+   "rows": [
+    77
+   ],
+   "refs": [
+    "Chand pul dored?",
+    "Shumo chand pul dored?"
+   ]
+  },
+  {
+   "en": "one third (1/3)",
+   "type": "vocab",
+   "rows": [
+    79
+   ],
+   "refs": [
+    "seyak"
+   ]
+  },
+  {
+   "en": "three quarters (3/4)",
+   "type": "vocab",
+   "rows": [
+    81
+   ],
+   "refs": [
+    "az chor se"
+   ]
+  },
+  {
+   "en": "fifth",
+   "type": "vocab",
+   "rows": [
+    87
+   ],
+   "refs": [
+    "panjum"
+   ]
+  },
+  {
+   "en": "Saturday",
+   "type": "vocab",
+   "rows": [
+    97,
+    140
+   ],
+   "refs": [
+    "Shabot"
+   ]
+  },
+  {
+   "en": "October",
+   "type": "vocab",
+   "rows": [
+    99
+   ],
+   "refs": [
+    "Heshvan",
+    "Oktyabr"
+   ]
+  },
+  {
+   "en": "November",
+   "type": "vocab",
+   "rows": [
+    100
+   ],
+   "refs": [
+    "Kislev",
+    "Noyabr"
+   ]
+  },
+  {
+   "en": "July",
+   "type": "vocab",
+   "rows": [
+    108
+   ],
+   "refs": [
+    "Ov",
+    "Iyul"
+   ]
+  },
+  {
+   "en": "in the evening",
+   "type": "vocab",
+   "rows": [
+    116
+   ],
+   "refs": [
+    "Namozigar"
+   ]
+  },
+  {
+   "en": "today is Saturday",
+   "type": "phrase",
+   "rows": [
+    129
+   ],
+   "refs": [
+    "Imrüz rüzi shabot"
+   ]
+  },
+  {
+   "en": "grandfather",
+   "type": "vocab",
+   "rows": [
+    153
+   ],
+   "refs": [
+    "Bovo"
+   ]
+  },
+  {
+   "en": "cousins through fathers",
+   "type": "vocab",
+   "rows": [
+    177
+   ],
+   "refs": [
+    "'Amakbacha"
+   ]
+  },
+  {
+   "en": "teacher",
+   "type": "vocab",
+   "rows": [
+    182
+   ],
+   "refs": [
+    "Xalfa"
+   ]
+  },
+  {
+   "en": "book",
+   "type": "vocab",
+   "rows": [
+    184
+   ],
+   "refs": [
+    "Kitov"
+   ]
+  },
+  {
+   "en": "my",
+   "type": "vocab",
+   "rows": [
+    192
+   ],
+   "refs": [
+    "-i man"
+   ]
+  },
+  {
+   "en": "Their father",
+   "type": "example",
+   "rows": [
+    211
+   ],
+   "refs": [
+    "dadi inho",
+    "dadayi inho",
+    "Padarashon",
+    "dadeshon"
+   ]
+  },
+  {
+   "en": "Their father",
+   "type": "example",
+   "rows": [
+    215
+   ],
+   "refs": [
+    "dadi inho",
+    "dadayi inho",
+    "Padarashon",
+    "dadeshon"
+   ]
+  },
+  {
+   "en": "their father",
+   "type": "example",
+   "rows": [
+    221
+   ],
+   "refs": [
+    "dadi inho",
+    "dadayi inho",
+    "Padarashon",
+    "dadeshon"
+   ]
+  },
+  {
+   "en": "her mother-in-law",
+   "type": "example",
+   "rows": [
+    243
+   ],
+   "refs": [
+    "Modarshüsh"
+   ]
+  },
+  {
+   "en": "our grandfather",
+   "type": "example",
+   "rows": [
+    255
+   ],
+   "refs": [
+    "Bovomo"
+   ]
+  },
+  {
+   "en": "books",
+   "type": "example",
+   "rows": [
+    296
+   ],
+   "refs": [
+    "kitovho"
+   ]
+  },
+  {
+   "en": "their father",
+   "type": "example",
+   "rows": [
+    347
+   ],
+   "refs": [
+    "dadi inho",
+    "dadayi inho",
+    "Padarashon",
+    "dadeshon"
+   ]
+  },
+  {
+   "en": "Good evening!",
+   "type": "phrase",
+   "rows": [
+    355
+   ],
+   "refs": [
+    "Ramsho tüvo!"
+   ]
+  },
+  {
+   "en": "Are you all right? (polite)",
+   "type": "phrase",
+   "rows": [
+    357
+   ],
+   "refs": [
+    "Naghzed?"
+   ]
+  },
+  {
+   "en": "Feel well!; be healthy! (polite)",
+   "type": "phrase",
+   "rows": [
+    373
+   ],
+   "refs": [
+    "Sihat boshed!"
+   ]
+  },
+  {
+   "en": "I know",
+   "type": "example",
+   "rows": [
+    418
+   ],
+   "refs": [
+    "Man medonam"
+   ]
+  },
+  {
+   "en": "He/she doesn't know",
+   "type": "example",
+   "rows": [
+    442
+   ],
+   "refs": [
+    "Ü namedonad"
+   ]
+  },
+  {
+   "en": "Congratulations! I'm glad to see you.",
+   "type": "phrase",
+   "rows": [
+    479
+   ],
+   "refs": [
+    "Mazoltüv! Man xursandam, ki shumoya didam."
+   ]
+  },
+  {
+   "en": "July",
+   "type": "vocab",
+   "rows": [
+    498
+   ],
+   "refs": [
+    "Ov",
+    "Iyul"
+   ]
+  },
+  {
+   "en": "October",
+   "type": "vocab",
+   "rows": [
+    501
+   ],
+   "refs": [
+    "Heshvan",
+    "Oktyabr"
+   ]
+  },
+  {
+   "en": "November",
+   "type": "vocab",
+   "rows": [
+    502
+   ],
+   "refs": [
+    "Kislev",
+    "Noyabr"
+   ]
+  },
+  {
+   "en": "long ago",
+   "type": "vocab",
+   "rows": [
+    505
+   ],
+   "refs": [
+    "Kayho"
+   ]
+  },
+  {
+   "en": "last name",
+   "type": "vocab",
+   "rows": [
+    515
+   ],
+   "refs": [
+    "Familiya"
+   ]
+  },
+  {
+   "en": "warm; hot",
+   "type": "vocab",
+   "rows": [
+    521
+   ],
+   "refs": [
+    "Garm"
+   ]
+  },
+  {
+   "en": "come! (sing.)",
+   "type": "example",
+   "rows": [
+    565
+   ],
+   "refs": [
+    "biyo",
+    "bed",
+    "beton"
+   ]
+  },
+  {
+   "en": "come! (polite)",
+   "type": "example",
+   "rows": [
+    566
+   ],
+   "refs": [
+    "biyo",
+    "bed",
+    "beton"
+   ]
+  },
+  {
+   "en": "come! (pl.)",
+   "type": "example",
+   "rows": [
+    567
+   ],
+   "refs": [
+    "biyo",
+    "bed",
+    "beton"
+   ]
+  },
+  {
+   "en": "be! (sing.)",
+   "type": "example",
+   "rows": [
+    571
+   ],
+   "refs": [
+    "shov",
+    "shaved",
+    "shaveton"
+   ]
+  },
+  {
+   "en": "be! (polite)",
+   "type": "example",
+   "rows": [
+    572
+   ],
+   "refs": [
+    "shov",
+    "shaved",
+    "shaveton"
+   ]
+  },
+  {
+   "en": "be! (pl.)",
+   "type": "example",
+   "rows": [
+    573
+   ],
+   "refs": [
+    "shov",
+    "shaved",
+    "shaveton"
+   ]
+  },
+  {
+   "en": "Tonight our evening has no morning; soul mate is not aware about my love.",
+   "type": "proverb",
+   "rows": [
+    616
+   ],
+   "refs": [
+    "Imshav shavi mo sahar nadorad; Yor az dili man xabar nadorad."
+   ]
+  },
+  {
+   "en": "lettuce",
+   "type": "vocab",
+   "rows": [
+    642
+   ],
+   "refs": [
+    "Kohu"
+   ]
+  },
+  {
+   "en": "They go",
+   "type": "example",
+   "rows": [
+    695
+   ],
+   "refs": [
+    "inho merun"
+   ]
+  },
+  {
+   "en": "You (sing.) become",
+   "type": "example",
+   "rows": [
+    703
+   ],
+   "refs": [
+    "tu meshi",
+    "shumo meshed",
+    "shumo mesheton"
+   ]
+  },
+  {
+   "en": "You (polite) become",
+   "type": "example",
+   "rows": [
+    704
+   ],
+   "refs": [
+    "tu meshi",
+    "shumo meshed",
+    "shumo mesheton"
+   ]
+  },
+  {
+   "en": "You (plural) become",
+   "type": "example",
+   "rows": [
+    707
+   ],
+   "refs": [
+    "tu meshi",
+    "shumo meshed",
+    "shumo mesheton"
+   ]
+  },
+  {
+   "en": "I don't have",
+   "type": "example",
+   "rows": [
+    721
+   ],
+   "refs": [
+    "Man nadoram"
+   ]
+  },
+  {
+   "en": "They have",
+   "type": "example",
+   "rows": [
+    734
+   ],
+   "refs": [
+    "Inho dorand"
+   ]
+  },
+  {
+   "en": "They don't come",
+   "type": "example",
+   "rows": [
+    741
+   ],
+   "refs": [
+    "inho namebiyon"
+   ]
+  },
+  {
+   "en": "They don't become",
+   "type": "example",
+   "rows": [
+    749
+   ],
+   "refs": [
+    "inho nameshun"
+   ]
+  },
+  {
+   "en": "How much money do you have? (polite)",
+   "type": "phrase",
+   "rows": [
+    765
+   ],
+   "refs": [
+    "Chand pul dored?",
+    "Shumo chand pul dored?"
+   ]
+  },
+  {
+   "en": "one apple",
+   "type": "example",
+   "rows": [
+    775
+   ],
+   "refs": [
+    "Yakta sev"
+   ]
+  },
+  {
+   "en": "two pomegranates",
+   "type": "example",
+   "rows": [
+    776
+   ],
+   "refs": [
+    "Duta anor"
+   ]
+  },
+  {
+   "en": "He/she has six books.",
+   "type": "phrase",
+   "rows": [
+    785
+   ],
+   "refs": [
+    "Ü shishta kitov dorad"
+   ]
+  },
+  {
+   "en": "question",
+   "type": "vocab",
+   "rows": [
+    803
+   ],
+   "refs": [
+    "Savol"
+   ]
+  },
+  {
+   "en": "great-great grandson",
+   "type": "vocab",
+   "rows": [
+    826
+   ],
+   "refs": [
+    "Farnavera"
+   ]
+  },
+  {
+   "en": "where?",
+   "type": "vocab",
+   "rows": [
+    836
+   ],
+   "refs": [
+    "Kujo"
+   ]
+  },
+  {
+   "en": "where is?",
+   "type": "vocab",
+   "rows": [
+    845
+   ],
+   "refs": [
+    "Kani?"
+   ]
+  },
+  {
+   "en": "to be",
+   "type": "vocab",
+   "rows": [
+    846,
+    3487
+   ],
+   "refs": [
+    "Budan"
+   ]
+  },
+  {
+   "en": "We didn't give",
+   "type": "example",
+   "rows": [
+    882
+   ],
+   "refs": [
+    "Mo nadodem"
+   ]
+  },
+  {
+   "en": "I went",
+   "type": "example",
+   "rows": [
+    892
+   ],
+   "refs": [
+    "Man raftam"
+   ]
+  },
+  {
+   "en": "For whom did you bring it?",
+   "type": "phrase",
+   "rows": [
+    912
+   ],
+   "refs": [
+    "Ina baroyi ki ovarded?"
+   ]
+  },
+  {
+   "en": "Hey, Mr. Hisqiyo, hello! How are you? I didn't see you for two years.",
+   "type": "phrase",
+   "rows": [
+    924
+   ],
+   "refs": [
+    "Ha, mulo Hiskiyo, sholüm! Chitüyet? Ma shumoya du sol nadidam."
+   ]
+  },
+  {
+   "en": "religious school",
+   "type": "vocab",
+   "rows": [
+    963
+   ],
+   "refs": [
+    "Yashivo"
+   ]
+  },
+  {
+   "en": "garden",
+   "type": "vocab",
+   "rows": [
+    973
+   ],
+   "refs": [
+    "Bogh"
+   ]
+  },
+  {
+   "en": "dust",
+   "type": "vocab",
+   "rows": [
+    981
+   ],
+   "refs": [
+    "Chang"
+   ]
+  },
+  {
+   "en": "pillow",
+   "type": "vocab",
+   "rows": [
+    994
+   ],
+   "refs": [
+    "Bolisht"
+   ]
+  },
+  {
+   "en": "glasses",
+   "type": "vocab",
+   "rows": [
+    1000
+   ],
+   "refs": [
+    "'Aynak"
+   ]
+  },
+  {
+   "en": "down",
+   "type": "vocab",
+   "rows": [
+    1027
+   ],
+   "refs": [
+    "Poyon",
+    "Qu"
+   ]
+  },
+  {
+   "en": "near",
+   "type": "vocab",
+   "rows": [
+    1031
+   ],
+   "refs": [
+    "Yon"
+   ]
+  },
+  {
+   "en": "tea",
+   "type": "vocab",
+   "rows": [
+    1036,
+    2250
+   ],
+   "refs": [
+    "Choy"
+   ]
+  },
+  {
+   "en": "hand",
+   "type": "vocab",
+   "rows": [
+    1038,
+    1597,
+    1658
+   ],
+   "refs": [
+    "Dast"
+   ]
+  },
+  {
+   "en": "phone",
+   "type": "vocab",
+   "rows": [
+    1044
+   ],
+   "refs": [
+    "Telefon"
+   ]
+  },
+  {
+   "en": "memory",
+   "type": "vocab",
+   "rows": [
+    1047
+   ],
+   "refs": [
+    "Yod"
+   ]
+  },
+  {
+   "en": "they don't work",
+   "type": "example",
+   "rows": [
+    1076
+   ],
+   "refs": [
+    "Inho kor namekunand"
+   ]
+  },
+  {
+   "en": "because",
+   "type": "vocab",
+   "rows": [
+    1104
+   ],
+   "refs": [
+    "Azbaski"
+   ]
+  },
+  {
+   "en": "I will go to work after 2 hours.",
+   "type": "phrase",
+   "rows": [
+    1135
+   ],
+   "refs": [
+    "Man ba kor ba'di du so'at merum."
+   ]
+  },
+  {
+   "en": "thing",
+   "type": "vocab",
+   "rows": [
+    1136
+   ],
+   "refs": [
+    "chiz"
+   ]
+  },
+  {
+   "en": "holiday",
+   "type": "vocab",
+   "rows": [
+    1167
+   ],
+   "refs": [
+    "Mo'ed"
+   ]
+  },
+  {
+   "en": "Happy holiday!",
+   "type": "phrase",
+   "rows": [
+    1203
+   ],
+   "refs": [
+    "Nisim morak!"
+   ]
+  },
+  {
+   "en": "to suffer; to worry",
+   "type": "vocab",
+   "rows": [
+    1208
+   ],
+   "refs": [
+    "Gham xürdan"
+   ]
+  },
+  {
+   "en": "to invite",
+   "type": "vocab",
+   "rows": [
+    1210
+   ],
+   "refs": [
+    "Taklif kardan",
+    "Kas mondan"
+   ]
+  },
+  {
+   "en": "to taste",
+   "type": "vocab",
+   "rows": [
+    1213,
+    2366
+   ],
+   "refs": [
+    "Maza didan"
+   ]
+  },
+  {
+   "en": "He/she is going",
+   "type": "example",
+   "rows": [
+    1225
+   ],
+   "refs": [
+    "Ü rafsode",
+    "Ü rafta istodaast"
+   ]
+  },
+  {
+   "en": "He/she is going",
+   "type": "example",
+   "rows": [
+    1236
+   ],
+   "refs": [
+    "Ü rafsode",
+    "Ü rafta istodaast"
+   ]
+  },
+  {
+   "en": "We are going",
+   "type": "example",
+   "rows": [
+    1237
+   ],
+   "refs": [
+    "Mo rafta istodayem",
+    "Mo rafsodim"
+   ]
+  },
+  {
+   "en": "We are going",
+   "type": "example",
+   "rows": [
+    1240
+   ],
+   "refs": [
+    "Mo rafta istodayem",
+    "Mo rafsodim"
+   ]
+  },
+  {
+   "en": "He is talking",
+   "type": "example",
+   "rows": [
+    1259
+   ],
+   "refs": [
+    "Ü gap zasode"
+   ]
+  },
+  {
+   "en": "TV",
+   "type": "vocab",
+   "rows": [
+    1272
+   ],
+   "refs": [
+    "televizor"
+   ]
+  },
+  {
+   "en": "Good Saturday!",
+   "type": "phrase",
+   "rows": [
+    1282
+   ],
+   "refs": [
+    "Shabot sholüm!"
+   ]
+  },
+  {
+   "en": "Good Saturday, Mrs. Mazol! Welcome! How are you?",
+   "type": "phrase",
+   "rows": [
+    1283
+   ],
+   "refs": [
+    "Shabot Sholüm, apa Mazol! Bet, bet boli chashm! Naghzet? Chitüyet?"
+   ]
+  },
+  {
+   "en": "knitted downy shawl",
+   "type": "vocab",
+   "rows": [
+    1327
+   ],
+   "refs": [
+    "Rüymoli pati asil"
+   ]
+  },
+  {
+   "en": "handkerchief",
+   "type": "vocab",
+   "rows": [
+    1328
+   ],
+   "refs": [
+    "Rüymolcha"
+   ]
+  },
+  {
+   "en": "shirt; women's dress",
+   "type": "vocab",
+   "rows": [
+    1330
+   ],
+   "refs": [
+    "Kurta"
+   ]
+  },
+  {
+   "en": "slippers",
+   "type": "vocab",
+   "rows": [
+    1352
+   ],
+   "refs": [
+    "Kofsh"
+   ]
+  },
+  {
+   "en": "collar",
+   "type": "vocab",
+   "rows": [
+    1358
+   ],
+   "refs": [
+    "Girevon"
+   ]
+  },
+  {
+   "en": "diadem",
+   "type": "vocab",
+   "rows": [
+    1372
+   ],
+   "refs": [
+    "Parxona"
+   ]
+  },
+  {
+   "en": "net bracelet",
+   "type": "vocab",
+   "rows": [
+    1377
+   ],
+   "refs": [
+    "Dastponi sofigi"
+   ]
+  },
+  {
+   "en": "silver",
+   "type": "vocab",
+   "rows": [
+    1393
+   ],
+   "refs": [
+    "Nuqra"
+   ]
+  },
+  {
+   "en": "shoemaker",
+   "type": "vocab",
+   "rows": [
+    1407
+   ],
+   "refs": [
+    "Kühnadüz"
+   ]
+  },
+  {
+   "en": "fisherman",
+   "type": "vocab",
+   "rows": [
+    1408
+   ],
+   "refs": [
+    "Mahidor"
+   ]
+  },
+  {
+   "en": "magician",
+   "type": "vocab",
+   "rows": [
+    1413
+   ],
+   "refs": [
+    "Jodugar",
+    "jodugar"
+   ]
+  },
+  {
+   "en": "May you enjoy it!",
+   "type": "phrase",
+   "rows": [
+    1417
+   ],
+   "refs": [
+    "Nasiv kunad!"
+   ]
+  },
+  {
+   "en": "What the watchmaker does",
+   "type": "phrase",
+   "rows": [
+    1419
+   ],
+   "refs": [
+    "So'atsoz so'atsozi mekunad."
+   ]
+  },
+  {
+   "en": "What the launderer does",
+   "type": "phrase",
+   "rows": [
+    1423
+   ],
+   "refs": [
+    "Jomshigar jomshi mekunad."
+   ]
+  },
+  {
+   "en": "I used to watch this movie",
+   "type": "example",
+   "rows": [
+    1456
+   ],
+   "refs": [
+    "Man in kinoya medidam"
+   ]
+  },
+  {
+   "en": "You used to go",
+   "type": "example",
+   "rows": [
+    1460
+   ],
+   "refs": [
+    "Tu merafti",
+    "Shumo merafted"
+   ]
+  },
+  {
+   "en": "You used to go (polite)",
+   "type": "example",
+   "rows": [
+    1461
+   ],
+   "refs": [
+    "Tu merafti",
+    "Shumo merafted"
+   ]
+  },
+  {
+   "en": "The jeweler knows the value of the gold.",
+   "type": "proverb",
+   "rows": [
+    1501
+   ],
+   "refs": [
+    "Qadri tilo zargar medonad."
+   ]
+  },
+  {
+   "en": "The bride is from Bukhara. I don't know their in-laws. People say that they are very rich.",
+   "type": "phrase",
+   "rows": [
+    1513
+   ],
+   "refs": [
+    "Ino kelina a Buxoro griftin. Ma qudoshona nameshinosam. Megun, ki oilayi kelin boy-badavlat."
+   ]
+  },
+  {
+   "en": "together",
+   "type": "vocab",
+   "rows": [
+    1549
+   ],
+   "refs": [
+    "ba ya"
+   ]
+  },
+  {
+   "en": "human",
+   "type": "vocab",
+   "rows": [
+    1553
+   ],
+   "refs": [
+    "Odam"
+   ]
+  },
+  {
+   "en": "noble person",
+   "type": "vocab",
+   "rows": [
+    1555
+   ],
+   "refs": [
+    "Odamshavanda"
+   ]
+  },
+  {
+   "en": "aristocrat",
+   "type": "vocab",
+   "rows": [
+    1556
+   ],
+   "refs": [
+    "Asil"
+   ]
+  },
+  {
+   "en": "left",
+   "type": "vocab",
+   "rows": [
+    1567
+   ],
+   "refs": [
+    "Chap"
+   ]
+  },
+  {
+   "en": "mouth",
+   "type": "vocab",
+   "rows": [
+    1577
+   ],
+   "refs": [
+    "Dahan"
+   ]
+  },
+  {
+   "en": "gum",
+   "type": "vocab",
+   "rows": [
+    1580
+   ],
+   "refs": [
+    "Kom"
+   ]
+  },
+  {
+   "en": "skin",
+   "type": "vocab",
+   "rows": [
+    1605
+   ],
+   "refs": [
+    "Post"
+   ]
+  },
+  {
+   "en": "razor",
+   "type": "vocab",
+   "rows": [
+    1613
+   ],
+   "refs": [
+    "Poku"
+   ]
+  },
+  {
+   "en": "stubborn",
+   "type": "vocab",
+   "rows": [
+    1631
+   ],
+   "refs": [
+    "Gardantaxta"
+   ]
+  },
+  {
+   "en": "lazy",
+   "type": "vocab",
+   "rows": [
+    1635
+   ],
+   "refs": [
+    "Lavand"
+   ]
+  },
+  {
+   "en": "cheeky",
+   "type": "vocab",
+   "rows": [
+    1639
+   ],
+   "refs": [
+    "'Ayghoq"
+   ]
+  },
+  {
+   "en": "to become angry",
+   "type": "vocab",
+   "rows": [
+    1677
+   ],
+   "refs": [
+    "Jahl giriftan"
+   ]
+  },
+  {
+   "en": "to kiss",
+   "type": "vocab",
+   "rows": [
+    1681
+   ],
+   "refs": [
+    "Muchi kardan"
+   ]
+  },
+  {
+   "en": "call (somebody)",
+   "type": "phrase",
+   "rows": [
+    1704
+   ],
+   "refs": [
+    "Jegh zaned"
+   ]
+  },
+  {
+   "en": "His head is bald.",
+   "type": "phrase",
+   "rows": [
+    1706
+   ],
+   "refs": [
+    "Sarash kal"
+   ]
+  },
+  {
+   "en": "He/she was a pleasant talker, devoted to relatives and hospitable.",
+   "type": "phrase",
+   "rows": [
+    1715
+   ],
+   "refs": [
+    "Ü odami xushchaqchaq, jigardüstu mehmondüst bud"
+   ]
+  },
+  {
+   "en": "You hadn't said",
+   "type": "example",
+   "rows": [
+    1769
+   ],
+   "refs": [
+    "Tu nagufta budi",
+    "Shumo nagufta buded",
+    "Shumo nagufta budeton"
+   ]
+  },
+  {
+   "en": "You hadn't said (polite)",
+   "type": "example",
+   "rows": [
+    1770
+   ],
+   "refs": [
+    "Tu nagufta budi",
+    "Shumo nagufta buded",
+    "Shumo nagufta budeton"
+   ]
+  },
+  {
+   "en": "You (pl.) hadn't said",
+   "type": "example",
+   "rows": [
+    1773
+   ],
+   "refs": [
+    "Tu nagufta budi",
+    "Shumo nagufta buded",
+    "Shumo nagufta budeton"
+   ]
+  },
+  {
+   "en": "I had said",
+   "type": "example",
+   "rows": [
+    1775
+   ],
+   "refs": [
+    "Man gufta budam"
+   ]
+  },
+  {
+   "en": "We had said",
+   "type": "example",
+   "rows": [
+    1779
+   ],
+   "refs": [
+    "Mo gufta budem"
+   ]
+  },
+  {
+   "en": "An honest work is not a shame!",
+   "type": "proverb",
+   "rows": [
+    1802
+   ],
+   "refs": [
+    "Az mihnati halol nest 'or!"
+   ]
+  },
+  {
+   "en": "revolution",
+   "type": "vocab",
+   "rows": [
+    1826
+   ],
+   "refs": [
+    "inqilov"
+   ]
+  },
+  {
+   "en": "factory",
+   "type": "vocab",
+   "rows": [
+    1837
+   ],
+   "refs": [
+    "fabrik; zavod"
+   ]
+  },
+  {
+   "en": "older and younger brothers",
+   "type": "vocab",
+   "rows": [
+    1841
+   ],
+   "refs": [
+    "akayu uka"
+   ]
+  },
+  {
+   "en": "now",
+   "type": "vocab",
+   "rows": [
+    1851
+   ],
+   "refs": [
+    "aknun"
+   ]
+  },
+  {
+   "en": "dog",
+   "type": "vocab",
+   "rows": [
+    1877
+   ],
+   "refs": [
+    "Kuchuk"
+   ]
+  },
+  {
+   "en": "hen; chicken",
+   "type": "vocab",
+   "rows": [
+    1897
+   ],
+   "refs": [
+    "Murgh"
+   ]
+  },
+  {
+   "en": "duck",
+   "type": "vocab",
+   "rows": [
+    1898
+   ],
+   "refs": [
+    "Murghovi"
+   ]
+  },
+  {
+   "en": "fish",
+   "type": "vocab",
+   "rows": [
+    1902
+   ],
+   "refs": [
+    "Doghim"
+   ]
+  },
+  {
+   "en": "flea",
+   "type": "vocab",
+   "rows": [
+    1916
+   ],
+   "refs": [
+    "Kayk"
+   ]
+  },
+  {
+   "en": "leather",
+   "type": "vocab",
+   "rows": [
+    1928
+   ],
+   "refs": [
+    "Charm"
+   ]
+  },
+  {
+   "en": "down (feathers)",
+   "type": "vocab",
+   "rows": [
+    1936
+   ],
+   "refs": [
+    "Poyon",
+    "Qu"
+   ]
+  },
+  {
+   "en": "island",
+   "type": "vocab",
+   "rows": [
+    1955
+   ],
+   "refs": [
+    "Jazira"
+   ]
+  },
+  {
+   "en": "natural life",
+   "type": "vocab",
+   "rows": [
+    1957
+   ],
+   "refs": [
+    "'Umri tavi'i"
+   ]
+  },
+  {
+   "en": "mill-cake",
+   "type": "vocab",
+   "rows": [
+    1971
+   ],
+   "refs": [
+    "Kunjora"
+   ]
+  },
+  {
+   "en": "corn",
+   "type": "vocab",
+   "rows": [
+    1972
+   ],
+   "refs": [
+    "Makajuvori"
+   ]
+  },
+  {
+   "en": "patience",
+   "type": "vocab",
+   "rows": [
+    1979
+   ],
+   "refs": [
+    "Toqat"
+   ]
+  },
+  {
+   "en": "hunter",
+   "type": "vocab",
+   "rows": [
+    1990
+   ],
+   "refs": [
+    "Avchi"
+   ]
+  },
+  {
+   "en": "ax",
+   "type": "vocab",
+   "rows": [
+    1994
+   ],
+   "refs": [
+    "Tavar"
+   ]
+  },
+  {
+   "en": "pincers; tongs",
+   "type": "vocab",
+   "rows": [
+    1996
+   ],
+   "refs": [
+    "Ambur"
+   ]
+  },
+  {
+   "en": "to weigh",
+   "type": "vocab",
+   "rows": [
+    2001
+   ],
+   "refs": [
+    "Barkashidan"
+   ]
+  },
+  {
+   "en": "to run",
+   "type": "vocab",
+   "rows": [
+    2002
+   ],
+   "refs": [
+    "Davidan"
+   ]
+  },
+  {
+   "en": "to move",
+   "type": "vocab",
+   "rows": [
+    2015
+   ],
+   "refs": [
+    "Jumbidan"
+   ]
+  },
+  {
+   "en": "to peck",
+   "type": "vocab",
+   "rows": [
+    2037
+   ],
+   "refs": [
+    "Nul zadan"
+   ]
+  },
+  {
+   "en": "He/she has gone/been",
+   "type": "example",
+   "rows": [
+    2100
+   ],
+   "refs": [
+    "Ü rafte",
+    "Ü raftayast"
+   ]
+  },
+  {
+   "en": "He/she has gone/been",
+   "type": "example",
+   "rows": [
+    2115
+   ],
+   "refs": [
+    "Ü rafte",
+    "Ü raftayast"
+   ]
+  },
+  {
+   "en": "I have excused.",
+   "type": "phrase",
+   "rows": [
+    2121
+   ],
+   "refs": [
+    "Man mahelo kardim"
+   ]
+  },
+  {
+   "en": "Your daughter has come.",
+   "type": "phrase",
+   "rows": [
+    2129
+   ],
+   "refs": [
+    "Duxtaraton omade"
+   ]
+  },
+  {
+   "en": "You had told me yourself.",
+   "type": "phrase",
+   "rows": [
+    2138
+   ],
+   "refs": [
+    "Tu xudat ba man gufta budi"
+   ]
+  },
+  {
+   "en": "eating; meal",
+   "type": "vocab",
+   "rows": [
+    2183
+   ],
+   "refs": [
+    "Sa'udo"
+   ]
+  },
+  {
+   "en": "hard-boiled egg",
+   "type": "vocab",
+   "rows": [
+    2197
+   ],
+   "refs": [
+    "Tuxumi saxt"
+   ]
+  },
+  {
+   "en": "Saturday's pilaf",
+   "type": "vocab",
+   "rows": [
+    2212
+   ],
+   "refs": [
+    "Oshi savo"
+   ]
+  },
+  {
+   "en": "a meal of rice, chick-peas and mung beans",
+   "type": "vocab",
+   "rows": [
+    2217
+   ],
+   "refs": [
+    "Oshi kichiri"
+   ]
+  },
+  {
+   "en": "a dish from leg bones",
+   "type": "vocab",
+   "rows": [
+    2218
+   ],
+   "refs": [
+    "Oshi pocha"
+   ]
+  },
+  {
+   "en": "acrid soup",
+   "type": "vocab",
+   "rows": [
+    2237
+   ],
+   "refs": [
+    "Uroyi jaz"
+   ]
+  },
+  {
+   "en": "cream",
+   "type": "vocab",
+   "rows": [
+    2256
+   ],
+   "refs": [
+    "Qaymoq"
+   ]
+  },
+  {
+   "en": "rice",
+   "type": "vocab",
+   "rows": [
+    2270
+   ],
+   "refs": [
+    "Birinj"
+   ]
+  },
+  {
+   "en": "sugar",
+   "type": "vocab",
+   "rows": [
+    2273
+   ],
+   "refs": [
+    "Qand"
+   ]
+  },
+  {
+   "en": "vinegar",
+   "type": "vocab",
+   "rows": [
+    2275
+   ],
+   "refs": [
+    "Sirko"
+   ]
+  },
+  {
+   "en": "saltcellar",
+   "type": "vocab",
+   "rows": [
+    2297
+   ],
+   "refs": [
+    "Namakdon",
+    "namakdon"
+   ]
+  },
+  {
+   "en": "so much",
+   "type": "vocab",
+   "rows": [
+    2329
+   ],
+   "refs": [
+    "Haminqadar"
+   ]
+  },
+  {
+   "en": "approximately",
+   "type": "vocab",
+   "rows": [
+    2337
+   ],
+   "refs": [
+    "Taxminan"
+   ]
+  },
+  {
+   "en": "steam",
+   "type": "vocab",
+   "rows": [
+    2340
+   ],
+   "refs": [
+    "Taf"
+   ]
+  },
+  {
+   "en": "sorrow; fury",
+   "type": "vocab",
+   "rows": [
+    2341
+   ],
+   "refs": [
+    "Dogh"
+   ]
+  },
+  {
+   "en": "smoke",
+   "type": "vocab",
+   "rows": [
+    2342
+   ],
+   "refs": [
+    "Dud"
+   ]
+  },
+  {
+   "en": "to invite",
+   "type": "vocab",
+   "rows": [
+    2354
+   ],
+   "refs": [
+    "Taklif kardan",
+    "Kas mondan"
+   ]
+  },
+  {
+   "en": "to get turned upside-down",
+   "type": "vocab",
+   "rows": [
+    2356
+   ],
+   "refs": [
+    "Chapa shudan"
+   ]
+  },
+  {
+   "en": "to pick",
+   "type": "vocab",
+   "rows": [
+    2376
+   ],
+   "refs": [
+    "Chindan"
+   ]
+  },
+  {
+   "en": "to fire; to light",
+   "type": "vocab",
+   "rows": [
+    2378
+   ],
+   "refs": [
+    "Girondan"
+   ]
+  },
+  {
+   "en": "to become warm",
+   "type": "example",
+   "rows": [
+    2418
+   ],
+   "refs": [
+    "Garm shudan"
+   ]
+  },
+  {
+   "en": "to raise",
+   "type": "example",
+   "rows": [
+    2419
+   ],
+   "refs": [
+    "Kalon kardan"
+   ]
+  },
+  {
+   "en": "find and give",
+   "type": "example",
+   "rows": [
+    2428
+   ],
+   "refs": [
+    "Yofta ted"
+   ]
+  },
+  {
+   "en": "The man who left the house was my father.",
+   "type": "example",
+   "rows": [
+    2440
+   ],
+   "refs": [
+    "Marde, ki az xona buromad, padari man bud"
+   ]
+  },
+  {
+   "en": "An empty sack will not stand straight.",
+   "type": "proverb",
+   "rows": [
+    2441
+   ],
+   "refs": [
+    "Qopi xoli rost nameistad."
+   ]
+  },
+  {
+   "en": "Land of Israel",
+   "type": "vocab",
+   "rows": [
+    2471
+   ],
+   "refs": [
+    "Eres Isroel"
+   ]
+  },
+  {
+   "en": "fun",
+   "type": "vocab",
+   "rows": [
+    2483
+   ],
+   "refs": [
+    "'Ayshu 'ishrat"
+   ]
+  },
+  {
+   "en": "joke",
+   "type": "vocab",
+   "rows": [
+    2491
+   ],
+   "refs": [
+    "Hazil"
+   ]
+  },
+  {
+   "en": "chess",
+   "type": "vocab",
+   "rows": [
+    2494
+   ],
+   "refs": [
+    "Shaxmatbozi"
+   ]
+  },
+  {
+   "en": "castle; rook",
+   "type": "vocab",
+   "rows": [
+    2497
+   ],
+   "refs": [
+    "Rux"
+   ]
+  },
+  {
+   "en": "gambling",
+   "type": "vocab",
+   "rows": [
+    2500
+   ],
+   "refs": [
+    "Qimorbozi"
+   ]
+  },
+  {
+   "en": "fighting",
+   "type": "vocab",
+   "rows": [
+    2507
+   ],
+   "refs": [
+    "Zanozani"
+   ]
+  },
+  {
+   "en": "duet",
+   "type": "vocab",
+   "rows": [
+    2518
+   ],
+   "refs": [
+    "Lapar"
+   ]
+  },
+  {
+   "en": "tambourine; frame drum",
+   "type": "vocab",
+   "rows": [
+    2525
+   ],
+   "refs": [
+    "Doyra"
+   ]
+  },
+  {
+   "en": "nations",
+   "type": "vocab",
+   "rows": [
+    2548
+   ],
+   "refs": [
+    "Umüt"
+   ]
+  },
+  {
+   "en": "enemy of Jews",
+   "type": "vocab",
+   "rows": [
+    2552
+   ],
+   "refs": [
+    "Süne isroel"
+   ]
+  },
+  {
+   "en": "Christian",
+   "type": "vocab",
+   "rows": [
+    2556
+   ],
+   "refs": [
+    "Orel"
+   ]
+  },
+  {
+   "en": "Russian",
+   "type": "vocab",
+   "rows": [
+    2558
+   ],
+   "refs": [
+    "Urus"
+   ]
+  },
+  {
+   "en": "Indian",
+   "type": "vocab",
+   "rows": [
+    2563
+   ],
+   "refs": [
+    "Hundi"
+   ]
+  },
+  {
+   "en": "Samarkand",
+   "type": "vocab",
+   "rows": [
+    2573
+   ],
+   "refs": [
+    "Samarqand"
+   ]
+  },
+  {
+   "en": "Bukhara",
+   "type": "vocab",
+   "rows": [
+    2574
+   ],
+   "refs": [
+    "Buxoro"
+   ]
+  },
+  {
+   "en": "I failed; I lost.",
+   "type": "phrase",
+   "rows": [
+    2611
+   ],
+   "refs": [
+    "Man boy dodam"
+   ]
+  },
+  {
+   "en": "I became happy.",
+   "type": "phrase",
+   "rows": [
+    2629
+   ],
+   "refs": [
+    "Vaqtam choq shud"
+   ]
+  },
+  {
+   "en": "healer",
+   "type": "vocab",
+   "rows": [
+    2676
+   ],
+   "refs": [
+    "Tabib"
+   ]
+  },
+  {
+   "en": "ointment",
+   "type": "vocab",
+   "rows": [
+    2682
+   ],
+   "refs": [
+    "Marham"
+   ]
+  },
+  {
+   "en": "filth",
+   "type": "vocab",
+   "rows": [
+    2683
+   ],
+   "refs": [
+    "Iflos"
+   ]
+  },
+  {
+   "en": "wound; abscess",
+   "type": "vocab",
+   "rows": [
+    2696
+   ],
+   "refs": [
+    "Yara"
+   ]
+  },
+  {
+   "en": "skin disease",
+   "type": "vocab",
+   "rows": [
+    2699
+   ],
+   "refs": [
+    "Maxov"
+   ]
+  },
+  {
+   "en": "harm; injury",
+   "type": "vocab",
+   "rows": [
+    2706
+   ],
+   "refs": [
+    "Zarar"
+   ]
+  },
+  {
+   "en": "stutterer",
+   "type": "vocab",
+   "rows": [
+    2712
+   ],
+   "refs": [
+    "Tutula"
+   ]
+  },
+  {
+   "en": "scandalous person; dirty person",
+   "type": "vocab",
+   "rows": [
+    2718
+   ],
+   "refs": [
+    "Rasvo"
+   ]
+  },
+  {
+   "en": "to hurt",
+   "type": "vocab",
+   "rows": [
+    2736
+   ],
+   "refs": [
+    "Azov dodan"
+   ]
+  },
+  {
+   "en": "to lose memory",
+   "type": "vocab",
+   "rows": [
+    2748
+   ],
+   "refs": [
+    "Esu xayol paridan"
+   ]
+  },
+  {
+   "en": "I'm anxious.",
+   "type": "phrase",
+   "rows": [
+    2758
+   ],
+   "refs": [
+    "Dilam rexsode"
+   ]
+  },
+  {
+   "en": "I feel sudden pain in my spine.",
+   "type": "phrase",
+   "rows": [
+    2762
+   ],
+   "refs": [
+    "Pushtam xala mezanad"
+   ]
+  },
+  {
+   "en": "G-d forbid!",
+   "type": "phrase",
+   "rows": [
+    2782
+   ],
+   "refs": [
+    "Hos vasholüm!; Xudo nigoh dorad; Xudo nakunad!; ibi, kaynati"
+   ]
+  },
+  {
+   "en": "he/she must have gone",
+   "type": "example",
+   "rows": [
+    2796
+   ],
+   "refs": [
+    "Boyad rafta boshad"
+   ]
+  },
+  {
+   "en": "he/she had to go/should have gone",
+   "type": "example",
+   "rows": [
+    2804
+   ],
+   "refs": [
+    "Boyad meraft"
+   ]
+  },
+  {
+   "en": "publishing house",
+   "type": "vocab",
+   "rows": [
+    2889
+   ],
+   "refs": [
+    "Nashriyot"
+   ]
+  },
+  {
+   "en": "part; volume (of a book)",
+   "type": "vocab",
+   "rows": [
+    2899
+   ],
+   "refs": [
+    "Qism"
+   ]
+  },
+  {
+   "en": "introduction; foreword",
+   "type": "vocab",
+   "rows": [
+    2921
+   ],
+   "refs": [
+    "Sarsuxan"
+   ]
+  },
+  {
+   "en": "sentence",
+   "type": "vocab",
+   "rows": [
+    2924
+   ],
+   "refs": [
+    "Jumla"
+   ]
+  },
+  {
+   "en": "exercise",
+   "type": "vocab",
+   "rows": [
+    2934
+   ],
+   "refs": [
+    "Mashq"
+   ]
+  },
+  {
+   "en": "briefly",
+   "type": "vocab",
+   "rows": [
+    2935
+   ],
+   "refs": [
+    "Qisa kütoh"
+   ]
+  },
+  {
+   "en": "as if",
+   "type": "vocab",
+   "rows": [
+    2936
+   ],
+   "refs": [
+    "Güyoki"
+   ]
+  },
+  {
+   "en": "until now",
+   "type": "vocab",
+   "rows": [
+    2937
+   ],
+   "refs": [
+    "To hole"
+   ]
+  },
+  {
+   "en": "abuse; insult",
+   "type": "vocab",
+   "rows": [
+    2961
+   ],
+   "refs": [
+    "Haqorat"
+   ]
+  },
+  {
+   "en": "history",
+   "type": "vocab",
+   "rows": [
+    2982
+   ],
+   "refs": [
+    "Taarix"
+   ]
+  },
+  {
+   "en": "to explain",
+   "type": "vocab",
+   "rows": [
+    2991
+   ],
+   "refs": [
+    "Fahmonda dodan"
+   ]
+  },
+  {
+   "en": "to multiply",
+   "type": "vocab",
+   "rows": [
+    3001
+   ],
+   "refs": [
+    "Zarb kardan"
+   ]
+  },
+  {
+   "en": "He tells us from somebody's words.",
+   "type": "phrase",
+   "rows": [
+    3028
+   ],
+   "refs": [
+    "Az dahani yak odam girifta ba mo megü"
+   ]
+  },
+  {
+   "en": "saltcellar",
+   "type": "example",
+   "rows": [
+    3084
+   ],
+   "refs": [
+    "Namakdon",
+    "namakdon"
+   ]
+  },
+  {
+   "en": "magician",
+   "type": "example",
+   "rows": [
+    3091
+   ],
+   "refs": [
+    "Jodugar",
+    "jodugar"
+   ]
+  },
+  {
+   "en": "skillful",
+   "type": "example",
+   "rows": [
+    3119
+   ],
+   "refs": [
+    "hunarmand"
+   ]
+  },
+  {
+   "en": "polite",
+   "type": "example",
+   "rows": [
+    3125
+   ],
+   "refs": [
+    "boodov",
+    "Bonomus"
+   ]
+  },
+  {
+   "en": "fearless",
+   "type": "example",
+   "rows": [
+    3129
+   ],
+   "refs": [
+    "notars"
+   ]
+  },
+  {
+   "en": "act of visiting each other",
+   "type": "example",
+   "rows": [
+    3131
+   ],
+   "refs": [
+    "raftuomad"
+   ]
+  },
+  {
+   "en": "devil",
+   "type": "vocab",
+   "rows": [
+    3159
+   ],
+   "refs": [
+    "Shedim"
+   ]
+  },
+  {
+   "en": "Torah",
+   "type": "vocab",
+   "rows": [
+    3166
+   ],
+   "refs": [
+    "Sefar Türo"
+   ]
+  },
+  {
+   "en": "memorial candle or lamp",
+   "type": "vocab",
+   "rows": [
+    3195
+   ],
+   "refs": [
+    "Ner nashomo"
+   ]
+  },
+  {
+   "en": "orphan",
+   "type": "vocab",
+   "rows": [
+    3225
+   ],
+   "refs": [
+    "Yatim"
+   ]
+  },
+  {
+   "en": "polite",
+   "type": "vocab",
+   "rows": [
+    3231
+   ],
+   "refs": [
+    "boodov",
+    "Bonomus"
+   ]
+  },
+  {
+   "en": "to die",
+   "type": "vocab",
+   "rows": [
+    3258
+   ],
+   "refs": [
+    "Nashomo dodan"
+   ]
+  },
+  {
+   "en": "He/she died in his/her sleep.",
+   "type": "phrase",
+   "rows": [
+    3275
+   ],
+   "refs": [
+    "Ü xovi mito did"
+   ]
+  },
+  {
+   "en": "May peace fall upon the land of Israel, may there be no wars between the kings, may we not see any sorrows, may we get to Israel and live there!",
+   "type": "phrase",
+   "rows": [
+    3278
+   ],
+   "refs": [
+    "Elohim Eres Isroel tinj boshad, miyoni podshoho sholümi aftad, hej ghama nabinem, ba Isroel arzoni shavem!"
+   ]
+  },
+  {
+   "en": "He/she has megalomania.",
+   "type": "phrase",
+   "rows": [
+    3311
+   ],
+   "refs": [
+    "Xudasha ba oini kalon dide; xudasha kuchuki kalon girifte"
+   ]
+  },
+  {
+   "en": "In another lifetime.",
+   "type": "phrase",
+   "rows": [
+    3314
+   ],
+   "refs": [
+    "Ba umedi shavi haft; peshi bovom"
+   ]
+  },
+  {
+   "en": "He/she has euphoria.",
+   "type": "phrase",
+   "rows": [
+    3322
+   ],
+   "refs": [
+    "Chishmash siyo rafte"
+   ]
+  },
+  {
+   "en": "He/she is saying an untruth.",
+   "type": "phrase",
+   "rows": [
+    3324
+   ],
+   "refs": [
+    "Gav a danash aftosode"
+   ]
+  },
+  {
+   "en": "He/she is deaf in one ear and stupid as a donkey in the other.",
+   "type": "phrase",
+   "rows": [
+    3336
+   ],
+   "refs": [
+    "Üya yak güshash kar, yak güshash xar"
+   ]
+  },
+  {
+   "en": "He/she is a burden.",
+   "type": "phrase",
+   "rows": [
+    3350
+   ],
+   "refs": [
+    "Ü binusüz"
+   ]
+  },
+  {
+   "en": "He/she is mischievous and stubborn.",
+   "type": "phrase",
+   "rows": [
+    3354
+   ],
+   "refs": [
+    "Ü arina"
+   ]
+  },
+  {
+   "en": "He/she is good for nothing.",
+   "type": "phrase",
+   "rows": [
+    3358
+   ],
+   "refs": [
+    "Ü noshud"
+   ]
+  },
+  {
+   "en": "He/she is unconscionable; an unconcerned person.",
+   "type": "phrase",
+   "rows": [
+    3360
+   ],
+   "refs": [
+    "Üya püstash ghasp"
+   ]
+  },
+  {
+   "en": "He/she has a smile on the face, but holds a knife behind the back.",
+   "type": "phrase",
+   "rows": [
+    3365
+   ],
+   "refs": [
+    "Ü - a rü - shona, a tag - fona"
+   ]
+  },
+  {
+   "en": "He/she is gluttonous.",
+   "type": "phrase",
+   "rows": [
+    3367
+   ],
+   "refs": [
+    "Ü das tiyi, orinjata megira"
+   ]
+  },
+  {
+   "en": "May you have many children!",
+   "type": "phrase",
+   "rows": [
+    3385
+   ],
+   "refs": [
+    "'Ayolmand shaved!"
+   ]
+  },
+  {
+   "en": "May G-d return your good deeds to you!",
+   "type": "phrase",
+   "rows": [
+    3401
+   ],
+   "refs": [
+    "Neketon az Xudo gardad!"
+   ]
+  },
+  {
+   "en": "To everybody's joy!",
+   "type": "phrase",
+   "rows": [
+    3413
+   ],
+   "refs": [
+    "Ba simhoyi hamegi!"
+   ]
+  },
+  {
+   "en": "May G-d give you a long life! (condolence)",
+   "type": "phrase",
+   "rows": [
+    3419
+   ],
+   "refs": [
+    "Xudo 'umr tiyad ba shumo!"
+   ]
+  },
+  {
+   "en": "Happy New Year!",
+   "type": "phrase",
+   "rows": [
+    3425
+   ],
+   "refs": [
+    "Shono tüvo!"
+   ]
+  },
+  {
+   "en": "Bon appetit!",
+   "type": "phrase",
+   "rows": [
+    3426
+   ],
+   "refs": [
+    "Osh shavad!"
+   ]
+  },
+  {
+   "en": "to come out; to leave",
+   "type": "vocab",
+   "rows": [
+    3489
+   ],
+   "refs": [
+    "Buromadan"
+   ]
+  },
+  {
+   "en": "to collect; to pick up",
+   "type": "vocab",
+   "rows": [
+    3491
+   ],
+   "refs": [
+    "Chindan"
+   ]
+  }
+ ]
+}

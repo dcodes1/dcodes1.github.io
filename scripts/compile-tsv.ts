@@ -22,7 +22,7 @@ import {
   type Environment, type Example, type ExampleId, type ExclusionReason, type Form, type Gloss, type GlossKey,
   type InflectedEntry, type NumericValue, type Paradigm, type ParadigmId, type PartOfSpeech, type PersonNumber,
   type Register, type RootEntry, type RootId, type RuleId, type SourceRef, type Stem, type SyntaxRule,
-  type TemplatePart, type Tense, type VerbInfo,
+  type TemplatePart, type Tense, type VerbInfo, type AttestedVerbForm,
 } from '../src/lib/types.ts';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -423,6 +423,42 @@ for (const e of roots.values()) {
   };
   e.verb = verb;
 }
+// Verbs whose present stem the TSV never states. For -idan verbs the TSV's own
+// stated stems follow "infinitive − -idan" in 21 of 24 cases (exceptions: didan
+// → bin, farmoyidan → farmo, gazidan → gazid), so the stem is derived from that
+// rule; when a conjugated form built on it is printed anywhere in the TSV the
+// stem is upgraded to `attested`. -ondan causatives follow "− -dan" in only 4
+// of 7 stated cases, so they get a stem only when it is attested.
+// See docs/LINGUISTIC_DECISIONS.md §5.
+const PERSON_ENDINGS = ['am', 'i', 'ed', 'ad', 'em', 'eton', 'and', 'et', 'an', 'a', 'in', 'im'];
+const allBux = rows.flatMap((r) => [r.bukhori, r.spoken].filter(Boolean).map((t) => ({ r, t: buxKey(t) })));
+function attestationsOf(stem: string): SourceRef[] {
+  const re = new RegExp(`(^|[^a-zü'])(na)?(me)?${stem}(${PERSON_ENDINGS.join('|')})([^a-zü']|$)`);
+  return dedupeBy(allBux.filter(({ t }) => re.test(t)).map(({ r }) => sourceRef(r)), (x) => String(x.row));
+}
+for (const e of roots.values()) {
+  const v = e.verb;
+  if (!v || v.presentStem || v.compound) continue;
+  const inf = lastWord(e.lemma.text);
+  const candidate = /idan$/.test(inf) ? inf.slice(0, -4) : /ondan$/.test(inf) ? inf.slice(0, -3) : null;
+  if (!candidate) continue;
+  const att = attestationsOf(candidate);
+  if (att.length) v.presentStem = { text: candidate, evidence: 'attested', basis: `printed conjugated forms built on -${candidate}-`, attestedIn: att.slice(0, 5) };
+  else if (/idan$/.test(inf)) v.presentStem = { text: candidate, evidence: 'derived', basis: '-idan verbs: present stem = infinitive − -idan (21 of 24 stated stems)' };
+}
+// shudan: p47 states -shud-, p41/p43 state -shav-. -shud- is the past stem; the
+// same page (p47) conjugates the present as meshum/meshi/meshü… (Regular form),
+// and Tajik шудан has present stem шав. Keep the conflict, record the choice.
+for (const e of roots.values()) {
+  for (const c of e.verb?.conflicts ?? []) {
+    if (c.field === 'presentStem' && c.values.includes('shav') && c.values.includes('shud')) {
+      c.resolved = { value: 'shav', reason: 'shud is the past stem; p47 itself prints the present as meshum … meshun (no -shud-); Tajik шудан: present stem шав' };
+      const shav = e.verb?.presentStem && e.verb.presentStem.text === 'shav' ? e.verb.presentStem : undefined;
+      if (e.verb && !shav) e.verb.presentStem = { text: 'shav', evidence: 'stated', basis: 'conflict resolved' };
+    }
+  }
+}
+
 // Second pass so compounds pick up auxiliaries whose own stems were set above.
 for (const e of roots.values()) {
   const v = e.verb;
@@ -432,6 +468,48 @@ for (const e of roots.values()) {
 }
 for (const e of roots.values()) {
   if (e.pos === 'noun' || e.pos === 'adjective' || e.pos === 'proper_noun') e.noun = { stemFinal: stemFinal(lastWord(e.lemma.text)) };
+}
+
+// 4c. Attested conjugation tables --------------------------------------------
+const TABLE_TENSES: [RegExp, Tense][] = [
+  [/^present tense$/i, 'present'], [/^simple past$/i, 'simple_past'], [/^descriptive past$/i, 'descriptive_past'],
+  [/^present perfect$/i, 'present_perfect'], [/^present continuous$/i, 'present_continuous'],
+  [/^past continuous$/i, 'past_continuous'], [/^past perfect$/i, 'past_perfect'],
+  [/^past conjectural$/i, 'conjectural_past'], [/^present-future conjectural$/i, 'conjectural_present'],
+  [/^present-progressive conjectural$/i, 'conjectural_progressive'],
+];
+const PRONOUN_WORD = /^(man|ma|tu|shumo|ü|u|mo|inho|ino|shon)\s+/i;
+const verbForms = new Map<RootId, AttestedVerbForm[]>();
+function addVerbForm(id: RootId, f: AttestedVerbForm) {
+  const list = verbForms.get(id) ?? [];
+  if (!list.some((x) => x.tense === f.tense && x.pn === f.pn && x.negative === f.negative && x.register === f.register && x.form === f.form)) list.push(f);
+  verbForms.set(id, list);
+}
+const cleanForm = (t: string) => t.replace(/[.!?]+$/, '').replace(PRONOUN_WORD, '').trim();
+for (const r of rows.filter((x) => x.entryType === 'example' && x.bukhori)) {
+  const m = /^(.+?)(?:\s+(Regular|Literal))?:\s*([a-zü']+)(?:\s*\(([^)]*)\))?$/i.exec(r.section);
+  if (!m) continue;
+  const tense = TABLE_TENSES.find(([re]) => re.test((m[1] ?? '').trim()))?.[1];
+  const id = tense ? findVerb((m[3] ?? '').toLowerCase()) : undefined;
+  const pn = personOf(r.english);
+  if (!tense || !id || !pn) continue;
+  const paren = m[4] ?? '';
+  const negative = /negative/i.test(paren) || /n't|\bnot\b/i.test(r.english);
+  const register: Register = /literal/i.test(`${m[2] ?? ''} ${paren}`) ? 'literal' : 'regular';
+  addVerbForm(id, { tense, pn, negative, register, form: cleanForm(r.bukhori), source: sourceRef(r) });
+  if (r.spoken) addVerbForm(id, { tense, pn, negative, register: 'spoken', form: cleanForm(r.spoken), source: sourceRef(r) });
+}
+// kardan "Table of Tenses" (p-paradigm rows with whole words)
+for (const p of paradigms.values()) {
+  const verbName = /^([a-zü']+):/i.exec(p.label)?.[1];
+  const id = verbName ? findVerb(verbName.toLowerCase()) : undefined;
+  if (!id || !p.tense || !p.fullForms) continue;
+  for (const [pn, forms] of Object.entries(p.fullForms) as [PersonNumber, string[]][]) {
+    for (const raw of forms) for (const alt of raw.split(/\s*\(or\s+|\)\s*$/).filter(Boolean)) {
+      const src = p.sources[0];
+      if (src) addVerbForm(id, { tense: p.tense, pn, negative: false, register: 'regular', form: cleanForm(alt), source: src });
+    }
+  }
 }
 
 // ═══════════════════════════════════════════════════════ 5. INFLECTED ENTRIES
@@ -649,6 +727,21 @@ for (const g of rows.filter((r) => r.entryType === 'grammar')) {
 
 // ═══════════════════════════════════════════════════════════════ 8. INDEXES
 const record = <K extends string, V>(m: Map<K, V>): Record<K, V> => Object.fromEntries([...m.entries()].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))) as Record<K, V>;
+// Two TSV grammar rows describe the copula ("The copula hast", "Copula hast").
+// Keep one rule carrying both statements and both sources.
+{
+  const cop = syntaxRules.filter((r): r is Extract<SyntaxRule, { kind: 'copula' }> => r.kind === 'copula');
+  if (cop.length > 1) {
+    const [first, ...rest] = cop;
+    if (first) {
+      first.statement = cop.map((r) => r.statement).join(' ');
+      first.sources = dedupeBy(cop.flatMap((r) => r.sources), (x) => String(x.row));
+      first.examples = dedupeBy(cop.flatMap((r) => r.examples), (x) => x);
+      for (const r of rest) syntaxRules.splice(syntaxRules.indexOf(r), 1);
+    }
+  }
+}
+
 const byGloss = new Map<GlossKey, RootId[]>();
 const inflectedByGloss = new Map<GlossKey, BuxKey[]>();
 const byStem = new Map<string, { root: RootId; stem: 'present' | 'past' | 'literary_present' }[]>();
@@ -675,15 +768,14 @@ for (const a of affixes.values()) for (const al of a.allomorphs) { const f = aff
 
 const index: BuxoriIndex = {
   meta: {
-    schemaVersion: 1,
+    schemaVersion: 2,
     source: { file: relative(ROOT, TSV_PATH), sha256: createHash('sha256').update(raw).digest('hex'), rows: rows.length },
-    builtAt: new Date().toISOString(),
     orthography: { script: 'latin', specialLetters: ['ü'], stressMarks: ['á', 'é', 'í', 'ć', 'ġ'], apostrophe: 'ayin' },
   },
   policy: { defaultRegister: 'regular', evidencePrecedence: EVIDENCE_PRECEDENCE },
   roots: {
     entries: record(roots), inflected: record(inflected), byKey: record(rootsByKey), byGloss: record(byGloss),
-    inflectedByGloss: record(inflectedByGloss), byStem: record(byStem),
+    inflectedByGloss: record(inflectedByGloss), byStem: record(byStem), verbForms: record(verbForms),
   },
   affixes: { entries: record(affixes), byForm: record(finalByForm), paradigms: record(paradigms) },
   syntaxRules,

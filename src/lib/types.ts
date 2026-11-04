@@ -115,6 +115,10 @@ export interface Stem {
   text: string;            // without dashes: "rav", "raft"
   evidence: Evidence;
   source?: SourceRef;
+  /** For derived/attested stems: how it was obtained ("-idan rule", "attested in menüsham"). */
+  basis?: string;
+  /** Extra rows that attest the stem in conjugated forms. */
+  attestedIn?: SourceRef[];
 }
 
 export interface VerbInfo {
@@ -130,8 +134,10 @@ export interface VerbInfo {
     preverb: string;                    // "kor", "zindagi", "gap"
     auxiliary: RootId;                  // kardan / zadan / dodan / xondan / shudan …
   };
-  /** Contradictions kept, not resolved silently (shudan: -shav- vs -shud-). */
-  conflicts?: { field: 'presentStem' | 'pastStem'; values: string[]; sources: SourceRef[] }[];
+  /** Contradictions kept, not resolved silently (shudan: -shav- vs -shud-).
+   *  `resolved` records which value the compiler uses and the evidence for it
+   *  (see docs/LINGUISTIC_DECISIONS.md). */
+  conflicts?: { field: 'presentStem' | 'pastStem'; values: string[]; sources: SourceRef[]; resolved?: { value: string; reason: string } }[];
 }
 
 export interface NounInfo {
@@ -171,6 +177,18 @@ export interface InflectedEntry {
   source: SourceRef;
 }
 
+/** A conjugated form printed in the TSV's own tables (present tense: raftan …,
+ *  kardan Table of Tenses). The engine prefers these over generated forms. */
+export interface AttestedVerbForm {
+  tense: Tense;
+  pn: PersonNumber;
+  negative: boolean;
+  register: Register;
+  /** The verb word(s) only, subject pronoun removed: "merum", "karda budam". */
+  form: string;
+  source: SourceRef;
+}
+
 export interface RootsIndex {
   entries: Record<RootId, RootEntry>;
   inflected: Record<BuxKey, InflectedEntry[]>;
@@ -183,6 +201,8 @@ export interface RootsIndex {
   inflectedByGloss: Record<GlossKey, BuxKey[]>;
   /** Stem → verb, for analysing conjugated words (merav-am → rav → Raftan). */
   byStem: Record<string, { root: RootId; stem: 'present' | 'past' | 'literary_present' }[]>;
+  /** Attested conjugation tables, by verb. */
+  verbForms: Record<RootId, AttestedVerbForm[]>;
 }
 
 // ── AFFIXES ──────────────────────────────────────────────────────────────────
@@ -325,9 +345,9 @@ export type ExclusionReason =
 
 export interface BuxoriIndex {
   meta: {
-    schemaVersion: 1;
+    schemaVersion: 2;
+    /** Same TSV + same compiler ⇒ byte-identical index (no timestamps). */
     source: { file: string; sha256: string; rows: number };
-    builtAt: string;            // ISO timestamp
     orthography: {
       script: 'latin';          // no Cyrillic / Hebrew / IPA in the source
       specialLetters: ['ü'];
