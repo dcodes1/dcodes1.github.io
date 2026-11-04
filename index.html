@@ -340,56 +340,15 @@
   </div>
   <div class="section-header">
     <span class="section-label">// TOOL</span>
-    <h2 class="section-title">English → Buxori</h2>
+    <h2 class="section-title">English ⇄ Buxori</h2>
     <div class="section-line"></div>
   </div>
 
-  <div class="tr-wrap">
-    <div class="tr-panes">
-      <!-- INPUT -->
-      <div class="tr-pane">
-        <div class="tr-pane-head">
-          <span>English</span>
-          <span class="tr-sub">source</span>
-        </div>
-        <textarea id="trInput" class="tr-input" rows="6" maxlength="2000"
-          placeholder="Type English text to translate into Buxori…"
-          spellcheck="false" autocomplete="off"></textarea>
-        <div class="tr-pane-foot">
-          <button id="trClear" class="tr-iconbtn" type="button">Clear</button>
-          <span class="tr-count"><span id="trCount">0</span>/2000</span>
-        </div>
-      </div>
-
-      <!-- OUTPUT -->
-      <div class="tr-pane">
-        <div class="tr-pane-head">
-          <span>Buxori</span>
-          <span class="tr-sub">Bukharian · Judeo-Tajik</span>
-        </div>
-        <div id="trOutput" class="tr-output tr-empty">Translation will appear here.</div>
-        <div class="tr-pane-foot">
-          <button id="trCopy" class="tr-iconbtn" type="button" disabled>Copy</button>
-          <span id="trConf" class="tr-count"></span>
-        </div>
-      </div>
+  <!-- React app (src/app → translator/app/), loaded by the router on first visit -->
+  <div id="translator-root">
+    <div class="tr-noscript">Loading the translator…
+      <noscript>The translator needs JavaScript.</noscript>
     </div>
-
-    <div class="tr-controls">
-      <button id="trGo" class="btn btn-primary" type="button">Translate</button>
-      <span id="trStatus" class="tr-status">Loading dataset…</span>
-    </div>
-
-    <div id="trNote"></div>
-
-    <div id="trExplain" class="tr-explain" hidden></div>
-
-    <p class="tr-disclaimer">
-      Translations are grounded in a curated Bukharian (Judeo-Tajik) dataset.
-      Exact matches are verified source entries; AI-assisted and word-by-word
-      results are clearly flagged and may be imperfect. Bukhori here uses the
-      Latin transliteration of the source material.
-    </p>
   </div>
 </section>
 </div><!-- ══ /TRANSLATOR VIEW ══ -->
@@ -474,301 +433,6 @@
 
 <!-- TRANSLATOR ENGINE (English → Buxori) -->
 <script src="/assets/nav.js"></script>
-<script src="/translator/engine.js"></script>
-<script>
-(function () {
-  "use strict";
-  // Optional retrieval-augmented backend (keeps any API key server-side).
-  // Empty string = disabled; the tool works fully offline without it.
-  // Set to your deployed worker URL to enable Layer 3 (see translator/worker/).
-  var RAG_ENDPOINT = "";
-
-  var INDEX_URL = "/translator/data/index.json";
-
-  var $in   = document.getElementById("trInput");
-  var $out  = document.getElementById("trOutput");
-  var $go   = document.getElementById("trGo");
-  var $copy = document.getElementById("trCopy");
-  var $clear= document.getElementById("trClear");
-  var $count= document.getElementById("trCount");
-  var $conf = document.getElementById("trConf");
-  var $status = document.getElementById("trStatus");
-  var $note = document.getElementById("trNote");
-  var $explain = document.getElementById("trExplain");
-
-  if (!$in || !$go) return;  // section not present
-
-  var engine = null;
-  var busy = false;
-  var lastCopy = "";          // exact text to copy (handles formal/informal)
-
-  function esc(s) {
-    return String(s).replace(/[&<>"']/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-    });
-  }
-
-  // Load the precomputed dataset index once.
-  fetch(INDEX_URL)
-    .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
-    .then(function (data) {
-      engine = new window.BuxoriEngine(data);
-      var c = engine.count();
-      $status.textContent = "Ready · " + c.exact + " verified entries loaded";
-    })
-    .catch(function (err) {
-      $status.textContent = "Dataset failed to load (" + err.message + ")";
-      $go.disabled = true;
-    });
-
-  function setCount() { $count.textContent = $in.value.length; }
-  $in.addEventListener("input", setCount);
-  setCount();
-
-  $in.addEventListener("keydown", function (e) {
-    // Ctrl/Cmd+Enter translates.
-    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); run(); }
-  });
-
-  $clear.addEventListener("click", function () {
-    $in.value = ""; setCount();
-    $out.textContent = "Translation will appear here.";
-    $out.classList.add("tr-empty");
-    $conf.textContent = ""; $note.innerHTML = "";
-    if ($explain) { $explain.hidden = true; $explain.innerHTML = ""; }
-    lastCopy = "";
-    $copy.disabled = true; $in.focus();
-  });
-
-  $copy.addEventListener("click", function () {
-    var text = $out.classList.contains("tr-empty") ? "" : lastCopy;
-    if (!text) return;
-    var done = function () {
-      var old = $copy.textContent; $copy.textContent = "Copied";
-      setTimeout(function () { $copy.textContent = old; }, 1200);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, fallbackCopy);
-    } else fallbackCopy();
-    function fallbackCopy() {
-      var ta = document.createElement("textarea");
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      try { document.execCommand("copy"); done(); } catch (e) {}
-      document.body.removeChild(ta);
-    }
-  });
-
-  $go.addEventListener("click", run);
-
-  var BADGE = {
-    exact: "verified", fuzzy: "closest match", grammar: "grammar draft",
-    compositional: "word-by-word", ai: "ai-assisted", none: "no match",
-  };
-
-  // Build the explanation panel: AI explanation when present, otherwise a
-  // dataset-grounded word-by-word gloss. Never invents meanings.
-  function renderExplain(res, text) {
-    if (!$explain) return;
-    var det = res.detail || {};
-    var html = '<div class="tr-explain-head">// Explanation</div>';
-    var body = "";
-
-    if (det.steps && det.steps.length) {
-      // Grammar engine: show how the sentence was built, step by step.
-      body += '<div class="tr-explain-text">Built offline from your dataset’s '
-           + 'grammar rules:</div><ul class="tr-steps">'
-           + det.steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("")
-           + "</ul>";
-    } else if (det.explanation) {
-      body += '<div class="tr-explain-text">' + esc(det.explanation) + "</div>";
-    } else if (res.status === "exact") {
-      var bits = ["Verified entry from the dataset" +
-        (det.type ? " (" + esc(det.type) + ")" : "") + "."];
-      if (det.notes) bits.push(esc(det.notes) + ".");
-      if (det.spoken) bits.push("Spoken form: " + esc(det.spoken) + ".");
-      body += '<div class="tr-explain-text">' + bits.join(" ") + "</div>";
-    } else if (res.status === "compositional") {
-      body += '<div class="tr-explain-text">Assembled word-by-word from the '
-           + 'dataset. Bukhori grammar and word order are not applied, so this '
-           + 'is a glossing aid, not a fluent sentence'
-           + (RAG_ENDPOINT ? "" : " — enable the AI translator for a full "
-              + "fluent translation and grammar explanation")
-           + ".</div>";
-    }
-
-    // Word-by-word gloss (available for any input via the dataset).
-    var gloss = [];
-    try { gloss = engine.glossTokens(text) || []; } catch (e) {}
-    if (gloss.length) {
-      body += '<div class="tr-gloss">' + gloss.map(function (g) {
-        var miss = !g.bux;
-        return '<span class="tr-gloss-item' + (miss ? " miss" : "") + '">'
-             + '<span class="tr-gloss-en">' + esc(g.en) + "</span>"
-             + '<span class="tr-gloss-bux">' + (miss ? "— not in dataset —" : esc(g.bux))
-             + "</span></span>";
-      }).join("") + "</div>";
-    }
-
-    if (!body) { $explain.hidden = true; $explain.innerHTML = ""; return; }
-    $explain.innerHTML = html + body;
-    $explain.hidden = false;
-  }
-
-  function render(res, text) {
-    $note.innerHTML = "";
-    $conf.textContent = "";
-    if ($explain) { $explain.hidden = true; $explain.innerHTML = ""; }
-
-    if (res.status === "none" || !res.bux) {
-      $out.classList.add("tr-empty");
-      $out.textContent = "— no reliable translation —";
-      $copy.disabled = true;
-      var d = res.detail || {};
-      var html = '<div class="tr-note miss"><span class="tr-badge none">no match</span>'
-               + esc(d.reason || "This phrase is not in the dataset.")
-               + (RAG_ENDPOINT ? "" : " Enable the AI translator (see setup) to "
-                  + "translate full sentences.") + "</div>";
-      if (d.suggestion) {
-        html += '<div class="tr-note">Did you mean <strong>' + esc(d.suggestion.english)
-             + '</strong> → <code>' + esc(d.suggestion.bux) + "</code>?</div>";
-      }
-      if (d.retrieved && d.retrieved.length && d.retrieved[0].score > 0.05) {
-        html += '<div class="tr-note">Closest dataset examples:<ul>'
-             + d.retrieved.slice(0, 4).map(function (x) {
-                 return "<li>" + esc(x.en) + " → <code>" + esc(x.bux) + "</code></li>";
-               }).join("") + "</ul></div>";
-      }
-      $note.innerHTML = html;
-      renderExplain(res, text);
-      return;
-    }
-
-    $out.classList.remove("tr-empty");
-    if (res.variants && res.variants.length) {
-      // Formal / informal registers side by side.
-      $out.innerHTML = res.variants.map(function (v) {
-        return '<div class="tr-variant"><span class="tr-reg">' + esc(v.register)
-             + '</span><span class="tr-vbux">' + esc(v.bux) + "</span></div>";
-      }).join("");
-      lastCopy = res.variants.map(function (v) { return v.register + ": " + v.bux; }).join("\n");
-    } else {
-      $out.textContent = res.bux;
-      lastCopy = res.bux;
-    }
-    $copy.disabled = false;
-
-    var badge = BADGE[res.status] || res.status;
-    $conf.innerHTML = '<span class="tr-badge ' + res.status + '">' + badge + "</span>"
-                    + (res.confidence ? "conf " + res.confidence : "");
-
-    var det = res.detail || {};
-    if (res.status === "exact") {
-      var extra = [];
-      if (det.spoken) extra.push("spoken: <code>" + esc(det.spoken) + "</code>");
-      if (det.alt)    extra.push("alt: <code>" + esc(det.alt) + "</code>");
-      var parts = extra.length ? extra.join(" &nbsp; ") : "";
-      if (det.variants && det.variants.length) {
-        parts += '<div style="margin-top:0.4rem;">Other attested forms: '
-              + det.variants.map(function (v) { return "<code>" + esc(v.bux) + "</code>"; }).join(" · ")
-              + "</div>";
-      }
-      if (det.review) {
-        $note.innerHTML = '<div class="tr-note warn"><span class="tr-badge fuzzy">review</span>'
-          + "Source marks this entry as uncertain" + (det.notes ? ": " + esc(det.notes) : "") + ".</div>";
-      } else if (parts) {
-        $note.innerHTML = '<div class="tr-note">' + parts + "</div>";
-      }
-    } else if (res.status === "grammar") {
-      var gwarn = '<div class="tr-note warn"><span class="tr-badge grammar">grammar draft</span>'
-        + esc(det.warning || "Assembled offline from the dataset's grammar rules.");
-      if (det.unknown && det.unknown.length) {
-        gwarn += " Not translated (not in dataset): "
-             + det.unknown.map(function (w) { return "<code>" + esc(w) + "</code>"; }).join(" ");
-      }
-      $note.innerHTML = gwarn + "</div>";
-    } else if (res.status === "ai") {
-      $note.innerHTML = '<div class="tr-note warn"><span class="tr-badge ai">ai-assisted</span>'
-        + "Generated by the AI translator, grounded on dataset examples. Fluent "
-        + "but not a verified source entry — double-check important text.</div>";
-    } else if (res.status === "fuzzy") {
-      $note.innerHTML = '<div class="tr-note warn"><span class="tr-badge fuzzy">closest match</span>'
-        + "Not an exact entry — matched to <strong>" + esc(det.matchedEnglish)
-        + "</strong> in the dataset. Verify before relying on it.</div>";
-    } else if (res.status === "compositional") {
-      var warn = '<div class="tr-note warn"><span class="tr-badge compositional">word-by-word</span>'
-        + esc(det.warning || "Assembled from individual dataset entries.");
-      if (det.unknown && det.unknown.length) {
-        warn += " Not in dataset: "
-             + det.unknown.map(function (w) { return "<code>" + esc(w) + "</code>"; }).join(" ");
-      }
-      warn += "</div>";
-      $note.innerHTML = warn;
-    }
-    renderExplain(res, text);
-  }
-
-  function run() {
-    if (!engine || busy) return;
-    var text = $in.value.trim();
-    if (!text) { $in.focus(); return; }
-
-    busy = true;
-    var label = $go.textContent;
-    $go.disabled = true;
-    $go.innerHTML = '<span class="tr-spinner"></span>Translating';
-    $status.textContent = "Translating…";
-
-    // Yield a frame so the spinner paints before the (sync) engine runs.
-    requestAnimationFrame(function () {
-      setTimeout(function () {
-        var res;
-        try { res = engine.translate(text); }
-        catch (e) { res = { status: "none", bux: null, detail: { reason: "Engine error: " + e.message } }; }
-
-        var finish = function (r) {
-          render(r, text);
-          busy = false; $go.disabled = false; $go.textContent = label;
-          $status.textContent = "Ready";
-        };
-
-        // AI layer: for anything that isn't a verified exact match, prefer the
-        // grounded AI translation+explanation when a backend is configured.
-        // Exact dataset matches stay authoritative and skip the network call.
-        if (RAG_ENDPOINT && res.status !== "exact") {
-          $status.textContent = "Translating with AI…";
-          ragTranslate(text, res).then(finish).catch(function () { finish(res); });
-        } else {
-          finish(res);
-        }
-      }, 0);
-    });
-  }
-
-  // Retrieval-augmented call. Sends the input + dataset examples to a server
-  // that holds the API key; the browser never sees a key. Returns a fluent
-  // translation plus an explanation, both grounded on the examples.
-  function ragTranslate(text, fallback) {
-    var examples = engine.retrieve(text, 8);
-    return fetch(RAG_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: text, examples: examples }),
-    })
-      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
-      .then(function (data) {
-        var out = data && (data.translation || data.bux);
-        if (!out) return fallback;
-        return {
-          status: "ai", bux: String(out),
-          confidence: typeof data.confidence === "number" ? Math.round(data.confidence * 100) / 100 : 0.5,
-          source: "rag",
-          detail: { matchedEnglish: text, explanation: data.explanation || "" },
-        };
-      });
-  }
-})();
-</script>
-
 <!-- CLIENT-SIDE ROUTER (portfolio ⇄ /translator) -->
 <script>
 (function () {
@@ -781,6 +445,19 @@
     "/": document.title,
     "/translator": "Buxori Translator // DAVID",
   };
+
+  // The translator (React + engine + dataset) is only downloaded when first opened.
+  var trLoading = false;
+  function loadTranslator() {
+    if (trLoading) return;
+    trLoading = true;
+    import("/translator/app/translator.js").catch(function (err) {
+      trLoading = false;
+      var root = document.getElementById("translator-root");
+      if (root) root.innerHTML = '<div class="tr-noscript">The translator failed to load (' +
+        String(err && err.message || err).replace(/[<>&]/g, "") + '). Please reload the page.</div>';
+    });
+  }
 
   function norm(path) {
     if (!path) return "/";
@@ -816,6 +493,7 @@
     }
     window.scrollTo(0, 0);
     if (toTranslator) {
+      loadTranslator();
       var inp = document.getElementById("trInput");
       if (inp) { try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); } }
     }

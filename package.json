@@ -11,8 +11,10 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p .",
     "eval": "node eval/evaluate.ts",
-    "check": "npm run typecheck && npm run compile && npm test && npm run eval -- --check",
-    "dev": "vite"
+    "check": "npm run typecheck && npm run compile && npm test && npm run eval -- --check && npm run build && npm run e2e",
+    "dev": "vite",
+    "build": "vite build",
+    "e2e": "node tests/e2e/site.e2e.mjs"
   },
   "dependencies": {
     "react": "19.2.9",
@@ -23,6 +25,7 @@
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.7",
     "@vitejs/plugin-react": "5.2.0",
+    "playwright": "1.56.1",
     "typescript": "5.9.3",
     "vite": "7.3.7",
     "vitest": "3.2.7"

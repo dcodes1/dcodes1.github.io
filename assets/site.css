@@ -1125,3 +1125,35 @@ footer .hi { color: var(--green); }
   .article-foot .btn { flex: 1 1 100%; }
 }
 .post-card code { font-family: var(--mono); font-size: 0.88em; color: var(--text-hi); }
+
+/* ── Translator app (React, translator/app/) ─────────────────────────────── */
+.tr-tabs { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+.tr-tabs > button, .tr-script > button {
+  font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.03em; color: var(--text-dim);
+  background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 0.45rem 0.9rem; cursor: pointer;
+  min-height: 36px; transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.tr-tabs > button:hover, .tr-script > button:hover { color: var(--text-hi); border-color: var(--border-hi); }
+.tr-tabs > button.active, .tr-script > button.active { color: var(--green); border-color: var(--green-line); background: var(--green-dim); }
+.tr-script { display: inline-flex; gap: 0.35rem; margin-left: auto; }
+.tr-conf { margin-left: 0.5rem; font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); }
+.tr-rows { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); white-space: nowrap; }
+.tr-alt { margin-right: 0.75rem; }
+.tr-alt em, .tr-entry em { color: var(--text-faint); font-style: normal; font-size: 0.85em; }
+.tr-sub-out { margin-top: 0.4rem; color: var(--text-dim); font-size: 0.9rem; }
+.tr-explain details > summary { cursor: pointer; list-style: none; }
+.tr-explain details > summary::-webkit-details-marker { display: none; }
+.tr-explain details > summary::after { content: ' +'; color: var(--text-faint); }
+.tr-explain details[open] > summary::after { content: ' −'; }
+.tr-explain ol.tr-steps { list-style: decimal; }
+.tr-related ul, .tr-entries { margin: 0 0 0.6rem 1.1rem; display: grid; gap: 0.35rem; font-size: 0.93rem; }
+.tr-entries { list-style: none; margin-left: 0; }
+.tr-entry { padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.tr-entry strong { color: var(--text-hi); }
+.tr-entry-sub { margin-top: 0.25rem; font-size: 0.86rem; color: var(--text-dim); }
+.tr-pos { font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--cyan); }
+.tr-noscript { padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-dim); }
+@media (max-width: 640px) {
+  .tr-script { margin-left: 0; }
+  .tr-tabs > button { flex: 1 1 auto; }
+}
