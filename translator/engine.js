@@ -117,7 +117,7 @@
     this.retrievalEx = (index && index.retrieval) || [];
     this.grammar = (index && index.grammar) || null;
     this.learned = (index && index.learned) || {};   // IBM-1 statistical lexicon
-    this.cache = {};
+    this.cache = Object.create(null);
 
     // Precompute lightweight per-key features for fuzzy matching.
     this._keys = Object.keys(this.exact);
@@ -339,7 +339,7 @@
     else {
       var e = this.exact[w];
       if (e && e.en && e.en.toLowerCase() === w) g = e.bux;
-      else if (this.learned[w]) g = this.learned[w];
+      // Statistical alignments are candidates, not verified dictionary entries.
     }
     // Never return a grammatical suffix fragment ("-i man", "-am") as a word.
     if (g && g.trim().charAt(0) === "-") return null;
@@ -357,6 +357,7 @@
     if (!G || !G.verbs) return null;
     var toks = tokenize(text);
     if (toks.length < 2) return null;
+    if (toks.some(function(t) { return /^(will|would|can|could|should|must|may|might|won't|cannot|can't)$/.test(t); })) return null;
 
     // Proper nouns: capitalised input words (not first) stay capitalised.
     var proper = {};
@@ -572,8 +573,9 @@
       return null;
     };
     var g = tryClean(this, t);
+    if (g && !s) return { bux: g, pl: false };
+    if (s) { var base = tryClean(this, s); if (base) return { bux: base, pl: true }; }
     if (g) return { bux: g, pl: false };
-    if (s) { g = tryClean(this, s); if (g) return { bux: g, pl: true }; }
     // learned lexicon last (may be inflected); prefer the singular form so a
     // plural like "books" resolves to the base noun, not a learned plural.
     if (s && this.learned[s]) return { bux: this.learned[s], pl: true };
@@ -585,7 +587,7 @@
     var G = this.grammar;
     if (!G || !G.adjectives) return null;
     var toks = tokenize(text);
-    if (toks.length < 2 || toks.length > 6) return null;
+    if (toks.length < 1 || toks.length > 6) return null;
 
     var proper = {};
     var raw = String(text).trim().split(/\s+/);
@@ -608,7 +610,13 @@
     if (!nounBux || unknown.length) return null;             // keep output clean
     var mods = nums.length + (poss ? 1 : 0) + adjs.length + (plural ? 1 : 0);
     if (mods === 0) return null;                             // bare noun -> elsewhere
-    if (poss && adjs.length) return null;                    // combo too complex for v1
+    if (poss && adjs.length) return null;
+    // Do not silently produce a singular possessive for a plural source.
+    // Stacked plural/possessive allomorphs need source verification.
+    if (poss && plural) return { status: 'none', bux: null, confidence: 0,
+      source: 'unsupported-plural-possessive', detail: {
+        reason: 'Plural possessive requires verified Buxori allomorphs; no singular substitute is returned.',
+        unknown: [nounEn], retrieved: [] } };                    // combo too complex for v1
 
     var self = this;
     function build(register) {
@@ -661,11 +669,16 @@
     }
     var key = normEn(raw);
     if (!key) return { status: "none", bux: null, confidence: 0, source: "empty", detail: {} };
-    if (this.cache[key]) return this.cache[key];
+    // Grammar depends on question punctuation and proper-name capitalization.
+    var cacheKey = raw.normalize ? raw.normalize('NFC').trim() : raw.trim();
+    if (Object.prototype.hasOwnProperty.call(this.cache, cacheKey)) return this.cache[cacheKey];
 
     var res;
     // L1 exact
     var hit = this.exactLookup(key);
+    var singular = singularize(key);
+    var singularHit = singular && this.exactLookup(singular);
+    if (hit && singularHit && hit.bux === singularHit.bux && tokenize(key).length === 1) hit = null;
     if (hit) {
       res = {
         status: "exact", bux: hit.bux, confidence: 1, source: "tsv-exact",
@@ -675,34 +688,34 @@
           notes: hit.notes || null, variants: hit.variants || null,
         },
       };
-      this.cache[key] = res; return res;
+      this.cache[cacheKey] = res; return res;
     }
 
     // L2 fuzzy
     var fz = this.bestFuzzy(raw);
     var thr = fz ? this._fuzzyThresholds(fz.kind) : null;
-    if (fz && fz.score >= thr.accept) {
+    if (fz && fz.score >= thr.accept && !(tokenize(raw).length === 1 && singularize(key))) {
       res = {
         status: "fuzzy", bux: fz.entry.bux, confidence: round(fz.score),
         source: "tsv-fuzzy",
         detail: { matchedEnglish: fz.entry.en, type: fz.entry.type,
                   review: !!fz.entry.review, variants: fz.entry.variants || null },
       };
-      this.cache[key] = res; return res;
+      this.cache[cacheKey] = res; return res;
     }
 
     // L2.7 grammar engine: conjugated, verb-final draft for pronoun sentences.
     if (this.grammar) {
       var gr = null;
       try { gr = this.grammarTranslate(raw); } catch (e) { gr = null; }
-      if (gr && gr.bux) { this.cache[key] = gr; return gr; }
+      if (gr && gr.bux) { this.cache[cacheKey] = gr; return gr; }
     }
 
     // L2.8 noun-phrase handler: ezafe/possessive/number ordering.
     if (this.grammar) {
       var np = null;
       try { np = this.nounPhrase(raw); } catch (e) { np = null; }
-      if (np && np.bux) { this.cache[key] = np; return np; }
+      if (np && (np.bux || np.status === 'none')) { this.cache[cacheKey] = np; return np; }
     }
 
     // L2.5 compositional (for multi-word input)
@@ -720,7 +733,7 @@
                  + "sentence translation. Grammar and word order are not applied.",
         },
       };
-      this.cache[key] = res; return res;
+      this.cache[cacheKey] = res; return res;
     }
 
     // L2 low-confidence suggestion (surfaced as a hint, not an answer)
@@ -734,7 +747,7 @@
           retrieved: this.retrieve(raw, 5),
         },
       };
-      this.cache[key] = res; return res;
+      this.cache[cacheKey] = res; return res;
     }
 
     // Out of coverage.
@@ -746,7 +759,7 @@
         retrieved: this.retrieve(raw, 5),
       },
     };
-    this.cache[key] = res; return res;
+    this.cache[cacheKey] = res; return res;
   };
 
   function round(x) { return Math.round(x * 100) / 100; }

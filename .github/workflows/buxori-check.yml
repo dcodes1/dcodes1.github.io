@@ -1,0 +1,41 @@
+name: Buxori validation
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run check
+      - run: node translator/tests/engine.test.js
+      - run: npm run build
+      - name: Install browser test runner (CI only)
+        run: npm install --no-save --package-lock=false @playwright/test@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test
+      - name: Deterministic compilation
+        run: |
+          cp src/data/buxori-index.json /tmp/buxori-first.json
+          npm run compile
+          cmp /tmp/buxori-first.json src/data/buxori-index.json
+      - run: node scripts/audit-index.mjs > index-audit.json
+      - name: Held-out evaluation
+        run: node translator/eval/evaluate.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: buxori-validation
+          path: |
+            dist/
+            translator/eval/sample_predictions.txt
+            translator/eval/metrics.json
+            index-audit.json
+            test-results/

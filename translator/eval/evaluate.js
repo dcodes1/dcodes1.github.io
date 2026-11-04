@@ -142,6 +142,11 @@ const report = {
   answered_rate: pct(answered, n),
 };
 
+const crypto = require("crypto");
+report.inputs = Object.fromEntries(["splits.json", "pairs.jsonl", "index_train.json"].map(name => [
+  name, crypto.createHash("sha256").update(fs.readFileSync(path.join(DATA, name))).digest("hex")
+]));
+fs.writeFileSync(path.join(__dirname, "metrics.json"), JSON.stringify(report, null, 2) + "\n");
 console.log(JSON.stringify(report, null, 2));
 console.log(`
 Interpretation

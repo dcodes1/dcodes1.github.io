@@ -428,7 +428,7 @@ for (const e of roots.values()) {
   const v = e.verb;
   if (!v?.compound || v.presentStem) continue;
   const aux = roots.get(v.compound.auxiliary)?.verb?.presentStem;
-  if (aux) v.presentStem = { text: aux.text, evidence: 'derived' };
+  if (aux) v.presentStem = { ...aux, evidence: 'derived' };
 }
 for (const e of roots.values()) {
   if (e.pos === 'noun' || e.pos === 'adjective' || e.pos === 'proper_noun') e.noun = { stemFinal: stemFinal(lastWord(e.lemma.text)) };
@@ -648,6 +648,19 @@ for (const g of rows.filter((r) => r.entryType === 'grammar')) {
 }
 
 // ═══════════════════════════════════════════════════════════════ 8. INDEXES
+// Consolidate identical copula semantics; keep both source notes and examples.
+for (let i = syntaxRules.length - 1; i >= 0; i--) {
+  const r = syntaxRules[i];
+  if (!r || r.kind !== 'copula') continue;
+  const prior = syntaxRules.slice(0, i).find(p => p.kind === 'copula' &&
+    p.affirmative === r.affirmative && p.negative === r.negative &&
+    p.spoken === r.spoken && p.register === r.register);
+  if (!prior) continue;
+  prior.sources.push(...r.sources);
+  prior.examples = [...new Set([...prior.examples, ...r.examples])];
+  if (prior.statement !== r.statement) prior.statement += '\n' + r.statement;
+  syntaxRules.splice(i, 1);
+}
 const record = <K extends string, V>(m: Map<K, V>): Record<K, V> => Object.fromEntries([...m.entries()].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))) as Record<K, V>;
 const byGloss = new Map<GlossKey, RootId[]>();
 const inflectedByGloss = new Map<GlossKey, BuxKey[]>();
@@ -676,8 +689,8 @@ for (const a of affixes.values()) for (const al of a.allomorphs) { const f = aff
 const index: BuxoriIndex = {
   meta: {
     schemaVersion: 1,
-    source: { file: relative(ROOT, TSV_PATH), sha256: createHash('sha256').update(raw).digest('hex'), rows: rows.length },
-    builtAt: new Date().toISOString(),
+    source: { file: relative(ROOT, TSV_PATH).replaceAll('\\', '/'), sha256: createHash('sha256').update(raw).digest('hex'), rows: rows.length },
+    builtAt: new Date(Number(process.env.SOURCE_DATE_EPOCH ?? 0) * 1000).toISOString(),
     orthography: { script: 'latin', specialLetters: ['ü'], stressMarks: ['á', 'é', 'í', 'ć', 'ġ'], apostrophe: 'ayin' },
   },
   policy: { defaultRegister: 'regular', evidencePrecedence: EVIDENCE_PRECEDENCE },
