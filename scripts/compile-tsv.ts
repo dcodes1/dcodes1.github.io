@@ -1,18 +1,21 @@
 /*
- * compile.ts — translator/data/bukhori.tsv  →  translator/data/buxori-index.json
+ * compile-tsv.ts — Buxori TSV  →  src/data/buxori-index.json
  *
- *   node compile.ts            (from translator/compiler/, Node ≥ 22.18)
+ *   npm run compile                          (default: translator/data/bukhori.tsv)
+ *   node scripts/compile-tsv.ts <file.tsv>   (Node ≥ 22.18 runs TypeScript directly)
  *
  * Every output item records the TSV rows it came from and an evidence level.
  * Every TSV row ends up somewhere (a root, inflected entry, affix, paradigm,
- * rule, example) or in `excluded` with a reason — test.ts enforces this.
+ * rule, example) or in `excluded` with a reason; the build fails otherwise.
+ * Keys are produced by src/lib/normalizer.ts, the same code the app uses to
+ * normalize what people type, so build-time and run-time keys cannot drift.
  */
 import { createHash } from 'node:crypto';
-import { writeFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readTsv, sourceRef, type Row } from './tsv.ts';
-import { affixForm, buxKey, dedupeBy, glossKey, senses, similarity, stemFinal } from './normalize.ts';
+import { readTsv, sourceRef, type Row } from './lib/tsv.ts';
+import { affixForm, canonicalKey, dedupeBy, foldTsvStress, glossKey, senses, similarity, stemFinal } from '../src/lib/normalizer.ts';
 import {
   EVIDENCE_PRECEDENCE,
   type Affix, type AffixCategory, type AffixId, type Allomorph, type AttachesTo, type BuxKey, type BuxoriIndex,
@@ -20,11 +23,14 @@ import {
   type InflectedEntry, type NumericValue, type Paradigm, type ParadigmId, type PartOfSpeech, type PersonNumber,
   type Register, type RootEntry, type RootId, type RuleId, type SourceRef, type Stem, type SyntaxRule,
   type TemplatePart, type Tense, type VerbInfo,
-} from './types.ts';
+} from '../src/lib/types.ts';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const TSV_PATH = resolve(HERE, '../data/bukhori.tsv');
-const OUT_PATH = resolve(HERE, '../data/buxori-index.json');
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const TSV_PATH = resolve(process.argv[2] ?? resolve(ROOT, 'translator/data/bukhori.tsv'));
+const OUT_PATH = resolve(ROOT, 'src/data/buxori-index.json');
+
+/** TSV text → key. The TSV prints stress with accents/dots (barodár, ġiriftam); fold those first. */
+const buxKey = (s: string): BuxKey => canonicalKey(foldTsvStress(s));
 
 // ───────────────────────────────────────────────────────────── row accounting
 export type Destination = 'root' | 'inflected' | 'affix' | 'paradigm' | 'rule' | 'example' | 'excluded';
@@ -670,9 +676,9 @@ for (const a of affixes.values()) for (const al of a.allomorphs) { const f = aff
 const index: BuxoriIndex = {
   meta: {
     schemaVersion: 1,
-    source: { file: 'translator/data/bukhori.tsv', sha256: createHash('sha256').update(raw).digest('hex'), rows: rows.length },
+    source: { file: relative(ROOT, TSV_PATH), sha256: createHash('sha256').update(raw).digest('hex'), rows: rows.length },
     builtAt: new Date().toISOString(),
-    orthography: { script: 'latin', specialLetters: ['ü'], stressMarks: ['á', 'é', 'í'], apostrophe: 'ayin' },
+    orthography: { script: 'latin', specialLetters: ['ü'], stressMarks: ['á', 'é', 'í', 'ć', 'ġ'], apostrophe: 'ayin' },
   },
   policy: { defaultRegister: 'regular', evidencePrecedence: EVIDENCE_PRECEDENCE },
   roots: {
@@ -689,10 +695,11 @@ const index: BuxoriIndex = {
 const missing = rows.filter((r) => !used.has(r.row)).map((r) => r.row);
 if (missing.length) throw new Error(`Unaccounted TSV rows: ${missing.slice(0, 20).join(', ')}${missing.length > 20 ? ' …' : ''}`);
 
+mkdirSync(dirname(OUT_PATH), { recursive: true });
 writeFileSync(OUT_PATH, JSON.stringify(index));
 const count = (d: Destination) => [...used.values()].filter((s) => s.has(d)).length;
 console.log(JSON.stringify({
-  out: OUT_PATH.replace(resolve(HERE, '../..') + '/', ''), bytes: Buffer.byteLength(JSON.stringify(index)),
+  out: relative(ROOT, OUT_PATH), bytes: Buffer.byteLength(JSON.stringify(index)),
   rows: rows.length, rowsBy: Object.fromEntries((['root', 'inflected', 'affix', 'paradigm', 'rule', 'example', 'excluded'] as const).map((d) => [d, count(d)])),
   roots: roots.size, verbs: [...roots.values()].filter((e) => e.verb).length, inflected: [...inflected.values()].flat().length,
   affixes: affixes.size, paradigms: paradigms.size, rules: syntaxRules.length, examples: examples.size, excluded: excluded.length,

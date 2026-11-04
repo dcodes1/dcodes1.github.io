@@ -1,0 +1,27 @@
+{
+  "name": "davidmilov-site",
+  "private": true,
+  "type": "module",
+  "description": "davidmilov.com — portfolio + Buxori translator. The live site is served as static files by GitHub Pages; this package holds the TypeScript data pipeline (and future React app).",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "compile": "node scripts/compile-tsv.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p .",
+    "check": "npm run typecheck && npm run compile && npm test",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "react": "19.2.9",
+    "react-dom": "19.2.9"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "@vitejs/plugin-react": "5.2.0",
+    "typescript": "5.9.3",
+    "vite": "7.3.7",
+    "vitest": "3.2.7"
+  }
+}

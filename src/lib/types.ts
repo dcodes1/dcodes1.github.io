@@ -331,7 +331,7 @@ export interface BuxoriIndex {
     orthography: {
       script: 'latin';          // no Cyrillic / Hebrew / IPA in the source
       specialLetters: ['ü'];
-      stressMarks: ['á', 'é', 'í'];
+      stressMarks: ['á', 'é', 'í', 'ć', 'ġ']; // ć, ġ: front matter marks stress on consonants too
       apostrophe: 'ayin';
     };
   };

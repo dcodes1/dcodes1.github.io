@@ -1,6 +1,6 @@
 /* Strict TSV reader for bukhori.tsv: fails loudly on any shape change. */
 import { readFileSync } from 'node:fs';
-import type { EntryType, SourceRef } from './types.ts';
+import type { EntryType, SourceRef } from '../../src/lib/types.ts';
 
 export const COLUMNS = [
   'page', 'lesson', 'entry_type', 'section', 'english', 'bukhori',

@@ -1,23 +1,23 @@
 /*
- * test.ts — independent checks on translator/data/buxori-index.json.
- * Run after `node compile.ts`:   node test.ts
+ * Integrity checks on src/data/buxori-index.json (run `npm run compile` first).
  * Re-reads the TSV itself, so it does not trust the compiler's own bookkeeping.
  */
 import { readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { readTsv } from './tsv.ts';
-import { buxKey, senses } from './normalize.ts';
-import type { Affix, BuxoriIndex, RootEntry, SourceRef, SyntaxRule, TemplatePart } from './types.ts';
+import { resolve } from 'node:path';
+import { describe, expect, test } from 'vitest';
+import { readTsv } from '../scripts/lib/tsv.ts';
+import { canonicalKey, foldTsvStress, senses } from '../src/lib/normalizer.ts';
+import type { Affix, BuxoriIndex, RootEntry, SourceRef, SyntaxRule, TemplatePart } from '../src/lib/types.ts';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const idx = JSON.parse(readFileSync(resolve(HERE, '../data/buxori-index.json'), 'utf8')) as BuxoriIndex;
-const { rows } = readTsv(resolve(HERE, '../data/bukhori.tsv'));
+const ROOT = resolve(import.meta.dirname, '..');
+const idx = JSON.parse(readFileSync(resolve(ROOT, 'src/data/buxori-index.json'), 'utf8')) as BuxoriIndex;
+const { rows } = readTsv(resolve(ROOT, 'translator/data/bukhori.tsv'));
+const buxKey = (s: string) => canonicalKey(foldTsvStress(s));
 
-let pass = 0, fail = 0;
+// Each check becomes its own vitest case (collected here, asserted at the bottom).
+const results: [name: string, ok: boolean, detail: string][] = [];
 function check(name: string, cond: boolean, detail?: unknown) {
-  if (cond) { pass++; return; }
-  fail++; console.log('  FAIL:', name, detail === undefined ? '' : JSON.stringify(detail).slice(0, 300));
+  results.push([name, cond, detail === undefined ? '' : (JSON.stringify(detail) ?? '').slice(0, 300)]);
 }
 const roots = Object.values(idx.roots.entries);
 const affix = (id: string) => idx.affixes.entries[id as keyof typeof idx.affixes.entries] as Affix | undefined;
@@ -152,5 +152,8 @@ check('REVIEW rows keep their flag', roots.some((r) => r.sources.some((s) => s.r
 const ex = idx.excluded.reduce<Record<string, number>>((m, x) => ((m[x.reason] = (m[x.reason] ?? 0) + 1), m), {});
 check('excluded = 180 no_answer, 13 stubs, 11 not transcribed', ex['no_answer'] === 180 && ex['fill_in_stub'] === 13 && ex['not_transcribed'] === 11, ex);
 
-console.log(`\n${pass} passed, ${fail} failed`);
-process.exit(fail ? 1 : 0);
+describe('index integrity', () => {
+  test.each(results)('%s', (_name, ok, detail) => {
+    expect(ok, detail).toBe(true);
+  });
+});
