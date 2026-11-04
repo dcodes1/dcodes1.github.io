@@ -1,4 +1,5 @@
 {
+ "provenance": "Legacy engine (translator/engine.js + translator/data/index_train.json, built by translator/scripts/preprocess.py) scored on eval/testset.json with eval/metrics.ts by eval/legacy-baseline.ts at commit 1875c5a. Those files were removed when the TypeScript pipeline replaced them; see git history.",
  "report": {
   "engine": "legacy engine.js (index_train.json)",
   "items": 270,

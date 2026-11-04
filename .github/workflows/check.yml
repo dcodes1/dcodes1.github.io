@@ -1,0 +1,44 @@
+# Runs on every push and pull request. GitHub Pages still serves the branch
+# as-is; this workflow only verifies it.
+name: check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+
+      - name: Compiled index is up to date and reproducible
+        run: |
+          npm run compile
+          git diff --exit-code -- src/data/buxori-index.json
+
+      - run: npm test
+
+      - name: Held-out accuracy does not regress
+        run: npm run eval -- --check
+
+      - name: Built translator app is up to date
+        run: |
+          npm run build
+          git diff --exit-code -- translator/app
+          test -z "$(git status --porcelain -- translator/app)"
+
+      - name: Browser end-to-end
+        run: |
+          npx playwright install --with-deps chromium
+          npm run e2e

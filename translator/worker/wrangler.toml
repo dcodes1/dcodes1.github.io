@@ -6,7 +6,7 @@
 #   wrangler secret put ANTHROPIC_API_KEY     # paste your key when prompted
 #   wrangler deploy
 #
-# Then set RAG_ENDPOINT in index.html to the printed *.workers.dev URL
+# Then set data-ai-endpoint="<URL>" on <div id="translator-root"> in index.html
 # (or your custom route).
 
 name = "buxori-rag"

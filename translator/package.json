@@ -1,4 +1,0 @@
-{
-  "type": "commonjs",
-  "description": "Legacy browser/Node engine and tests (CommonJS); isolated from the ES-module root package."
-}

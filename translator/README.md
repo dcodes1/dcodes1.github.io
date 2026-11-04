@@ -1,291 +1,128 @@
-# English → Buxori Translator
+# Buxori translator
 
-A dataset-grounded English → Buxori (Bukharian, Judeo-Tajik) translator embedded
-in the portfolio (`index.html`, section `// 05`). The curated TSV is the single
-source of truth: the tool returns verified source translations, clearly-flagged
-approximations, or an honest "no translation available" — it never fabricates
-Buxori vocabulary.
+An English ⇄ Buxori (Bukharian, Judeo-Tajik) translator and learning tool,
+served at [davidmilov.com/translator](https://davidmilov.com/translator).
+Everything it outputs comes from one source, a 3,519-row transcription of a
+Bukharian lesson book (`translator/data/bukhori.tsv`). The output is either a
+printed entry, or source words combined by the grammar rules that same book
+states. It never invents vocabulary. Words it cannot source are reported, and
+its reasoning is shown step by step, with TSV line numbers.
 
-> **Script note:** the source material transliterates Bukharian into the Latin
-> alphabet (with diacritics `ü á é í ö ć ġ`). That transliteration is preserved
-> byte-for-byte; the tool does not convert to Cyrillic or Hebrew script.
+## How it fits together
 
----
+```
+translator/data/bukhori.tsv          the only source of truth (never edited by code)
+        │  scripts/compile-tsv.ts    strict reader, every row accounted for, byte-identical output
+        ▼
+src/data/buxori-index.json           roots, verb stems, printed conjugation tables, affixes,
+        │                            paradigms, grammar rules, examples, exclusions, provenance
+        │  src/lib/normalizer.ts     any spelling (Latin variants, Cyrillic, Hebrew script) → TSV key
+        │  src/lib/lookup.ts         Buxori → English (with match tier), verb analysis
+        │  src/engine/               English → Buxori (below)
+        ▼
+src/app/ (React)  ──vite build──▶  translator/app/   committed; loaded by index.html on first visit
+```
 
-## 1. Dataset summary & quality
+GitHub Pages serves the repository as-is, so the built app is committed. The
+portfolio (`index.html`) only downloads it when `/translator` is opened. The
+entry script is 65 KB gzipped, plus 17 KB for the engine and 192 KB for the
+content-hashed index.
 
-Source: `data/bukhori.tsv` — a 3,519-row lesson-book export, 11 columns
-(`page, lesson, entry_type, section, english, bukhori, spoken_form, alt_forms,
-numeric_value, notes, flag`).
+## The engine (`src/engine/`)
 
-| Metric | Value |
+The layers are tried in order, and the first that succeeds wins. The UI labels the result with that layer:
+
+| status | meaning |
 |---|---|
-| Source rows | 3,519 |
-| **Clean English→Buxori pairs** | **2,835** |
-| Unique English keys | 2,537 |
-| Keys with multiple attested Buxori forms | 208 |
-| Single-word lexicon entries | 900 |
-| Multi-word phrases | 1,582 |
-| Sentence-length retrieval examples | 974 |
-| Rows flagged `REVIEW` (source-uncertain) | 7 |
+| `exact` (**verified**) | the English is an entry, inflected headword or example sentence in the TSV |
+| `grammar` (**built from rules**) | assembled from TSV words with TSV-stated rules; every step is cited |
+| `partial` (**incomplete**) | as above, but some English words have no source and are listed |
+| `fuzzy` (**closest match**) | spelling corrected (swapped or doubled letters only) or a near-identical entry |
+| `compositional` (**word by word**) | per-word glosses in English order, only with ≥ ⅔ coverage |
+| `none` | nothing reliable; similar source sentences are shown instead |
 
-**Entry-type mix:** vocab 1,766 · example 526 · phrase 512 · exercise 291 ·
-paradigm 202 · grammar 106 · reading 77 · proverb 39.
+Main design points:
 
-**Shape:** overwhelmingly a **word/short-phrase lexicon** — 62% of pairs are 1–2
-English tokens; only a few hundred are full sentences.
+- **Attested forms first.** The compiler extracts the printed conjugation
+  tables (raftan, shudan, omadan, doshtan, donistan, guftan, dodan, kardan;
+  present, past, perfect, continuous, imperative). The engine uses those before
+  any rule.
+- **Rules come from data.** Endings are read from the index's paradigm cells,
+  whose allomorphs are tagged by register and environment. The code only
+  encodes the rule logic the TSV states in prose (each step cites the rule's rows).
+- **Irregular verbs.** A reduced stem (`merum` → `r`) is inferred only if it
+  reproduces every printed form of that verb's table. That is how guftan
+  (`megum … megun`) is handled even though the TSV doesn't list it as irregular.
+  Omadan fails the check and is never guessed.
+- **Register.** Regular (conversational) forms are used by default (owner
+  decision): "my mom" → `Onim`, not the Literal `Onayam`. A "you" sentence yields
+  both `tu` (informal) and `shumo` (formal), and the English labels `(sing.)`,
+  `(polite)` and `(pl.)` pick one.
+- **Coverage:**
+  - noun plural `-ho`;
+  - possessives by stem class, ezafe, and the object marker `-a`/`-ya`;
+  - classifier `-ta` (`hafta kitov`), cardinals (`bistu panj`) and ordinals
+    (`darsi panjum`);
+  - copula suffixes (`düxturam`);
+  - compound verbs (`zindagi mekunam`);
+  - nine tenses, negation, imperatives, questions and wh-phrases (`chand pul`).
+- **Function words** come from the index, never from a hard-coded Buxori list.
+  The legacy engine's hard-coded tables produced `charo` and `baroi ki`, which
+  are not in the source; the TSV has `Chuva?` and `Azbaski`.
 
-**Quality issues found and how they are handled:**
+Linguistic choices, with their evidence and confidence, are in
+[`docs/LINGUISTIC_DECISIONS.md`](../docs/LINGUISTIC_DECISIONS.md).
 
-- **Non-pairs excluded from lookup** (kept out of the index, counted in the
-  summary): `grammar` rows are rule headers with no translation; `paradigm` rows
-  are conjugation-table fragments (e.g. "my" → `-am`, "I" → `-um`) that would
-  corrupt matching; `exercise` rows are answerless prompts or fill-in stubs
-  (`Man xarid...`). 288 rows have an empty `bukhori` cell and are dropped.
-- **Duplicates / variants:** 208 English keys map to several Buxori forms. One
-  canonical form is chosen (prefer non-`REVIEW`, then `vocab`/`phrase` over
-  `example`, then shorter); the rest are preserved as **attested variants** and
-  shown in the UI, never discarded.
-- **Normalisation is key-only.** English is lower-cased, de-punctuated, and
-  parenthetical glosses (`(polite)`) are stripped **for the match key only**.
-  The original English and the original Buxori are always stored verbatim.
-- **`REVIEW` entries** (source marks the transliteration as uncertain) are kept
-  but surfaced with a visible "review" warning.
-- **No invented data.** Missing translations are never filled in.
+## Accuracy (reproducible)
 
-Run `python3 scripts/preprocess.py` to regenerate; it prints this summary and
-writes it to `data/summary.json`.
+`npm run eval` compiles an index **without** the 276 TSV rows of the frozen
+test set (`eval/testset.json`, 270 items), then translates those items.
+A prediction is correct if it equals any attested form for that English.
 
----
+| engine | accuracy | precision (correct / answered) | answered | chrF (answered) |
+|---|---|---|---|---|
+| legacy `engine.js` (removed) | 4.1% | 8.7% | 126 / 270 | 0.331 |
+| current | **12.6%** | **35.1%** | 97 / 270 | 0.495 |
 
-## 2. Translation approach (and why)
+Most of the test set is single words that appear nowhere else in the source
+("dog", "teacher"). For those the correct behaviour is to abstain, so precision
+is the trust number. `eval/thresholds.json` makes CI fail on any regression.
 
-A **hybrid, retrieval-first** engine (`engine.js`), chosen to fit the data:
-
-| Layer | What it does | Confidence |
-|---|---|---|
-| **L1 Exact** | normalised input == an indexed English key → return the verified Buxori verbatim | highest, authoritative |
-| **L2 Fuzzy** | closest key by char-trigram + token-overlap + edit distance, with per-path thresholds (strict for multi-word, spelling-based for single-word typos) | medium, flagged |
-| **L2.7 Grammar engine** | a local, offline translator for simple pronoun sentences: conjugates verbs (`me-`+stem+ending / past stem), drops the copula, maps prepositions (`ba`/`az`/`qati`), orders the verb last. Compiled from the dataset's own grammar rows. | medium, flagged "grammar draft" |
-| **L2.5 Compositional** | cover the input with indexed phrases (longest-match) + word glosses; **report any token it can't source** | low, flagged word-by-word |
-| **L3 Retrieval-augmented (optional)** | for out-of-coverage input, retrieve the most similar dataset pairs and let a server-side model translate *grounded on them* | optional, AI-assisted |
-
-### The offline grammar engine (local, no key, ~22 KB)
-
-For simple sentences with a pronoun subject (e.g. *"I live in Israel now"*,
-*"he is a doctor"*, *"I do not eat meat"*), the engine produces conjugated,
-verb-final Buxori **entirely in the browser** — no model download, no API key:
-
-```
-I live in Israel now  →  Man ba Isroel aknun zindagi mekunam
-```
-
-It is compiled by `preprocess.py` into a compact grammar model shipped inside
-`index.json`:
-
-* **229 verbs** mined from the TSV with their present stems (`to go → Raftan,
-  stem -rav-`) and compound forms (`to live → Zindagi kardan`).
-* **Conjugation tables** (present `me-`+stem+personal-ending, simple past via the
-  infinitive-minus-`-an` stem, negation `na-`) taken from the dataset's paradigm
-  rows.
-* **Curated rules** verified against the dataset's grammar rows: verb-final word
-  order, droppable present copula, `ba/az/qati` prepositions, dropped articles,
-  ezafe-aware glossing, time adverbs.
-
-It is **not** a neural network and makes no attempt to be one — it is classic
-rule-based MT. Output is always labelled a "grammar draft": usually close and
-genuinely useful, but unverified. It explains each result step by step (subject,
-verb conjugation, preposition mapping, word order), so it doubles as a learning
-aid.
-
-It also handles:
-
-* **Questions** — *"Where are you from?"* → *"Shumo az kujo?"* (wh-words, copula
-  drop, pro-drop subject).
-* **Formal / informal** — when the 2nd person is involved it returns both
-  registers: *"You eat bread"* → informal *"Tu non mexuri"* / formal *"Shumo non
-  mexured"*.
-* **No English leakage** — any word it cannot source from the dataset is
-  **omitted** from the Buxori output and reported separately as "not in dataset",
-  so the output box only ever contains Buxori.
-* **Noun phrases** — a dedicated handler applies the dataset's noun-phrase rules:
-  ezafe adjective order (*cold water* → *maimi xunuk*, noun + `-i`/`-yi` + adj),
-  possessive endings (*my book* → *kitovam*; *your book* → informal *kitovat* /
-  formal *kitovaton*), and number/plural (*two red apples* → *du sevi surx*).
-  Grammatical suffix fragments in the source (e.g. a vocab row *"my = -i man"*)
-  are excluded from the word lexicon so they can never leak into output.
-
-### Statistical lexicon (IBM Model 1, trained on your data)
-
-`preprocess.py` also trains an **IBM Model 1 word-alignment model** (the EM
-algorithm) on the parallel pairs — genuine unsupervised machine learning, pure
-stdlib, a few seconds. It learns a probabilistic English→Buxori dictionary
-(~360 entries) that covers content words appearing only *inside* phrases (never
-as a standalone vocab row), e.g. `friend → hoveri`, `child → bacha`, `big →
-kalon`. Inference is a dictionary lookup in the browser (a few KB), used as a
-fallback after the explicit vocab so fewer words are left untranslated. English
-function words are excluded so copulas/articles are never mistranslated.
-
-Why not an in-browser neural model (Transformers.js / WebLLM)? Evaluated and
-rejected: no small model supports Buxori (they emit Tajik/Persian), the weights
-are 300 MB–1 GB (not "small"), and training on ~2,800 lexicon pairs would not
-generalise. A dataset-derived grammar engine is the honest local option.
-
-**Why no fine-tuned NLLB/mT5/etc.** It was evaluated and rejected, honestly:
-
-1. **No model supports Bukhori.** NLLB-200, mT5 and similar have no Bukharian
-   (Judeo-Tajik) token/lang-id; they would silently emit Standard Tajik,
-   Persian or Russian — exactly the failure mode the project forbids.
-2. **The data is too small and the wrong shape** — ~2,800 mostly single-word
-   pairs, only a few hundred sentences. That is a lexicon, not a parallel
-   sentence corpus; it cannot train an accurate NMT model.
-3. **The deployment target is static** (GitHub Pages) with no GPU. Training
-   would be an offline fiction with no honest payoff.
-
-So the dataset itself *is* the model. L1–L2.5 run entirely in the browser from a
-precomputed index; L3 is an optional, clearly-labelled enhancement. This beats
-any ungrounded "ask an LLM to translate into Bukhori" approach, which the data
-specifically exists to prevent.
-
----
-
-## 3. Evaluation
-
-`node eval/evaluate.js` runs a **leak-free generalisation test**: the held-out
-test split's English keys are removed from the index (via `data/index_train.json`,
-built from train+val only), so exact matching cannot fire and only the
-generalising layers are measured — the hard case, not everyday use.
-
-Headline results (295 held-out examples):
-
-- **Abstention 79%** — by design: the tool refuses rather than guess on unseen
-  input.
-- **Committed answers** (exact+fuzzy, the trust-critical bucket): tiny on this
-  adversarial split because the answers were deliberately removed.
-- **Compositional drafts** earn partial credit — **chrF ≈ 0.19** — and are
-  UI-flagged as unverified; verbatim exact-match is the wrong lens for them.
-
-Metrics and caveats: **chrF** (char n-gram F2) is the fair automatic metric for
-this short, diacritic-rich, transliterated target; **BLEU-4** is reported but is
-unreliable on 1–3 token targets (most of the data); neither captures meaning.
-See `eval/sample_predictions.txt` for a manual read, including where
-compositional drafts fail (idioms, verb phrases).
-
-> This number **understates** real use. When a user types a word or phrase that
-> exists in the dataset — the common case — they get the verified translation at
-> 100% fidelity. `tests/engine.test.js` asserts every exact key resolves to a
-> real dataset value.
-
-**Do not** re-measure "accuracy" on in-index items; that is memorisation, not
-accuracy, and is deliberately excluded.
-
----
-
-## 4. Running locally
-
-No build step. Any static server works (the page fetches `/translator/data/index.json`):
+## Commands
 
 ```bash
-# from the repo root
-python3 -m http.server 8000
-# open http://localhost:8000/   and scroll to the Translator section
+npm ci
+npm run compile     # TSV → src/data/buxori-index.json (byte-identical for the same input)
+npm test            # vitest: data integrity, normalizer, lookup, engine (≈380 tests)
+npm run typecheck
+npm run eval        # held-out accuracy; `npm run eval -- --check` enforces thresholds
+npm run build       # React app → translator/app/
+npm run e2e         # real-browser test of the site, served like GitHub Pages
+npm run check       # all of the above, as CI runs it
 ```
 
-Rebuild the index after editing the TSV:
+After editing the TSV, run `npm run compile && npm run build` and commit the results.
+CI (`.github/workflows/check.yml`) fails if the committed index or app differs
+from a fresh build.
 
-```bash
-python3 translator/scripts/preprocess.py \
-    --tsv translator/data/bukhori.tsv --out translator/data
-```
+## Optional AI fallback
 
-Self-checks (no dependencies beyond Node + Python stdlib):
+`translator/worker/` is a Cloudflare Worker that asks an LLM to translate,
+grounded only on source examples sent by the browser. It is off by default. To
+enable it, deploy the worker and set
+`data-ai-endpoint="https://…"` on `<div id="translator-root">` in `index.html`.
 
-```bash
-node translator/tests/engine.test.js     # engine unit tests
-node translator/eval/evaluate.js         # held-out evaluation
-```
+- Verified (exact) results never call it.
+- AI output is labelled "ai-assisted".
+- The API key stays in the worker.
 
----
+## Data notes
 
-## 5. Deploying
-
-The translator is **pure static files** — it ships with the existing GitHub
-Pages site automatically. `index.html` loads `/translator/engine.js` and fetches
-`/translator/data/index.json`; committing the repo is the whole deploy. No
-environment variables, no model downloads, no API keys required.
-
-### Enabling full sentence translation + explanations (AI layer)
-
-The offline engine (L1–L2.5) translates **words and phrases that exist in the
-dataset** and, for multi-word input, shows a clean word-by-word draft with any
-untranslated word kept inline (no gap markers) plus a dataset gloss. It cannot
-fluently translate arbitrary sentences or explain grammar — a ~2,800-entry
-lesson lexicon has no copula/preposition coverage for that.
-
-To get **Google-Translate-style fluent translations with sentence
-explanations**, enable the AI layer. It calls Claude with your dataset examples
-as grounding and returns `{translation, explanation}`. The API key stays
-server-side in a Cloudflare Worker; the browser never sees it. Exact dataset
-matches stay authoritative and never hit the network.
-
-```bash
-cd translator/worker
-npm i -g wrangler
-wrangler secret put ANTHROPIC_API_KEY     # paste key when prompted
-wrangler deploy                           # prints a *.workers.dev URL
-```
-
-Then set the endpoint in `index.html` (search for `RAG_ENDPOINT`):
-
-```js
-var RAG_ENDPOINT = "https://buxori-rag.<your-subdomain>.workers.dev";
-```
-
-Lock `ALLOW_ORIGIN` in `wrangler.toml` to your domain for production. L3 results
-are always flagged as AI-assisted, grounded on retrieved dataset examples, and
-the worker **refuses** to translate if no examples are supplied.
-
-**Required for L3 only:** `ANTHROPIC_API_KEY` (Worker secret), optional `MODEL`
-and `ALLOW_ORIGIN` vars. Nothing else in the project needs secrets.
-
----
-
-## 6. Known limitations & improving accuracy
-
-- **Coverage is the ceiling.** Outside ~2,800 pairs the tool abstains (or, with
-  L3, approximates). It is a faithful dataset front-end, not a general MT system.
-- **Compositional output is word-order-naïve.** It concatenates dataset forms;
-  it does not apply Bukhori grammar (ezafe, verb-final order, possessive
-  suffixes). Treat multi-word drafts as glossing aids. The dataset's `paradigm`
-  and `grammar` rows (deliberately excluded from lookup) are the raw material for
-  a future grammar-aware assembler.
-- **Transliteration, not native script.** Matches the source; a future pass
-  could add Cyrillic/Hebrew renderings if a mapping is sourced.
-- **7 `REVIEW` entries** carry source uncertainty (shown as warnings).
-- **Ways to improve:** add more sentence-level parallel pairs (the biggest win);
-  add a curated synonym/lemmatisation map (e.g. "thanks" ↔ "thank you") to widen
-  exact matching without guessing; build the grammar-aware assembler from the
-  paradigm tables; enable L3 for graceful out-of-coverage handling.
-
----
-
-## File map
-
-```
-translator/
-  engine.js                 # the translation engine (browser + Node)
-  data/
-    bukhori.tsv             # source dataset (authoritative)
-    index.json              # engine payload (all pairs) — shipped to browser
-    index_train.json        # train+val-only index — evaluation (no leakage)
-    pairs.jsonl             # every clean pair (audit trail)
-    splits.json             # leak-free train/val/test ids
-    summary.json            # dataset quality report
-  scripts/preprocess.py     # TSV → indexes (stdlib only, reproducible)
-  eval/
-    evaluate.js             # held-out evaluation (chrF/BLEU/abstention)
-    sample_predictions.txt  # manual-inspection sample (generated)
-  tests/engine.test.js      # engine unit tests
-  worker/                   # optional Layer-3 RAG (Cloudflare Worker)
-    worker.js  wrangler.toml
-```
+- **Rows not used:** 204 TSV rows are excluded with a recorded reason:
+  - 180 exercises print no answer;
+  - 13 are fill-in stubs;
+  - 11 reading lines were never transcribed.
+- **No English in the source:** 164 Buxori reading sentences are kept for
+  Buxori-side search (`en: null`) and are never used as translation pairs.
+- **REVIEW rows:** 9 rows carry the source's `REVIEW` flag. They stay, rank last,
+  and are labelled in the UI.

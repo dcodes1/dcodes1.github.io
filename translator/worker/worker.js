@@ -3,7 +3,7 @@
  *
  * WHY THIS IS OPTIONAL AND OFF BY DEFAULT
  * ---------------------------------------
- * The site is static (GitHub Pages) and Layers 1-2.5 run entirely in the
+ * The site is static (GitHub Pages) and the engine (src/engine) runs entirely in the
  * browser from the indexed TSV. This worker only matters for input that is NOT
  * covered by the dataset, where the frontend otherwise says "no verified
  * translation". It calls an LLM, but ONLY with real English->Buxori examples
@@ -19,7 +19,7 @@
  *   npm i -g wrangler
  *   wrangler secret put ANTHROPIC_API_KEY
  *   wrangler deploy
- * Then set RAG_ENDPOINT in index.html to the deployed URL.
+ * Then set data-ai-endpoint="<deployed URL>" on <div id="translator-root"> in index.html.
  *
  * If you never deploy this, nothing breaks — the translator stays a faithful
  * dataset lookup tool.
