@@ -56,6 +56,9 @@ NON_PAIR_TYPES = {"grammar", "paradigm", "exercise"}
 # A Bukhori cell that is clearly not a clean standalone translation.
 PLACEHOLDER_RE = re.compile(r"\.\.\.|…")          # ellipsis = fragment
 BARE_STEM_RE = re.compile(r"^\s*\(")                   # "(bare stem)", "(no ending)"
+# English cells that only number the line of an untranslated text (164 rows,
+# incl. 4 Hebrew piyyut lines). The Buxori is real but has no translation.
+PLACEHOLDER_ENGLISH_RE = re.compile(r"^(sentence|line)\s*\d+[a-z]?\b", re.I)
 
 
 def is_pair_row(row: dict) -> bool:
@@ -71,6 +74,8 @@ def is_pair_row(row: dict) -> bool:
         return False
     if eng.strip().lower() == (row.get("section") or "").strip().lower():
         return False  # header row echoed into the english column
+    if PLACEHOLDER_ENGLISH_RE.match(eng):
+        return False  # "sentence 8" / "line 3 (Hebrew)": a label, not a translation
     if PLACEHOLDER_RE.search(bux) or BARE_STEM_RE.match(bux):
         return False
     return True

@@ -15,15 +15,15 @@
     "grammar": 106,
     "reading": 11
   },
-  "clean_pairs": 2835,
-  "unique_english_keys": 2537,
-  "english_keys_with_multiple_bukhori": 208,
+  "clean_pairs": 2769,
+  "unique_english_keys": 2496,
+  "english_keys_with_multiple_bukhori": 195,
   "single_word_lexicon": 896,
-  "multiword_phrases": 1582,
+  "multiword_phrases": 1541,
   "retrieval_examples": 974,
   "english_token_count_histogram": {
     "1": 1037,
-    "2": 721,
+    "2": 655,
     "3": 340,
     "4": 248,
     "5": 140,
@@ -32,9 +32,9 @@
   },
   "review_flagged_pairs": 7,
   "split_sizes": {
-    "train": 2249,
-    "val": 291,
-    "test": 295
+    "train": 2205,
+    "val": 294,
+    "test": 270
   },
   "notes": "Bukhori is Latin-transliterated Bukharian (Judeo-Tajik); script, spelling and diacritics are preserved exactly from the source. grammar/paradigm/exercise rows are intentionally excluded from the lookup index (headers, conjugation fragments, answerless prompts)."
 }
