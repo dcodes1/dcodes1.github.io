@@ -428,7 +428,7 @@ for (const e of roots.values()) {
   const v = e.verb;
   if (!v?.compound || v.presentStem) continue;
   const aux = roots.get(v.compound.auxiliary)?.verb?.presentStem;
-  if (aux) v.presentStem = { text: aux.text, evidence: 'derived' };
+  if (aux) v.presentStem = { ...aux, evidence: 'derived' };
 }
 for (const e of roots.values()) {
   if (e.pos === 'noun' || e.pos === 'adjective' || e.pos === 'proper_noun') e.noun = { stemFinal: stemFinal(lastWord(e.lemma.text)) };
@@ -676,8 +676,8 @@ for (const a of affixes.values()) for (const al of a.allomorphs) { const f = aff
 const index: BuxoriIndex = {
   meta: {
     schemaVersion: 1,
-    source: { file: relative(ROOT, TSV_PATH), sha256: createHash('sha256').update(raw).digest('hex'), rows: rows.length },
-    builtAt: new Date().toISOString(),
+    source: { file: relative(ROOT, TSV_PATH).replaceAll('\\', '/'), sha256: createHash('sha256').update(raw).digest('hex'), rows: rows.length },
+    builtAt: new Date(Number(process.env.SOURCE_DATE_EPOCH ?? 0) * 1000).toISOString(),
     orthography: { script: 'latin', specialLetters: ['ü'], stressMarks: ['á', 'é', 'í', 'ć', 'ġ'], apostrophe: 'ayin' },
   },
   policy: { defaultRegister: 'regular', evidencePrecedence: EVIDENCE_PRECEDENCE },

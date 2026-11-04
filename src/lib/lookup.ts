@@ -162,7 +162,7 @@ export function createLookup(index: BuxoriIndex) {
             const stemKind = s.stem === 'past' ? 'past' : 'present';
             if (!shape || shape.stem !== stemKind || shape.me !== hasMe) continue;
           }
-          const id = `${s.root}|${s.stem}|${p}|${tense ?? ''}`;
+          const id = `${s.root}|${s.stem}|${p}|${tense ?? ''}|${ending?.id ?? ''}`;
           if (seen.has(id)) continue;
           seen.add(id);
           out.push({ root: root(s.root), stem: s.stem, stemText, prefixes: [...prefixes], ending, tense });
