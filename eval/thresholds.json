@@ -1,0 +1,5 @@
+{
+  "comment": "CI fails if the held-out evaluation drops below these. Raise them when the engine improves; never lower them to make a change pass.",
+  "minAccuracy": 0.12,
+  "minPrecision": 0.33
+}

@@ -11,7 +11,7 @@
  * normalize what people type, so build-time and run-time keys cannot drift.
  */
 import { createHash } from 'node:crypto';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readTsv, sourceRef, type Row } from './lib/tsv.ts';
@@ -26,8 +26,17 @@ import {
 } from '../src/lib/types.ts';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const TSV_PATH = resolve(process.argv[2] ?? resolve(ROOT, 'translator/data/bukhori.tsv'));
-const OUT_PATH = resolve(ROOT, 'src/data/buxori-index.json');
+// CLI: [file.tsv] [--out path] [--exclude-rows eval/testset.json]
+const argv = process.argv.slice(2);
+const flag = (name: string) => { const i = argv.indexOf(name); return i >= 0 ? argv.splice(i, 2)[1] : undefined; };
+const OUT_ARG = flag('--out');
+const EXCLUDE_ARG = flag('--exclude-rows');
+const TSV_PATH = resolve(argv[0] ?? resolve(ROOT, 'translator/data/bukhori.tsv'));
+const OUT_PATH = resolve(OUT_ARG ?? resolve(ROOT, 'src/data/buxori-index.json'));
+/** Held-out rows for leak-free evaluation: they are dropped before anything is built. */
+const HELD_OUT = new Set<number>(EXCLUDE_ARG
+  ? (JSON.parse(readFileSync(resolve(EXCLUDE_ARG), 'utf8')) as { items: { rows: number[] }[] }).items.flatMap((i) => i.rows)
+  : []);
 
 /** TSV text → key. The TSV prints stress with accents/dots (barodár, ġiriftam); fold those first. */
 const buxKey = (s: string): BuxKey => canonicalKey(foldTsvStress(s));
@@ -89,7 +98,8 @@ const words = (s: string) => buxKey(s).split(' ').filter(Boolean);
 const affixId = (s: string) => s as AffixId;
 
 // ═════════════════════════════════════════════════════════════════ 1. LOAD
-const { rows, raw } = readTsv(TSV_PATH);
+const { rows: allRows, raw } = readTsv(TSV_PATH);
+const rows = allRows.filter((r) => !HELD_OUT.has(r.row));
 const byRow = new Map(rows.map((r) => [r.row, r]));
 const grammarRow = (title: string) => rows.find((r) => r.entryType === 'grammar' && r.section.toLowerCase() === title.toLowerCase());
 
@@ -470,6 +480,37 @@ for (const e of roots.values()) {
   if (e.pos === 'noun' || e.pos === 'adjective' || e.pos === 'proper_noun') e.noun = { stemFinal: stemFinal(lastWord(e.lemma.text)) };
 }
 
+// 4b'. Verbs recoverable from "noun + verb" entries. "to drink tea = Choy nüshidan"
+// with "tea = Choy" yields "to drink = nüshidan" when the TSV has no verb glossed
+// "to drink". Evidence `derived`; the parent row is the source.
+{
+  const glossed = new Set([...roots.values()].filter((e) => e.pos === 'verb').flatMap((e) => e.glosses.map((g) => g.key)));
+  const derivedVerbs: RootEntry[] = [];
+  for (const e of roots.values()) {
+    const ws = words(e.lemma.text);
+    if (e.pos !== 'verb' || ws.length !== 2 || !e.verb || e.verb.compound) continue;
+    const [noun = '', inf = ''] = ws;
+    for (const g of e.glosses) {
+      const m = /^to (\w+) (.+)$/.exec(g.key);
+      if (!m) continue;
+      const objRoots = [...roots.values()].filter((x) => x.glosses.some((gg) => gg.key === m[2]) && x.lemma.key === noun);
+      const key = `to ${m[1]}` as GlossKey;
+      if (!objRoots.length || glossed.has(key) || findVerb(inf)) continue;
+      glossed.add(key);
+      const src = e.sources[0];
+      const text = inf.charAt(0).toUpperCase() + inf.slice(1);
+      derivedVerbs.push({
+        id: `${e.id}v` as RootId, pos: 'verb',
+        lemma: { text, key: buxKey(inf), kind: 'citation', evidence: 'derived', source: src ?? sourceRef(rows[0]!) },
+        glosses: [{ text: key, key, qualifiers: [`from “${e.lemma.text}” = ${g.text}`] }],
+        forms: [], sources: e.sources,
+        verb: { ...e.verb, infinitive: { text, key: buxKey(inf), kind: 'citation', evidence: 'derived', source: src ?? sourceRef(rows[0]!) } },
+      });
+    }
+  }
+  for (const d of derivedVerbs) { roots.set(d.id, d); verbRootByInf.set(d.lemma.key, d.id); }
+}
+
 // 4c. Attested conjugation tables --------------------------------------------
 const TABLE_TENSES: [RegExp, Tense][] = [
   [/^present tense$/i, 'present'], [/^simple past$/i, 'simple_past'], [/^descriptive past$/i, 'descriptive_past'],
@@ -480,6 +521,8 @@ const TABLE_TENSES: [RegExp, Tense][] = [
 ];
 const PRONOUN_WORD = /^(man|ma|tu|shumo|ü|u|mo|inho|ino|shon)\s+/i;
 const verbForms = new Map<RootId, AttestedVerbForm[]>();
+const rootsByLemma = new Map<string, RootId>();
+for (const e of roots.values()) if (e.pos === 'verb') rootsByLemma.set(e.lemma.key, e.id);
 function addVerbForm(id: RootId, f: AttestedVerbForm) {
   const list = verbForms.get(id) ?? [];
   if (!list.some((x) => x.tense === f.tense && x.pn === f.pn && x.negative === f.negative && x.register === f.register && x.form === f.form)) list.push(f);
@@ -490,14 +533,32 @@ for (const r of rows.filter((x) => x.entryType === 'example' && x.bukhori)) {
   const m = /^(.+?)(?:\s+(Regular|Literal))?:\s*([a-zü']+)(?:\s*\(([^)]*)\))?$/i.exec(r.section);
   if (!m) continue;
   const tense = TABLE_TENSES.find(([re]) => re.test((m[1] ?? '').trim()))?.[1];
-  const id = tense ? findVerb((m[3] ?? '').toLowerCase()) : undefined;
+  const name = (m[3] ?? '').toLowerCase();
+  const simple = tense ? findVerb(name) : undefined;
   const pn = personOf(r.english);
-  if (!tense || !id || !pn) continue;
+  if (!tense || !simple || !pn) continue;
   const paren = m[4] ?? '';
   const negative = /negative/i.test(paren) || /n't|\bnot\b/i.test(r.english);
-  const register: Register = /literal/i.test(`${m[2] ?? ''} ${paren}`) ? 'literal' : 'regular';
-  addVerbForm(id, { tense, pn, negative, register, form: cleanForm(r.bukhori), source: sourceRef(r) });
-  if (r.spoken) addVerbForm(id, { tense, pn, negative, register: 'spoken', form: cleanForm(r.spoken), source: sourceRef(r) });
+  // Register: section ("past continuous Literal: …"), its parenthesis, or the row note ("Literal form").
+  const register: Register = /literal/i.test(`${m[2] ?? ''} ${paren}`) || /\bliteral form\b/i.test(r.notes) ? 'literal' : 'regular';
+  // "present tense: kardan (to work)" prints "man kor mekunam": the leading word is the
+  // noun of the compound verb Kor kardan, so the form belongs to that verb, not to kardan.
+  const place = (text: string) => {
+    const form = cleanForm(text);
+    const ws = form.split(' ');
+    const compound = ws.length > 1 ? rootsByLemma.get(`${buxKey(ws.slice(0, -1).join(' '))} ${name}`) : undefined;
+    return { id: compound ?? simple, form };
+  };
+  const a = place(r.bukhori);
+  addVerbForm(a.id, { tense, pn, negative, register, form: a.form, source: sourceRef(r) });
+  if (r.spoken) { const b = place(r.spoken); addVerbForm(b.id, { tense, pn, negative, register: 'spoken', form: b.form, source: sourceRef(r) }); }
+}
+// Imperative tables (p43): "go! (sing.)" → rov, notes name the infinitive.
+for (const r of rows.filter((x) => x.entryType === 'example' && x.bukhori && /^imperative$/i.test(x.section))) {
+  const inf = /(?:infinitive|from)\s+([a-zü']+an)\b/i.exec(r.notes)?.[1];
+  const id = inf ? findVerb(inf.toLowerCase()) : undefined;
+  const pn: PersonNumber | undefined = /\(sing\.?\)/i.test(r.english) ? '2sg' : /\(polite\)/i.test(r.english) ? '2pol' : /\(pl\.?\)/i.test(r.english) ? '2pl' : undefined;
+  if (id && pn) addVerbForm(id, { tense: 'imperative', pn, negative: false, register: 'regular', form: cleanForm(r.bukhori), source: sourceRef(r) });
 }
 // kardan "Table of Tenses" (p-paradigm rows with whole words)
 for (const p of paradigms.values()) {
@@ -769,7 +830,7 @@ for (const a of affixes.values()) for (const al of a.allomorphs) { const f = aff
 const index: BuxoriIndex = {
   meta: {
     schemaVersion: 2,
-    source: { file: relative(ROOT, TSV_PATH), sha256: createHash('sha256').update(raw).digest('hex'), rows: rows.length },
+    source: { file: relative(ROOT, TSV_PATH), sha256: createHash('sha256').update(raw).digest('hex'), rows: allRows.length },
     orthography: { script: 'latin', specialLetters: ['ü'], stressMarks: ['á', 'é', 'í', 'ć', 'ġ'], apostrophe: 'ayin' },
   },
   policy: { defaultRegister: 'regular', evidencePrecedence: EVIDENCE_PRECEDENCE },
@@ -780,7 +841,7 @@ const index: BuxoriIndex = {
   affixes: { entries: record(affixes), byForm: record(finalByForm), paradigms: record(paradigms) },
   syntaxRules,
   examples: record(examples),
-  excluded: excluded.sort((a, b) => a.row - b.row),
+  excluded: [...excluded, ...[...HELD_OUT].map((row) => ({ row, reason: 'held_out' as const }))].sort((a, b) => a.row - b.row),
 };
 
 // Every row must have been placed somewhere.

@@ -3,12 +3,15 @@
   "private": true,
   "type": "module",
   "description": "davidmilov.com — portfolio + Buxori translator. The live site is served as static files by GitHub Pages; this package holds the TypeScript data pipeline (and future React app).",
-  "engines": { "node": ">=22.18" },
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "compile": "node scripts/compile-tsv.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p .",
-    "check": "npm run typecheck && npm run compile && npm test",
+    "eval": "node eval/evaluate.ts",
+    "check": "npm run typecheck && npm run compile && npm test && npm run eval -- --check",
     "dev": "vite"
   },
   "dependencies": {

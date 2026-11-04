@@ -1,0 +1,2827 @@
+{
+ "report": {
+  "engine": "src/engine (held-out index)",
+  "items": 270,
+  "answered": 97,
+  "correct": 34,
+  "accuracy": 0.126,
+  "precision": 0.351,
+  "chrfAnswered": 0.495,
+  "chrfAll": 0.178,
+  "byStatus": {
+   "grammar": {
+    "n": 52,
+    "correct": 33
+   },
+   "none": {
+    "n": 173,
+    "correct": 0
+   },
+   "compositional": {
+    "n": 14,
+    "correct": 0
+   },
+   "partial": {
+    "n": 22,
+    "correct": 0
+   },
+   "exact": {
+    "n": 9,
+    "correct": 1
+   }
+  }
+ },
+ "variantHits": 0,
+ "legacy": {
+  "engine": "legacy engine.js (index_train.json)",
+  "items": 270,
+  "answered": 126,
+  "correct": 11,
+  "accuracy": 0.041,
+  "precision": 0.087,
+  "chrfAnswered": 0.331,
+  "chrfAll": 0.154,
+  "byStatus": {
+   "grammar": {
+    "n": 67,
+    "correct": 9
+   },
+   "none": {
+    "n": 144,
+    "correct": 0
+   },
+   "compositional": {
+    "n": 58,
+    "correct": 2
+   },
+   "fuzzy": {
+    "n": 1,
+    "correct": 0
+   }
+  }
+ },
+ "predictions": [
+  {
+   "en": "I took",
+   "refs": [
+    "ġiriftam"
+   ],
+   "bux": "Man giriftam",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.896
+  },
+  {
+   "en": "three",
+   "refs": [
+    "se"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "eighty",
+   "refs": [
+    "hashtod"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "three hundred",
+   "refs": [
+    "sesad"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "thousand",
+   "refs": [
+    "hazor"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "How much money do you have?",
+   "refs": [
+    "Chand pul dored?",
+    "Shumo chand pul dored?"
+   ],
+   "bux": "Tu chand shohel dori?",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.358
+  },
+  {
+   "en": "one third (1/3)",
+   "refs": [
+    "seyak"
+   ],
+   "bux": "chorum",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "three quarters (3/4)",
+   "refs": [
+    "az chor se"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "fifth",
+   "refs": [
+    "panjum"
+   ],
+   "bux": "panjum",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "Saturday",
+   "refs": [
+    "Shabot"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "October",
+   "refs": [
+    "Heshvan",
+    "Oktyabr"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "November",
+   "refs": [
+    "Kislev",
+    "Noyabr"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "July",
+   "refs": [
+    "Ov",
+    "Iyul"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "in the evening",
+   "refs": [
+    "Namozigar"
+   ],
+   "bux": "ba shav",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.04
+  },
+  {
+   "en": "today is Saturday",
+   "refs": [
+    "Imrüz rüzi shabot"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "grandfather",
+   "refs": [
+    "Bovo"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "cousins through fathers",
+   "refs": [
+    "'Amakbacha"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "teacher",
+   "refs": [
+    "Xalfa"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "book",
+   "refs": [
+    "Kitov"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "my",
+   "refs": [
+    "-i man"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Their father",
+   "refs": [
+    "dadi inho",
+    "dadayi inho",
+    "Padarashon",
+    "dadeshon"
+   ],
+   "bux": "padarashon",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "Their father",
+   "refs": [
+    "dadi inho",
+    "dadayi inho",
+    "Padarashon",
+    "dadeshon"
+   ],
+   "bux": "padarashon",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "their father",
+   "refs": [
+    "dadi inho",
+    "dadayi inho",
+    "Padarashon",
+    "dadeshon"
+   ],
+   "bux": "padarashon",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "her mother-in-law",
+   "refs": [
+    "Modarshüsh"
+   ],
+   "bux": "ochamosh",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.143
+  },
+  {
+   "en": "our grandfather",
+   "refs": [
+    "Bovomo"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "books",
+   "refs": [
+    "kitovho"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "their father",
+   "refs": [
+    "dadi inho",
+    "dadayi inho",
+    "Padarashon",
+    "dadeshon"
+   ],
+   "bux": "padarashon",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "Good evening!",
+   "refs": [
+    "Ramsho tüvo!"
+   ],
+   "bux": "shavi naghz",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.085
+  },
+  {
+   "en": "Are you all right? (polite)",
+   "refs": [
+    "Naghzed?"
+   ],
+   "bux": "Shumo rosangiyed?",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.138
+  },
+  {
+   "en": "Feel well!; be healthy! (polite)",
+   "refs": [
+    "Sihat boshed!"
+   ],
+   "bux": "Tinji binoyi",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.061
+  },
+  {
+   "en": "I know",
+   "refs": [
+    "Man medonam"
+   ],
+   "bux": "Man medonam",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "He/she doesn't know",
+   "refs": [
+    "Ü namedonad"
+   ],
+   "bux": "Ü namedonad",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "Congratulations! I'm glad to see you.",
+   "refs": [
+    "Mazoltüv! Man xursandam, ki shumoya didam."
+   ],
+   "bux": "Mazoltüv! man didan tu",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.382
+  },
+  {
+   "en": "July",
+   "refs": [
+    "Ov",
+    "Iyul"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "October",
+   "refs": [
+    "Heshvan",
+    "Oktyabr"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "November",
+   "refs": [
+    "Kislev",
+    "Noyabr"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "long ago",
+   "refs": [
+    "Kayho"
+   ],
+   "bux": "daroz pesh",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.086
+  },
+  {
+   "en": "last name",
+   "refs": [
+    "Familiya"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "warm; hot",
+   "refs": [
+    "Garm"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "come! (sing.)",
+   "refs": [
+    "biyo",
+    "bed",
+    "beton"
+   ],
+   "bux": "Biyo!",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "come! (polite)",
+   "refs": [
+    "biyo",
+    "bed",
+    "beton"
+   ],
+   "bux": "Biyoed!",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.565
+  },
+  {
+   "en": "come! (pl.)",
+   "refs": [
+    "biyo",
+    "bed",
+    "beton"
+   ],
+   "bux": "Biyoeton!",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.495
+  },
+  {
+   "en": "be! (sing.)",
+   "refs": [
+    "shov",
+    "shaved",
+    "shaveton"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "be! (polite)",
+   "refs": [
+    "shov",
+    "shaved",
+    "shaveton"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "be! (pl.)",
+   "refs": [
+    "shov",
+    "shaved",
+    "shaveton"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Tonight our evening has no morning; soul mate is not aware about my love.",
+   "refs": [
+    "Imshav shavi mo sahar nadorad; Yor az dili man xabar nadorad."
+   ],
+   "bux": "Shavi imshav (az) tüghrigi dorad",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.223
+  },
+  {
+   "en": "lettuce",
+   "refs": [
+    "Kohu"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "They go",
+   "refs": [
+    "inho merun"
+   ],
+   "bux": "Inho merun",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "You (sing.) become",
+   "refs": [
+    "tu meshi",
+    "shumo meshed",
+    "shumo mesheton"
+   ],
+   "bux": "Tu meshi",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "You (polite) become",
+   "refs": [
+    "tu meshi",
+    "shumo meshed",
+    "shumo mesheton"
+   ],
+   "bux": "Shumo meshed",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "You (plural) become",
+   "refs": [
+    "tu meshi",
+    "shumo meshed",
+    "shumo mesheton"
+   ],
+   "bux": "Shumo mesheton",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "I don't have",
+   "refs": [
+    "Man nadoram"
+   ],
+   "bux": "Man nadoram",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "They have",
+   "refs": [
+    "Inho dorand"
+   ],
+   "bux": "Inho dorand",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "They don't come",
+   "refs": [
+    "inho namebiyon"
+   ],
+   "bux": "Inho namebiyon",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "They don't become",
+   "refs": [
+    "inho nameshun"
+   ],
+   "bux": "Inho nameshun",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "How much money do you have? (polite)",
+   "refs": [
+    "Chand pul dored?",
+    "Shumo chand pul dored?"
+   ],
+   "bux": "Shumo chand shohel dored?",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.668
+  },
+  {
+   "en": "one apple",
+   "refs": [
+    "Yakta sev"
+   ],
+   "bux": "yakta sev",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "two pomegranates",
+   "refs": [
+    "Duta anor"
+   ],
+   "bux": "duta anor",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "He/she has six books.",
+   "refs": [
+    "Ü shishta kitov dorad"
+   ],
+   "bux": "Ü dorad",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.188
+  },
+  {
+   "en": "question",
+   "refs": [
+    "Savol"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "great-great grandson",
+   "refs": [
+    "Farnavera"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "where?",
+   "refs": [
+    "Kujo"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "where is?",
+   "refs": [
+    "Kani?"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to be",
+   "refs": [
+    "Budan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "We didn't give",
+   "refs": [
+    "Mo nadodem"
+   ],
+   "bux": "Mo nadodem",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "I went",
+   "refs": [
+    "Man raftam"
+   ],
+   "bux": "Man raftam",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "For whom did you bring it?",
+   "refs": [
+    "Ina baroyi ki ovarded?"
+   ],
+   "bux": "baroyi ki tu ovardan",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.523
+  },
+  {
+   "en": "Hey, Mr. Hisqiyo, hello! How are you? I didn't see you for two years.",
+   "refs": [
+    "Ha, mulo Hiskiyo, sholüm! Chitüyet? Ma shumoya du sol nadidam."
+   ],
+   "bux": "Chixeli hisqiyo baroyi duta sol tuyi man tu",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.17
+  },
+  {
+   "en": "religious school",
+   "refs": [
+    "Yashivo"
+   ],
+   "bux": "maktavi doti",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.085
+  },
+  {
+   "en": "garden",
+   "refs": [
+    "Bogh"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "dust",
+   "refs": [
+    "Chang"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "pillow",
+   "refs": [
+    "Bolisht"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "glasses",
+   "refs": [
+    "'Aynak"
+   ],
+   "bux": "istakonho",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.106
+  },
+  {
+   "en": "down",
+   "refs": [
+    "Poyon",
+    "Qu"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "near",
+   "refs": [
+    "Yon"
+   ],
+   "bux": "Peshi",
+   "status": "exact",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "tea",
+   "refs": [
+    "Choy"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "hand",
+   "refs": [
+    "Dast"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "phone",
+   "refs": [
+    "Telefon"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "memory",
+   "refs": [
+    "Yod"
+   ],
+   "bux": "es",
+   "status": "exact",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "they don't work",
+   "refs": [
+    "Inho kor namekunand"
+   ],
+   "bux": "Inho kor namekunand",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "because",
+   "refs": [
+    "Azbaski"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "I will go to work after 2 hours.",
+   "refs": [
+    "Man ba kor ba'di du so'at merum."
+   ],
+   "bux": "Man ba kor merum",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.387
+  },
+  {
+   "en": "thing",
+   "refs": [
+    "chiz"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "holiday",
+   "refs": [
+    "Mo'ed"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Happy holiday!",
+   "refs": [
+    "Nisim morak!"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to suffer; to worry",
+   "refs": [
+    "Gham xürdan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to invite",
+   "refs": [
+    "Taklif kardan",
+    "Kas mondan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to taste",
+   "refs": [
+    "Maza didan"
+   ],
+   "bux": "maza",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.245
+  },
+  {
+   "en": "He/she is going",
+   "refs": [
+    "Ü rafsode",
+    "Ü rafta istodaast"
+   ],
+   "bux": "Ü rafsode",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "He/she is going",
+   "refs": [
+    "Ü rafsode",
+    "Ü rafta istodaast"
+   ],
+   "bux": "Ü rafsode",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "We are going",
+   "refs": [
+    "Mo rafta istodayem",
+    "Mo rafsodim"
+   ],
+   "bux": "Mo rafsodim",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "We are going",
+   "refs": [
+    "Mo rafta istodayem",
+    "Mo rafsodim"
+   ],
+   "bux": "Mo rafsodim",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "He is talking",
+   "refs": [
+    "Ü gap zasode"
+   ],
+   "bux": "Ü gap zasode",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "TV",
+   "refs": [
+    "televizor"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Good Saturday!",
+   "refs": [
+    "Shabot sholüm!"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Good Saturday, Mrs. Mazol! Welcome! How are you?",
+   "refs": [
+    "Shabot Sholüm, apa Mazol! Bet, bet boli chashm! Naghzet? Chitüyet?"
+   ],
+   "bux": "Chixeli naghzi mazol tu?",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.156
+  },
+  {
+   "en": "knitted downy shawl",
+   "refs": [
+    "Rüymoli pati asil"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "handkerchief",
+   "refs": [
+    "Rüymolcha"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "shirt; women's dress",
+   "refs": [
+    "Kurta"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "slippers",
+   "refs": [
+    "Kofsh"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "collar",
+   "refs": [
+    "Girevon"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "diadem",
+   "refs": [
+    "Parxona"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "net bracelet",
+   "refs": [
+    "Dastponi sofigi"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "silver",
+   "refs": [
+    "Nuqra"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "shoemaker",
+   "refs": [
+    "Kühnadüz"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "fisherman",
+   "refs": [
+    "Mahidor"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "magician",
+   "refs": [
+    "Jodugar",
+    "jodugar"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "May you enjoy it!",
+   "refs": [
+    "Nasiv kunad!"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "What the watchmaker does",
+   "refs": [
+    "So'atsoz so'atsozi mekunad."
+   ],
+   "bux": "Chi so'atsoz?",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.293
+  },
+  {
+   "en": "What the launderer does",
+   "refs": [
+    "Jomshigar jomshi mekunad."
+   ],
+   "bux": "Chi jomshigar?",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.391
+  },
+  {
+   "en": "I used to watch this movie",
+   "refs": [
+    "Man in kinoya medidam"
+   ],
+   "bux": "Man in kinoya zehn memondam",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.591
+  },
+  {
+   "en": "You used to go",
+   "refs": [
+    "Tu merafti",
+    "Shumo merafted"
+   ],
+   "bux": "Tu merafti",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "You used to go (polite)",
+   "refs": [
+    "Tu merafti",
+    "Shumo merafted"
+   ],
+   "bux": "Shumo merafted",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "The jeweler knows the value of the gold.",
+   "refs": [
+    "Qadri tilo zargar medonad."
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "The bride is from Bukhara. I don't know their in-laws. People say that they are very rich.",
+   "refs": [
+    "Ino kelina a Buxoro griftin. Ma qudoshona nameshinosam. Megun, ki oilayi kelin boy-badavlat."
+   ],
+   "bux": "Kalo az Bukhara. Man qudoshona namedonam. Kasho vay boy-badavlati inhoyi judoya megun.",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.39
+  },
+  {
+   "en": "together",
+   "refs": [
+    "ba ya"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "human",
+   "refs": [
+    "Odam"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "noble person",
+   "refs": [
+    "Odamshavanda"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "aristocrat",
+   "refs": [
+    "Asil"
+   ],
+   "bux": "asilzoda",
+   "status": "exact",
+   "ok": false,
+   "chrf": 0.495
+  },
+  {
+   "en": "left",
+   "refs": [
+    "Chap"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "mouth",
+   "refs": [
+    "Dahan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "gum",
+   "refs": [
+    "Kom"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "skin",
+   "refs": [
+    "Post"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "razor",
+   "refs": [
+    "Poku"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "stubborn",
+   "refs": [
+    "Gardantaxta"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "lazy",
+   "refs": [
+    "Lavand"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "cheeky",
+   "refs": [
+    "'Ayghoq"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to become angry",
+   "refs": [
+    "Jahl giriftan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to kiss",
+   "refs": [
+    "Muchi kardan"
+   ],
+   "bux": "muchi",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.305
+  },
+  {
+   "en": "call (somebody)",
+   "refs": [
+    "Jegh zaned"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "His head is bald.",
+   "refs": [
+    "Sarash kal"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "He/she was a pleasant talker, devoted to relatives and hospitable.",
+   "refs": [
+    "Ü odami xushchaqchaq, jigardüstu mehmondüst bud"
+   ],
+   "bux": "Ü ba mehmondüsti hesho-tavori va",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.272
+  },
+  {
+   "en": "You hadn't said",
+   "refs": [
+    "Tu nagufta budi",
+    "Shumo nagufta buded",
+    "Shumo nagufta budeton"
+   ],
+   "bux": "Tu doshti",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.1
+  },
+  {
+   "en": "You hadn't said (polite)",
+   "refs": [
+    "Tu nagufta budi",
+    "Shumo nagufta buded",
+    "Shumo nagufta budeton"
+   ],
+   "bux": "Shumo doshted",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.225
+  },
+  {
+   "en": "You (pl.) hadn't said",
+   "refs": [
+    "Tu nagufta budi",
+    "Shumo nagufta buded",
+    "Shumo nagufta budeton"
+   ],
+   "bux": "Shumo doshteton",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.268
+  },
+  {
+   "en": "I had said",
+   "refs": [
+    "Man gufta budam"
+   ],
+   "bux": "Man gufta budam",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "We had said",
+   "refs": [
+    "Mo gufta budem"
+   ],
+   "bux": "Mo gufta budem",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "An honest work is not a shame!",
+   "refs": [
+    "Az mihnati halol nest 'or!"
+   ],
+   "bux": "yoshor kor nest",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.134
+  },
+  {
+   "en": "revolution",
+   "refs": [
+    "inqilov"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "factory",
+   "refs": [
+    "fabrik; zavod"
+   ],
+   "bux": "Korxona",
+   "status": "exact",
+   "ok": false,
+   "chrf": 0.065
+  },
+  {
+   "en": "older and younger brothers",
+   "refs": [
+    "akayu uka"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "now",
+   "refs": [
+    "aknun"
+   ],
+   "bux": "Aknun",
+   "status": "exact",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "dog",
+   "refs": [
+    "Kuchuk"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "hen; chicken",
+   "refs": [
+    "Murgh"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "duck",
+   "refs": [
+    "Murghovi"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "fish",
+   "refs": [
+    "Doghim"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "flea",
+   "refs": [
+    "Kayk"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "leather",
+   "refs": [
+    "Charm"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "down (feathers)",
+   "refs": [
+    "Poyon",
+    "Qu"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "island",
+   "refs": [
+    "Jazira"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "natural life",
+   "refs": [
+    "'Umri tavi'i"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "mill-cake",
+   "refs": [
+    "Kunjora"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "corn",
+   "refs": [
+    "Makajuvori"
+   ],
+   "bux": "Azak",
+   "status": "exact",
+   "ok": false,
+   "chrf": 0.078
+  },
+  {
+   "en": "patience",
+   "refs": [
+    "Toqat"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "hunter",
+   "refs": [
+    "Avchi"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "ax",
+   "refs": [
+    "Tavar"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "pincers; tongs",
+   "refs": [
+    "Ambur"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to weigh",
+   "refs": [
+    "Barkashidan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to run",
+   "refs": [
+    "Davidan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to move",
+   "refs": [
+    "Jumbidan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to peck",
+   "refs": [
+    "Nul zadan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "He/she has gone/been",
+   "refs": [
+    "Ü rafte",
+    "Ü raftayast"
+   ],
+   "bux": "Ü rafte",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "He/she has gone/been",
+   "refs": [
+    "Ü rafte",
+    "Ü raftayast"
+   ],
+   "bux": "Ü rafte",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "I have excused.",
+   "refs": [
+    "Man mahelo kardim"
+   ],
+   "bux": "Man mahelo kardim",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "en": "Your daughter has come.",
+   "refs": [
+    "Duxtaraton omade"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "You had told me yourself.",
+   "refs": [
+    "Tu xudat ba man gufta budi"
+   ],
+   "bux": "Tu ba man gufta budi",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.679
+  },
+  {
+   "en": "eating; meal",
+   "refs": [
+    "Sa'udo"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "hard-boiled egg",
+   "refs": [
+    "Tuxumi saxt"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Saturday's pilaf",
+   "refs": [
+    "Oshi savo"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "a meal of rice, chick-peas and mung beans",
+   "refs": [
+    "Oshi kichiri"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "a dish from leg bones",
+   "refs": [
+    "Oshi pocha"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "acrid soup",
+   "refs": [
+    "Uroyi jaz"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "cream",
+   "refs": [
+    "Qaymoq"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "rice",
+   "refs": [
+    "Birinj"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "sugar",
+   "refs": [
+    "Qand"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "vinegar",
+   "refs": [
+    "Sirko"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "saltcellar",
+   "refs": [
+    "Namakdon",
+    "namakdon"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "so much",
+   "refs": [
+    "Haminqadar"
+   ],
+   "bux": "haminxel ziyod",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.291
+  },
+  {
+   "en": "approximately",
+   "refs": [
+    "Taxminan"
+   ],
+   "bux": "qariv",
+   "status": "exact",
+   "ok": false,
+   "chrf": 0.045
+  },
+  {
+   "en": "steam",
+   "refs": [
+    "Taf"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "sorrow; fury",
+   "refs": [
+    "Dogh"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "smoke",
+   "refs": [
+    "Dud"
+   ],
+   "bux": "Dud kardan",
+   "status": "exact",
+   "ok": false,
+   "chrf": 0.307
+  },
+  {
+   "en": "to invite",
+   "refs": [
+    "Taklif kardan",
+    "Kas mondan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to get turned upside-down",
+   "refs": [
+    "Chapa shudan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to pick",
+   "refs": [
+    "Chindan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to fire; to light",
+   "refs": [
+    "Girondan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to become warm",
+   "refs": [
+    "Garm shudan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to raise",
+   "refs": [
+    "Kalon kardan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "find and give",
+   "refs": [
+    "Yofta ted"
+   ],
+   "bux": "Yov!",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.075
+  },
+  {
+   "en": "The man who left the house was my father.",
+   "refs": [
+    "Marde, ki az xona buromad, padari man bud"
+   ],
+   "bux": "Ki mard xonaya padarama mondak",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.274
+  },
+  {
+   "en": "An empty sack will not stand straight.",
+   "refs": [
+    "Qopi xoli rost nameistad."
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Land of Israel",
+   "refs": [
+    "Eres Isroel"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "fun",
+   "refs": [
+    "'Ayshu 'ishrat"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "joke",
+   "refs": [
+    "Hazil"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "chess",
+   "refs": [
+    "Shaxmatbozi"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "castle; rook",
+   "refs": [
+    "Rux"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "gambling",
+   "refs": [
+    "Qimorbozi"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "fighting",
+   "refs": [
+    "Zanozani"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "duet",
+   "refs": [
+    "Lapar"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "tambourine; frame drum",
+   "refs": [
+    "Doyra"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "nations",
+   "refs": [
+    "Umüt"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "enemy of Jews",
+   "refs": [
+    "Süne isroel"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Christian",
+   "refs": [
+    "Orel"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Russian",
+   "refs": [
+    "Urus"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Indian",
+   "refs": [
+    "Hundi"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Samarkand",
+   "refs": [
+    "Samarqand"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Bukhara",
+   "refs": [
+    "Buxoro"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "I failed; I lost.",
+   "refs": [
+    "Man boy dodam"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "I became happy.",
+   "refs": [
+    "Vaqtam choq shud"
+   ],
+   "bux": "Man baxtnok shudam",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.195
+  },
+  {
+   "en": "healer",
+   "refs": [
+    "Tabib"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "ointment",
+   "refs": [
+    "Marham"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "filth",
+   "refs": [
+    "Iflos"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "wound; abscess",
+   "refs": [
+    "Yara"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "skin disease",
+   "refs": [
+    "Maxov"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "harm; injury",
+   "refs": [
+    "Zarar"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "stutterer",
+   "refs": [
+    "Tutula"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "scandalous person; dirty person",
+   "refs": [
+    "Rasvo"
+   ],
+   "bux": "kas chirkin kas",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.106
+  },
+  {
+   "en": "to hurt",
+   "refs": [
+    "Azov dodan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to lose memory",
+   "refs": [
+    "Esu xayol paridan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "I'm anxious.",
+   "refs": [
+    "Dilam rexsode"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "I feel sudden pain in my spine.",
+   "refs": [
+    "Pushtam xala mezanad"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "G-d forbid!",
+   "refs": [
+    "Hos vasholüm!; Xudo nigoh dorad; Xudo nakunad!; ibi, kaynati"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "he/she must have gone",
+   "refs": [
+    "Boyad rafta boshad"
+   ],
+   "bux": "Ü rafte",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.129
+  },
+  {
+   "en": "he/she had to go/should have gone",
+   "refs": [
+    "Boyad meraft"
+   ],
+   "bux": "Ü ba doshtak",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.11
+  },
+  {
+   "en": "publishing house",
+   "refs": [
+    "Nashriyot"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "part; volume (of a book)",
+   "refs": [
+    "Qism"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "introduction; foreword",
+   "refs": [
+    "Sarsuxan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "sentence",
+   "refs": [
+    "Jumla"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "exercise",
+   "refs": [
+    "Mashq"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "briefly",
+   "refs": [
+    "Qisa kütoh"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "as if",
+   "refs": [
+    "Güyoki"
+   ],
+   "bux": "borin agar",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.076
+  },
+  {
+   "en": "until now",
+   "refs": [
+    "To hole"
+   ],
+   "bux": "to aknun",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.086
+  },
+  {
+   "en": "abuse; insult",
+   "refs": [
+    "Haqorat"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "history",
+   "refs": [
+    "Taarix"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to explain",
+   "refs": [
+    "Fahmonda dodan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to multiply",
+   "refs": [
+    "Zarb kardan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "He tells us from somebody's words.",
+   "refs": [
+    "Az dahani yak odam girifta ba mo megü"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "saltcellar",
+   "refs": [
+    "Namakdon",
+    "namakdon"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "magician",
+   "refs": [
+    "Jodugar",
+    "jodugar"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "skillful",
+   "refs": [
+    "hunarmand"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "polite",
+   "refs": [
+    "boodov",
+    "Bonomus"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "fearless",
+   "refs": [
+    "notars"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "act of visiting each other",
+   "refs": [
+    "raftuomad"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "devil",
+   "refs": [
+    "Shedim"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "Torah",
+   "refs": [
+    "Sefar Türo"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "memorial candle or lamp",
+   "refs": [
+    "Ner nashomo"
+   ],
+   "bux": "sham' yo lampa",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.098
+  },
+  {
+   "en": "orphan",
+   "refs": [
+    "Yatim"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "polite",
+   "refs": [
+    "boodov",
+    "Bonomus"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to die",
+   "refs": [
+    "Nashomo dodan"
+   ],
+   "bux": "Manuho yoftan",
+   "status": "exact",
+   "ok": false,
+   "chrf": 0.141
+  },
+  {
+   "en": "He/she died in his/her sleep.",
+   "refs": [
+    "Ü xovi mito did"
+   ],
+   "bux": "Ü ba manuho yoftak",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.066
+  },
+  {
+   "en": "May peace fall upon the land of Israel, may there be no wars between the kings, may we not see any sorrows, may we get to Israel and live there!",
+   "refs": [
+    "Elohim Eres Isroel tinj boshad, miyoni podshoho sholümi aftad, hej ghama nabinem, ba Isroel arzoni shavem!"
+   ],
+   "bux": "sivan sholümi tiramoh isroel sivan unsun ne sivan mo nest didan yagon sivan mo isroel va zindagi kardan unsun",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.246
+  },
+  {
+   "en": "He/she has megalomania.",
+   "refs": [
+    "Xudasha ba oini kalon dide; xudasha kuchuki kalon girifte"
+   ],
+   "bux": "Ü dorad",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.021
+  },
+  {
+   "en": "In another lifetime.",
+   "refs": [
+    "Ba umedi shavi haft; peshi bovom"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "He/she has euphoria.",
+   "refs": [
+    "Chishmash siyo rafte"
+   ],
+   "bux": "Ü dorad",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.067
+  },
+  {
+   "en": "He/she is saying an untruth.",
+   "refs": [
+    "Gav a danash aftosode"
+   ],
+   "bux": "Ü gufsode",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.133
+  },
+  {
+   "en": "He/she is deaf in one ear and stupid as a donkey in the other.",
+   "refs": [
+    "Üya yak güshash kar, yak güshash xar"
+   ],
+   "bux": "Ü ba ba digar xar",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.085
+  },
+  {
+   "en": "He/she is a burden.",
+   "refs": [
+    "Ü binusüz"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "He/she is mischievous and stubborn.",
+   "refs": [
+    "Ü arina"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "He/she is good for nothing.",
+   "refs": [
+    "Ü noshud"
+   ],
+   "bux": "Ü baroyi naghz",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.083
+  },
+  {
+   "en": "He/she is unconscionable; an unconcerned person.",
+   "refs": [
+    "Üya püstash ghasp"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "He/she has a smile on the face, but holds a knife behind the back.",
+   "refs": [
+    "Ü - a rü - shona, a tag - fona"
+   ],
+   "bux": "Ü boli xanda kord dorad",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.067
+  },
+  {
+   "en": "He/she is gluttonous.",
+   "refs": [
+    "Ü das tiyi, orinjata megira"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "May you have many children!",
+   "refs": [
+    "'Ayolmand shaved!"
+   ],
+   "bux": "Tu dori",
+   "status": "partial",
+   "ok": false,
+   "chrf": 0.025
+  },
+  {
+   "en": "May G-d return your good deeds to you!",
+   "refs": [
+    "Neketon az Xudo gardad!"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "To everybody's joy!",
+   "refs": [
+    "Ba simhoyi hamegi!"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "May G-d give you a long life! (condolence)",
+   "refs": [
+    "Xudo 'umr tiyad ba shumo!"
+   ],
+   "bux": "Xudo ba tu zindagi daroz metiyad",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.262
+  },
+  {
+   "en": "Happy New Year!",
+   "refs": [
+    "Shono tüvo!"
+   ],
+   "bux": "rüsh hashonoyi baxtnok",
+   "status": "grammar",
+   "ok": false,
+   "chrf": 0.303
+  },
+  {
+   "en": "Bon appetit!",
+   "refs": [
+    "Osh shavad!"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "en": "to come out; to leave",
+   "refs": [
+    "Buromadan"
+   ],
+   "bux": "omadan mondan",
+   "status": "compositional",
+   "ok": false,
+   "chrf": 0.461
+  },
+  {
+   "en": "to collect; to pick up",
+   "refs": [
+    "Chindan"
+   ],
+   "bux": null,
+   "status": "none",
+   "ok": false,
+   "chrf": 0
+  }
+ ]
+}

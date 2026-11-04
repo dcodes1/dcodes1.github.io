@@ -338,6 +338,7 @@ export interface Example {
 
 export type ExclusionReason =
   | 'grammar_header'            // promoted to syntaxRules instead
+  | 'held_out'                  // evaluation build only: row belongs to eval/testset.json
   | 'no_answer'                 // exercise prompt, answer not in source
   | 'fill_in_stub'              // "Man xarid..." templates
   | 'not_transcribed'           // copyrighted text omitted at source
