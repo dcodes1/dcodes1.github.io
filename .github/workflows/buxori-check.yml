@@ -23,6 +23,7 @@ jobs:
           cp src/data/buxori-index.json /tmp/buxori-first.json
           npm run compile
           cmp /tmp/buxori-first.json src/data/buxori-index.json
+      - run: node scripts/audit-index.mjs > index-audit.json
       - name: Held-out evaluation
         run: node translator/eval/evaluate.js
       - uses: actions/upload-artifact@v4
@@ -32,3 +33,4 @@ jobs:
             dist/
             translator/eval/sample_predictions.txt
             translator/eval/metrics.json
+            index-audit.json

@@ -36,6 +36,7 @@ function App() {
         const hit = lookup.byBuxori(q);
         rows = hit.matches.map(m => <li key={m.key}><strong>{m.key}</strong> — {[...m.roots, ...m.inflected].flatMap(e => e.glosses.map(g => g.text)).join('; ')}
           <p>{hit.tier === 'exact' ? 'Canonical spelling match in source' : 'Spelling candidate only ('+hit.tier+'); not a verified translation of your input.'}</p></li>);
+        for (const e of lookup.corpus(q).slice(0, 20)) rows.push(<li key={e.id}>{e.bux} — {e.en ?? 'English translation unavailable'} (source page {e.source.page})</li>);
         const analyses = lookup.analyzeVerb(q);
         if (analyses.length) rows.push(<li key="analysis">Possible verb analyses:<ul>{analyses.map((a,i) => <li key={i}>{a.root.lemma.text}: {a.tense ?? 'bare stem'}, {a.ending?.personNumber ?? 'no ending'}; stem {a.stemText}</li>)}</ul></li>);
       }

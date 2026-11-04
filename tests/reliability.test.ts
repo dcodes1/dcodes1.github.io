@@ -51,3 +51,8 @@ test('duplicate copula rules retain all provenance in one semantic rule', () => 
   expect(new Set(signatures).size).toBe(signatures.length);
   expect(copulas.some(r => r.sources.length > 1)).toBe(true);
 });
+
+test('corpus-only vocabulary remains discoverable without inventing headwords', () => {
+  const index = JSON.parse(readFileSync(new URL('../src/data/buxori-index.json', import.meta.url), 'utf8')) as BuxoriIndex;
+  expect(createLookup(index).corpus('sholüm').length).toBeGreaterThan(0);
+});

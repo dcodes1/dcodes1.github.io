@@ -234,7 +234,13 @@ export function createLookup(index: BuxoriIndex) {
     return syntaxRules.find((r) => r.id === id);
   }
 
-  return { byBuxori, byEnglish, analyzeVerb, affix, rules, rule, root };
+  function corpus(query: string) {
+    const k = canonicalKey(query);
+    if (!k) return [];
+    return Object.values(index.examples).filter(e =>
+      e.language === 'buxori' && (' ' + canonicalKey(e.bux) + ' ').includes(' ' + k + ' '));
+  }
+  return { byBuxori, byEnglish, analyzeVerb, corpus, affix, rules, rule, root };
 }
 
 export type Lookup = ReturnType<typeof createLookup>;
