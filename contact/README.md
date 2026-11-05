@@ -1,13 +1,14 @@
 # Email lock
 
-The contact card on the portfolio opens a puzzle ("Deflection",
-`assets/email-gate.js`): three solved grids show a beam that turns right at
-every stone, and the visitor lights the path of a fourth.
+The contact card on the portfolio opens a puzzle ("Fragment",
+`assets/email-gate.js`): a 7×7 grid where some tiles are fixed and the rest
+are slots. The fixed tiles are part of a symmetric pattern; the visitor lights
+the slots that complete it.
 
 ## How it opens (default: no server)
 
 The page contains the puzzle but **not the solution and not a readable
-address**. The address is stored XOR-encrypted with `SHA-256("deflection|" +
+address**. The address is stored XOR-encrypted with `SHA-256("fragment|" +
 answer)`, plus a 16-hex-digit check value `SHA-256("tag|" + answer)`. When the
 visitor transmits, the browser hashes the lit cells. Only the right set of cells
 matches the check value and decrypts the address. Nothing is sent over the
@@ -16,7 +17,7 @@ network.
 - **Protects against:** scrapers, and anyone reading the HTML/JS or this
   repository.
 - **Does not protect against:** a determined person who solves the puzzle, or
-  who brute-forces the check value offline (about 10⁹ hashes). It is a courtesy
+  who brute-forces the check value offline (10⁸–10⁹ hashes). It is a courtesy
   gate, not access control.
 
 To change the address or the puzzle, regenerate `SEALED` and `CHECK` from the
@@ -71,8 +72,9 @@ To serve the endpoint elsewhere (e.g. `*.workers.dev`), set
 ### What server mode does and does not protect
 
 - **It does:** the solution is not in the client. With 5 tries per minute per
-  IP, guessing through the endpoint is impractical (the answer is 10 specific
-  cells of 43, about 1.9 billion possible sets of that size).
+  IP, guessing through the endpoint is impractical (the answer is 11 specific
+  slots of 32, about 130 million possible sets of that size, or 4 billion
+  subsets if the size is unknown).
 - **It does not:** stop a person who solves the puzzle once from sharing the
   address. The rate limiter counts per Cloudflare location and is
   approximate. It is a courtesy gate, not access control.
