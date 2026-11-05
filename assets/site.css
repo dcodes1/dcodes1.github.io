@@ -706,6 +706,29 @@ a.contact-card:hover::after { color: var(--green); transform: translate(2px, -2p
 .contact-handle { font-size: 1.02rem; font-weight: 600; color: var(--text-hi); word-break: break-word; }
 .contact-note { margin-top: 0.25rem; font-size: 0.86rem; color: var(--text-dim); }
 
+/* Email reveal gate (assets/email-gate.js) */
+.email-gate .eg-body { margin-top: 0.9rem; display: grid; gap: 0.55rem; }
+.eg-btn {
+  justify-self: start; min-height: 40px; padding: 0.45rem 1rem;
+  font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.03em;
+  color: var(--green); background: var(--green-dim); border: 1px solid var(--green-line);
+  border-radius: 999px; cursor: pointer; transition: background 0.15s, color 0.15s;
+}
+.eg-btn:hover { color: var(--green-hi); background: rgba(34, 211, 138, 0.18); }
+.eg-q { display: block; margin-bottom: 0.45rem; font-family: var(--mono); font-size: 0.86rem; color: var(--text-hi); }
+.eg-row { display: flex; gap: 0.5rem; }
+.eg-input {
+  flex: 1 1 auto; min-width: 0; min-height: 40px; padding: 0.4rem 0.75rem;
+  font: inherit; color: var(--text-hi); background: var(--bg); border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+}
+.eg-input:focus { outline: none; border-color: var(--green-line); box-shadow: 0 0 0 3px rgba(34, 211, 138, 0.12); }
+.eg-msg { font-size: 0.84rem; color: var(--amber); }
+.eg-msg:empty { display: none; }
+.eg-link { color: var(--green); text-decoration: none; }
+.eg-link:hover { text-decoration: underline; }
+.email-gate.revealed { border-color: var(--green-line); }
+
 /* ─── FOOTER ──────────────────────────────────────────────────────────── */
 footer {
   max-width: var(--max);

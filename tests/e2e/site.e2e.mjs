@@ -83,6 +83,26 @@ try {
   let s = await state(page);
   ok('home shows portfolio', !s.portHidden && s.transHidden, s);
   ok('home tab not active', !s.activeTab, s);
+  // Email gate: address absent from the source; revealed only after a puzzle.
+  const html = readFileSync(join(ROOT, 'index.html'), 'utf8');
+  ok('email: address not in page source', !/davidmilov2|%40gmail|gmail\.com/i.test(html) && !/__cf_email__|cdn-cgi/.test(html));
+  ok('email: no address shown before solving', !/@/.test(await page.textContent('#emailGate')));
+  await page.click('#emailReveal');
+  const solve = (q) => {
+    const a = /What is (\d+) ([+−×]) (\d+)\?/.exec(q);
+    if (a) { const x = +a[1], y = +a[3]; return a[2] === '+' ? x + y : a[2] === '−' ? x - y : x * y; }
+    const n = q.replace(/[^\d,]/g, '').split(',').filter(Boolean).map(Number);
+    return n[1] - n[0] === n[2] - n[1] ? n[3] + (n[1] - n[0]) : n[3] * 2;
+  };
+  const q1 = await page.textContent('#emailQuestion');
+  await page.fill('#emailAnswer', String(solve(q1) + 1));
+  await page.click('#emailForm button[type=submit]');
+  ok('email: wrong answer → message, still hidden', /Not quite/.test(await page.textContent('#emailMsg')) && !/@/.test(await page.textContent('#emailHandle')));
+  const q2 = await page.textContent('#emailQuestion');
+  await page.fill('#emailAnswer', String(solve(q2)));
+  await page.click('#emailForm button[type=submit]');
+  ok('email: correct answer reveals a mailto link', (await page.getAttribute('#emailHandle a', 'href')) === 'mailto:davidmilov2@gmail.com', await page.textContent('#emailHandle'));
+
   ok('portfolio does not load the translator bundle', !requested.some((u) => u.includes('/translator/app/')), requested.filter((u) => u.includes('translator')));
   ok('legacy engine.js no longer loaded', !requested.some((u) => u.endsWith('/translator/engine.js')));
 

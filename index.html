@@ -322,11 +322,23 @@
       <div class="contact-handle">davidgmilov</div>
       <div class="contact-note">Professional network</div>
     </a>
-    <a class="contact-card" href="/cdn-cgi/l/email-protection#492d283f202d242025263f7b092e24282025672a2624">
+    <div class="contact-card email-gate" id="emailGate">
       <div class="contact-platform">// Email</div>
-      <div class="contact-handle"><span class="__cf_email__" data-cfemail="6b0f0a1d020f060207041d592b0c060a020745080406">[email&#160;protected]</span></div>
+      <div class="contact-handle" id="emailHandle">Solve a quick puzzle to reveal</div>
       <div class="contact-note">For inquiries</div>
-    </a>
+      <div class="eg-body">
+        <button type="button" class="eg-btn" id="emailReveal">Reveal email</button>
+        <form class="eg-form" id="emailForm" hidden autocomplete="off">
+          <label class="eg-q" for="emailAnswer" id="emailQuestion"></label>
+          <div class="eg-row">
+            <input class="eg-input" id="emailAnswer" inputmode="numeric" required aria-describedby="emailMsg">
+            <button type="submit" class="eg-btn">Check</button>
+          </div>
+        </form>
+        <div class="eg-msg" id="emailMsg" aria-live="polite"></div>
+        <noscript><div class="eg-msg">Enable JavaScript to reveal the email, or message me on LinkedIn.</div></noscript>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -360,7 +372,7 @@
   <div><span class="hi">operator online</span> <span class="cursor" style="width:7px;"></span></div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // Animate skill bars on scroll
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -433,6 +445,7 @@
 
 <!-- TRANSLATOR ENGINE (English → Buxori) -->
 <script src="/assets/nav.js"></script>
+<script src="/assets/email-gate.js" defer></script>
 <!-- CLIENT-SIDE ROUTER (portfolio ⇄ /translator) -->
 <script>
 (function () {
