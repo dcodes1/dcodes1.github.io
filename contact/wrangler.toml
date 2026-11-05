@@ -1,0 +1,27 @@
+# Cloudflare Worker for the email lock. Deploy steps: contact/README.md.
+name = "email-lock"
+main = "worker.ts"
+compatibility_date = "2025-06-01"
+
+# Serve on the site's own domain so the browser calls a same-origin /api/reveal.
+# (davidmilov.com is already proxied by Cloudflare.)
+routes = [
+  { pattern = "davidmilov.com/api/reveal", zone_name = "davidmilov.com" },
+  { pattern = "www.davidmilov.com/api/reveal", zone_name = "davidmilov.com" },
+]
+
+[vars]
+ALLOWED_ORIGINS = "https://davidmilov.com,https://www.davidmilov.com"
+
+# 5 attempts per IP per minute (Workers Rate Limiting API).
+[[ratelimits]]
+name = "REVEAL_LIMITER"
+namespace_id = "7301"
+
+  [ratelimits.simple]
+  limit = 5
+  period = 60
+
+# Secrets (never committed):
+#   npx wrangler secret put EMAIL
+#   npx wrangler secret put ANSWER

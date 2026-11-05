@@ -15,6 +15,8 @@ const ROOT = resolve(import.meta.dirname, '../..');
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.pdf': 'application/pdf', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
 let aiEndpoint = '';          // injected into index.html for the AI-fallback test
 let aiCalls = 0;
+let lockOnline = true;        // mock of contact/worker.ts; accepts only the FAKE answer [6]
+const FAKE_EMAIL = 'someone@example.com';
 
 const server = createServer((req, res) => {
   let p = decodeURIComponent((req.url ?? '/').split('?')[0].split('#')[0]);
@@ -26,6 +28,16 @@ const server = createServer((req, res) => {
       const { text, examples } = JSON.parse(body);
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ translation: `AI(${text})`, explanation: `grounded on ${examples.length} examples` }));
+    });
+    return;
+  }
+  if (p === '/api/reveal' && req.method === 'POST' && lockOnline) {
+    let body = '';
+    req.on('data', (c) => (body += c));
+    req.on('end', () => {
+      const { cells } = JSON.parse(body);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(cells.join(',') === '6' ? { ok: true, email: FAKE_EMAIL } : { ok: false }));
     });
     return;
   }
@@ -83,25 +95,43 @@ try {
   let s = await state(page);
   ok('home shows portfolio', !s.portHidden && s.transHidden, s);
   ok('home tab not active', !s.activeTab, s);
-  // Email gate: address absent from the source; revealed only after a puzzle.
-  const html = readFileSync(join(ROOT, 'index.html'), 'utf8');
-  ok('email: address not in page source', !/davidmilov2|%40gmail|gmail\.com/i.test(html) && !/__cf_email__|cdn-cgi/.test(html));
-  ok('email: no address shown before solving', !/@/.test(await page.textContent('#emailGate')));
-  await page.click('#emailReveal');
-  const solve = (q) => {
-    const a = /What is (\d+) ([+−×]) (\d+)\?/.exec(q);
-    if (a) { const x = +a[1], y = +a[3]; return a[2] === '+' ? x + y : a[2] === '−' ? x - y : x * y; }
-    const n = q.replace(/[^\d,]/g, '').split(',').filter(Boolean).map(Number);
-    return n[1] - n[0] === n[2] - n[1] ? n[3] + (n[1] - n[0]) : n[3] * 2;
-  };
-  const q1 = await page.textContent('#emailQuestion');
-  await page.fill('#emailAnswer', String(solve(q1) + 1));
-  await page.click('#emailForm button[type=submit]');
-  ok('email: wrong answer → message, still hidden', /Not quite/.test(await page.textContent('#emailMsg')) && !/@/.test(await page.textContent('#emailHandle')));
-  const q2 = await page.textContent('#emailQuestion');
-  await page.fill('#emailAnswer', String(solve(q2)));
-  await page.click('#emailForm button[type=submit]');
-  ok('email: correct answer reveals a mailto link', (await page.getAttribute('#emailHandle a', 'href')) === 'mailto:davidmilov2@gmail.com', await page.textContent('#emailHandle'));
+  // Email lock: neither the address nor the solution is in any served file.
+  const served = ['index.html', 'assets/email-gate.js', 'assets/site.css'].map((f) => readFileSync(join(ROOT, f), 'utf8')).join('\n');
+  ok('lock: no address in served files', !/@gmail|%40gmail|cdn-cgi/i.test(served) && !served.includes(['__cf', '_email__'].join('')) && !served.includes(['david', 'milov2'].join('')));
+  ok('lock: card is sealed', /Sealed/.test(await page.textContent('#emailHandle')) && !/@/.test(await page.textContent('#emailGate')));
+  await page.click('#emailOpen');
+  await page.waitForSelector('dialog.vault[open]');
+  ok('lock: three solved examples + one grid', (await page.locator('.vault-examples .dg').count()) === 3 && (await page.locator('.dg-main .dc-tap').count()) === 38);
+  ok('lock: transmit disabled until a cell is lit', await page.isDisabled('.vault-controls .eg-btn:not(.eg-ghost)'));
+  // drag-paint across the empty bottom row (cells 43..46), then clear
+  const box = async (i) => (await page.locator(`.dc-tap[data-i="${i}"]`).boundingBox());
+  const b43 = await box(43), b46 = await box(46);
+  await page.mouse.move(b43.x + b43.width / 2, b43.y + b43.height / 2); await page.mouse.down();
+  await page.mouse.move(b46.x + b46.width / 2, b46.y + b46.height / 2, { steps: 8 }); await page.mouse.up();
+  ok('lock: dragging paints a run of cells', (await page.locator('.dc-tap.on').count()) === 4);
+  await page.click('.vault-controls .eg-ghost');
+  ok('lock: clear empties the grid', (await page.locator('.dc-tap.on').count()) === 0);
+  await page.click('.dc-tap[data-i="0"]');
+  await page.click('.vault-controls .eg-btn:not(.eg-ghost)');
+  await page.waitForFunction(() => /holds/.test(document.querySelector('.vault-msg')?.textContent ?? ''));
+  ok('lock: wrong answer → "The lock holds.", nothing revealed', !/@/.test(await page.textContent('dialog.vault')));
+  await page.click('.dc-tap[data-i="0"]');
+  await page.click('.dc-tap[data-i="6"]');
+  await page.click('.vault-controls .eg-btn:not(.eg-ghost)');
+  await page.waitForFunction((e) => document.querySelector('.vault-email')?.textContent === e, FAKE_EMAIL, { timeout: 6000 });
+  ok('lock: correct answer unlocks with a mailto link', (await page.getAttribute('.vault-email', 'href')) === 'mailto:' + FAKE_EMAIL);
+  ok('lock: copy button shown', await page.isVisible('.vault-open .eg-btn'));
+  ok('lock: card shows the address afterwards', (await page.getAttribute('#emailHandle a', 'href')) === 'mailto:' + FAKE_EMAIL);
+  await page.keyboard.press('Escape');
+  ok('lock: Escape closes the dialog', !(await page.isVisible('dialog.vault')));
+  // endpoint missing (e.g. Worker not deployed): honest message, nothing revealed
+  lockOnline = false;
+  const off = await browser.newPage(); watch(off);
+  await off.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await off.click('#emailOpen'); await off.click('.dc-tap[data-i="6"]'); await off.click('.vault-controls .eg-btn:not(.eg-ghost)');
+  await off.waitForFunction(() => /unreachable/.test(document.querySelector('.vault-msg')?.textContent ?? ''), null, { timeout: 5000 }).then(() => ok('lock: offline endpoint → clear message', true), () => ok('lock: offline endpoint → clear message', false));
+  await off.close();
+  lockOnline = true;
 
   ok('portfolio does not load the translator bundle', !requested.some((u) => u.includes('/translator/app/')), requested.filter((u) => u.includes('translator')));
   ok('legacy engine.js no longer loaded', !requested.some((u) => u.endsWith('/translator/engine.js')));
@@ -234,6 +264,16 @@ try {
   await m.waitForTimeout(400);
   ok('mobile: carousel dots follow swipe', await m.evaluate(() => [...document.querySelectorAll('.carousel-dot')].findIndex((x) => x.classList.contains('active'))) > 0);
   ok('mobile: nav touch targets ≥ 40px', await m.evaluate(() => ['.nav-toggle', '.nav-cta'].every((q) => document.querySelector(q).getBoundingClientRect().height >= 40)));
+  await m.evaluate(() => document.getElementById('emailGate').scrollIntoView());
+  await m.tap('#emailOpen');
+  await m.waitForSelector('dialog.vault[open]');
+  const fit = await m.evaluate(() => { const d = document.querySelector('dialog.vault').getBoundingClientRect(); return { l: d.left, r: d.right, w: innerWidth, over: document.documentElement.scrollWidth - innerWidth }; });
+  ok('mobile lock: dialog fits the screen, no horizontal scroll', fit.l >= 0 && fit.r <= fit.w && fit.over <= 1, fit);
+  const tapSize = await m.$eval('.dc-tap', (e) => e.getBoundingClientRect().width);
+  ok('mobile lock: grid cells are comfortable tap targets (≥ 34px)', tapSize >= 34, { tapSize });
+  await m.tap('.dc-tap[data-i="6"]');
+  ok('mobile lock: tap lights a cell', (await m.locator('.dc-tap.on').count()) === 1);
+  await m.tap('.vault-close');
   await m.evaluate(() => scrollTo(0, 0));
   await m.click('.nav-cta');
   s = await state(m);

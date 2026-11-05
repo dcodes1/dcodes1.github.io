@@ -322,21 +322,13 @@
       <div class="contact-handle">davidgmilov</div>
       <div class="contact-note">Professional network</div>
     </a>
-    <div class="contact-card email-gate" id="emailGate">
+    <div class="contact-card email-gate" id="emailGate" data-endpoint="/api/reveal">
       <div class="contact-platform">// Email</div>
-      <div class="contact-handle" id="emailHandle">Solve a quick puzzle to reveal</div>
-      <div class="contact-note">For inquiries</div>
+      <div class="contact-handle" id="emailHandle">Sealed</div>
+      <div class="contact-note">Behind a small lock</div>
       <div class="eg-body">
-        <button type="button" class="eg-btn" id="emailReveal">Reveal email</button>
-        <form class="eg-form" id="emailForm" hidden autocomplete="off">
-          <label class="eg-q" for="emailAnswer" id="emailQuestion"></label>
-          <div class="eg-row">
-            <input class="eg-input" id="emailAnswer" inputmode="numeric" required aria-describedby="emailMsg">
-            <button type="submit" class="eg-btn">Check</button>
-          </div>
-        </form>
-        <div class="eg-msg" id="emailMsg" aria-live="polite"></div>
-        <noscript><div class="eg-msg">Enable JavaScript to reveal the email, or message me on LinkedIn.</div></noscript>
+        <button type="button" class="eg-btn" id="emailOpen">Open the lock</button>
+        <noscript><div class="eg-msg">The lock needs JavaScript. LinkedIn works too.</div></noscript>
       </div>
     </div>
   </div>
