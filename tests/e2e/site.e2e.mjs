@@ -15,7 +15,8 @@ const ROOT = resolve(import.meta.dirname, '../..');
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.pdf': 'application/pdf', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
 let aiEndpoint = '';          // injected into index.html for the AI-fallback test
 let aiCalls = 0;
-let lockOnline = true;        // mock of contact/worker.ts; accepts only the FAKE answer [6]
+let lockOnline = true;        // mock of contact/worker.ts; accepts only the FAKE answer [0]
+let lockEndpoint = '';        // injected as data-endpoint (server mode); empty = the page's own local lock
 const FAKE_EMAIL = 'someone@example.com';
 
 const server = createServer((req, res) => {
@@ -37,7 +38,7 @@ const server = createServer((req, res) => {
     req.on('end', () => {
       const { cells } = JSON.parse(body);
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(cells.join(',') === '6' ? { ok: true, email: FAKE_EMAIL } : { ok: false }));
+      res.end(JSON.stringify(cells.join(',') === '0' ? { ok: true, email: FAKE_EMAIL } : { ok: false }));
     });
     return;
   }
@@ -45,8 +46,11 @@ const server = createServer((req, res) => {
   const fp = join(ROOT, p);
   if (fp.startsWith(ROOT) && existsSync(fp) && statSync(fp).isFile()) {
     res.writeHead(200, { 'Content-Type': MIME[extname(fp)] ?? 'application/octet-stream' });
-    if (p === '/index.html' && aiEndpoint) {
-      return res.end(readFileSync(fp, 'utf8').replace('<div id="translator-root">', `<div id="translator-root" data-ai-endpoint="${aiEndpoint}">`));
+    if (p === '/index.html' && (aiEndpoint || lockEndpoint)) {
+      let h = readFileSync(fp, 'utf8');
+      if (aiEndpoint) h = h.replace('<div id="translator-root">', `<div id="translator-root" data-ai-endpoint="${aiEndpoint}">`);
+      if (lockEndpoint) h = h.replace('id="emailGate"', `id="emailGate" data-endpoint="${lockEndpoint}"`);
+      return res.end(h);
     }
     return createReadStream(fp).pipe(res);
   }
@@ -95,43 +99,52 @@ try {
   let s = await state(page);
   ok('home shows portfolio', !s.portHidden && s.transHidden, s);
   ok('home tab not active', !s.activeTab, s);
-  // Email lock: neither the address nor the solution is in any served file.
+  // Email lock: neither a readable address nor the solution is in any served file.
   const served = ['index.html', 'assets/email-gate.js', 'assets/site.css'].map((f) => readFileSync(join(ROOT, f), 'utf8')).join('\n');
   ok('lock: no address in served files', !/@gmail|%40gmail|cdn-cgi/i.test(served) && !served.includes(['__cf', '_email__'].join('')) && !/[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,}/i.test(served));
   ok('lock: card is sealed', /Sealed/.test(await page.textContent('#emailHandle')) && !/@/.test(await page.textContent('#emailGate')));
+  // Local mode (no endpoint configured): wrong answers are refused without any network call.
   await page.click('#emailOpen');
   await page.waitForSelector('dialog.vault[open]');
-  ok('lock: three solved examples + one grid', (await page.locator('.vault-examples .dg').count()) === 3 && (await page.locator('.dg-main .dc-tap').count()) === 38);
+  ok('lock: three solved examples + one grid', (await page.locator('.vault-examples .dg').count()) === 3 && (await page.locator('.dg-main .dc-tap').count()) === 43);
   ok('lock: transmit disabled until a cell is lit', await page.isDisabled('.vault-controls .eg-btn:not(.eg-ghost)'));
-  // drag-paint across the empty bottom row (cells 43..46), then clear
-  const box = async (i) => (await page.locator(`.dc-tap[data-i="${i}"]`).boundingBox());
-  const b43 = await box(43), b46 = await box(46);
+  const box = async (p, i) => (await p.locator(`.dc-tap[data-i="${i}"]`).boundingBox());
+  const b43 = await box(page, 43), b46 = await box(page, 46);
   await page.mouse.move(b43.x + b43.width / 2, b43.y + b43.height / 2); await page.mouse.down();
   await page.mouse.move(b46.x + b46.width / 2, b46.y + b46.height / 2, { steps: 8 }); await page.mouse.up();
   ok('lock: dragging paints a run of cells', (await page.locator('.dc-tap.on').count()) === 4);
-  await page.click('.vault-controls .eg-ghost');
-  ok('lock: clear empties the grid', (await page.locator('.dc-tap.on').count()) === 0);
-  await page.click('.dc-tap[data-i="0"]');
+  const reqBefore = requested.length;
   await page.click('.vault-controls .eg-btn:not(.eg-ghost)');
   await page.waitForFunction(() => /holds/.test(document.querySelector('.vault-msg')?.textContent ?? ''));
-  ok('lock: wrong answer → "The lock holds.", nothing revealed', !/@/.test(await page.textContent('dialog.vault')));
-  await page.click('.dc-tap[data-i="0"]');
-  await page.click('.dc-tap[data-i="6"]');
-  await page.click('.vault-controls .eg-btn:not(.eg-ghost)');
-  await page.waitForFunction((e) => document.querySelector('.vault-email')?.textContent === e, FAKE_EMAIL, { timeout: 6000 });
-  ok('lock: correct answer unlocks with a mailto link', (await page.getAttribute('.vault-email', 'href')) === 'mailto:' + FAKE_EMAIL);
-  ok('lock: copy button shown', await page.isVisible('.vault-open .eg-btn'));
-  ok('lock: card shows the address afterwards', (await page.getAttribute('#emailHandle a', 'href')) === 'mailto:' + FAKE_EMAIL);
+  ok('lock (local): wrong answer → "The lock holds.", nothing revealed, no request', !/@/.test(await page.textContent('dialog.vault')) && requested.length === reqBefore);
+  await page.click('.vault-controls .eg-ghost');
+  ok('lock: clear empties the grid', (await page.locator('.dc-tap.on').count()) === 0);
   await page.keyboard.press('Escape');
   ok('lock: Escape closes the dialog', !(await page.isVisible('dialog.vault')));
-  // endpoint missing (e.g. Worker not deployed): honest message, nothing revealed
+  // Server mode (data-endpoint set): mock worker accepts only the fake answer [0].
+  lockEndpoint = '/api/reveal';
+  const sv = await browser.newPage(); watch(sv);
+  await sv.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await sv.click('#emailOpen');
+  await sv.click('.dc-tap[data-i="1"]');
+  await sv.click('.vault-controls .eg-btn:not(.eg-ghost)');
+  await sv.waitForFunction(() => /holds/.test(document.querySelector('.vault-msg')?.textContent ?? ''));
+  ok('lock (server): wrong answer refused', !/@/.test(await sv.textContent('dialog.vault')));
+  await sv.click('.dc-tap[data-i="1"]');
+  await sv.click('.dc-tap[data-i="0"]');
+  await sv.click('.vault-controls .eg-btn:not(.eg-ghost)');
+  await sv.waitForFunction((e) => document.querySelector('.vault-email')?.textContent === e, FAKE_EMAIL, { timeout: 6000 });
+  ok('lock (server): correct answer unlocks with a mailto link', (await sv.getAttribute('.vault-email', 'href')) === 'mailto:' + FAKE_EMAIL);
+  ok('lock: copy button shown', await sv.isVisible('.vault-open .eg-btn'));
+  ok('lock: card shows the address afterwards', (await sv.getAttribute('#emailHandle a', 'href')) === 'mailto:' + FAKE_EMAIL);
+  await sv.close();
   lockOnline = false;
   const off = await browser.newPage(); watch(off);
   await off.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
-  await off.click('#emailOpen'); await off.click('.dc-tap[data-i="6"]'); await off.click('.vault-controls .eg-btn:not(.eg-ghost)');
-  await off.waitForFunction(() => /unreachable/.test(document.querySelector('.vault-msg')?.textContent ?? ''), null, { timeout: 5000 }).then(() => ok('lock: offline endpoint → clear message', true), () => ok('lock: offline endpoint → clear message', false));
+  await off.click('#emailOpen'); await off.click('.dc-tap[data-i="0"]'); await off.click('.vault-controls .eg-btn:not(.eg-ghost)');
+  await off.waitForFunction(() => /unreachable/.test(document.querySelector('.vault-msg')?.textContent ?? ''), null, { timeout: 5000 }).then(() => ok('lock (server): endpoint down → clear message', true), () => ok('lock (server): endpoint down → clear message', false));
   await off.close();
-  lockOnline = true;
+  lockOnline = true; lockEndpoint = '';
 
   ok('portfolio does not load the translator bundle', !requested.some((u) => u.includes('/translator/app/')), requested.filter((u) => u.includes('translator')));
   ok('legacy engine.js no longer loaded', !requested.some((u) => u.endsWith('/translator/engine.js')));
@@ -271,7 +284,7 @@ try {
   ok('mobile lock: dialog fits the screen, no horizontal scroll', fit.l >= 0 && fit.r <= fit.w && fit.over <= 1, fit);
   const tapSize = await m.$eval('.dc-tap', (e) => e.getBoundingClientRect().width);
   ok('mobile lock: grid cells are comfortable tap targets (≥ 34px)', tapSize >= 34, { tapSize });
-  await m.tap('.dc-tap[data-i="6"]');
+  await m.tap('.dc-tap[data-i="0"]');
   ok('mobile lock: tap lights a cell', (await m.locator('.dc-tap.on').count()) === 1);
   await m.tap('.vault-close');
   await m.evaluate(() => scrollTo(0, 0));

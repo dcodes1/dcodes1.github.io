@@ -1,11 +1,14 @@
 /*
- * "Deflection" — the lock on the contact email.
+ * "Deflection": the lock on the contact email.
  *
  * Three solved grids and one unsolved grid. The visitor lights the cells of the
- * fourth path and transmits them. This file contains the puzzle, never the
- * solution and never the email: the server endpoint (contact/worker.ts) checks
- * the answer and only then returns the address. Configure the endpoint with
- * data-endpoint on #emailGate (default /api/reveal).
+ * fourth path and transmits them.
+ *
+ * The page never contains the solution or a readable address. The address is
+ * stored XOR-encrypted with a key derived from the answer (SHA-256), plus a short
+ * check value. Only the correct set of cells produces the key. Optionally, set
+ * data-endpoint on #emailGate to have a server (contact/worker.ts) check the
+ * answer instead.
  */
 (function () {
   "use strict";
@@ -16,13 +19,15 @@
   // entry: [row, col, heading] with heading 0 up, 1 right, 2 down, 3 left.
   var PUZZLE = {
     examples: [
-      { entry: [0, 3, 2], stones: [2, 5, 8, 17, 19, 32, 40, 44], path: [3, 9, 10, 16, 23, 30, 35, 36, 37] },
-      { entry: [2, 0, 1], stones: [0, 17, 26, 27, 34, 37, 48], path: [14, 15, 16, 23, 30, 31, 32, 33, 40, 47] },
-      { entry: [1, 0, 1], stones: [0, 3, 11, 34, 38], path: [7, 8, 9, 10, 17, 24, 31, 32, 33, 40, 47] },
+      { entry: [1, 0, 1], stones: [1, 12, 15, 34, 39], path: [7, 8, 9, 10, 11, 18, 25, 28, 29, 30, 31, 32] },
+      { entry: [6, 6, 3], stones: [1, 24, 26, 37, 44], path: [31, 32, 33, 34, 38, 45, 46, 47, 48] },
+      { entry: [6, 2, 0], stones: [4, 9, 20, 41, 46], path: [16, 17, 18, 19, 23, 26, 30, 33, 37, 40, 44, 47] },
     ],
-    test: { entry: [6, 0, 0], stones: [1, 5, 8, 9, 11, 14, 20, 21, 25, 31, 41] },
+    test: { entry: [0, 5, 2], stones: [6, 11, 22, 33, 38, 39] },
   };
-  var ENDPOINT = card.getAttribute("data-endpoint") || "/api/reveal";
+  var SEALED = [146, 83, 114, 101, 187, 36, 169, 234, 161, 13, 187, 70, 243, 92, 131, 72, 225, 182, 180, 193, 252];
+  var CHECK = "769cab8d5d8cc53c";
+  var ENDPOINT = card.getAttribute("data-endpoint") || "";
   var LINKEDIN = "https://www.linkedin.com/in/davidgmilov/";
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -241,19 +246,44 @@
     }, 34);
   }
 
-  function submit() {
-    if (busy || solvedEmail) return;
-    busy = true;
-    sendBtn.disabled = clearBtn.disabled = true;
-    say("…", "");
-    var payload = JSON.stringify({ cells: Object.keys(lit).map(Number).sort(function (a, b) { return a - b; }) });
-    fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: payload, credentials: "omit" })
+  function sha256(text) {
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then(function (b) { return new Uint8Array(b); });
+  }
+  function hex(bytes) {
+    var s = ""; for (var i = 0; i < bytes.length; i++) s += (bytes[i] < 16 ? "0" : "") + bytes[i].toString(16); return s;
+  }
+
+  // Local check: the answer is the decryption key; a wrong set of cells yields nothing.
+  function openLocally(answer) {
+    if (!window.crypto || !crypto.subtle) return Promise.resolve({ offline: true });
+    return sha256("tag|" + answer).then(function (t) {
+      if (hex(t).slice(0, 16) !== CHECK) return { ok: false };
+      return sha256("deflection|" + answer).then(function (k) {
+        var out = "";
+        for (var i = 0; i < SEALED.length; i++) out += String.fromCharCode(SEALED[i] ^ k[i]);
+        return { ok: true, email: out };
+      });
+    });
+  }
+
+  function askServer(cellsList) {
+    return fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cells: cellsList }), credentials: "omit" })
       .then(function (r) {
         if (r.status === 429) return { rate: true };
         var ct = r.headers.get("content-type") || "";
         if (!r.ok || ct.indexOf("application/json") === -1) return { offline: true };
         return r.json();
       })
+      .catch(function () { return { offline: true }; });
+  }
+
+  function submit() {
+    if (busy || solvedEmail) return;
+    busy = true;
+    sendBtn.disabled = clearBtn.disabled = true;
+    say("…", "");
+    var list = Object.keys(lit).map(Number).sort(function (a, b) { return a - b; });
+    (ENDPOINT ? askServer(list) : openLocally(list.join(",")))
       .catch(function () { return { offline: true }; })
       .then(function (res) {
         busy = false;
