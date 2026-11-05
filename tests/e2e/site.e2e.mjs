@@ -97,7 +97,7 @@ try {
   ok('home tab not active', !s.activeTab, s);
   // Email lock: neither the address nor the solution is in any served file.
   const served = ['index.html', 'assets/email-gate.js', 'assets/site.css'].map((f) => readFileSync(join(ROOT, f), 'utf8')).join('\n');
-  ok('lock: no address in served files', !/@gmail|%40gmail|cdn-cgi/i.test(served) && !served.includes(['__cf', '_email__'].join('')) && !served.includes(['david', 'milov2'].join('')));
+  ok('lock: no address in served files', !/@gmail|%40gmail|cdn-cgi/i.test(served) && !served.includes(['__cf', '_email__'].join('')) && !/[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,}/i.test(served));
   ok('lock: card is sealed', /Sealed/.test(await page.textContent('#emailHandle')) && !/@/.test(await page.textContent('#emailGate')));
   await page.click('#emailOpen');
   await page.waitForSelector('dialog.vault[open]');

@@ -79,8 +79,10 @@ describe('the public site never contains the address or the solution', () => {
   walk(ROOT);
   test.each(files.map((f) => [f.slice(ROOT.length + 1), f]))('%s', (_n, f) => {
     const s = readFileSync(f, 'utf8');
-    // Built from fragments so this file does not contain the strings it looks for.
-    const needles = [['david', 'milov2'], ['__cf', '_email__'], ['data-cf', 'email']].map((x) => x.join(''));
-    for (const n of needles) expect(s.toLowerCase().includes(n), n).toBe(false);
+    // No real-looking address anywhere (example.com is the test placeholder), and no
+    // Cloudflare obfuscation markup (built from fragments so this file passes its own scan).
+    const emails = (s.match(/[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}/gi) ?? []).filter((e) => !/@example\.com$/i.test(e));
+    expect(emails).toEqual([]);
+    for (const n of [['__cf', '_email__'], ['data-cf', 'email']].map((x) => x.join(''))) expect(s.toLowerCase().includes(n), n).toBe(false);
   });
 });
