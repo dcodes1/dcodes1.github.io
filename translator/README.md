@@ -36,10 +36,8 @@ The layers are tried in order, and the first that succeeds wins. The UI labels t
 |---|---|
 | `exact` (**verified**) | the English is an entry, inflected headword or example sentence in the TSV |
 | `grammar` (**built from rules**) | assembled from TSV words with TSV-stated rules; every step is cited |
-| `partial` (**incomplete**) | as above, but some English words have no source and are listed |
 | `fuzzy` (**closest match**) | spelling corrected (swapped or doubled letters only) or a near-identical entry |
-| `compositional` (**word by word**) | per-word glosses in English order, only with ≥ ⅔ coverage |
-| `none` | nothing reliable; similar source sentences are shown instead |
+| `none` | nothing reliable; similar source sentences are shown, plus (as a separate, labelled hint, never as the answer) an incomplete draft or word glosses when some words were found. On the frozen test set those drafts were right 0 of 36 times. |
 
 Main design points:
 
@@ -82,7 +80,7 @@ A prediction is correct if it equals any attested form for that English.
 | engine | accuracy | precision (correct / answered) | answered | chrF (answered) |
 |---|---|---|---|---|
 | legacy `engine.js` (removed) | 4.1% | 8.7% | 126 / 270 | 0.331 |
-| current | **12.6%** | **35.1%** | 97 / 270 | 0.495 |
+| current | **12.6%** | **55.7%** | 61 / 270 | 0.678 |
 
 Most of the test set is single words that appear nowhere else in the source
 ("dog", "teacher"). For those the correct behaviour is to abstain, so precision

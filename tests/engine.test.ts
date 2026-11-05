@@ -82,10 +82,22 @@ describe('regressions: errors found in earlier versions', () => {
   });
   test('a sentence with an untranslatable word is marked partial, the word is reported', () => {
     const r = T('He has six zorbles');
-    expect(['partial', 'none', 'compositional']).toContain(r.status);
-    if (r.status === 'partial') expect(r.unknown).toContain('zorbles');
+    expect(r.status).toBe('none');
+    expect(r.unknown).toContain('zorbles');
   });
   test('"thank you" does not become "tu" word-by-word', () => expect(T('Thank you').text).toBe('Rahmat'));
+  test('a stranded preposition joins the question word: Where are you from? → az kujo (not "Where are you?")', () => {
+    expect(T('Where are you from?').variants.map((v) => v.text)).toEqual(['Tu az kujo?', 'Shumo az kujo?']);
+    expect(T('Where are you?').variants.map((v) => v.text)).toEqual(['Tu kujo?', 'Shumo kujo?']);
+  });
+  test('drafts with missing words are hints, never answers (0 of 36 were right on the frozen test set)', () => {
+    for (const en of ['He has six zorbles', 'blorp the water quickly']) {
+      const r = T(en);
+      expect(r.status).toBe('none');
+      expect(r.text).toBeNull();
+      if (r.hint) expect(r.hint.text.length).toBeGreaterThan(0);
+    }
+  });
 });
 
 describe('morphology (built forms, cited rules)', () => {

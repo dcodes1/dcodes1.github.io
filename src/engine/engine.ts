@@ -45,6 +45,12 @@ export interface Translation {
   notes: string[];
   matchedEnglish?: string;
   related: Retrieved[];
+  /**
+   * A draft that is NOT offered as a translation: word-by-word glosses or a sentence
+   * with missing words. On the frozen held-out set these were right 0 times out of 36,
+   * so they are shown as study hints only (status stays "none").
+   */
+  hint?: { kind: 'partial' | 'words'; text: string; variants: { register: 'informal' | 'formal'; text: string }[] };
 }
 
 const EVIDENCE_ORDER: Evidence[] = ['borrowed', 'derived', 'attested', 'stated'];
@@ -111,8 +117,23 @@ export class Engine {
         }
       }
     }
+    if (res.status === 'partial' || res.status === 'compositional') res = this.demote(res);
     this.cache.set(raw, res);
     return res;
+  }
+
+  /** Turn an unreliable draft into "no translation" + a clearly separate hint. */
+  private demote(r: Translation): Translation {
+    const kind = r.status === 'partial' ? 'partial' : 'words';
+    return {
+      ...r,
+      status: 'none', text: null, variants: [], alternatives: [], confidence: 0, evidence: null,
+      notes: [kind === 'partial'
+        ? 'No reliable translation: some words are not in the source, so a full sentence could not be built.'
+        : 'No reliable translation: only individual words were found.', ...r.notes.filter((n) => !/^(Word-by-word gloss|Incomplete:)/.test(n))],
+      hint: { kind, text: r.text ?? '', variants: r.variants },
+      related: r.related.length ? r.related : this.related(r.matchedEnglish ?? '', 3),
+    };
   }
 
   /**

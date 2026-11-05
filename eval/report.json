@@ -2,27 +2,19 @@
  "report": {
   "engine": "src/engine (held-out index)",
   "items": 270,
-  "answered": 97,
+  "answered": 61,
   "correct": 34,
   "accuracy": 0.126,
-  "precision": 0.351,
-  "chrfAnswered": 0.495,
-  "chrfAll": 0.178,
+  "precision": 0.557,
+  "chrfAnswered": 0.678,
+  "chrfAll": 0.153,
   "byStatus": {
    "grammar": {
     "n": 52,
     "correct": 33
    },
    "none": {
-    "n": 173,
-    "correct": 0
-   },
-   "compositional": {
-    "n": 14,
-    "correct": 0
-   },
-   "partial": {
-    "n": 22,
+    "n": 209,
     "correct": 0
    },
    "exact": {
@@ -200,10 +192,10 @@
    "refs": [
     "Namozigar"
    ],
-   "bux": "ba shav",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.04
+   "chrf": 0
   },
   {
    "en": "today is Saturday",
@@ -362,20 +354,20 @@
    "refs": [
     "Naghzed?"
    ],
-   "bux": "Shumo rosangiyed?",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.138
+   "chrf": 0
   },
   {
    "en": "Feel well!; be healthy! (polite)",
    "refs": [
     "Sihat boshed!"
    ],
-   "bux": "Tinji binoyi",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.061
+   "chrf": 0
   },
   {
    "en": "I know",
@@ -402,10 +394,10 @@
    "refs": [
     "Mazoltüv! Man xursandam, ki shumoya didam."
    ],
-   "bux": "Mazoltüv! man didan tu",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.382
+   "chrf": 0
   },
   {
    "en": "July",
@@ -445,10 +437,10 @@
    "refs": [
     "Kayho"
    ],
-   "bux": "daroz pesh",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.086
+   "chrf": 0
   },
   {
    "en": "last name",
@@ -547,10 +539,10 @@
    "refs": [
     "Imshav shavi mo sahar nadorad; Yor az dili man xabar nadorad."
    ],
-   "bux": "Shavi imshav (az) tüghrigi dorad",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.223
+   "chrf": 0
   },
   {
    "en": "lettuce",
@@ -684,10 +676,10 @@
    "refs": [
     "Ü shishta kitov dorad"
    ],
-   "bux": "Ü dorad",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.188
+   "chrf": 0
   },
   {
    "en": "question",
@@ -764,20 +756,20 @@
    "refs": [
     "Ina baroyi ki ovarded?"
    ],
-   "bux": "baroyi ki tu ovardan",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.523
+   "chrf": 0
   },
   {
    "en": "Hey, Mr. Hisqiyo, hello! How are you? I didn't see you for two years.",
    "refs": [
     "Ha, mulo Hiskiyo, sholüm! Chitüyet? Ma shumoya du sol nadidam."
    ],
-   "bux": "Chixeli hisqiyo baroyi duta sol tuyi man tu",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.17
+   "chrf": 0
   },
   {
    "en": "religious school",
@@ -915,10 +907,10 @@
    "refs": [
     "Man ba kor ba'di du so'at merum."
    ],
-   "bux": "Man ba kor merum",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.387
+   "chrf": 0
   },
   {
    "en": "thing",
@@ -976,10 +968,10 @@
    "refs": [
     "Maza didan"
    ],
-   "bux": "maza",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.245
+   "chrf": 0
   },
   {
    "en": "He/she is going",
@@ -1060,10 +1052,10 @@
    "refs": [
     "Shabot Sholüm, apa Mazol! Bet, bet boli chashm! Naghzet? Chitüyet?"
    ],
-   "bux": "Chixeli naghzi mazol tu?",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.156
+   "chrf": 0
   },
   {
    "en": "knitted downy shawl",
@@ -1393,10 +1385,10 @@
    "refs": [
     "Muchi kardan"
    ],
-   "bux": "muchi",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.305
+   "chrf": 0
   },
   {
    "en": "call (somebody)",
@@ -1423,10 +1415,10 @@
    "refs": [
     "Ü odami xushchaqchaq, jigardüstu mehmondüst bud"
    ],
-   "bux": "Ü ba mehmondüsti hesho-tavori va",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.272
+   "chrf": 0
   },
   {
    "en": "You hadn't said",
@@ -1435,10 +1427,10 @@
     "Shumo nagufta buded",
     "Shumo nagufta budeton"
    ],
-   "bux": "Tu doshti",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.1
+   "chrf": 0
   },
   {
    "en": "You hadn't said (polite)",
@@ -1447,10 +1439,10 @@
     "Shumo nagufta buded",
     "Shumo nagufta budeton"
    ],
-   "bux": "Shumo doshted",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.225
+   "chrf": 0
   },
   {
    "en": "You (pl.) hadn't said",
@@ -1459,10 +1451,10 @@
     "Shumo nagufta buded",
     "Shumo nagufta budeton"
    ],
-   "bux": "Shumo doshteton",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.268
+   "chrf": 0
   },
   {
    "en": "I had said",
@@ -1489,10 +1481,10 @@
    "refs": [
     "Az mihnati halol nest 'or!"
    ],
-   "bux": "yoshor kor nest",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.134
+   "chrf": 0
   },
   {
    "en": "revolution",
@@ -1772,10 +1764,10 @@
    "refs": [
     "Tu xudat ba man gufta budi"
    ],
-   "bux": "Tu ba man gufta budi",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.679
+   "chrf": 0
   },
   {
    "en": "eating; meal",
@@ -1893,10 +1885,10 @@
    "refs": [
     "Haminqadar"
    ],
-   "bux": "haminxel ziyod",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.291
+   "chrf": 0
   },
   {
    "en": "approximately",
@@ -2004,10 +1996,10 @@
    "refs": [
     "Yofta ted"
    ],
-   "bux": "Yov!",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.075
+   "chrf": 0
   },
   {
    "en": "The man who left the house was my father.",
@@ -2284,10 +2276,10 @@
    "refs": [
     "Rasvo"
    ],
-   "bux": "kas chirkin kas",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.106
+   "chrf": 0
   },
   {
    "en": "to hurt",
@@ -2354,10 +2346,10 @@
    "refs": [
     "Boyad meraft"
    ],
-   "bux": "Ü ba doshtak",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.11
+   "chrf": 0
   },
   {
    "en": "publishing house",
@@ -2424,20 +2416,20 @@
    "refs": [
     "Güyoki"
    ],
-   "bux": "borin agar",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.076
+   "chrf": 0
   },
   {
    "en": "until now",
    "refs": [
     "To hole"
    ],
-   "bux": "to aknun",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.086
+   "chrf": 0
   },
   {
    "en": "abuse; insult",
@@ -2577,10 +2569,10 @@
    "refs": [
     "Ner nashomo"
    ],
-   "bux": "sham' yo lampa",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.098
+   "chrf": 0
   },
   {
    "en": "orphan",
@@ -2618,30 +2610,30 @@
    "refs": [
     "Ü xovi mito did"
    ],
-   "bux": "Ü ba manuho yoftak",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.066
+   "chrf": 0
   },
   {
    "en": "May peace fall upon the land of Israel, may there be no wars between the kings, may we not see any sorrows, may we get to Israel and live there!",
    "refs": [
     "Elohim Eres Isroel tinj boshad, miyoni podshoho sholümi aftad, hej ghama nabinem, ba Isroel arzoni shavem!"
    ],
-   "bux": "sivan sholümi tiramoh isroel sivan unsun ne sivan mo nest didan yagon sivan mo isroel va zindagi kardan unsun",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.246
+   "chrf": 0
   },
   {
    "en": "He/she has megalomania.",
    "refs": [
     "Xudasha ba oini kalon dide; xudasha kuchuki kalon girifte"
    ],
-   "bux": "Ü dorad",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.021
+   "chrf": 0
   },
   {
    "en": "In another lifetime.",
@@ -2658,30 +2650,30 @@
    "refs": [
     "Chishmash siyo rafte"
    ],
-   "bux": "Ü dorad",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.067
+   "chrf": 0
   },
   {
    "en": "He/she is saying an untruth.",
    "refs": [
     "Gav a danash aftosode"
    ],
-   "bux": "Ü gufsode",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.133
+   "chrf": 0
   },
   {
    "en": "He/she is deaf in one ear and stupid as a donkey in the other.",
    "refs": [
     "Üya yak güshash kar, yak güshash xar"
    ],
-   "bux": "Ü ba ba digar xar",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.085
+   "chrf": 0
   },
   {
    "en": "He/she is a burden.",
@@ -2708,10 +2700,10 @@
    "refs": [
     "Ü noshud"
    ],
-   "bux": "Ü baroyi naghz",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.083
+   "chrf": 0
   },
   {
    "en": "He/she is unconscionable; an unconcerned person.",
@@ -2728,10 +2720,10 @@
    "refs": [
     "Ü - a rü - shona, a tag - fona"
    ],
-   "bux": "Ü boli xanda kord dorad",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.067
+   "chrf": 0
   },
   {
    "en": "He/she is gluttonous.",
@@ -2748,10 +2740,10 @@
    "refs": [
     "'Ayolmand shaved!"
    ],
-   "bux": "Tu dori",
-   "status": "partial",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.025
+   "chrf": 0
   },
   {
    "en": "May G-d return your good deeds to you!",
@@ -2808,10 +2800,10 @@
    "refs": [
     "Buromadan"
    ],
-   "bux": "omadan mondan",
-   "status": "compositional",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.461
+   "chrf": 0
   },
   {
    "en": "to collect; to pick up",

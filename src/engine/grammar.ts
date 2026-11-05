@@ -414,6 +414,7 @@ export class Grammar {
     const chunks = this.chunk([...preVerbToks, ...restToks]);
     const timeParts: string[] = [], placeParts: string[] = [], objParts: string[] = [], advParts: string[] = [], postParts: string[] = [];
     let predicate: string | undefined;
+    let strandedPrep: string | undefined;
     const isCopula = !verb && !!beAux && !haveMain;
 
     for (const c of chunks) {
@@ -427,6 +428,9 @@ export class Grammar {
         continue;
       }
       if (c.kind === 'pp') {
+        // "Where are you from?": the preposition is stranded at the end in English and
+        // belongs to the question word in Buxori (az kujo, "from where").
+        if (!c.tokens.length && wh) { strandedPrep = c.prep; continue; }
         const np = this.nounPhrase(c.tokens, input, register);
         if (!np) { unknown.push(c.prep!, ...c.tokens); continue; }
         steps.push(...np.steps); evidence.push(...np.evidence); unknown.push(...np.unknown); names.push(...np.names); conf *= np.confidence || 0.5;
@@ -466,6 +470,14 @@ export class Grammar {
       const r = this.word(key) ?? this.word(wh);
       if (r) { whText = inline(r.lemma.text).toLowerCase(); steps.push({ text: `“${wh}” → ${r.lemma.text}.`, rows: [r.sources[0]?.row ?? 0] }); evidence.push('stated'); }
       else unknown.push(wh);
+      if (r && strandedPrep) {
+        const pr = this.preposition(strandedPrep, verb, whText ?? '');
+        if (pr) {
+          whText = pr.after ? `${whText} ${pr.word}` : `${pr.word} ${whText}`;
+          steps.push(pr.step, { text: `The stranded English “${strandedPrep}” attaches to the question word: ${whText}.` });
+          evidence.push(pr.evidence);
+        } else unknown.push(strandedPrep);
+      }
       if (whNp.length) {
         const np = this.nounPhrase(whNp, input, register);
         if (np?.text) {
