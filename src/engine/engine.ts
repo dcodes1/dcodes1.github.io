@@ -14,7 +14,7 @@
  */
 import { glossKey, similarity } from '../lib/normalizer.ts';
 import type { BuxoriIndex, Evidence, Example, RootEntry } from '../lib/types.ts';
-import { ARTICLES, BE_FORMS, ENGLISH_SYNONYMS, analyze, cleanEnglish } from './english.ts';
+import { ARTICLES, BE_FORMS, ENGLISH_SYNONYMS, analyze, cleanEnglish, expandContractions, normalizeInformal } from './english.ts';
 import { Grammar, type Draft, type Variant } from './grammar.ts';
 import { Lexicon, inline } from './lexicon.ts';
 import { Morphology, type Step } from './morphology.ts';
@@ -98,7 +98,10 @@ export class Engine {
   }
 
   translate(input: string): Translation {
-    const raw = (input ?? '').slice(0, 2000).trim();
+    const typed = (input ?? '').slice(0, 2000).trim();
+    // Everyday typing ("im so happy!!", "thx", "how r u") → standard English first.
+    const informal = normalizeInformal(typed);
+    const raw = informal.text;
     const key = glossKey(raw);
     if (!key) return this.none(raw, 'Type some English to translate.');
     const cached = this.cache.get(raw);
@@ -118,6 +121,7 @@ export class Engine {
       }
     }
     if (res.status === 'partial' || res.status === 'compositional') res = this.demote(res);
+    if (informal.changes.length) res = { ...res, notes: [`Read as: “${raw}”.`, ...res.notes] };
     this.cache.set(raw, res);
     return res;
   }
@@ -174,7 +178,8 @@ export class Engine {
     const base = raw.replace(/[.!?]+$/, '');
     const imperative = /!\s*$/.test(raw) || /\((sing|polite|pol|pl)\.?\)/i.test(raw);
     // [form, which roots are acceptable]: "to X" may only resolve to a verb, a bare word prefers non-verbs
-    const forms: [string, 'any' | 'verb' | 'nonverb'][] = [[raw, 'any'], [base, 'any'],
+    const expanded = expandContractions(base);
+    const forms: [string, 'any' | 'verb' | 'nonverb'][] = [[raw, 'any'], [base, 'any'], ...(expanded !== base.toLowerCase() ? [[expanded, 'any'] as [string, 'any']] : []),
       [/^to\s/i.test(raw) ? raw.slice(3) : `to ${raw}`, /^to\s/i.test(raw) ? 'verb' : 'verb'],
       ...(ENGLISH_SYNONYMS[glossKey(base)] ?? []).map((x): [string, 'any'] => [x, 'any'])];
     for (const [f, want] of forms) {
@@ -207,7 +212,12 @@ export class Engine {
         const want = cleanEnglish(raw).address;
         const mismatch = (e: Example) => (want && cleanEnglish(e.en ?? '').address !== want ? 1 : 0);
         const [best, ...others] = [...ex].sort((a, b) => mismatch(a) - mismatch(b) || (a.source.review ? 1 : 0) - (b.source.review ? 1 : 0) || a.source.row - b.source.row);
-        return this.result('exact', best!.bux, {
+        // No label typed, and the source prints both a (sing.) and a (polite) row: offer both.
+        const sing = !want ? ex.find((e) => cleanEnglish(e.en ?? '').address === 'informal') : undefined;
+        const pol = !want ? ex.find((e) => cleanEnglish(e.en ?? '').address === 'formal') : undefined;
+        const variants = sing && pol ? [{ register: 'informal' as const, text: sing.bux }, { register: 'formal' as const, text: pol.bux }] : [];
+        return this.result('exact', variants[0]?.text ?? best!.bux, {
+          variants,
           rows: [best!.source.row], evidence: ['attested'], confidence: 1, review: !!best!.source.review,
           alternatives: [...(best!.spoken ? [{ text: best!.spoken, note: 'spoken' }] : []), ...others.filter((o) => o.bux !== best!.bux).map((o) => ({ text: o.bux, rows: [o.source.row] }))],
           steps: [{ text: `Printed in the source (p${best!.source.page}${best!.speaker ? `, spoken by ${best!.speaker}` : ''}).`, rows: [best!.source.row] }],

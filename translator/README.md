@@ -80,7 +80,7 @@ A prediction is correct if it equals any attested form for that English.
 | engine | accuracy | precision (correct / answered) | answered | chrF (answered) |
 |---|---|---|---|---|
 | legacy `engine.js` (removed) | 4.1% | 8.7% | 126 / 270 | 0.331 |
-| current | **12.6%** | **55.7%** | 61 / 270 | 0.678 |
+| current | **13.7%** | **59.7%** | 62 / 270 | 0.709 |
 
 Most of the test set is single words that appear nowhere else in the source
 ("dog", "teacher"). For those the correct behaviour is to abstain, so precision

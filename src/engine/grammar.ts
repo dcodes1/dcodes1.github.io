@@ -7,8 +7,8 @@
  */
 import type { Evidence, PersonNumber, Register, RootEntry, Tense } from '../lib/types.ts';
 import {
-  ARTICLES, BE_FORMS, DEMONSTRATIVES, OBJECT_PRONOUNS, PERSON_LABEL, POSSESSIVE_DETERMINERS,
-  SUBJECT_PRONOUNS, WH_WORDS, nounCandidates, verbCandidates, type EnglishInput,
+  ARTICLES, BE_FORMS, DEMONSTRATIVES, INTENSIFIERS, OBJECT_PRONOUNS, PERSON_LABEL, POSSESSIVE_DETERMINERS,
+  ENGLISH_SYNONYMS, SUBJECT_PRONOUNS, WH_WORDS, nounCandidates, verbCandidates, type EnglishInput,
 } from './english.ts';
 import { Lexicon, inline, inlineName } from './lexicon.ts';
 import { Morphology, type Step } from './morphology.ts';
@@ -55,20 +55,33 @@ export class Grammar {
     }
     return null;
   }
+  /** this / that / these as pointing words: skip entries the source files under conjunctions ("that" = ki). */
+  private demonstrative(word: string): RootEntry | undefined {
+    const list = this.lex.roots(word);
+    return list.find((e) => !/conjunction/i.test(e.sources[0]?.section ?? '')) ?? list[0];
+  }
+
   /** "said", "gone", "worked": a participle of a verb the index knows. */
   private isParticiple(word: string): boolean {
     return verbCandidates(word).some((c) => c.form === 'participle' && !!(this.lex.best(`to ${c.lemma}`, 'verb') ?? this.lex.best(c.lemma, 'verb')));
   }
   private nounRoot(word: string): { root: RootEntry; plural: boolean } | null {
     if (NOT_NOUNS.has(word)) return null;
+    const direct = this.nounRootExact(word);
+    if (direct) return direct;
+    // English paraphrases ("home" → house) when the source has no entry for the word itself
+    for (const alt of ENGLISH_SYNONYMS[word] ?? []) { const r = this.nounRootExact(alt); if (r) return r; }
+    return null;
+  }
+  private nounRootExact(word: string): { root: RootEntry; plural: boolean } | null {
     for (const c of nounCandidates(word)) {
-      const r = this.lex.best(c.lemma, ['noun', 'proper_noun', 'pronoun', 'numeral', 'adjective']);
+      const r = this.lex.best(c.lemma, ['noun', 'proper_noun', 'pronoun', 'numeral', 'adjective'], { examples: true });
       if (r && r.pos !== 'verb') return { root: r, plural: c.plural };
     }
     return null;
   }
   private word(english: string, pos?: Parameters<Lexicon['best']>[1]): RootEntry | undefined {
-    return this.lex.best(english, pos);
+    return this.lex.best(english, pos, { examples: true });
   }
 
   // ── noun phrases ───────────────────────────────────────────────────────
@@ -91,6 +104,15 @@ export class Grammar {
       const p = this.lex.pronoun(pn);
       if (!p) return null;
       return { text: inline(p.lemma.text), steps: [{ text: `“${t}” → ${p.lemma.text} (${PERSON_LABEL[pn]}).`, rows: [p.sources[0]?.row ?? 0] }], evidence: ['stated'], confidence: 1, unknown, names, definite: true, plural: pn.endsWith('pl'), pn, isPronoun: true };
+    }
+
+    // A lone demonstrative is a pronoun: "that is good" → vay naghz.
+    if (tokens.length === 1 && DEMONSTRATIVES.has(tokens[0]!)) {
+      const t = tokens[0]!;
+      const r = this.demonstrative(t);
+      if (!r) return null;
+      const w = inline(r.lemma.text).toLowerCase();
+      return { text: w, steps: [{ text: `“${t}” → ${r.lemma.text}.`, rows: [r.sources[0]?.row ?? 0] }], evidence: [r.lemma.evidence], confidence: 0.95, unknown, names, definite: true, plural: t === 'these' || t === 'those', isPronoun: true };
     }
 
     // "X of Y" → X-ezafe Y ; "Y 's X" → X-ezafe Y
@@ -191,25 +213,41 @@ export class Grammar {
       head = pl.text; steps.push(...pl.steps); evidence.push(pl.evidence);
     }
 
-    // Adjectives → after the noun, linked by ezafe.
+    // Adjectives → after the noun, linked by ezafe. An intensifier ("very", "so",
+    // "really") stays directly before the word it strengthens: bisyor qiziq.
+    // For "very" the source has bisyor and judo; bisyor is the one its sentences use (8 vs 2).
+    const veryRoot = [...this.lex.roots('very')].sort((a, b) => this.lex.freq(b.lemma.text) - this.lex.freq(a.lemma.text))[0];
+    const very = veryRoot ? inline(veryRoot.lemma.text).toLowerCase() : null;
     const adjs: string[] = [];
+    let intensify = false;
     for (const a of adjEn) {
-      if (a === 'very') { const r = this.word('very'); if (r) { adjs.push(inline(r.lemma.text).toLowerCase()); continue; } }
+      if (INTENSIFIERS.has(a)) {
+        if (!very) { unknown.push(a); continue; }
+        intensify = true;
+        steps.push({ text: `“${a}” → ${veryRoot!.lemma.text} (“very”), placed before the word it strengthens.`, rows: [veryRoot!.sources[0]?.row ?? 0] });
+        evidence.push('stated');
+        continue;
+      }
       const r = this.word(a, ['adjective']) ?? this.word(a);
-      if (r && r.pos !== 'verb') { adjs.push(inline(r.lemma.text).toLowerCase()); steps.push({ text: `“${a}” → ${r.lemma.text}.`, rows: [r.sources[0]?.row ?? 0] }); evidence.push(r.lemma.evidence); }
-      else unknown.push(a);
+      if (r && r.pos !== 'verb') {
+        const w = inline(r.lemma.text).toLowerCase();
+        adjs.push(intensify ? `${very} ${w}` : w); intensify = false;
+        steps.push({ text: `“${a}” → ${r.lemma.text}.`, rows: [r.sources[0]?.row ?? 0] }); evidence.push(r.lemma.evidence);
+      } else unknown.push(a);
     }
+    // "very happy" with no noun after it: the intensifier goes before the head itself.
+    if (intensify && very) head = `${very} ${head}`;
     adjs.push(...ordinals);
     let np = head;
     if (adjs.length) {
-      const ez = this.morph.ezafe(head);
-      // "very" (bisyor) stays before its adjective; further adjectives are chained with ezafe.
-      const chain: string[] = [];
-      adjs.forEach((a, k) => {
-        const isLast = k === adjs.length - 1;
-        chain.push(isLast || a === inline(this.word('very')?.lemma.text ?? '#').toLowerCase() ? a : this.morph.ezafe(a).text);
+      const ez = this.morph.ezafe(head.split(' ').at(-1)!);
+      const headWords = head.split(' ');
+      const chain = adjs.map((a, k) => {
+        if (k === adjs.length - 1) return a;
+        const ws = a.split(' ');
+        return [...ws.slice(0, -1), this.morph.ezafe(ws.at(-1)!).text].join(' ');
       });
-      np = `${ez.text} ${chain.join(' ')}`;
+      np = [...headWords.slice(0, -1), ez.text, ...chain].join(' ');
       steps.push(...ez.steps, { text: `Adjective after the noun: ${np}.` });
       evidence.push(ez.evidence);
       if (adjs.length > 1) { conf *= 0.8; steps.push({ text: 'Several adjectives: each but the last takes ezafe (no printed example of this).' }); }
@@ -235,7 +273,7 @@ export class Grammar {
 
     if (demonstrative) {
       const isNear = demonstrative === 'this' || demonstrative === 'these';
-      const r = this.word(isNear ? 'this' : 'that', 'pronoun') ?? this.word(isNear ? 'this' : 'that');
+      const r = this.demonstrative(isNear ? 'this' : 'that');
       if (r) {
         let d = inline(r.lemma.text).toLowerCase();
         if (!isNear && d !== 'vay') d = 'vay';
@@ -327,8 +365,11 @@ export class Grammar {
           if (toks[i] === 'going' && toks[i + 1] === 'to') { future = true; beAux = undefined; i += 2; }
           continue;
         }
-        if ((t === 'have' || t === 'has' || t === 'had') && toks[i + 1] && this.isParticiple(toks[i + 1]!)) {
-          perfectAux = true; if (t === 'had') tense = 'past_perfect'; i++; continue;
+        // have/has/had (+ not) + participle: perfect tenses ("you hadn't said" → nagufta budi)
+        const neg = toks[i + 1] === 'not' || toks[i + 1] === 'never';
+        const nxt = toks[i + (neg ? 2 : 1)];
+        if ((t === 'have' || t === 'has' || t === 'had') && nxt && this.isParticiple(nxt)) {
+          perfectAux = true; if (t === 'had') tense = 'past_perfect'; if (neg) negative = true; i += neg ? 2 : 1; continue;
         }
         break;
       }
@@ -406,10 +447,22 @@ export class Grammar {
       progressive = tense === 'present_continuous' || tense === 'past_continuous';
     }
     if (imperative) tense = 'imperative';
-    if (modal) { steps.push({ text: `“${modal}” has no single-word equivalent in the source; the main verb is given without it.` }); conf *= 0.6; }
+    // Modal constructions the source documents. Anything else is reported, never dropped
+    // (dropping "can" from "I can't go" would say "I don't go").
+    let construction: 'can' | 'must' | 'want' | undefined;
+    let restFrom = vIdx >= 0 ? vIdx + 1 : i;
+    // "must have gone", "could have said": modal + perfect is a conjecture the engine does not build
+    if (modal && perfectAux) unknown.push(`${modal} have`);
+    else if (modal === 'can' || modal === 'could') construction = 'can';
+    else if (modal === 'must' || modal === 'should') construction = 'must';
+    else if (modal) unknown.push(modal);
+    if (verb && vLemma && ['want', 'have', 'need'].includes(vLemma) && toks[vIdx + 1] === 'to' && toks[vIdx + 2]) {
+      const second = this.verbRoot(toks[vIdx + 2]!);
+      if (second) { construction = vLemma === 'want' ? 'want' : 'must'; verb = second.root; vForm = 'base'; restFrom = vIdx + 3; }
+    }
 
     // Remaining tokens → object / prepositional phrases / adverbs
-    const restToks = toks.slice(vIdx >= 0 ? vIdx + 1 : i);
+    const restToks = toks.slice(restFrom);
     const preVerbToks = vIdx >= 0 ? toks.slice(i, vIdx).filter((t) => t !== 'not' && t !== 'never') : [];
     const chunks = this.chunk([...preVerbToks, ...restToks]);
     const timeParts: string[] = [], placeParts: string[] = [], objParts: string[] = [], advParts: string[] = [], postParts: string[] = [];
@@ -492,7 +545,11 @@ export class Grammar {
 
     // Verb or copula
     let verbText = '';
-    if (verb) {
+    if (verb && construction) {
+      const b = this.modal(construction, verb, subjPn, negative);
+      if (!b) { unknown.push(construction); conf *= 0.4; }
+      else { verbText = b.text; steps.push(...b.steps); evidence.push(b.evidence); conf *= b.confidence; }
+    } else if (verb) {
       const b = this.morph.conjugate(verb, tense, subjPn, { negative, register: 'regular' });
       if (!b) { unknown.push(toks[vIdx]!); conf *= 0.4; }
       else {
@@ -531,7 +588,10 @@ export class Grammar {
     }
 
     // Assemble: [subject] [time] [place/goal] [object] [adverbs] [postpositions] [wh] [predicate|verb]
-    const parts = [subjText, ...timeParts, ...placeParts, ...objParts, ...postParts, ...advParts, whText ?? '', predicate ?? '', verbText].filter(Boolean);
+    // "What is your name?" → Nomat chi?  "Where is my book?" → Kitovam kujo?  (question word last with "to be")
+    const whLast = isCopula && !!whText && !verbText;
+    const parts = [subjText, ...timeParts, ...placeParts, ...objParts, ...postParts, ...advParts,
+      whLast ? '' : whText ?? '', predicate ?? '', whLast ? whText ?? '' : '', verbText].filter(Boolean);
     if (!parts.length) return null;
     let text = parts.join(' ').replace(/\s+/g, ' ').trim();
     text = text.charAt(0).toUpperCase() + text.slice(1);
@@ -541,6 +601,46 @@ export class Grammar {
     if (!verb && !isCopula && !haveMain) conf *= 0.7;
     void progressive;
     return { text, steps, evidence, confidence: Math.round(conf * 100) / 100, unknown: [...new Set(unknown)], names };
+  }
+
+  /** Verb word(s) of a root with the auxiliary or the root itself split out. */
+  private parts(root: RootEntry): { pre: string; core: RootEntry } {
+    const c = root.verb?.compound;
+    const aux = c ? this.lex.index.roots.entries[c.auxiliary] : undefined;
+    return c && aux ? { pre: `${c.preverb.toLowerCase()} `, core: aux } : { pre: '', core: root };
+  }
+
+  /**
+   * can / must / want + verb, as the source builds them:
+   *   can  → past participle + tavonistan conjugated   (karda metavoned, row 141)
+   *   must → boyad + present stem + ending, no me-     (modal_boyad_future: Boyad ravam)
+   *   want → infinitive + -i + hast + ending           (future_participle_want: guftani hastam)
+   */
+  private modal(kind: 'can' | 'must' | 'want', root: RootEntry, pn: PersonNumber, negative: boolean): { text: string; steps: Step[]; evidence: Evidence; confidence: number } | null {
+    const { pre, core } = this.parts(root);
+    const v = core.verb;
+    if (!v) return null;
+    const rule = (id: string) => (this.lex.index.syntaxRules.find((r) => r.id === id)?.sources ?? []).map((x) => x.row).slice(0, 3);
+    if (kind === 'can') {
+      const can = this.lex.best('can', 'verb');
+      const aux = can ? this.morph.conjugate(can, 'present', pn, { negative }) : null;
+      if (!aux) return null;
+      const text = `${pre}${v.pastStem.text}a ${aux.text}`;
+      return { text, evidence: 'derived', confidence: 0.6, steps: [{ text: `“can” + verb: past participle ${pre}${v.pastStem.text}a + ${aux.text} (as in “karda metavoned”, “can you make change”).`, rows: [141] }, ...aux.steps] };
+    }
+    if (kind === 'must') {
+      if (negative) return null;   // the source has no negative of boyad
+      const boyad = this.lex.best('must');
+      const e = v.presentStem ? this.morph.ending('present.tense.endings', pn, { after: v.presentStem.text }) : null;
+      if (!boyad || !v.presentStem || !e) return null;
+      const text = `${inline(boyad.lemma.text).toLowerCase()} ${pre}${v.presentStem.text}${e.form}`;
+      return { text, evidence: 'stated', confidence: 0.8, steps: [{ text: `“must / have to” + verb: boyad + present stem ${v.presentStem.text} + -${e.form}, no me- → ${text}.`, rows: rule('modal_boyad_future') }] };
+    }
+    const inf = `${pre}${core.lemma.key}`;
+    const e = this.morph.ending('present.tense.endings', pn, { after: 'hast' });
+    const cop = negative ? 'nest' : 'hast';
+    const text = `${inf}i ${cop}${pn === '3sg' ? '' : e?.form ?? ''}`;
+    return { text, evidence: 'stated', confidence: 0.8, steps: [{ text: `“want to” + verb: infinitive ${inf} + -i + ${cop} + ending → ${text} (as in “Man guftani hastam”, I want to say).`, rows: rule('future_participle_want') }] };
   }
 
   private preposition(prep: string, verb: RootEntry | undefined, np: string): { word: string; after: boolean; step: Step; evidence: Evidence } | null {

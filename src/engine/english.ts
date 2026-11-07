@@ -102,6 +102,13 @@ const CONTRACTIONS: [RegExp, string][] = [
   [/\b(\w+)'ll\b/g, '$1 will'], [/\b(\w+)'d\b/g, '$1 would'], [/\b(he|she|it|that|there|what|where|who|how)'s\b/g, '$1 is'],
 ];
 
+/** "what's your name" → "what is your name" (lower-cased). */
+export function expandContractions(text: string): string {
+  let t = text.toLowerCase().replace(/[’‘]/g, "'");
+  for (const [re, rep] of CONTRACTIONS) t = t.replace(re, rep);
+  return t;
+}
+
 export interface EnglishInput {
   raw: string;
   tokens: string[];
@@ -159,10 +166,40 @@ export function analyze(text: string): EnglishInput {
   return { raw, tokens, question, proper, ...(cleaned.address ? { address: cleaned.address } : {}) };
 }
 
+/**
+ * Everyday typing → standard English, applied before anything else:
+ * apostrophe-less contractions ("im", "dont"), chat shorthand ("u", "thx"),
+ * emoji and repeated punctuation. Ambiguous words ("its", "were", "ill", "well",
+ * "lets") are left alone.
+ */
+const INFORMAL: Record<string, string> = {
+  im: "I'm", ive: "I've", dont: "don't", doesnt: "doesn't", didnt: "didn't", cant: "can't", wont: "won't",
+  isnt: "isn't", arent: "aren't", wasnt: "wasn't", werent: "weren't", havent: "haven't", hasnt: "hasn't", hadnt: "hadn't",
+  couldnt: "couldn't", shouldnt: "shouldn't", wouldnt: "wouldn't", youre: "you're", youve: "you've", theyre: "they're",
+  theyve: "they've", weve: "we've", thats: "that's", whats: "what's", wheres: "where's", whos: "who's", hows: "how's",
+  u: 'you', ur: 'your', r: 'are', ya: 'you', pls: 'please', plz: 'please', thx: 'thanks', thnx: 'thanks', thanx: 'thanks',
+  ty: 'thank you', luv: 'love', gonna: 'going to', wanna: 'want to', cuz: 'because', coz: 'because', bc: 'because',
+};
+export function normalizeInformal(text: string): { text: string; changes: string[] } {
+  const changes: string[] = [];
+  let t = text.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, ' ')   // emoji
+    .replace(/([!?.])\1+/g, '$1').replace(/\s+/g, ' ').trim();
+  t = t.replace(/\b[A-Za-z]+\b/g, (w) => {
+    const rep = INFORMAL[w.toLowerCase()];
+    if (!rep) return w;
+    changes.push(`${w} → ${rep}`);
+    return /^[A-Z]/.test(w) && rep !== "I'm" && rep !== "I've" ? rep.charAt(0).toUpperCase() + rep.slice(1) : rep;
+  });
+  return { text: t, changes };
+}
+
+/** Words that strengthen the adjective after them; all map to the source's "very". */
+export const INTENSIFIERS = new Set(['very', 'so', 'really', 'extremely', 'super', 'quite', 'truly']);
+
 /** English paraphrases tried when the exact wording is not in the source. */
 export const ENGLISH_SYNONYMS: Record<string, string[]> = {
   'thank you': ['thanks'], 'thank you very much': ['thanks'], hi: ['hello'], bye: ['goodbye'], 'good bye': ['goodbye'],
-  mom: ['mother'], mum: ['mother'], dad: ['father'], kid: ['child'], kids: ['children'],
+  mom: ['mother'], mum: ['mother'], dad: ['father'], kid: ['child'], kids: ['children'], home: ['house'], glad: ['happy'],
 };
 
 export const PERSON_LABEL: Record<PersonNumber, string> = {

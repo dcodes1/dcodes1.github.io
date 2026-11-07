@@ -2,7 +2,7 @@
  * English → Buxori word choice over the compiled index. Ranking is explicit and
  * deterministic; every returned form carries the TSV rows it came from.
  */
-import { glossKey } from '../lib/normalizer.ts';
+import { canonicalKey, glossKey, senses } from '../lib/normalizer.ts';
 import type {
   BuxoriIndex, Example, GlossKey, InflectedEntry, PartOfSpeech, PersonNumber, RootEntry, RootId, SourceRef,
 } from '../lib/types.ts';
@@ -24,16 +24,31 @@ export class Lexicon {
   readonly index: BuxoriIndex;
   private readonly examplesByEn = new Map<GlossKey, Example[]>();
 
+  /** How often each word appears in the source's example sentences (canonical key → count). */
+  private readonly corpusFreq = new Map<string, number>();
+  freq(lemma: string): number {
+    const k = canonicalKey(lemma.replace(/[?!.]+$/, ''));
+    if (k.includes(' ')) return 0;
+    return this.corpusFreq.get(k) ?? 0;
+  }
+
   constructor(index: BuxoriIndex) {
     this.index = index;
     for (const e of Object.values(index.examples)) {
+      if (e.language !== 'buxori') continue;
+      for (const w of canonicalKey(e.bux).split(/[^a-zü']+/)) if (w) this.corpusFreq.set(w, (this.corpusFreq.get(w) ?? 0) + 1);
+    }
+    for (const e of Object.values(index.examples)) {
       if (!e.en || e.language !== 'buxori') continue;
+      // "He/she is sad" is indexed as "he is sad" and "she is sad" too (same as dictionary senses).
       for (const part of e.en.split(/\s*;\s*/)) {
-        const k = glossKey(part);
-        if (!k) continue;
-        const list = this.examplesByEn.get(k) ?? [];
-        list.push(e);
-        this.examplesByEn.set(k, list);
+        const keys = new Set([glossKey(part), ...senses(part).map((x) => x.key)]);
+        for (const k of keys) {
+          if (!k) continue;
+          const list = this.examplesByEn.get(k) ?? [];
+          if (!list.includes(e)) list.push(e);
+          this.examplesByEn.set(k, list);
+        }
       }
     }
   }
@@ -46,14 +61,17 @@ export class Lexicon {
    * Roots glossed with this English key, best first:
    * requested POS → not REVIEW-only → fewer senses (more specific) → shorter → earlier row.
    */
-  roots(english: string, pos?: PartOfSpeech | PartOfSpeech[]): RootEntry[] {
+  roots(english: string, pos?: PartOfSpeech | PartOfSpeech[], opts: { examples?: boolean } = {}): RootEntry[] {
     const k = glossKey(english);
     const ids = this.index.roots.byGloss[k] ?? [];
     const want = pos ? (Array.isArray(pos) ? pos : [pos]) : null;
     const list = ids.map((id) => this.root(id)).filter((e): e is RootEntry => !!e);
+    if (!list.length && opts.examples) list.push(...this.exampleWords(k));
     const score = (e: RootEntry) => [
       want && !want.includes(e.pos) ? 1 : 0,
       isReview(e.sources) ? 1 : 0,
+      // a restricted sense ("red (about hair)", "hello (on the phone)") ranks below a plain one
+      e.glosses.some((g) => g.key === k && g.qualifiers?.length) ? 1 : 0,
       e.glosses.length,
       e.lemma.text.split(' ').length,
       e.sources[0]?.row ?? 0,
@@ -65,9 +83,29 @@ export class Lexicon {
     });
   }
 
-  best(english: string, pos?: PartOfSpeech | PartOfSpeech[]): RootEntry | undefined {
+  /**
+   * Words the dictionary lacks but an example row gives on its own ("sorrowful; sad" →
+   * ghamgin, p161): one English word or two, one Buxori word. Treated as attested entries.
+   */
+  private exampleWords(k: GlossKey): RootEntry[] {
+    if (!k || k.split(' ').length > 2) return [];
+    return [...this.examples(k)]
+      .filter((e) => /^[A-Za-zÜü']+[!?.]?$/.test(e.bux.trim()))
+      .sort((a, b) => a.source.row - b.source.row)   // the book introduces the basic word first
+      .slice(0, 1)
+      .map((e): RootEntry => {
+        const text = e.bux.trim().replace(/[!?.]$/, '');
+        return {
+          id: `x${e.source.row}` as RootEntry['id'], pos: 'noun',
+          lemma: { text, key: canonicalKey(text), kind: 'citation', evidence: 'attested', source: e.source },
+          glosses: [{ text: e.en ?? '', key: k }], forms: [], sources: [e.source],
+        };
+      });
+  }
+
+  best(english: string, pos?: PartOfSpeech | PartOfSpeech[], opts: { examples?: boolean } = {}): RootEntry | undefined {
     const want = pos ? (Array.isArray(pos) ? pos : [pos]) : null;
-    return this.roots(english, pos).find((e) => !want || want.includes(e.pos));
+    return this.roots(english, pos, opts).find((e) => !want || want.includes(e.pos));
   }
 
   /** Inflected headwords for an English phrase ("my mom"), Regular register first, non-REVIEW first. */

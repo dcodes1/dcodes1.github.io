@@ -2,19 +2,19 @@
  "report": {
   "engine": "src/engine (held-out index)",
   "items": 270,
-  "answered": 61,
-  "correct": 34,
-  "accuracy": 0.126,
-  "precision": 0.557,
-  "chrfAnswered": 0.678,
-  "chrfAll": 0.153,
+  "answered": 62,
+  "correct": 37,
+  "accuracy": 0.137,
+  "precision": 0.597,
+  "chrfAnswered": 0.709,
+  "chrfAll": 0.163,
   "byStatus": {
    "grammar": {
-    "n": 52,
-    "correct": 33
+    "n": 53,
+    "correct": 36
    },
    "none": {
-    "n": 209,
+    "n": 208,
     "correct": 0
    },
    "exact": {
@@ -1245,10 +1245,10 @@
    "refs": [
     "Ino kelina a Buxoro griftin. Ma qudoshona nameshinosam. Megun, ki oilayi kelin boy-badavlat."
    ],
-   "bux": "Kalo az Bukhara. Man qudoshona namedonam. Kasho vay boy-badavlati inhoyi judoya megun.",
+   "bux": "Kalo az Bukhara. Man qudoshona namedonam. Kasho vay bisyor boy-badavlati inhoya megun.",
    "status": "grammar",
    "ok": false,
-   "chrf": 0.39
+   "chrf": 0.395
   },
   {
    "en": "together",
@@ -1427,10 +1427,10 @@
     "Shumo nagufta buded",
     "Shumo nagufta budeton"
    ],
-   "bux": null,
-   "status": "none",
-   "ok": false,
-   "chrf": 0
+   "bux": "Tu nagufta budi",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
   },
   {
    "en": "You hadn't said (polite)",
@@ -1439,10 +1439,10 @@
     "Shumo nagufta buded",
     "Shumo nagufta budeton"
    ],
-   "bux": null,
-   "status": "none",
-   "ok": false,
-   "chrf": 0
+   "bux": "Shumo nagufta buded",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
   },
   {
    "en": "You (pl.) hadn't said",
@@ -1451,10 +1451,10 @@
     "Shumo nagufta buded",
     "Shumo nagufta budeton"
    ],
-   "bux": null,
-   "status": "none",
-   "ok": false,
-   "chrf": 0
+   "bux": "Shumo nagufta budeton",
+   "status": "grammar",
+   "ok": true,
+   "chrf": 1
   },
   {
    "en": "I had said",
@@ -2336,10 +2336,10 @@
    "refs": [
     "Boyad rafta boshad"
    ],
-   "bux": "Ü rafte",
-   "status": "grammar",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.129
+   "chrf": 0
   },
   {
    "en": "he/she had to go/should have gone",
@@ -2770,10 +2770,10 @@
    "refs": [
     "Xudo 'umr tiyad ba shumo!"
    ],
-   "bux": "Xudo ba tu zindagi daroz metiyad",
-   "status": "grammar",
+   "bux": null,
+   "status": "none",
    "ok": false,
-   "chrf": 0.262
+   "chrf": 0
   },
   {
    "en": "Happy New Year!",

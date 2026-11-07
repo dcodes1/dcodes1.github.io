@@ -100,6 +100,48 @@ describe('regressions: errors found in earlier versions', () => {
   });
 });
 
+describe('everyday English (typed casually)', () => {
+  const out = (en: string) => { const r = T(en); return r.variants.length ? r.variants.map((v) => v.text) : r.text; };
+  test.each([
+    ['Im so happy!', 'Man bisyor baxtnokam'],       // no apostrophe + intensifier (reported bug)
+    ["I'm so happy!", 'Man bisyor baxtnokam'],
+    ['I am really happy', 'Man bisyor baxtnokam'],
+    ['Im not hungry', 'Man gushna nestam'],
+    ['I dont know', 'Man namedonam'],
+    ['dont go', 'narov'],
+    ['thats good', 'Vay naghz'],
+    ['wheres my book', 'Kitovam kujo?'],
+    ['thx', 'Rahmat'],
+    ['thank u', 'Rahmat'],
+    ['He is sad', 'Ü ghamgin'],                     // "He/she is sad" row; "sad" only in an example row
+    ['She is very beautiful', 'Ü bisyor xushrü'],
+    ['a very big house', 'xoni bisyor kalon'],
+    ["It's very cold!!!", 'Bisyor xunuk'],
+    ["I'm at home", 'Man ba xona'],
+  ])('%s → %s', (en, bux) => expect(out(en)).toBe(bux));
+
+  test('"whats your name" uses the printed (sing.) and (polite) rows', () => {
+    expect(out('whats your name')).toEqual(['Nomat che?', 'Nomaton che?']);
+  });
+  test('intensifiers go before the word they strengthen (bisyor qiziq), never after it with ezafe', () => {
+    for (const en of ["I'm very happy", 'She is so beautiful']) expect(String(out(en))).toMatch(/bisyor [a-zü']+$/);
+  });
+});
+
+describe('modal verbs (built as the source builds them, or not at all)', () => {
+  test.each([
+    ['I can go', 'Man rafta metavonam'],            // participle + tavonistan (karda metavoned, row 141)
+    ['I cant go', 'Man rafta nametavonam'],         // must NOT become "I don't go"
+    ['I must go', 'Man boyad ravam'],               // boyad + present stem, no me- (Boyad ravam)
+    ['I want to eat', 'Man xürdani hastam'],        // infinitive + -i + hast (Man guftani hastam)
+    ["I don't want to eat", 'Man xürdani nestam'],
+    ["You hadn't said", 'Tu nagufta budi'],          // negated past perfect, not "have"
+  ])('%s → %s', (en, bux) => expect(T(en).text).toBe(bux));
+  test('a modal the source does not document is never silently dropped', () => {
+    for (const en of ['I may go', 'He might eat']) expect(T(en).status).toBe('none');
+  });
+});
+
 describe('morphology (built forms, cited rules)', () => {
   test.each([
     ['my book', 'kitovam'], ['our grandfather', 'Bovomo'],
