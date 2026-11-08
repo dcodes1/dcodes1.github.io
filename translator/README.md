@@ -19,14 +19,15 @@ src/data/buxori-index.json           roots, verb stems, printed conjugation tabl
         │  src/lib/normalizer.ts     any spelling (Latin variants, Cyrillic, Hebrew script) → TSV key
         │  src/lib/lookup.ts         Buxori → English (with match tier), verb analysis
         │  src/engine/               English → Buxori (below)
+        │  src/ai/similar.ts         optional in-browser model: similar source words for unknown English
         ▼
 src/app/ (React)  ──vite build──▶  translator/app/   committed; loaded by index.html on first visit
 ```
 
 GitHub Pages serves the repository as-is, so the built app is committed. The
 portfolio (`index.html`) only downloads it when `/translator` is opened. The
-entry script is 65 KB gzipped, plus 17 KB for the engine and 192 KB for the
-content-hashed index.
+entry script is 66 KB gzipped, plus 19 KB for the engine and 187 KB for the
+content-hashed index. The optional similar-words model (below) loads only on request.
 
 ## The engine (`src/engine/`)
 
@@ -91,7 +92,7 @@ is the trust number. `eval/thresholds.json` makes CI fail on any regression.
 ```bash
 npm ci
 npm run compile     # TSV → src/data/buxori-index.json (byte-identical for the same input)
-npm test            # vitest: data integrity, normalizer, lookup, engine (≈380 tests)
+npm test            # vitest: data integrity, normalizer, lookup, engine, suggestions (≈470 tests)
 npm run typecheck
 npm run eval        # held-out accuracy; `npm run eval -- --check` enforces thresholds
 npm run build       # React app → translator/app/
@@ -102,6 +103,58 @@ npm run check       # all of the above, as CI runs it
 After editing the TSV, run `npm run compile && npm run build` and commit the results.
 CI (`.github/workflows/check.yml`) fails if the committed index or app differs
 from a fresh build.
+
+## Similar words (local language model)
+
+When a sentence can't be translated because an English word isn't in the source,
+the translator can suggest source words with a similar meaning. For example, for
+"physician" it suggests `doctor → düxtur`, `medicine → Doru`, …. The user picks one,
+the sentence is edited ("I am a doctor"), and that sentence is translated normally.
+The pick keeps the word's form: "purchased" + buy → "bought".
+
+- **Model.** [all-MiniLM-L6-v2](https://huggingface.co/Xenova/all-MiniLM-L6-v2)
+  (Apache-2.0, int8 ONNX), run in the browser on WebAssembly with transformers.js.
+  It works on phones and needs no WebGPU.
+- **Opt-in, on the device.** Nothing loads until the user clicks *Suggest similar
+  words*. The first use downloads about 30 MB, which the browser then caches:
+  - transformers.js 4.3.1 and its WebAssembly runtime, from jsDelivr;
+  - the model, pinned to one commit, from Hugging Face;
+  - 0.8 MB of precomputed gloss vectors, from this site.
+- **Privacy.** Nothing the user types is sent anywhere.
+- **Grounded.** It can only point at English glosses that are in the index, and
+  each suggestion shows the Buxori entry and that entry's other glosses.
+  Suggestions are labelled *ai suggestion*, and a picked word is labelled *your pick*.
+
+**Why it suggests instead of translating.** `node eval/suggestions.ts` measures it
+(`eval/suggestions-report.json`):
+
+| measurement | result |
+|---|---|
+| Held-out items the engine can't answer whose correct answer appears anywhere else in the book | 6 of 208 |
+| Replacing each unknown word with the model's nearest gloss, automatically | 0 correct of 151 answered |
+| Everyday words with a synonym in the book (52 hand-picked English pairs): synonym is the 1st suggestion | 33 / 52 |
+| … the synonym is among the first 3 / 5 suggestions | 47 / 52, 50 / 52 |
+
+The model's nearest word is often *related* but different: Saturday → Friday,
+grandfather → grandmother, three → two, question → answer. Used automatically, it
+would turn "no translation" into a confident wrong one. Shown as choices, the right
+word is almost always on the list.
+
+Other models were tried on the same held-out set and the same synonym pairs:
+paraphrase-MiniLM-L3-v2, bge-small-en-v1.5, gte-small, potion-base-8M
+(Model2Vec), and WordNet synonyms. All scored 0 correct when used automatically.
+MiniLM-L6 gave the best suggestions (synonym in the top 5 for 49 of 52 pairs,
+against 44–47 for the others) and is the smallest download.
+
+The engine's results and the held-out accuracy are unchanged: suggestions never
+replace or add a translation.
+
+After the index changes, regenerate the vectors (a unit test fails until you do):
+
+```bash
+npm i --no-save @huggingface/transformers@4.3.1
+node scripts/embed-glosses.ts
+```
 
 ## Optional AI fallback
 

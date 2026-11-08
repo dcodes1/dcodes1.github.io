@@ -3,6 +3,8 @@ import indexUrl from '../data/buxori-index.json?url';
 import type { Engine, Status, Translation } from '../engine/engine.ts';
 import type { BuxoriResult, Lookup, Tier, VerbAnalysis } from '../lib/lookup.ts';
 import type { BuxoriIndex, Example, RootEntry } from '../lib/types.ts';
+import type { Suggestion } from '../ai/similar.ts';
+import { SimilarWords } from './Similar.tsx';
 
 /**
  * Optional AI fallback (see translator/worker/), configured in index.html with
@@ -20,7 +22,9 @@ type Loaded = {
   index: BuxoriIndex;
   toCyrillic: (s: string) => string;
   canonicalKey: (s: string) => string;
+  inflectLike: (original: string, replacement: string, pos: string) => string;
 };
+type Picked = { from: string; to: string };
 type Mode = 'en-bux' | 'bux-en';
 type Script = 'latin' | 'cyrillic';
 
@@ -45,12 +49,12 @@ const EVIDENCE_LABEL: Record<string, string> = {
 };
 
 async function load(): Promise<Loaded> {
-  const [{ Engine }, { createLookup }, norm, res] = await Promise.all([
-    import('../engine/engine.ts'), import('../lib/lookup.ts'), import('../lib/normalizer.ts'), fetch(indexUrl),
+  const [{ Engine }, { createLookup }, norm, { inflectLike }, res] = await Promise.all([
+    import('../engine/engine.ts'), import('../lib/lookup.ts'), import('../lib/normalizer.ts'), import('../engine/english.ts'), fetch(indexUrl),
   ]);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const index = (await res.json()) as BuxoriIndex;
-  return { engine: new Engine(index), lookup: createLookup(index), index, toCyrillic: norm.toCyrillic, canonicalKey: (s) => norm.canonicalKey(norm.foldTsvStress(s)) };
+  return { engine: new Engine(index), lookup: createLookup(index), index, toCyrillic: norm.toCyrillic, canonicalKey: (s) => norm.canonicalKey(norm.foldTsvStress(s)), inflectLike };
 }
 
 export function App() {
@@ -59,7 +63,7 @@ export function App() {
   const [mode, setMode] = useState<Mode>('en-bux');
   const [script, setScript] = useState<Script>('latin');
   const [input, setInput] = useState('');
-  const [result, setResult] = useState<{ kind: 'en'; r: Translation; ai?: { text: string; explanation?: string } } | { kind: 'bux'; r: BuxoriResult; verbs: (VerbAnalysis & { everyday?: string })[]; examples: Example[] } | null>(null);
+  const [result, setResult] = useState<{ kind: 'en'; r: Translation; unknown: string[]; picked?: Picked; ai?: { text: string; explanation?: string } } | { kind: 'bux'; r: BuxoriResult; verbs: (VerbAnalysis & { everyday?: string })[]; examples: Example[] } | null>(null);
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -75,9 +79,9 @@ export function App() {
 
   const show = useCallback((t: string) => (script === 'cyrillic' && loaded ? loaded.toCyrillic(t) : t), [script, loaded]);
 
-  const run = useCallback(async () => {
+  const run = useCallback(async (override?: string, picked?: Picked) => {
     if (!loaded || busy) return;
-    const text = input.trim();
+    const text = (override ?? input).trim();
     if (!text) { inputRef.current?.focus(); return; }
     setBusy(true);
     try {
@@ -90,7 +94,9 @@ export function App() {
             if (resp.ok) { const d = (await resp.json()) as { translation?: string; explanation?: string }; if (d.translation) ai = { text: d.translation, ...(d.explanation ? { explanation: d.explanation } : {}) }; }
           } catch { /* offline result stands */ }
         }
-        setResult({ kind: 'en', r, ...(ai ? { ai } : {}) });
+        // English words the source lacks, for the "similar words" suggestions (only when nothing was translated).
+        const unknown = r.status === 'none' && !ai ? loaded.engine.unknownWords(text) : [];
+        setResult({ kind: 'en', r, unknown, ...(picked ? { picked } : {}), ...(ai ? { ai } : {}) });
       } else {
         const r = loaded.lookup.byBuxori(text);
         // Conjugated verb: analyse it, and show the everyday (Regular) form when the input is Literal (meravam → merum).
@@ -113,6 +119,19 @@ export function App() {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); void run(); }
   };
   const switchMode = (m: Mode) => { setMode(m); setResult(null); inputRef.current?.focus(); };
+
+  // A suggestion was picked: put it in the sentence (in the same form: purchased → bought) and translate that.
+  const pick = (word: string, s: Suggestion) => {
+    if (!loaded) return;
+    const to = loaded.inflectLike(word, s.gloss, s.root.pos);
+    const re = new RegExp(`(^|[^A-Za-z'’])${word.replace(/[-']/g, '[-\'’]?')}(?![A-Za-z])`, 'i');
+    const m = re.exec(input);
+    if (!m) return;   // the word came from normalised text ("u" → you) and isn't literally in the box
+    const at = m.index + m[1]!.length;
+    const next = input.slice(0, at) + matchCase(input.slice(at, m.index + m[0].length), to) + input.slice(m.index + m[0].length);
+    setInput(next);
+    void run(next, { from: word, to });
+  };
 
   const copyText = result?.kind === 'en'
     ? (result.ai?.text ?? (result.r.variants.length ? result.r.variants.map((v) => `${v.register}: ${show(v.text)}`).join('\n') : result.r.text ? show(result.r.text) : ''))
@@ -174,7 +193,8 @@ export function App() {
         <span id="trStatus" className="tr-status">{status}</span>
       </div>
 
-      {result?.kind === 'en' && <EnDetails res={result.r} ai={result.ai} show={show} />}
+      {result?.kind === 'en' && <EnDetails res={result.r} ai={result.ai} picked={result.picked} show={show} />}
+      {result?.kind === 'en' && loaded && <SimilarWords words={result.unknown} engine={loaded.engine} show={show} onPick={pick} />}
       {result?.kind === 'bux' && <BuxDetails res={result.r} verbs={result.verbs} examples={result.examples} show={show} />}
 
       <p className="tr-disclaimer">
@@ -211,11 +231,12 @@ function Rows({ rows }: { rows: number[] | undefined }) {
   return <span className="tr-rows" title="Line numbers in translator/data/bukhori.tsv">TSV {rows.slice(0, 4).join(', ')}{rows.length > 4 ? '…' : ''}</span>;
 }
 
-function EnDetails({ res, ai, show }: { res: Translation; ai: { text: string; explanation?: string } | undefined; show: (s: string) => string }) {
+function EnDetails({ res, ai, picked, show }: { res: Translation; ai: { text: string; explanation?: string } | undefined; picked: Picked | undefined; show: (s: string) => string }) {
   const b = BADGE[res.status];
   return (
     <>
       <div id="trNote">
+        {picked && <Note kind="warn"><span className="tr-badge ai">your pick</span>“{picked.to}” is used for “{picked.from}”, from the AI suggestions. This is a translation of the edited sentence, so check that it still means what you meant.</Note>}
         {ai && <Note kind="warn"><span className="tr-badge ai">ai-assisted</span>Generated by the AI fallback from similar source examples. Not verified.{ai.explanation ? ` ${ai.explanation}` : ''}</Note>}
         {res.status === 'none' && <Note kind="miss"><span className="tr-badge none">no match</span>{res.notes[0]}</Note>}
         {res.hint && (
@@ -307,4 +328,9 @@ function BuxDetails({ res, verbs, examples, show }: { res: BuxoriResult; verbs: 
       </div>
     </>
   );
+}
+
+/** "Purchase" → "Buy": keep the capital of the word being replaced. */
+function matchCase(original: string, replacement: string): string {
+  return /^[A-Z]/.test(original) ? replacement.charAt(0).toUpperCase() + replacement.slice(1) : replacement;
 }

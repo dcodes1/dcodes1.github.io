@@ -14,7 +14,10 @@
  */
 import { glossKey, similarity } from '../lib/normalizer.ts';
 import type { BuxoriIndex, Evidence, Example, RootEntry } from '../lib/types.ts';
-import { ARTICLES, BE_FORMS, ENGLISH_SYNONYMS, analyze, cleanEnglish, expandContractions, normalizeInformal } from './english.ts';
+import {
+  ARTICLES, BE_FORMS, DEMONSTRATIVES, ENGLISH_SYNONYMS, INTENSIFIERS, NEGATORS, OBJECT_PRONOUNS, POSSESSIVE_DETERMINERS, SUBJECT_PRONOUNS, WH_WORDS,
+  analyze, cleanEnglish, expandContractions, normalizeInformal, nounCandidates, verbCandidates,
+} from './english.ts';
 import { Grammar, type Draft, type Variant } from './grammar.ts';
 import { Lexicon, inline } from './lexicon.ts';
 import { Morphology, type Step } from './morphology.ts';
@@ -78,6 +81,16 @@ function trigrams(s: string): Set<string> {
 }
 const jaccard = (a: Set<string>, b: Set<string>) => { let n = 0; for (const x of a) if (b.has(x)) n++; return n / (a.size + b.size - n || 1); };
 
+/** English words that are grammar, not vocabulary: never reported as "not in the source". */
+const FUNCTION_WORDS = new Set([
+  ...ARTICLES, ...BE_FORMS, ...DEMONSTRATIVES, ...WH_WORDS, ...NEGATORS, ...INTENSIFIERS,
+  ...Object.keys(SUBJECT_PRONOUNS), ...Object.keys(OBJECT_PRONOUNS), ...Object.keys(POSSESSIVE_DETERMINERS),
+  'mine', 'yours', 'ours', 'theirs', 'hers', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves',
+  'to', 'of', 'in', 'on', 'at', 'for', 'with', 'from', 'by', 'about', 'into', 'onto', 'than', 'as', 'up', 'out', 'off', 'over',
+  'and', 'or', 'but', 'if', 'so', 'then', 'do', 'does', 'did', 'done', 'have', 'has', 'had', 'having',
+  'will', 'would', 'shall', 'should', 'can', 'could', 'may', 'might', 'must', 'ought', 'there', 'some', 'any', 'just',
+]);
+
 export class Engine {
   readonly lex: Lexicon;
   readonly morph: Morphology;
@@ -124,6 +137,31 @@ export class Engine {
     if (informal.changes.length) res = { ...res, notes: [`Read as: “${raw}”.`, ...res.notes] };
     this.cache.set(raw, res);
     return res;
+  }
+
+  /**
+   * English content words in the input that the source has nothing for: no entry,
+   * inflected form, synonym or spelling fix. Used to offer "similar words in the
+   * book" (src/ai/similar.ts). Function words (the, to, my…) are never listed.
+   */
+  unknownWords(input: string): string[] {
+    const whole = this.translate(input);
+    if (whole.status !== 'none') return whole.unknown;
+    const text = expandContractions(cleanEnglish(normalizeInformal(input ?? '').text.slice(0, 2000)).text);
+    const words = text.match(/[a-z]+(?:[-'][a-z]+)*/g) ?? [];
+    const has = (lemma: string) => this.lex.roots(lemma).length > 0;
+    const out: string[] = [];
+    words.forEach((w0, i) => {
+      const w = w0.replace(/'s$/, '');
+      if (w.length < 2 || FUNCTION_WORDS.has(w) || out.includes(w) || parseNumber(words, i)) return;
+      if (this.translate(w).status !== 'none') return;
+      // "went" → go, "dogs" → dog: an inflected form of a source word is not unknown. Regular
+      // verb endings are only trusted for lemmas of 4+ letters ("seed" is not "see" + -d).
+      if (verbCandidates(w).some((c, k) => (k === 0 && c.lemma !== w ? has(c.lemma) : c.lemma !== w && c.lemma.length >= 4 && has(c.lemma)))) return;
+      if (nounCandidates(w).some((c) => c.plural && has(c.lemma))) return;
+      out.push(w);
+    });
+    return out;
   }
 
   /** Turn an unreliable draft into "no translation" + a clearly separate hint. */

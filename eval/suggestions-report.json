@@ -1,0 +1,343 @@
+{
+ "model": "Xenova/all-MiniLM-L6-v2@751bff3 (q8)",
+ "heldOut": {
+  "unanswered": 208,
+  "answerElsewhereInBook": 6,
+  "automaticSubstitution": {
+   "answered": 151,
+   "correct": 0
+  },
+  "examples": [
+   {
+    "en": "Saturday",
+    "replaced": [
+     "saturday → friday (0.85)"
+    ],
+    "output": "Jum'a",
+    "ok": false
+   },
+   {
+    "en": "October",
+    "replaced": [
+     "october → september (0.73)"
+    ],
+    "output": "Tishri",
+    "ok": false
+   },
+   {
+    "en": "November",
+    "replaced": [
+     "november → december (0.71)"
+    ],
+    "output": "Tevet",
+    "ok": false
+   },
+   {
+    "en": "July",
+    "replaced": [
+     "july → june (0.76)"
+    ],
+    "output": "Tamuz",
+    "ok": false
+   },
+   {
+    "en": "today is Saturday",
+    "replaced": [
+     "saturday → friday (0.85)"
+    ],
+    "output": "jum'i imrüzi hast",
+    "ok": false
+   },
+   {
+    "en": "grandfather",
+    "replaced": [
+     "grandfather → grandmother (0.79)"
+    ],
+    "output": "Bivi",
+    "ok": false
+   },
+   {
+    "en": "teacher",
+    "replaced": [
+     "teacher → teach (0.76)"
+    ],
+    "output": "Dars dodan",
+    "ok": false
+   },
+   {
+    "en": "book",
+    "replaced": [
+     "book → literature (0.61)"
+    ],
+    "output": "Adabiyot",
+    "ok": false
+   },
+   {
+    "en": "our grandfather",
+    "replaced": [
+     "grandfather → grandmother (0.79)"
+    ],
+    "output": "Bivimo",
+    "ok": false
+   },
+   {
+    "en": "books",
+    "replaced": [
+     "books → literature (0.66)"
+    ],
+    "output": "Adabiyot",
+    "ok": false
+   },
+   {
+    "en": "Are you all right? (polite)",
+    "replaced": [
+     "all → any (0.61)"
+    ],
+    "output": "Shumo yagon rosangiyed?",
+    "ok": false
+   },
+   {
+    "en": "Feel well!; be healthy! (polite)",
+    "replaced": [
+     "feel → cry (0.54)"
+    ],
+    "output": "Binoyi tinji giryon shaved!",
+    "ok": false
+   },
+   {
+    "en": "July",
+    "replaced": [
+     "july → june (0.76)"
+    ],
+    "output": "Tamuz",
+    "ok": false
+   },
+   {
+    "en": "October",
+    "replaced": [
+     "october → september (0.73)"
+    ],
+    "output": "Tishri",
+    "ok": false
+   },
+   {
+    "en": "November",
+    "replaced": [
+     "november → december (0.71)"
+    ],
+    "output": "Tevet",
+    "ok": false
+   },
+   {
+    "en": "warm; hot",
+    "replaced": [
+     "warm → cold (0.75)",
+     "hot → beautiful (0.58)"
+    ],
+    "output": "Xunuk xushrü",
+    "ok": false
+   },
+   {
+    "en": "lettuce",
+    "replaced": [
+     "lettuce → vegetable (0.62)"
+    ],
+    "output": "Savzavot",
+    "ok": false
+   },
+   {
+    "en": "He/she has six books.",
+    "replaced": [
+     "books → literature (0.66)"
+    ],
+    "output": "Ü shishta adabiyot dorad",
+    "ok": false
+   },
+   {
+    "en": "question",
+    "replaced": [
+     "question → answer (0.73)"
+    ],
+    "output": "Javov",
+    "ok": false
+   },
+   {
+    "en": "Hey, Mr. Hisqiyo, hello! How are you? I didn't see you for two years.",
+    "replaced": [
+     "hey → ok (0.48)",
+     "mr → guy (0.56)"
+    ],
+    "output": "Xay, Yighit. Hisqiyo, Sholüm! Chitüyed? Man baroyi duta sol tuya nadidam.",
+    "ok": false
+   },
+   {
+    "en": "garden",
+    "replaced": [
+     "garden → flower-garden (0.81)"
+    ],
+    "output": "Gulzor",
+    "ok": false
+   },
+   {
+    "en": "dust",
+    "replaced": [
+     "dust → sand (0.62)"
+    ],
+    "output": "Reg",
+    "ok": false
+   },
+   {
+    "en": "pillow",
+    "replaced": [
+     "pillow → neck (0.60)"
+    ],
+    "output": "Gardan",
+    "ok": false
+   },
+   {
+    "en": "down",
+    "replaced": [
+     "down → go down (0.80)"
+    ],
+    "output": "Furomadan",
+    "ok": false
+   },
+   {
+    "en": "tea",
+    "replaced": [
+     "tea → make tea (0.86)"
+    ],
+    "output": "Choy kardan",
+    "ok": false
+   },
+   {
+    "en": "hand",
+    "replaced": [
+     "hand → finger (0.70)"
+    ],
+    "output": "Lela",
+    "ok": false
+   },
+   {
+    "en": "phone",
+    "replaced": [
+     "phone → to call by phone (0.64)"
+    ],
+    "output": "Telefon dodan",
+    "ok": false
+   },
+   {
+    "en": "because",
+    "replaced": [
+     "because → because of (0.82)"
+    ],
+    "output": "Az baroyi",
+    "ok": false
+   },
+   {
+    "en": "thing",
+    "replaced": [
+     "thing → something (0.68)"
+    ],
+    "output": "Kim-chi",
+    "ok": false
+   },
+   {
+    "en": "holiday",
+    "replaced": [
+     "holiday → day (0.62)"
+    ],
+    "output": "Rüz",
+    "ok": false
+   },
+   {
+    "en": "Happy holiday!",
+    "replaced": [
+     "holiday → day (0.62)"
+    ],
+    "output": "rüzi baxtnok",
+    "ok": false
+   },
+   {
+    "en": "to suffer; to worry",
+    "replaced": [
+     "suffer → tear (0.50)"
+    ],
+    "output": "tashvishi peshi ovi chashmi peshi",
+    "ok": false
+   },
+   {
+    "en": "to invite",
+    "replaced": [
+     "invite → add (0.72)"
+    ],
+    "output": "Jam' kardan",
+    "ok": false
+   },
+   {
+    "en": "TV",
+    "replaced": [
+     "tv → to watch (0.59)"
+    ],
+    "output": "So'at",
+    "ok": false
+   },
+   {
+    "en": "Good Saturday!",
+    "replaced": [
+     "saturday → friday (0.85)"
+    ],
+    "output": "jum'i naghz",
+    "ok": false
+   },
+   {
+    "en": "Good Saturday, Mrs. Mazol! Welcome! How are you?",
+    "replaced": [
+     "saturday → friday (0.85)",
+     "mrs → woman (0.53)"
+    ],
+    "output": "jum'i naghz, zan. Mazol! Borux habo! Chitüyed?",
+    "ok": false
+   },
+   {
+    "en": "knitted downy shawl",
+    "replaced": [
+     "knitted → knitted silk shawl (0.67)",
+     "downy → go down (0.59)"
+    ],
+    "output": "Rüymoli ghijim rüymol mefuroyad",
+    "ok": false
+   },
+   {
+    "en": "handkerchief",
+    "replaced": [
+     "handkerchief → towel (0.67)"
+    ],
+    "output": "Qars",
+    "ok": false
+   },
+   {
+    "en": "shirt; women's dress",
+    "replaced": [
+     "shirt → sweater (0.63)"
+    ],
+    "output": "Jemper livosi zanho",
+    "ok": false
+   },
+   {
+    "en": "slippers",
+    "replaced": [
+     "slippers → shoes (0.63)"
+    ],
+    "output": "Müza",
+    "ok": false
+   }
+  ]
+ },
+ "suggestions": {
+  "pairs": 52,
+  "top1": 33,
+  "top3": 47,
+  "top5": 50
+ }
+}

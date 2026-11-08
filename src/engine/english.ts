@@ -193,6 +193,30 @@ export function normalizeInformal(text: string): { text: string; changes: string
   return { text: t, changes };
 }
 
+/**
+ * Put a replacement word in the same form as the word it replaces: "purchased" + buy
+ * (verb) → "bought", "kitties" + cat (noun) → "cats". Only verbs (past, -ing, -s) and
+ * noun plurals are inflected; anything else, or a multi-word replacement, is returned as is.
+ */
+export function inflectLike(original: string, replacement: string, pos: string): string {
+  const w = original.toLowerCase(), r = replacement.toLowerCase();
+  if (/\s/.test(r) || w === r) return replacement;
+  const irr = IRREGULAR_FORMS.get(w);
+  const form = irr ? (irr.form === 'present3' ? 's' : irr.form === 'present' ? null : irr.form)
+    : /[^e]ed$|eed$/.test(w) && w.length > 4 ? 'past' : /ing$/.test(w) && w.length > 4 ? 'ing' : /[^su]s$/.test(w) && w.length > 3 ? 's' : null;
+  let out = r;
+  if (pos === 'verb' && (form === 'past' || form === 'participle')) {
+    const v = IRREGULAR_VERBS[r];
+    out = v ? v[form === 'past' ? 0 : 1] : /e$/.test(r) ? r + 'd' : /[^aeiou]y$/.test(r) ? r.slice(0, -1) + 'ied' : r + 'ed';
+  } else if (pos === 'verb' && form === 'ing') {
+    out = /ie$/.test(r) ? r.slice(0, -2) + 'ying' : /[^e]e$/.test(r) ? r.slice(0, -1) + 'ing' : r + 'ing';
+  } else if ((pos === 'verb' || pos === 'noun') && form === 's') {
+    const irrPl = pos === 'noun' ? Object.entries(IRREGULAR_PLURALS).find(([, sg]) => sg === r) : undefined;
+    out = irrPl && irrPl[0] !== r ? irrPl[0] : r === 'be' ? 'is' : r === 'have' ? 'has' : r === 'go' || r === 'do' ? r + 'es' : /(s|sh|ch|x|z)$/.test(r) ? r + 'es' : /[^aeiou]y$/.test(r) ? r.slice(0, -1) + 'ies' : r + 's';
+  }
+  return /^[A-Z]/.test(original) ? out.charAt(0).toUpperCase() + out.slice(1) : out;
+}
+
 /** Words that strengthen the adjective after them; all map to the source's "very". */
 export const INTENSIFIERS = new Set(['very', 'so', 'really', 'extremely', 'super', 'quite', 'truly']);
 

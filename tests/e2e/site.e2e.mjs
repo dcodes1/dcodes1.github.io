@@ -308,6 +308,55 @@ try {
   ok('mobile translator: touch targets ≥ 32px', small.length === 0, small);
   await m.close();
 
+  // ── 8b. Similar words (local language model; transformers.js stubbed) ───
+  // The real model is a ~30 MB download, so CI swaps transformers.js for a stand-in
+  // that embeds "physician" as the source's "doctor" vector and "purchased" as "buy".
+  const gvFile = JSON.parse(readFileSync(join(ROOT, 'src/data/gloss-vectors.json'), 'utf8'));
+  const gvData = Buffer.from(gvFile.vectors, 'base64'), gvScaleBuf = Buffer.from(gvFile.scales, 'base64');
+  const gvScales = new Float32Array(gvScaleBuf.buffer.slice(gvScaleBuf.byteOffset, gvScaleBuf.byteOffset + gvScaleBuf.length));
+  const vecOf = (k) => { const i = gvFile.keys.indexOf(k); return [...new Int8Array(gvData.buffer, gvData.byteOffset + i * gvFile.dim, gvFile.dim)].map((x) => x * gvScales[i]); };
+  const FAKE_TF = `export const env = {};
+    const V = ${JSON.stringify({ physician: vecOf('doctor'), purchased: vecOf('buy') })};
+    export async function pipeline(task, model, o) {
+      o.progress_callback?.({ status: 'progress', file: 'model.onnx', loaded: 1, total: 2 });
+      return async (texts) => { const d = ${gvFile.dim}; const data = new Float32Array(texts.length * d); texts.forEach((t, i) => { if (V[t]) data.set(V[t], i * d); }); return { data, dims: [texts.length, d] }; };
+    }`;
+  const sctx = await browser.newContext();   // fresh storage: suggestions not yet switched on
+  const sp = await sctx.newPage(); watch(sp);
+  const cdn = [], sreq = [];
+  sp.on('request', (q) => sreq.push(q.url()));
+  await sp.route(/cdn\.jsdelivr\.net|huggingface\.co/, (route) => {
+    cdn.push(route.request().url());
+    return /\/@huggingface\/transformers@[\d.]+\/dist\/transformers\.min\.js$/.test(route.request().url())
+      ? route.fulfill({ status: 200, contentType: 'text/javascript', headers: { 'access-control-allow-origin': '*' }, body: FAKE_TF })
+      : route.abort();
+  });
+  await sp.goto(BASE + '/translator', { waitUntil: 'domcontentloaded' });
+  await ready(sp);
+  r = await translate(sp, 'I am a physician');
+  const offer = await sp.textContent('#trSimilar').catch(() => '');
+  ok('similar: offered when a word is not in the source', /physician/.test(offer) && await sp.isVisible('#trSimilar .tr-similar-go'), offer);
+  ok('similar: nothing downloaded until the user asks', cdn.length === 0 && !sreq.some((u) => /gloss-vectors/.test(u)), cdn);
+  await sp.click('#trSimilar .tr-similar-go');
+  await sp.waitForSelector('#trSimilar .tr-chip', { timeout: 10000 }).catch(() => {});
+  const chips = await sp.$$eval('#trSimilar .tr-chip', (els) => els.map((e) => e.textContent));
+  ok('similar: suggests the source word (doctor → düxtur)', /^doctor\s*düxtur/.test(chips[0] ?? ''), chips);
+  ok('similar: labelled as AI suggestions, not translations', /ai suggestion/i.test(await sp.textContent('#trSimilar')) && /not translations/.test(await sp.textContent('#trSimilar')));
+  ok('similar: loads the pinned transformers.js build', cdn.length === 1 && /@huggingface\/transformers@4\.3\.1\//.test(cdn[0]), cdn);
+  await sp.click('#trSimilar .tr-chip >> nth=0');
+  await sp.waitForFunction(() => document.getElementById('trInput').value !== 'I am a physician', null, { timeout: 5000 }).catch(() => {});
+  ok('similar: picking edits the sentence', (await sp.inputValue('#trInput')) === 'I am a doctor', await sp.inputValue('#trInput'));
+  await sp.waitForFunction(() => /düxturam/.test(document.getElementById('trOutput').textContent), null, { timeout: 5000 }).catch(() => {});
+  ok('similar: edited sentence translated from the source', (await sp.textContent('#trOutput')).trim() === 'Man düxturam', await sp.textContent('#trOutput'));
+  ok('similar: the pick is labelled', /your pick/i.test(await sp.textContent('#trNote')), await sp.textContent('#trNote'));
+  r = await translate(sp, 'we purchased it');
+  await sp.waitForSelector('#trSimilar .tr-chip', { timeout: 5000 }).catch(() => {});
+  ok('similar: once switched on, runs without asking again', (await sp.$$eval('#trSimilar .tr-chip', (els) => els.map((e) => e.textContent))).some((t) => /^buy/.test(t)));
+  await sp.click('#trSimilar .tr-chip:has-text("buy")');
+  await sp.waitForFunction(() => /xaridem/.test(document.getElementById('trOutput').textContent), null, { timeout: 5000 }).catch(() => {});
+  ok('similar: pick keeps the tense (purchased → bought)', (await sp.inputValue('#trInput')) === 'we bought it' && (await sp.textContent('#trOutput')).trim() === 'Mo xaridem', await sp.inputValue('#trInput'));
+  await sctx.close();
+
   // ── 9. Research page still fine ──────────────────────────────────────────
   const rp = await browser.newPage(); watch(rp);
   const resp = await rp.goto(BASE + '/research/', { waitUntil: 'domcontentloaded' });
