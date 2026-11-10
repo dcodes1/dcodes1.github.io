@@ -85,7 +85,9 @@ async function translate(page, text) {
     out: (await page.textContent('#trOutput')).trim(),
     note: (await page.textContent('#trNote').catch(() => '')) ?? '',
     explain: (await page.$eval('.tr-explain', (e) => e.textContent).catch(() => '')) ?? '',
-    badge: (await page.$eval('.tr-pane-foot .tr-badge', (e) => e.textContent).catch(() => '')) ?? '',
+    words: await page.$$eval('#trBreakdown .tr-word', (els) => els.map((e) => e.textContent)).catch(() => []),
+    badge: (await page.$$eval('.tr-pane-foot .tr-badge', (els) => els.map((e) => e.textContent).join(' | ')).catch(() => '')) ?? '',
+    low: await page.$('#trLow') !== null,
   };
 }
 
@@ -168,10 +170,21 @@ try {
   r = await translate(page, 'water');
   ok('exact: water → Maim', r.out === 'Maim', r);
   r = await translate(page, 'I live in Israel now');
-  ok('grammar: verb-final, conjugated', r.out === 'Man aknun ba Isroel zindagi mekunam', r.out);
+  ok('grammar: verb-final, conjugated', /Man aknun ba Isroel zindagi mekunam/.test(r.out), r.out);
+  ok('low confidence: shown as a draft, not a translation', r.low && /Low confidence: a draft, not a translation/.test(r.out) && /low confidence · 0\.\d\d/.test(r.badge), { out: r.out, badge: r.badge });
+  ok('low confidence: reasons given', /content words/.test(r.note) && /more than one word for/.test(r.note), r.note);
+  ok('low confidence: nothing to copy', await page.isDisabled('.tr-pane:nth-child(2) .tr-iconbtn'));
   ok('grammar: badge "built from rules"', /built from rules/.test(r.badge), r.badge);
-  ok('grammar: steps shown', /How this was built/.test(r.explain) && /zindagi/.test(r.explain), r.explain.slice(0, 160));
-  ok('grammar: source rows cited', /TSV \d+/.test(r.explain), r.explain.slice(0, 160));
+  ok('breakdown: one card per Buxori word, compound verb kept together', r.words.length === 5 && /zindagi mekunam/.test(r.words[4]) && /to live/.test(r.words[4]), r.words);
+  await page.click('#trBreakdown .tr-word >> nth=4');
+  let detail = await page.textContent('#trWordDetail');
+  ok('breakdown: tapping a word shows root, tense and person', /Zindagi kardan/.test(detail) && /present/.test(detail) && /person/.test(detail) && /TSV \d+/.test(detail), detail.slice(0, 200));
+  ok('breakdown: alternatives for an ambiguous word', /Other words the source gives for the same English/.test(detail) && /Zindagoni kardan/.test(detail), detail.slice(0, 400));
+  ok('grammar: rules listed with source rows', /Rules used, with source rows/.test(r.explain) && /zindagi/.test(r.explain) && /TSV \d+/.test(r.explain), r.explain.slice(0, 160));
+  r = await translate(page, 'I go');
+  ok('verified: shown as the translation', !r.low && /^man merum$/i.test(r.out) && /verified/.test(r.badge), r);
+  r = await translate(page, 'We bought');
+  ok('rule-built, high confidence: badge with score', !r.low && r.out === 'Mo xaridem' && /built from rules/.test(r.badge) && /high confidence · 0\.9\d/.test(r.badge), r);
   r = await translate(page, 'Where are you from?');
   ok('question: formal + informal shown', /informal/.test(r.out) && /formal/.test(r.out), r.out);
   ok('question: no English "are" leak', !/\bare\b/i.test(r.out), r.out);
@@ -197,11 +210,26 @@ try {
   r = await translate(page, 'Худо');
   ok('reverse: Cyrillic Худо → G-d', /G-d/.test(r.out), r.out);
   r = await translate(page, 'meravam');
-  ok('reverse: conjugated verb analysed → Raftan', /Raftan/.test(r.explain), r.explain.slice(0, 160));
-  ok('reverse: output shows the meaning, not "not found"', /to go/.test(r.out) && !/not found/.test(r.out), r.out);
-  ok('reverse: Literal meravam → everyday form merum shown', /Everyday \(Regular\) form: merum/.test(r.explain), r.explain.slice(0, 220));
+  ok('reverse: conjugated verb → English with person and tense', /^I go\.?$/.test(r.out) && /go/.test(r.words[0]), r);
+  await page.click('#trBreakdown .tr-word >> nth=0');
+  detail = await page.textContent('#trWordDetail');
+  ok('reverse: verb analysed → Raftan, Literal register labelled', /Raftan/.test(detail) && /Literal/.test(detail), detail.slice(0, 200));
+  ok('reverse: Literal meravam → everyday form merum shown', /Everyday \(Regular\) form: merum/.test(detail), detail.slice(0, 300));
   r = await translate(page, 'kitob');
-  ok('reverse: approximate spelling flagged', /consonants only|approximate|ignoring/.test(r.note) && /Kitov/.test(r.explain), { note: r.note, ex: r.explain.slice(0, 120) });
+  ok('reverse: unknown spelling is not translated; similar entries offered', /not found/.test(r.out) && /Similar spellings in the source/.test(r.note) && /Kitov/.test(r.note), { out: r.out, note: r.note });
+  r = await translate(page, 'Man kitov doram');
+  ok('reverse sentence: SOV → SVO, verb conjugated, article added', r.out === 'I have a book.' && /built from the gloss/.test(r.badge), r);
+  ok('reverse sentence: word-by-word shown underneath', r.words.length === 3 && /book/.test(r.words[1]) && /have/.test(r.words[2]), r.words);
+  r = await translate(page, 'Tu kujo zindagi mekuni?');
+  ok('reverse question: wh-word first, do-support', r.out === 'Where do you live?', r.out);
+  r = await translate(page, 'Ман китов дорам');
+  ok('reverse sentence: Cyrillic input', r.out === 'I have a book.' && /Read from cyrillic script/.test(r.note), r);
+  r = await translate(page, 'Safro tüvo!');
+  ok('reverse: printed phrase wins over word-by-word', r.out === 'Good morning!' && /verified/.test(r.badge), r);
+  r = await translate(page, 'Man zorble merum');
+  ok('reverse: unknown word → no sentence, word kept and marked', /no reliable translation/.test(r.out) && /zorble/.test(r.note) && r.words.some((w) => /zorble.*not in the source/.test(w)), r);
+  r = await translate(page, 'Man in kinoya zehn memondam, ki padaram xarid');
+  ok('reverse: low-confidence result shown as a draft', r.low || /no reliable translation/.test(r.out), r.out);
   await page.click('.tr-tabs > button:nth-child(1)');
 
   // ── 5. History, back button, logo, anchors ──────────────────────────────
@@ -356,6 +384,38 @@ try {
   await sp.waitForFunction(() => /xaridem/.test(document.getElementById('trOutput').textContent), null, { timeout: 5000 }).catch(() => {});
   ok('similar: pick keeps the tense (purchased → bought)', (await sp.inputValue('#trInput')) === 'we bought it' && (await sp.textContent('#trOutput')).trim() === 'Mo xaridem', await sp.inputValue('#trInput'));
   await sctx.close();
+
+  // ── 8c. Offline (service worker) ─────────────────────────────────────────
+  const octx = await browser.newContext();
+  const op = await octx.newPage(); watch(op);
+  await op.goto(BASE + '/', { waitUntil: 'load' });
+  // one visit to the portfolio is enough: the worker caches the translator in the background
+  const cached = await op.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    for (let i = 0; i < 100; i++) {
+      const keys = (await (await caches.open('site-v1')).keys()).map((r) => new URL(r.url).pathname);
+      if (keys.some((k) => /buxori-index-.*\.json$/.test(k)) && keys.some((k) => /chunks\/reverse-/.test(k)) && keys.includes('/translator/app/translator.js')) return keys;
+      await new Promise((r) => setTimeout(r, 100));
+    }
+    return [];
+  });
+  ok('offline: translator app and data cached after one visit', cached.length > 0, cached);
+  ok('offline: optional model vectors are not precached', !cached.some((k) => /gloss-vectors/.test(k)), cached);
+  await octx.setOffline(true);
+  await op.goto(BASE + '/translator', { waitUntil: 'domcontentloaded' }).catch(() => {});
+  s = await state(op).catch(() => ({}));
+  ok('offline: /translator opens from the cache', s.path === '/translator' && s.transHidden === false, s);
+  await ready(op).then(() => ok('offline: dataset loads', true), () => ok('offline: dataset loads', false));
+  r = await translate(op, 'Good morning');
+  ok('offline: English → Buxori works', r.out === 'Safro tüvo!', r.out);
+  await op.click('.tr-tabs > button:nth-child(2)');
+  r = await translate(op, 'Man kitov doram');
+  ok('offline: Buxori → English works', r.out === 'I have a book.', r.out);
+  await op.goto(BASE + '/', { waitUntil: 'domcontentloaded' }).catch(() => {});
+  s = await state(op).catch(() => ({}));
+  ok('offline: portfolio opens from the cache', s.portHidden === false, s);
+  await octx.setOffline(false);
+  await octx.close();
 
   // ── 9. Research page still fine ──────────────────────────────────────────
   const rp = await browser.newPage(); watch(rp);

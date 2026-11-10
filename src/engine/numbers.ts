@@ -35,7 +35,12 @@ export function parseNumber(tokens: string[], i: number): ParsedNumber | null {
     let ok = true;
     for (let k = 0; k < parts.length; k++) {
       let p = parts[k]!;
-      if (ORDINAL_WORDS[p]) { p = ORDINAL_WORDS[p]!; ordinal = true; }
+      if (ORDINAL_WORDS[p]) {
+        // "one third", "three fourths": a unit followed by an ordinal is a fraction, not 1 + 3rd.
+        // (An ordinal unit may only follow tens or hundreds: "twenty third", "one hundred first".)
+        if (any && current % 10 !== 0) return null;
+        p = ORDINAL_WORDS[p]!; ordinal = true;
+      }
       if (UNITS[p] !== undefined) current += UNITS[p]!;
       else if (TENS[p] !== undefined) current += TENS[p]!;
       else if (p === 'hundred') current = (current || 1) * 100;

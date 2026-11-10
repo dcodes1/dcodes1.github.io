@@ -103,3 +103,18 @@ describe(`every TSV Buxori string (${tsvStrings.length})`, () => {
     expect(clashes).toEqual([]);
   });
 });
+
+describe('output scripts (hook for scripts the source cannot verify)', async () => {
+  const { outputScripts, registerOutputScript, toScript, toCyrillic } = await import('../src/lib/normalizer.ts');
+  test('Latin and Cyrillic are offered; Hebrew is not until a converter is registered', () => {
+    expect(outputScripts()).toEqual(['latin', 'cyrillic']);
+    expect(toScript('Maim', 'latin')).toBe('Maim');
+    expect(toScript('Maim', 'cyrillic')).toBe(toCyrillic('Maim'));
+    expect(toScript('Maim', 'hebrew')).toBe('Maim');        // falls back to the source spelling
+  });
+  test('registering a converter enables a script', () => {
+    registerOutputScript('hebrew', (s) => `[${s}]`);
+    expect(toScript('Maim', 'hebrew')).toBe('[Maim]');
+    expect(outputScripts()).toContain('hebrew');
+  });
+});

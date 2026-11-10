@@ -1,0 +1,10 @@
+tsv_row	page	lesson	entry_type	section	english	bukhori	spoken_form	alt_forms	notes
+9	17	Front matter	example	stress example	child	baćha			source prints the accent over the c (baćha), so the stressed syllable is unclear; rule predicts final-syllable stress (bachá)
+12	17	Front matter	example	stress example	you made	kardí			source marks stress on the final -i (kardî), which contradicts the stated verb rule
+237	27	Lesson 3 (Darsi Seyum)	example	possessive example (Regular form)	your grandmother	Bibet			base noun: bivi; printed with -b- here but with -v- in the prose rules on p32-33 and in biveton on p64, so the -b- spelling looks like a typo
+241	27	Lesson 3 (Darsi Seyum)	example	possessive example (Regular form)	his/her grandmother	Bibesh			base noun: bivi; printed with -b- here but with -v- in the prose rules on p32-33 and in biveton on p64, so the -b- spelling looks like a typo
+258	28	Lesson 3 (Darsi Seyum)	example	possessive example (Regular form)	your grandmother	Bibeton			base noun: bivi; printed with -b- here but with -v- in the prose rules on p32-33 and in biveton on p64, so the -b- spelling looks like a typo
+720	47	Lesson 6 (Darsi Shishtum)	vocab	verb infinitives and stems	to become	Shudan		-shud-	stem -shud-; irregular; stem given as -shav- on p41 and p43 but -shud- here
+829	52	Lesson 7 (Darsi Haftum)	vocab	relatives	father-in-law (wife's father)	'Amak		padar'arüs	the same page also glosses 'Amak as the husband's father and as the father's brother
+830	52	Lesson 7 (Darsi Haftum)	vocab	relatives	father-in-law (husband's father); uncle (father's brother)	'Amak			the same page also glosses 'Amak as the wife's father
+1784	90	Lesson 11 (Darsi Yozdahum)	paradigm	past perfect (negative)	negative prefix	na-			the source says to put na before bud, but every example it prints puts na on the past participle: nagufta budam

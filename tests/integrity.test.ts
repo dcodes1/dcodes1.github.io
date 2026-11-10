@@ -55,7 +55,8 @@ check('raftan present stem rav (stated)', raftan?.verb?.presentStem?.text === 'r
 check('raftan past stem raft', raftan?.verb?.pastStem.text === 'raft', raftan?.verb?.pastStem);
 check('raftan is irregular', raftan?.verb?.irregular === true);
 const shudan = verb('shudan');
-check('shudan keeps -shav-/-shud- conflict', !!shudan?.verb?.conflicts?.some((c) => c.values.includes('shav') && c.values.includes('shud')), shudan?.verb?.conflicts);
+// The row that printed the present stem as -shud- is flagged REVIEW and no longer used.
+check('shudan present stem is -shav- (the REVIEW row saying -shud- is excluded)', shudan?.verb?.presentStem?.text === 'shav' && !shudan?.verb?.conflicts?.length, shudan?.verb);
 check('doshtan takes no me-', verb('doshtan')?.verb?.takesMe === false);
 check('kardan present stem kun', verb('kardan')?.verb?.presentStem?.text === 'kun');
 const zk = verb('zindagi kardan');
@@ -137,7 +138,7 @@ check('inflected onayam → base ona, possessive affix', (() => { const e = idx.
 {
   const all = Object.values(idx.roots.inflected).flat();
   const unanalysed = all.filter((e) => !e.affixes.length);
-  check('every inflected headword analysed except the REVIEW-flagged misprints', unanalysed.every((e) => e.source.review), unanalysed.map((e) => e.text));
+  check('every inflected headword analysed', unanalysed.length === 0, unanalysed.map((e) => e.text));
   const first = (k: string) => idx.roots.inflected[k as never]?.[0]?.affixes ?? [];
   check('vowel-stem possessive: bovom = bov(o) + -om', first('bovom').includes('poss.1sg' as never));
   check('analytic possession: hoveri man = hover + ezafe + man', first('hoveri man').includes('ezafe' as never));
@@ -148,7 +149,20 @@ check('literary alternates typed (Qati → bo)', rootsFor('qati').some((r) => r.
 check('bracket pronunciation split (Ganov alt "duzd [duz]")', rootsFor('ganov').some((r) => r.forms.some((f) => f.text === 'duzd') && r.forms.some((f) => f.text === 'duz' && f.kind === 'spoken')));
 check('numeric fraction parsed', roots.some((r) => r.numeric?.kind === 'fraction'));
 check('senses: numbered and slash expansion', senses('1. entrance; 2. income').length === 2 && senses('his/her grandmother').map((s) => s.text).join('|') === 'his grandmother|her grandmother');
-check('REVIEW rows keep their flag', roots.some((r) => r.sources.some((s) => s.review)));
+{
+  // REVIEW rows are used nowhere and are listed for the owner instead.
+  const blob = JSON.stringify({ r: idx.roots, a: idx.affixes, e: idx.examples });
+  check('no REVIEW-flagged row is used by the index', !/"review":true/.test(blob));
+  const list = readFileSync(new URL('../translator/data/review-rows.tsv', import.meta.url), 'utf8').trim().split('\n');
+  check('review-rows.tsv lists the 9 REVIEW rows', list.length === 10 && idx.excluded.filter((x) => x.reason === 'review_flag').length === 9, list.length);
+  // No two examples carry the same English + Buxori.
+  const seen = new Set<string>();
+  const dups = Object.values(idx.examples).filter((e) => e.en && (seen.has(`${e.en.toLowerCase()}|${e.bux.toLowerCase()}`) || !seen.add(`${e.en.toLowerCase()}|${e.bux.toLowerCase()}`)));
+  check('no duplicate example pairs', dups.length === 0, dups.map((e) => e.bux));
+  // …and every Buxori word + part of speech is one root, however often the book repeats it.
+  const rk = new Set<string>();
+  check('no duplicate roots', roots.every((r) => !rk.has(`${r.lemma.key}|${r.pos}`) && !!rk.add(`${r.lemma.key}|${r.pos}`)));
+}
 const ex = idx.excluded.reduce<Record<string, number>>((m, x) => ((m[x.reason] = (m[x.reason] ?? 0) + 1), m), {});
 check('excluded = 180 no_answer, 13 stubs, 11 not transcribed', ex['no_answer'] === 180 && ex['fill_in_stub'] === 13 && ex['not_transcribed'] === 11, ex);
 

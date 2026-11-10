@@ -10,7 +10,8 @@ import type {
   Affix, AffixId, BuxoriIndex, Evidence, ParadigmId, PersonNumber, Register, RootEntry, SourceRef, Tense,
 } from '../lib/types.ts';
 
-export interface Step { text: string; rows?: number[] }
+/** `weak`: the form rests on one printed example or an unprinted irregular pattern. */
+export interface Step { text: string; rows?: number[]; weak?: true }
 export interface Built {
   text: string;
   evidence: Evidence;
@@ -83,7 +84,7 @@ export class Morphology {
       // Plural + possessive: one attested example only, Akahoyam (p62). Literal-style endings.
       const e = this.ending('possessive.endings.literal.form.vowel.stem', pn, { register: 'literal', after: 'o' });
       if (e) return { text: noun + e.form, evidence: 'derived', confidence: 0.5,
-        steps: [{ text: `Plural + possessive: ${noun} + -${e.form} (pattern of Akahoyam “my brothers”, the only printed example).`, rows: e.rows }] };
+        steps: [{ text: `Plural + possessive: ${noun} + -${e.form} (pattern of Akahoyam “my brothers”, the only printed example).`, rows: e.rows, weak: true }] };
     }
     if (!endsInVowel(noun)) {
       const e = this.ending('possessive.endings.consonant.stem', pn);
@@ -239,7 +240,7 @@ export class Morphology {
         const irregularGap = IRREGULAR_REGULAR_PRESENT.has(inf) && register === 'regular';
         const ev = irregularGap ? 'derived' : weakest(stemEv(pres), 'stated');
         return { text, evidence: ev, confidence: irregularGap ? 0.5 : CONF[ev],
-          steps: [{ text: `${tense === 'future' ? 'Future = present form' : 'Present'}: ${me ? 'me- + ' : ''}stem ${note(pres)} + -${e.form} → ${text}.${v.takesMe ? '' : ' Doshtan takes no me-.'}${irregularGap ? ' This verb is irregular and its everyday (Regular) form is not printed, so this is the Literal pattern.' : ''}`, rows: [...this.ruleRows(v.takesMe ? 'simple_present_formation' : 'doshtan_takes_no_me'), ...e.rows] }] };
+          steps: [{ text: `${tense === 'future' ? 'Future = present form' : 'Present'}: ${me ? 'me- + ' : ''}stem ${note(pres)} + -${e.form} → ${text}.${v.takesMe ? '' : ' Doshtan takes no me-.'}${irregularGap ? ' This verb is irregular and its everyday (Regular) form is not printed, so this is the Literal pattern.' : ''}`, rows: [...this.ruleRows(v.takesMe ? 'simple_present_formation' : 'doshtan_takes_no_me'), ...e.rows] , ...(irregularGap ? { weak: true as const } : {}) }] };
       }
       case 'simple_past': case 'descriptive_past': case 'present_perfect': {
         const pid = tense === 'simple_past' ? 'simple.past.endings' : tense === 'descriptive_past' ? 'descriptive.past.endings'

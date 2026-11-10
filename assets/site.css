@@ -1236,6 +1236,45 @@ footer .hi { color: var(--green); }
 .tr-entry strong { color: var(--text-hi); }
 .tr-entry-sub { margin-top: 0.25rem; font-size: 0.86rem; color: var(--text-dim); }
 .tr-pos { font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--cyan); }
+.tr-breakdown {
+  margin-top: 1rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+}
+.tr-words { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tr-word {
+  display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0.1rem;
+  position: relative; min-height: 44px; padding: 0.45rem 0.75rem;
+  border: 1px solid var(--border); border-radius: 10px; background: transparent;
+  font: inherit; color: var(--text); text-align: left; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.tr-word:hover, .tr-word:focus-visible, .tr-word.open { border-color: var(--green-line); background: var(--green-dim); }
+.tr-word.unknown { border-style: dashed; border-color: rgba(244, 63, 94, 0.45); }
+.tr-word.unknown .tr-word-bux { color: var(--red-hi); }
+.tr-word-bux { font-family: var(--mono); font-size: 0.92rem; font-weight: 600; color: var(--green-hi); }
+.tr-word-gloss { font-size: 0.82rem; color: var(--text-dim); }
+.tr-word-tags { font-family: var(--mono); font-size: 0.68rem; color: var(--cyan); }
+.tr-word-more { position: absolute; top: 0.2rem; right: 0.4rem; font-family: var(--mono); font-size: 0.62rem; color: var(--text-faint); }
+.tr-word:has(.tr-word-more) { padding-right: 1.6rem; }
+.tr-reg-tag {
+  display: inline-block; margin-left: 0.35rem; padding: 0 0.35rem; border: 1px solid rgba(251, 191, 36, 0.35); border-radius: 5px;
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.04em; color: var(--amber);
+}
+.tr-word .tr-reg-tag { margin-left: 0; }
+.tr-word-detail { margin-top: 0.8rem; display: grid; gap: 0.6rem; font-size: 0.92rem; }
+.tr-word-detail code, .tr-breakdown code {
+  padding: 0.05rem 0.35rem; border-radius: 4px; background: var(--green-dim); font-family: var(--mono); font-size: 0.86em; color: var(--green-hi);
+}
+.tr-part { display: inline-block; margin: 0.1rem 0.7rem 0.1rem 0; }
+.tr-alts-head { margin-bottom: 0.35rem; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+.tr-alts .tr-entries { margin-bottom: 0; }
+.tr-low { display: grid; gap: 0.45rem; }
+.tr-low-head { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
+.tr-draft { padding-left: 0.75rem; border-left: 2px dashed rgba(251, 191, 36, 0.5); color: var(--text-dim); font-style: italic; }
+.tr-low-foot { font-size: 0.8rem; color: var(--text-faint); }
 .tr-similar {
   margin-top: 1rem;
   padding: 1.1rem 1.2rem;

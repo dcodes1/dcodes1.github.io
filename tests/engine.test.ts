@@ -169,7 +169,8 @@ describe('morphology (built forms, cited rules)', () => {
     const r = T('my brothers');
     expect(r.text).toBe('barodarhoyam');
     expect(r.evidence).toBe('derived');
-    expect(r.confidence).toBeLessThan(0.75);
+    expect(r.confidence).toBeLessThan(0.8);
+    expect(r.tier).toBe('medium');
   });
 
   test('leave-one-out: hiding each printed conjugation, the engine rebuilds ≥ 85% from rules and the rest of the table', () => {
@@ -236,5 +237,54 @@ describe('honesty', () => {
   test('deterministic: same input, same output', () => {
     const a = new Engine(index), b = new Engine(index);
     for (const s of sentences) expect(a.translate(s)).toEqual(b.translate(s));
+  });
+});
+
+describe('confidence tiers (Engine.scored)', () => {
+  test('printed entries are high confidence', () => {
+    expect(T('Good morning')).toMatchObject({ status: 'exact', tier: 'high', confidence: 1 });
+  });
+  test('one sourced word with regular inflection is high', () => {
+    for (const s of ['We bought', 'They buy', 'my book', 'three books']) {
+      const r = T(s);
+      expect(r.status, s).toBe('grammar');
+      expect(r.tier, s).toBe('high');
+      expect(r.confidence, s).toBeGreaterThanOrEqual(0.8);
+    }
+  });
+  test('each extra content word and each ambiguous word lowers it', () => {
+    const two = T('the big house'), many = T('I live in Israel now');
+    expect(two.tier).toBe('medium');
+    expect(many.tier).toBe('low');
+    expect(many.text).toBe('Man aknun ba Isroel zindagi mekunam');      // the draft is still returned
+    expect(many.factors?.join(' ')).toMatch(/content words/);
+    expect(many.factors?.join(' ')).toMatch(/more than one word for/);
+  });
+  test('place names are not counted as a word choice', () => {
+    expect(T('I live in Israel now').factors?.join(' ')).toMatch(/^.*2 content words/);
+  });
+  test('a form with one printed example is flagged and kept out of the high tier', () => {
+    const r = T('my brothers');
+    expect(r.steps.some((s) => s.weak)).toBe(true);
+    expect(r.tier).not.toBe('high');
+  });
+  test('no answer → tier none, confidence 0', () => {
+    expect(T('xyzzy plorp')).toMatchObject({ status: 'none', tier: 'none', confidence: 0 });
+  });
+  test('every answer has a tier and its reasons', () => {
+    for (const s of ['water', 'I go', 'Where are you from?', 'He has six books', 'grandfahter']) {
+      const r = T(s);
+      expect(['high', 'medium', 'low'], s).toContain(r.tier);
+      expect(r.factors?.length, s).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('fractions are answered only when printed', () => {
+  test('one third is the printed word, never number + ordinal', () => {
+    expect(T('one third').text).toBe('seyak');
+    expect(T('three fourths').status).toBe('none');       // used to build "seta chorum"
+    expect(T('twenty third').text).toBe('bistu seyum');
+    expect(T('two hundred first').text).toBe('dusadu yakum');
   });
 });

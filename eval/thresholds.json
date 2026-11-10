@@ -1,5 +1,7 @@
 {
-  "comment": "CI fails if the held-out evaluation drops below these. Raise them when the engine improves; never lower them to make a change pass.",
+  "comment": "CI fails if the held-out evaluation drops below these. Raise them when the engine improves; never lower them to make a change pass. minPrecisionBuiltHigh / maxPrecisionBuiltLow keep the confidence tiers honest: rule-built answers in the high tier must be right at least this often, and the low tier must stay the unreliable one.",
   "minAccuracy": 0.135,
-  "minPrecision": 0.59
+  "minPrecision": 0.6,
+  "minPrecisionBuiltHigh": 0.85,
+  "maxPrecisionBuiltLow": 0.3
 }

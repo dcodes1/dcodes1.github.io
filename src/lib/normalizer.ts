@@ -201,6 +201,33 @@ const TO_CYR: Record<string, string> = {
 };
 const LAT_VOWELS = new Set('aeiouü');
 
+// ── Output scripts ──────────────────────────────────────────────────────────
+/**
+ * Scripts the translator can DISPLAY Buxori in. The source is Latin only, so every other
+ * script is a transliteration of the source's Latin spelling.
+ *
+ * Hebrew output is deliberately absent: Hebrew-script Buxori usually leaves vowels
+ * unwritten, so a spelling generated from Latin could not be checked against anything.
+ * To add it once verified Hebrew-script data exists (for example a `hebrew_form` column
+ * in the TSV, compiled into the index), register a converter here:
+ *
+ *     registerOutputScript('hebrew', (latin) => lookupVerifiedHebrew(latin) ?? latin);
+ *
+ * and add 'hebrew' to the script buttons in src/app/App.tsx. Nothing else needs to change:
+ * all Buxori shown in the UI goes through toScript().
+ */
+export type OutputScript = 'latin' | 'cyrillic' | 'hebrew';
+const OUTPUT_CONVERTERS = new Map<OutputScript, (latin: string) => string>([['latin', (s) => s]]);
+export function registerOutputScript(script: OutputScript, convert: (latin: string) => string): void {
+  OUTPUT_CONVERTERS.set(script, convert);
+}
+/** Scripts that have a converter registered (the UI offers only these). */
+export const outputScripts = (): OutputScript[] => [...OUTPUT_CONVERTERS.keys()];
+/** Buxori in the source's Latin spelling → the chosen display script. Unregistered scripts fall back to Latin. */
+export function toScript(latin: string, script: OutputScript): string {
+  return (OUTPUT_CONVERTERS.get(script) ?? ((x: string) => x))(latin);
+}
+
 /**
  * Any supported spelling → Tajik Cyrillic, word by word, keeping a capital first
  * letter. Round-trips: canonicalKey(toCyrillic(k)) === k for every canonical key.
@@ -324,3 +351,5 @@ export function stemFinal(word: string): 'consonant' | 'a_or_i' | 'o' | 'ü' | '
   if (last === 'ü') return 'ü';
   return 'other_vowel';
 }
+
+registerOutputScript('cyrillic', toCyrillic);

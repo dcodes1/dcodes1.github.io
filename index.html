@@ -437,6 +437,12 @@
 
 <!-- TRANSLATOR ENGINE (English → Buxori) -->
 <script src="/assets/nav.js"></script>
+<script>
+  // Offline support (sw.js): after one visit the site and the translator work without a connection.
+  if ("serviceWorker" in navigator && location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    window.addEventListener("load", function () { navigator.serviceWorker && navigator.serviceWorker.register("/sw.js").catch(function () {}); });
+  }
+</script>
 <script src="/assets/email-gate.js" defer></script>
 <!-- CLIENT-SIDE ROUTER (portfolio ⇄ /translator) -->
 <script>

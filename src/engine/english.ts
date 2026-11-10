@@ -5,7 +5,7 @@
  */
 import type { PersonNumber } from '../lib/types.ts';
 
-const IRREGULAR_VERBS: Record<string, [past: string, participle: string]> = {
+export const IRREGULAR_VERBS: Record<string, [past: string, participle: string]> = {
   be: ['was', 'been'], have: ['had', 'had'], do: ['did', 'done'], go: ['went', 'gone'], come: ['came', 'come'],
   eat: ['ate', 'eaten'], drink: ['drank', 'drunk'], see: ['saw', 'seen'], give: ['gave', 'given'], take: ['took', 'taken'],
   say: ['said', 'said'], make: ['made', 'made'], know: ['knew', 'known'], buy: ['bought', 'bought'], sell: ['sold', 'sold'],
@@ -34,7 +34,7 @@ for (const [w, lemma] of [['am', 'be'], ['is', 'be'], ['are', 'be'], ['were', 'b
   IRREGULAR_FORMS.set(w, { lemma, form: w === 'were' ? 'past' : 'present3' });
 }
 
-const IRREGULAR_PLURALS: Record<string, string> = {
+export const IRREGULAR_PLURALS: Record<string, string> = {
   children: 'child', men: 'man', women: 'woman', people: 'person', feet: 'foot', teeth: 'tooth', mice: 'mouse',
   geese: 'goose', wives: 'wife', knives: 'knife', leaves: 'leaf', loaves: 'loaf', halves: 'half', wolves: 'wolf',
   sheep: 'sheep', fish: 'fish', oxen: 'ox', brethren: 'brother', grandchildren: 'grandchild', thieves: 'thief',
@@ -223,7 +223,7 @@ export const INTENSIFIERS = new Set(['very', 'so', 'really', 'extremely', 'super
 /** English paraphrases tried when the exact wording is not in the source. */
 export const ENGLISH_SYNONYMS: Record<string, string[]> = {
   'thank you': ['thanks'], 'thank you very much': ['thanks'], hi: ['hello'], bye: ['goodbye'], 'good bye': ['goodbye'],
-  mom: ['mother'], mum: ['mother'], dad: ['father'], kid: ['child'], kids: ['children'], home: ['house'], glad: ['happy'],
+  god: ['g-d'], mom: ['mother'], mum: ['mother'], dad: ['father'], kid: ['child'], kids: ['children'], home: ['house'], glad: ['happy'],
 };
 
 export const PERSON_LABEL: Record<PersonNumber, string> = {

@@ -11,7 +11,7 @@
  * normalize what people type, so build-time and run-time keys cannot drift.
  */
 import { createHash } from 'node:crypto';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readTsv, sourceRef, type Row } from './lib/tsv.ts';
@@ -98,8 +98,21 @@ const words = (s: string) => buxKey(s).split(' ').filter(Boolean);
 const affixId = (s: string) => s as AffixId;
 
 // ═════════════════════════════════════════════════════════════════ 1. LOAD
-const { rows: allRows, raw } = readTsv(TSV_PATH);
-const rows = allRows.filter((r) => !HELD_OUT.has(r.row));
+const { rows: bookRows, raw } = readTsv(TSV_PATH);
+// Words the owner added from other sources (translator/data/missing-words.tsv, same columns).
+// Only rows with a Buxori cell are used; they are numbered from 100001 so they can never be
+// mistaken for a line of the lesson book, and their lesson says where they came from.
+const ADDITIONS_PATH = resolve(ROOT, 'translator/data/missing-words.tsv');
+const ADDITION_ROW_BASE = 100000;
+const additions = !argv[0] && existsSync(ADDITIONS_PATH)
+  ? readTsv(ADDITIONS_PATH).rows.filter((r) => r.bukhori).map((r) => ({ ...r, row: ADDITION_ROW_BASE + r.row }))
+  : [];
+const allRows = [...bookRows, ...additions];
+// Rows the source itself flags REVIEW are kept out of everything the translator uses
+// (lexicon, affixes, examples). They are listed in translator/data/review-rows.tsv for
+// the owner to check by hand; un-flag a row in the TSV to bring it back.
+const REVIEW_ROWS = allRows.filter((r) => r.review);
+const rows = allRows.filter((r) => !HELD_OUT.has(r.row) && !r.review);
 const byRow = new Map(rows.map((r) => [r.row, r]));
 const grammarRow = (title: string) => rows.find((r) => r.entryType === 'grammar' && r.section.toLowerCase() === title.toLowerCase());
 
@@ -300,6 +313,7 @@ for (const [title, re, said] of PRON_RULES) {
 const examples = new Map<ExampleId, Example>();
 const excluded: { row: number; reason: ExclusionReason }[] = [];
 const exclude = (r: Row, reason: ExclusionReason) => { excluded.push({ row: r.row, reason }); use(r, 'excluded'); };
+const seenPairs = new Set<string>();
 
 for (const r of rows) {
   if (r.entryType === 'grammar' || r.entryType === 'vocab' || r.entryType === 'paradigm') continue;
@@ -309,6 +323,10 @@ for (const r of rows) {
   if (r.entryType === 'exercise' && !PLACEHOLDER_EN.test(r.english)) { exclude(r, 'no_answer'); continue; }   // "conjugate in …: omadan"
   const placeholder = PLACEHOLDER_EN.test(r.english);
   const speaker = /spoken by ([^;,.]+)/i.exec(r.notes)?.[1]?.trim();
+  // The book repeats some sentences: keep the first printing only.
+  const pairKey = `${placeholder ? '' : glossKey(r.english)}\u0000${buxKey(r.bukhori)}`;
+  if (!placeholder && seenPairs.has(pairKey)) { exclude(r, 'duplicate'); continue; }
+  seenPairs.add(pairKey);
   const id = `e${r.row}` as ExampleId;
   examples.set(id, {
     id, bux: r.bukhori, en: placeholder ? null : r.english,
@@ -830,7 +848,7 @@ for (const a of affixes.values()) for (const al of a.allomorphs) { const f = aff
 const index: BuxoriIndex = {
   meta: {
     schemaVersion: 2,
-    source: { file: relative(ROOT, TSV_PATH), sha256: createHash('sha256').update(raw).digest('hex'), rows: allRows.length },
+    source: { file: relative(ROOT, TSV_PATH), sha256: createHash('sha256').update(raw).digest('hex'), rows: bookRows.length, ...(additions.length ? { additions: additions.length } : {}) },
     orthography: { script: 'latin', specialLetters: ['ü'], stressMarks: ['á', 'é', 'í', 'ć', 'ġ'], apostrophe: 'ayin' },
   },
   policy: { defaultRegister: 'regular', evidencePrecedence: EVIDENCE_PRECEDENCE },
@@ -841,7 +859,11 @@ const index: BuxoriIndex = {
   affixes: { entries: record(affixes), byForm: record(finalByForm), paradigms: record(paradigms) },
   syntaxRules,
   examples: record(examples),
-  excluded: [...excluded, ...[...HELD_OUT].map((row) => ({ row, reason: 'held_out' as const }))].sort((a, b) => a.row - b.row),
+  excluded: [
+    ...excluded,
+    ...REVIEW_ROWS.filter((r) => !HELD_OUT.has(r.row)).map((r) => ({ row: r.row, reason: 'review_flag' as const })),
+    ...[...HELD_OUT].map((row) => ({ row, reason: 'held_out' as const })),
+  ].sort((a, b) => a.row - b.row),
 };
 
 // Every row must have been placed somewhere.
@@ -850,6 +872,14 @@ if (missing.length) throw new Error(`Unaccounted TSV rows: ${missing.slice(0, 20
 
 mkdirSync(dirname(OUT_PATH), { recursive: true });
 writeFileSync(OUT_PATH, JSON.stringify(index));
+// The REVIEW list, for manual checking (only for the real build, not the held-out one).
+if (!EXCLUDE_ARG) {
+  const cell = (x: string | number) => String(x).replace(/[\t\r\n]+/g, ' ');
+  writeFileSync(resolve(ROOT, 'translator/data/review-rows.tsv'), [
+    ['tsv_row', 'page', 'lesson', 'entry_type', 'section', 'english', 'bukhori', 'spoken_form', 'alt_forms', 'notes'].join('\t'),
+    ...REVIEW_ROWS.map((r) => [r.row, r.page, r.lesson, r.entryType, r.section, r.english, r.bukhori, r.spoken, r.alt, r.notes].map(cell).join('\t')),
+  ].join('\n') + '\n');
+}
 const count = (d: Destination) => [...used.values()].filter((s) => s.has(d)).length;
 console.log(JSON.stringify({
   out: relative(ROOT, OUT_PATH), bytes: Buffer.byteLength(JSON.stringify(index)),

@@ -15,7 +15,7 @@
 import { glossKey, similarity } from '../lib/normalizer.ts';
 import type { BuxoriIndex, Evidence, Example, RootEntry } from '../lib/types.ts';
 import {
-  ARTICLES, BE_FORMS, DEMONSTRATIVES, ENGLISH_SYNONYMS, INTENSIFIERS, NEGATORS, OBJECT_PRONOUNS, POSSESSIVE_DETERMINERS, SUBJECT_PRONOUNS, WH_WORDS,
+  ARTICLES, BE_FORMS, DEMONSTRATIVES, ENGLISH_SYNONYMS, INTENSIFIERS, NEGATORS, NUMBER_WORDS, OBJECT_PRONOUNS, POSSESSIVE_DETERMINERS, SUBJECT_PRONOUNS, WH_WORDS,
   analyze, cleanEnglish, expandContractions, normalizeInformal, nounCandidates, verbCandidates,
 } from './english.ts';
 import { Grammar, type Draft, type Variant } from './grammar.ts';
@@ -54,7 +54,18 @@ export interface Translation {
    * so they are shown as study hints only (status stays "none").
    */
   hint?: { kind: 'partial' | 'words'; text: string; variants: { register: 'informal' | 'formal'; text: string }[] };
+  /**
+   * How far to trust `text`: high and medium are shown as the translation, low is shown as
+   * a draft with its word-by-word breakdown. Set by Engine.scored from `confidence`.
+   */
+  tier?: Tier;
+  /** What the confidence was built from, in plain words. */
+  factors?: string[];
 }
+export type Tier = 'high' | 'medium' | 'low' | 'none';
+/** Confidence cut-offs (see Engine.scored and translator/README.md for the measurement). */
+export const TIER_HIGH = 0.8;
+export const TIER_LOW = 0.55;
 
 const EVIDENCE_ORDER: Evidence[] = ['borrowed', 'derived', 'attested', 'stated'];
 const weakest = (e: Evidence[]): Evidence | null => (e.length ? EVIDENCE_ORDER.find((x) => e.includes(x)) ?? null : null);
@@ -134,9 +145,67 @@ export class Engine {
       }
     }
     if (res.status === 'partial' || res.status === 'compositional') res = this.demote(res);
+    res = this.scored(res, res.matchedEnglish && res.status !== 'exact' && res.status !== 'none' ? res.matchedEnglish : raw);
     if (informal.changes.length) res = { ...res, notes: [`Read as: “${raw}”.`, ...res.notes] };
     this.cache.set(raw, res);
     return res;
+  }
+
+  /**
+   * Final confidence and tier. The grammar's own number says how sure the FORMS are
+   * (printed table > stated rule > derived). On the held-out set, though, wrong answers
+   * come almost entirely from WORD CHOICE: every content word picked from the dictionary
+   * may be the wrong sense, or the phrase may be an idiom the book says differently
+   * ("Good evening" is Ramsho tüvo!, not "good" + "evening"). So the score is
+   *
+   *   (0.8 + 0.2 × form confidence) × 0.7 per content word after the first
+   *       × 0.75 per word the source has several translations for
+   *       × 0.5 for one inflected word on its own, or a clause inside a clause
+   *
+   * and tiers are cut at 0.8 (high) and 0.55 (low). See eval/report.json for the measured
+   * precision of each tier. Low-tier output is shown as a draft, not as a translation.
+   */
+  private scored(res: Translation, english: string): Translation {
+    if (res.status === 'none' || !res.text) return { ...res, confidence: 0, tier: 'none', factors: [] };
+    if (res.status === 'exact') {
+      // Rows numbered above 100000 are the owner's additions (translator/data/missing-words.tsv), not the book.
+      const added = res.rows.length > 0 && res.rows.every((r) => r > 100000);
+      return added
+        ? { ...res, tier: 'high', factors: ['added by the site owner from another source'], notes: ['This entry was added by the site owner from another source; it is not printed in the lesson book.', ...res.notes] }
+        : { ...res, tier: 'high', factors: ['printed in the source'] };
+    }
+    const input = analyze(english);
+    const formLabel = res.evidence === 'attested' ? 'printed forms' : res.evidence === 'stated' ? 'stated rules' : 'forms derived by rule';
+    // Forms are rarely the problem (derived conjugations were right 20 of 21 times held-out),
+    // so the form confidence only moves the score between 0.8 and 1.
+    let c = 0.8 + 0.2 * res.confidence;
+    const factors: string[] = [formLabel];
+    // …unless the grammar itself flags a form as shaky (one printed example, an unprinted irregular).
+    if (res.steps.some((st) => st.weak)) { c *= 0.75; factors.push('a form with only one printed example or an unprinted irregular pattern'); }
+    const kept = new Set((/^Kept as written \(names\): (.*)\.$/.exec(res.notes.find((n) => n.startsWith('Kept as written')) ?? '')?.[1] ?? '').toLowerCase().split(', '));
+    const content: string[] = [];
+    input.tokens.forEach((t, i) => {
+      if (FUNCTION_WORDS.has(t) || t === "'s" || t === 'please' || kept.has(t) || parseNumber(input.tokens, i) || NUMBER_WORDS[t] !== undefined) return;
+      if (t === 'used' && input.tokens[i + 1] === 'to') return;
+      if (this.lex.roots(t)[0]?.pos === 'proper_noun') return;   // place and personal names are not a sense choice
+      content.push(t);
+    });
+    if (content.length > 1) { c *= 0.7 ** (content.length - 1); factors.push(`${content.length} content words, each a separate word choice`); }
+    const ambiguous = content.filter((w) => this.senseCount(w) > 1);
+    if (ambiguous.length) { c *= 0.75 ** ambiguous.length; factors.push(`the source has more than one word for ${ambiguous.map((w) => `“${w}”`).join(', ')}`); }
+    if (input.tokens.length === 1 && content.length === 1) { c *= 0.5; factors.push('one word on its own: its sense cannot be checked against a sentence'); }
+    if (input.tokens.slice(1).some((t) => t === 'who' || t === 'which' || t === 'that' || t === 'whom')) { c *= 0.5; factors.push('a clause inside a clause'); }
+    if (res.status === 'fuzzy') { c = Math.min(c * 0.85, TIER_HIGH - 0.01); factors.push('spelling was corrected or matched approximately'); }
+    c = Math.round(Math.min(c, 0.98) * 100) / 100;
+    return { ...res, confidence: c, tier: c >= TIER_HIGH ? 'high' : c >= TIER_LOW ? 'medium' : 'low', factors };
+  }
+
+  /** How many different source words answer this English word (in any inflected form). */
+  private senseCount(w: string): number {
+    const ids = new Set<string>();
+    const lemmas = new Set([w, ...nounCandidates(w).map((c) => c.lemma), ...verbCandidates(w).map((c) => c.lemma)]);
+    for (const l of lemmas) for (const r of this.lex.roots(l)) if (!r.glosses.find((g) => g.key === glossKey(l))?.qualifiers?.length) ids.add(r.lemma.key);
+    return ids.size;
   }
 
   /**
@@ -297,6 +366,9 @@ export class Engine {
       if (!b) return null;
       return this.result('grammar', b.text, { steps: b.steps, evidence: [b.evidence], confidence: b.evidence === 'stated' ? 0.9 : 0.7, rows: b.steps.flatMap((x) => x.rows ?? []), raw });
     }
+    // Fractions ("one third", "three fourths") are only answered when printed: the source
+    // gives four of them and no rule, and number + ordinal would build nonsense (seta chorum).
+    if (input.tokens.length === 2 && NUMBER_WORDS[input.tokens[0]!] !== undefined && /^(half|halves|third|fourth|quarter|fifth|sixth|seventh|eighth|ninth|tenth)s?$/.test(input.tokens[1]!)) return null;
     // "to taste": an English infinitive whose verb is not in the source has nothing to build from
     if (input.tokens[0] === 'to' && input.tokens.length <= 3) return null;
     let variants: Variant[] | null = null;

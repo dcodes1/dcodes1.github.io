@@ -342,13 +342,16 @@ export type ExclusionReason =
   | 'no_answer'                 // exercise prompt, answer not in source
   | 'fill_in_stub'              // "Man xarid..." templates
   | 'not_transcribed'           // copyrighted text omitted at source
-  | 'non_buxori_language';
+  | 'non_buxori_language'
+  | 'review_flag'               // source flag REVIEW: listed in translator/data/review-rows.tsv, not used
+  | 'duplicate';                // same English + Buxori as an earlier example row
 
 export interface BuxoriIndex {
   meta: {
     schemaVersion: 2;
     /** Same TSV + same compiler ⇒ byte-identical index (no timestamps). */
-    source: { file: string; sha256: string; rows: number };
+    /** `additions`: rows used from translator/data/missing-words.tsv (owner-supplied, not from the book; TSV row ≥ 100001). */
+    source: { file: string; sha256: string; rows: number; additions?: number };
     orthography: {
       script: 'latin';          // no Cyrillic / Hebrew / IPA in the source
       specialLetters: ['ü'];

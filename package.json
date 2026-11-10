@@ -2,7 +2,7 @@
   "name": "davidmilov-site",
   "private": true,
   "type": "module",
-  "description": "davidmilov.com — portfolio + Buxori translator. The live site is served as static files by GitHub Pages; this package holds the TypeScript data pipeline (and future React app).",
+  "description": "davidmilov.com — portfolio + Buxori translator. The live site is served as static files by GitHub Pages; this package holds the TypeScript data pipeline, the translation engines, the React app and their tests.",
   "engines": {
     "node": ">=22.18"
   },
@@ -11,10 +11,11 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p .",
     "eval": "node eval/evaluate.ts",
-    "check": "npm run typecheck && npm run compile && npm test && npm run eval -- --check && npm run build && npm run e2e",
+    "check": "npm run typecheck && npm run compile && npm test && npm run eval -- --check && npm run eval:reverse -- --check && npm run build && npm run e2e",
     "dev": "vite",
     "build": "vite build",
-    "e2e": "node tests/e2e/site.e2e.mjs"
+    "e2e": "node tests/e2e/site.e2e.mjs",
+    "eval:reverse": "node eval/evaluate-reverse.ts"
   },
   "dependencies": {
     "react": "19.2.9",

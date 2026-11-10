@@ -2,19 +2,19 @@
  "report": {
   "engine": "src/engine (held-out index)",
   "items": 270,
-  "answered": 62,
+  "answered": 61,
   "correct": 37,
   "accuracy": 0.137,
-  "precision": 0.597,
-  "chrfAnswered": 0.709,
+  "precision": 0.607,
+  "chrfAnswered": 0.721,
   "chrfAll": 0.163,
   "byStatus": {
    "grammar": {
-    "n": 53,
+    "n": 52,
     "correct": 36
    },
    "none": {
-    "n": 208,
+    "n": 209,
     "correct": 0
    },
    "exact": {
@@ -23,6 +23,29 @@
    }
   }
  },
+ "tiers": {
+  "built:high": {
+   "n": 35,
+   "correct": 31,
+   "precision": 0.886
+  },
+  "built:low": {
+   "n": 12,
+   "correct": 1,
+   "precision": 0.083
+  },
+  "built:medium": {
+   "n": 5,
+   "correct": 4,
+   "precision": 0.8
+  },
+  "printed": {
+   "n": 9,
+   "correct": 1,
+   "precision": 0.111
+  }
+ },
+ "shownPrecision": 0.875,
  "variantHits": 0,
  "legacy": {
   "engine": "legacy engine.js (index_train.json)",
@@ -60,6 +83,8 @@
    ],
    "bux": "Man giriftam",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": false,
    "chrf": 0.896
   },
@@ -70,6 +95,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -80,6 +107,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -90,6 +119,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -100,6 +131,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -111,6 +144,8 @@
    ],
    "bux": "Tu chand shohel dori?",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.51,
    "ok": false,
    "chrf": 0.358
   },
@@ -119,8 +154,10 @@
    "refs": [
     "seyak"
    ],
-   "bux": "chorum",
-   "status": "grammar",
+   "bux": null,
+   "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -131,6 +168,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -141,6 +180,8 @@
    ],
    "bux": "panjum",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.98,
    "ok": true,
    "chrf": 1
   },
@@ -151,6 +192,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -162,6 +205,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -173,6 +218,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -184,6 +231,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -194,6 +243,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -204,6 +255,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -214,6 +267,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -224,6 +279,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -234,6 +291,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -244,6 +303,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -254,6 +315,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -267,6 +330,8 @@
    ],
    "bux": "padarashon",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.98,
    "ok": true,
    "chrf": 1
   },
@@ -280,6 +345,8 @@
    ],
    "bux": "padarashon",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.98,
    "ok": true,
    "chrf": 1
   },
@@ -293,6 +360,8 @@
    ],
    "bux": "padarashon",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.98,
    "ok": true,
    "chrf": 1
   },
@@ -303,6 +372,8 @@
    ],
    "bux": "ochamosh",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.97,
    "ok": false,
    "chrf": 0.143
   },
@@ -313,6 +384,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -323,6 +396,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -336,6 +411,8 @@
    ],
    "bux": "padarashon",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.98,
    "ok": true,
    "chrf": 1
   },
@@ -346,6 +423,8 @@
    ],
    "bux": "shavi naghz",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.51,
    "ok": false,
    "chrf": 0.085
   },
@@ -356,6 +435,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -366,6 +447,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -376,6 +459,8 @@
    ],
    "bux": "Man medonam",
    "status": "grammar",
+   "tier": "medium",
+   "confidence": 0.72,
    "ok": true,
    "chrf": 1
   },
@@ -386,6 +471,8 @@
    ],
    "bux": "Ü namedonad",
    "status": "grammar",
+   "tier": "medium",
+   "confidence": 0.69,
    "ok": true,
    "chrf": 1
   },
@@ -396,6 +483,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -407,6 +496,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -418,6 +509,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -429,6 +522,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -439,6 +534,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -449,6 +546,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -459,6 +558,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -471,6 +572,8 @@
    ],
    "bux": "Biyo!",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.46,
    "ok": true,
    "chrf": 1
   },
@@ -483,6 +586,8 @@
    ],
    "bux": "Biyoed!",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.46,
    "ok": false,
    "chrf": 0.565
   },
@@ -495,6 +600,8 @@
    ],
    "bux": "Biyoeton!",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.46,
    "ok": false,
    "chrf": 0.495
   },
@@ -507,6 +614,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -519,6 +628,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -531,6 +642,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -541,6 +654,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -551,6 +666,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -561,6 +678,8 @@
    ],
    "bux": "Inho merun",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -573,6 +692,8 @@
    ],
    "bux": "Tu meshi",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -585,6 +706,8 @@
    ],
    "bux": "Shumo meshed",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -597,6 +720,8 @@
    ],
    "bux": "Shumo mesheton",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -607,6 +732,8 @@
    ],
    "bux": "Man nadoram",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -617,6 +744,8 @@
    ],
    "bux": "Inho dorand",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.95,
    "ok": true,
    "chrf": 1
   },
@@ -627,6 +756,8 @@
    ],
    "bux": "Inho namebiyon",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -637,6 +768,8 @@
    ],
    "bux": "Inho nameshun",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -648,6 +781,8 @@
    ],
    "bux": "Shumo chand shohel dored?",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.51,
    "ok": false,
    "chrf": 0.668
   },
@@ -658,6 +793,8 @@
    ],
    "bux": "yakta sev",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.98,
    "ok": true,
    "chrf": 1
   },
@@ -668,6 +805,8 @@
    ],
    "bux": "duta anor",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.98,
    "ok": true,
    "chrf": 1
   },
@@ -678,6 +817,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -688,6 +829,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -698,6 +841,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -708,6 +853,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -718,6 +865,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -728,6 +877,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -738,6 +889,8 @@
    ],
    "bux": "Mo nadodem",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -748,6 +901,8 @@
    ],
    "bux": "Man raftam",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.95,
    "ok": true,
    "chrf": 1
   },
@@ -758,6 +913,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -768,6 +925,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -778,6 +937,8 @@
    ],
    "bux": "maktavi doti",
    "status": "grammar",
+   "tier": "medium",
+   "confidence": 0.69,
    "ok": false,
    "chrf": 0.085
   },
@@ -788,6 +949,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -798,6 +961,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -808,6 +973,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -818,6 +985,8 @@
    ],
    "bux": "istakonho",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.37,
    "ok": false,
    "chrf": 0.106
   },
@@ -829,6 +998,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -839,6 +1010,8 @@
    ],
    "bux": "Peshi",
    "status": "exact",
+   "tier": "high",
+   "confidence": 1,
    "ok": false,
    "chrf": 0
   },
@@ -849,6 +1022,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -859,6 +1034,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -869,6 +1046,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -879,6 +1058,8 @@
    ],
    "bux": "es",
    "status": "exact",
+   "tier": "high",
+   "confidence": 1,
    "ok": false,
    "chrf": 0
   },
@@ -889,6 +1070,8 @@
    ],
    "bux": "Inho kor namekunand",
    "status": "grammar",
+   "tier": "medium",
+   "confidence": 0.69,
    "ok": true,
    "chrf": 1
   },
@@ -899,6 +1082,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -909,6 +1094,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -919,6 +1106,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -929,6 +1118,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -939,6 +1130,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -949,6 +1142,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -960,6 +1155,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -970,6 +1167,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -981,6 +1180,8 @@
    ],
    "bux": "Ü rafsode",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -992,6 +1193,8 @@
    ],
    "bux": "Ü rafsode",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -1003,6 +1206,8 @@
    ],
    "bux": "Mo rafsodim",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -1014,6 +1219,8 @@
    ],
    "bux": "Mo rafsodim",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -1024,6 +1231,8 @@
    ],
    "bux": "Ü gap zasode",
    "status": "grammar",
+   "tier": "medium",
+   "confidence": 0.69,
    "ok": true,
    "chrf": 1
   },
@@ -1034,6 +1243,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1044,6 +1255,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1054,6 +1267,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1064,6 +1279,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1074,6 +1291,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1084,6 +1303,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1094,6 +1315,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1104,6 +1327,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1114,6 +1339,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1124,6 +1351,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1134,6 +1363,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1144,6 +1375,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1154,6 +1387,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1165,6 +1400,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1175,6 +1412,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1185,6 +1424,8 @@
    ],
    "bux": "Chi so'atsoz?",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": false,
    "chrf": 0.293
   },
@@ -1195,6 +1436,8 @@
    ],
    "bux": "Chi jomshigar?",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": false,
    "chrf": 0.391
   },
@@ -1205,6 +1448,8 @@
    ],
    "bux": "Man in kinoya zehn memondam",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.49,
    "ok": false,
    "chrf": 0.591
   },
@@ -1216,6 +1461,8 @@
    ],
    "bux": "Tu merafti",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.95,
    "ok": true,
    "chrf": 1
   },
@@ -1227,6 +1474,8 @@
    ],
    "bux": "Shumo merafted",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.95,
    "ok": true,
    "chrf": 1
   },
@@ -1237,6 +1486,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1247,6 +1498,8 @@
    ],
    "bux": "Kalo az Bukhara. Man qudoshona namedonam. Kasho vay bisyor boy-badavlati inhoya megun.",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.03,
    "ok": false,
    "chrf": 0.395
   },
@@ -1257,6 +1510,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1267,6 +1522,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1277,6 +1534,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1287,6 +1546,8 @@
    ],
    "bux": "asilzoda",
    "status": "exact",
+   "tier": "high",
+   "confidence": 1,
    "ok": false,
    "chrf": 0.495
   },
@@ -1297,6 +1558,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1307,6 +1570,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1317,6 +1582,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1327,6 +1594,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1337,6 +1606,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1347,6 +1618,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1357,6 +1630,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1367,6 +1642,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1377,6 +1654,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1387,6 +1666,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1397,6 +1678,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1407,6 +1690,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1417,6 +1702,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1429,6 +1716,8 @@
    ],
    "bux": "Tu nagufta budi",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -1441,6 +1730,8 @@
    ],
    "bux": "Shumo nagufta buded",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -1453,6 +1744,8 @@
    ],
    "bux": "Shumo nagufta budeton",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -1463,6 +1756,8 @@
    ],
    "bux": "Man gufta budam",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -1473,6 +1768,8 @@
    ],
    "bux": "Mo gufta budem",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.93,
    "ok": true,
    "chrf": 1
   },
@@ -1483,6 +1780,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1493,6 +1792,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1503,6 +1804,8 @@
    ],
    "bux": "Korxona",
    "status": "exact",
+   "tier": "high",
+   "confidence": 1,
    "ok": false,
    "chrf": 0.065
   },
@@ -1513,6 +1816,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1523,6 +1828,8 @@
    ],
    "bux": "Aknun",
    "status": "exact",
+   "tier": "high",
+   "confidence": 1,
    "ok": true,
    "chrf": 1
   },
@@ -1533,6 +1840,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1543,6 +1852,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1553,6 +1864,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1563,6 +1876,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1573,6 +1888,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1583,6 +1900,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1594,6 +1913,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1604,6 +1925,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1614,6 +1937,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1624,6 +1949,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1634,6 +1961,8 @@
    ],
    "bux": "Azak",
    "status": "exact",
+   "tier": "high",
+   "confidence": 1,
    "ok": false,
    "chrf": 0.078
   },
@@ -1644,6 +1973,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1654,6 +1985,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1664,6 +1997,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1674,6 +2009,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1684,6 +2021,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1694,6 +2033,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1704,6 +2045,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1714,6 +2057,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1725,6 +2070,8 @@
    ],
    "bux": "Ü rafte",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.95,
    "ok": true,
    "chrf": 1
   },
@@ -1736,6 +2083,8 @@
    ],
    "bux": "Ü rafte",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.95,
    "ok": true,
    "chrf": 1
   },
@@ -1746,6 +2095,8 @@
    ],
    "bux": "Man mahelo kardim",
    "status": "grammar",
+   "tier": "high",
+   "confidence": 0.97,
    "ok": true,
    "chrf": 1
   },
@@ -1756,6 +2107,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1766,6 +2119,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1776,6 +2131,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1786,6 +2143,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1796,6 +2155,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1806,6 +2167,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1816,6 +2179,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1826,6 +2191,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1836,6 +2203,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1846,6 +2215,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1856,6 +2227,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1866,6 +2239,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1877,6 +2252,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1887,6 +2264,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1897,6 +2276,8 @@
    ],
    "bux": "qariv",
    "status": "exact",
+   "tier": "high",
+   "confidence": 1,
    "ok": false,
    "chrf": 0.045
   },
@@ -1907,6 +2288,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1917,6 +2300,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1927,6 +2312,8 @@
    ],
    "bux": "Dud kardan",
    "status": "exact",
+   "tier": "high",
+   "confidence": 1,
    "ok": false,
    "chrf": 0.307
   },
@@ -1938,6 +2325,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1948,6 +2337,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1958,6 +2349,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1968,6 +2361,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1978,6 +2373,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1988,6 +2385,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -1998,6 +2397,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2008,6 +2409,8 @@
    ],
    "bux": "Ki mard xonaya padarama mondak",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.16,
    "ok": false,
    "chrf": 0.274
   },
@@ -2018,6 +2421,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2028,6 +2433,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2038,6 +2445,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2048,6 +2457,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2058,6 +2469,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2068,6 +2481,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2078,6 +2493,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2088,6 +2505,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2098,6 +2517,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2108,6 +2529,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2118,6 +2541,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2128,6 +2553,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2138,6 +2565,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2148,6 +2577,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2158,6 +2589,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2168,6 +2601,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2178,6 +2613,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2188,6 +2625,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2198,6 +2637,8 @@
    ],
    "bux": "Man baxtnok shudam",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.49,
    "ok": false,
    "chrf": 0.195
   },
@@ -2208,6 +2649,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2218,6 +2661,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2228,6 +2673,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2238,6 +2685,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2248,6 +2697,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2258,6 +2709,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2268,6 +2721,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2278,6 +2733,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2288,6 +2745,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2298,6 +2757,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2308,6 +2769,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2318,6 +2781,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2328,6 +2793,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2338,6 +2805,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2348,6 +2817,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2358,6 +2829,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2368,6 +2841,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2378,6 +2853,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2388,6 +2865,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2398,6 +2877,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2408,6 +2889,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2418,6 +2901,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2428,6 +2913,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2438,6 +2925,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2448,6 +2937,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2458,6 +2949,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2468,6 +2961,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2478,6 +2973,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2489,6 +2986,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2500,6 +2999,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2510,6 +3011,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2521,6 +3024,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2531,6 +3036,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2541,6 +3048,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2551,6 +3060,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2561,6 +3072,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2571,6 +3084,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2581,6 +3096,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2592,6 +3109,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2602,6 +3121,8 @@
    ],
    "bux": "Manuho yoftan",
    "status": "exact",
+   "tier": "high",
+   "confidence": 1,
    "ok": false,
    "chrf": 0.141
   },
@@ -2612,6 +3133,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2622,6 +3145,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2632,6 +3157,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2642,6 +3169,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2652,6 +3181,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2662,6 +3193,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2672,6 +3205,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2682,6 +3217,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2692,6 +3229,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2702,6 +3241,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2712,6 +3253,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2722,6 +3265,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2732,6 +3277,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2742,6 +3289,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2752,6 +3301,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2762,6 +3313,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2772,6 +3325,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2782,6 +3337,8 @@
    ],
    "bux": "rüsh hashonoyi baxtnok",
    "status": "grammar",
+   "tier": "low",
+   "confidence": 0.36,
    "ok": false,
    "chrf": 0.303
   },
@@ -2792,6 +3349,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2802,6 +3361,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   },
@@ -2812,6 +3373,8 @@
    ],
    "bux": null,
    "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
    "chrf": 0
   }

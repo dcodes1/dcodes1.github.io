@@ -1,0 +1,2756 @@
+{
+ "report": {
+  "items": 270,
+  "answered": 67,
+  "correct": 37,
+  "accuracy": 0.137,
+  "precision": 0.552,
+  "chrfAnswered": 0.676,
+  "byTier": {
+   "built:high": {
+    "n": 44,
+    "correct": 32,
+    "precision": 0.727
+   },
+   "built:low": {
+    "n": 8,
+    "correct": 0,
+    "precision": 0
+   },
+   "built:medium": {
+    "n": 8,
+    "correct": 3,
+    "precision": 0.375
+   },
+   "printed": {
+    "n": 7,
+    "correct": 2,
+    "precision": 0.286
+   }
+  },
+  "byType": {
+   "example": {
+    "n": 39,
+    "correct": 30,
+    "precision": 0.769
+   },
+   "phrase": {
+    "n": 13,
+    "correct": 4,
+    "precision": 0.308
+   },
+   "proverb": {
+    "n": 2,
+    "correct": 0,
+    "precision": 0
+   },
+   "vocab": {
+    "n": 13,
+    "correct": 3,
+    "precision": 0.231
+   }
+  }
+ },
+ "predictions": [
+  {
+   "bux": "ġiriftam",
+   "en": "I took",
+   "type": "example",
+   "out": "I took.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "se",
+   "en": "three",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "hashtod",
+   "en": "eighty",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "sesad",
+   "en": "three hundred",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "hazor",
+   "en": "thousand",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Chand pul dored?",
+   "en": "How much money do you have?",
+   "type": "phrase",
+   "out": "How much money do you have?",
+   "status": "built",
+   "tier": "medium",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "seyak",
+   "en": "one third (1/3)",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "az chor se",
+   "en": "three quarters (3/4)",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "panjum",
+   "en": "fifth",
+   "type": "vocab",
+   "out": "Fifth",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Shabot",
+   "en": "Saturday",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Heshvan",
+   "en": "October",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kislev",
+   "en": "November",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ov",
+   "en": "July",
+   "type": "vocab",
+   "out": "water",
+   "status": "exact",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Namozigar",
+   "en": "in the evening",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Imrüz rüzi shabot",
+   "en": "today is Saturday",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Bovo",
+   "en": "grandfather",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "'Amakbacha",
+   "en": "cousins through fathers",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Xalfa",
+   "en": "teacher",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kitov",
+   "en": "book",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "-i man",
+   "en": "my",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "dadi inho",
+   "en": "Their father",
+   "type": "example",
+   "out": "Their dad",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.2978874872357408
+  },
+  {
+   "bux": "dadi inho",
+   "en": "Their father",
+   "type": "example",
+   "out": "Their dad",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.2978874872357408
+  },
+  {
+   "bux": "dadi inho",
+   "en": "their father",
+   "type": "example",
+   "out": "Their dad",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.2978874872357408
+  },
+  {
+   "bux": "Modarshüsh",
+   "en": "her mother-in-law",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Bovomo",
+   "en": "our grandfather",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "kitovho",
+   "en": "books",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "dadi inho",
+   "en": "their father",
+   "type": "example",
+   "out": "Their dad",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.2978874872357408
+  },
+  {
+   "bux": "Ramsho tüvo!",
+   "en": "Good evening!",
+   "type": "phrase",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Naghzed?",
+   "en": "Are you all right? (polite)",
+   "type": "phrase",
+   "out": "Are you good?",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.3219978789111934
+  },
+  {
+   "bux": "Sihat boshed!",
+   "en": "Feel well!; be healthy! (polite)",
+   "type": "phrase",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Man medonam",
+   "en": "I know",
+   "type": "example",
+   "out": "I know.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Ü namedonad",
+   "en": "He/she doesn't know",
+   "type": "example",
+   "out": "He/she does not know.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Mazoltüv! Man xursandam, ki shumoya didam.",
+   "en": "Congratulations! I'm glad to see you.",
+   "type": "phrase",
+   "out": "Congratulations! I'm glad that I saw you.",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.7758270822536021
+  },
+  {
+   "bux": "Ov",
+   "en": "July",
+   "type": "vocab",
+   "out": "water",
+   "status": "exact",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Heshvan",
+   "en": "October",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kislev",
+   "en": "November",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kayho",
+   "en": "long ago",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Familiya",
+   "en": "last name",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Garm",
+   "en": "warm; hot",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "biyo",
+   "en": "come! (sing.)",
+   "type": "example",
+   "out": "Come.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "biyo",
+   "en": "come! (polite)",
+   "type": "example",
+   "out": "Come.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "biyo",
+   "en": "come! (pl.)",
+   "type": "example",
+   "out": "Come.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "shov",
+   "en": "be! (sing.)",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "shov",
+   "en": "be! (polite)",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "shov",
+   "en": "be! (pl.)",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Imshav shavi mo sahar nadorad",
+   "en": "Tonight our evening has no morning; soul mate is not aware about my love.",
+   "type": "proverb",
+   "out": "Our evening does not have an early morning tonight.",
+   "status": "built",
+   "tier": "low",
+   "ok": false,
+   "chrf": 0.392426173789817
+  },
+  {
+   "bux": "Kohu",
+   "en": "lettuce",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "inho merun",
+   "en": "They go",
+   "type": "example",
+   "out": "They go.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "tu meshi",
+   "en": "You (sing.) become",
+   "type": "example",
+   "out": "You become.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "tu meshi",
+   "en": "You (polite) become",
+   "type": "example",
+   "out": "You become.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "tu meshi",
+   "en": "You (plural) become",
+   "type": "example",
+   "out": "You become.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Man nadoram",
+   "en": "I don't have",
+   "type": "example",
+   "out": "I do not have.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Inho dorand",
+   "en": "They have",
+   "type": "example",
+   "out": "They have.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "inho namebiyon",
+   "en": "They don't come",
+   "type": "example",
+   "out": "They do not come.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "inho nameshun",
+   "en": "They don't become",
+   "type": "example",
+   "out": "They do not become.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Chand pul dored?",
+   "en": "How much money do you have? (polite)",
+   "type": "phrase",
+   "out": "How much money do you have?",
+   "status": "built",
+   "tier": "medium",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Yakta sev",
+   "en": "one apple",
+   "type": "example",
+   "out": "One apple",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Duta anor",
+   "en": "two pomegranates",
+   "type": "example",
+   "out": "Two pomegranates",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Ü shishta kitov dorad",
+   "en": "He/she has six books.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Savol",
+   "en": "question",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Farnavera",
+   "en": "great-great grandson",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kujo",
+   "en": "where?",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kani?",
+   "en": "where is?",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Budan",
+   "en": "to be",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Mo nadodem",
+   "en": "We didn't give",
+   "type": "example",
+   "out": "We did not give.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Man raftam",
+   "en": "I went",
+   "type": "example",
+   "out": "I went.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Ina baroyi ki ovarded?",
+   "en": "For whom did you bring it?",
+   "type": "phrase",
+   "out": "For whom did you bring this?",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.8728671503750445
+  },
+  {
+   "bux": "Ha, mulo Hiskiyo, sholüm! Chitüyet? Ma shumoya du sol nadidam.",
+   "en": "Hey, Mr. Hisqiyo, hello! How are you? I didn't see you for two years.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Yashivo",
+   "en": "religious school",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Bogh",
+   "en": "garden",
+   "type": "vocab",
+   "out": "park",
+   "status": "exact",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.09578544061302681
+  },
+  {
+   "bux": "Chang",
+   "en": "dust",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Bolisht",
+   "en": "pillow",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "'Aynak",
+   "en": "glasses",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Poyon",
+   "en": "down",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Yon",
+   "en": "near",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Choy",
+   "en": "tea",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Dast",
+   "en": "hand",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Telefon",
+   "en": "phone",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Yod",
+   "en": "memory",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Inho kor namekunand",
+   "en": "they don't work",
+   "type": "example",
+   "out": "They do not work.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Azbaski",
+   "en": "because",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Man ba kor ba'di du so'at merum.",
+   "en": "I will go to work after 2 hours.",
+   "type": "phrase",
+   "out": "I go an after two times to work.",
+   "status": "built",
+   "tier": "low",
+   "ok": false,
+   "chrf": 0.2670516768057847
+  },
+  {
+   "bux": "chiz",
+   "en": "thing",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Mo'ed",
+   "en": "holiday",
+   "type": "vocab",
+   "out": "You are we.",
+   "status": "built",
+   "tier": "medium",
+   "ok": false,
+   "chrf": 0.06944444444444445
+  },
+  {
+   "bux": "Nisim morak!",
+   "en": "Happy holiday!",
+   "type": "phrase",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Gham xürdan",
+   "en": "to suffer; to worry",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Taklif kardan",
+   "en": "to invite",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Maza didan",
+   "en": "to taste",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ü rafsode",
+   "en": "He/she is going",
+   "type": "example",
+   "out": "He/she is going.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Ü rafsode",
+   "en": "He/she is going",
+   "type": "example",
+   "out": "He/she is going.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Mo rafta istodayem",
+   "en": "We are going",
+   "type": "example",
+   "out": "We are going.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Mo rafta istodayem",
+   "en": "We are going",
+   "type": "example",
+   "out": "We are going.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Ü gap zasode",
+   "en": "He is talking",
+   "type": "example",
+   "out": "He/she is speaking.",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.34508810073442775
+  },
+  {
+   "bux": "televizor",
+   "en": "TV",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Shabot sholüm!",
+   "en": "Good Saturday!",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Shabot Sholüm, apa Mazol! Bet, bet boli chashm! Naghzet? Chitüyet?",
+   "en": "Good Saturday, Mrs. Mazol! Welcome! How are you?",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Rüymoli pati asil",
+   "en": "knitted downy shawl",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Rüymolcha",
+   "en": "handkerchief",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kurta",
+   "en": "shirt; women's dress",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kofsh",
+   "en": "slippers",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Girevon",
+   "en": "collar",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Parxona",
+   "en": "diadem",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Dastponi sofigi",
+   "en": "net bracelet",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Nuqra",
+   "en": "silver",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kühnadüz",
+   "en": "shoemaker",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Mahidor",
+   "en": "fisherman",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Jodugar",
+   "en": "magician",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Nasiv kunad!",
+   "en": "May you enjoy it!",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "So'atsoz so'atsozi mekunad.",
+   "en": "What the watchmaker does",
+   "type": "phrase",
+   "out": "The watchmaker does a watchmaker.",
+   "status": "built",
+   "tier": "low",
+   "ok": false,
+   "chrf": 0.7293245822568599
+  },
+  {
+   "bux": "Jomshigar jomshi mekunad.",
+   "en": "What the launderer does",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Man in kinoya medidam",
+   "en": "I used to watch this movie",
+   "type": "example",
+   "out": "I used to see this movie.",
+   "status": "built",
+   "tier": "medium",
+   "ok": false,
+   "chrf": 0.5424834369454539
+  },
+  {
+   "bux": "Tu merafti",
+   "en": "You used to go",
+   "type": "example",
+   "out": "You used to go.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Tu merafti",
+   "en": "You used to go (polite)",
+   "type": "example",
+   "out": "You used to go.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Qadri tilo zargar medonad.",
+   "en": "The jeweler knows the value of the gold.",
+   "type": "proverb",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ino kelina a Buxoro griftin. Ma qudoshona nameshinosam. Megun, ki oilayi kelin boy-badavlat.",
+   "en": "The bride is from Bukhara. I don't know their in-laws. People say that they are very rich.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "ba ya",
+   "en": "together",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Odam",
+   "en": "human",
+   "type": "vocab",
+   "out": "person",
+   "status": "exact",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.032051282051282055
+  },
+  {
+   "bux": "Odamshavanda",
+   "en": "noble person",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Asil",
+   "en": "aristocrat",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Chap",
+   "en": "left",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Dahan",
+   "en": "mouth",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kom",
+   "en": "gum",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Post",
+   "en": "skin",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Poku",
+   "en": "razor",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Gardantaxta",
+   "en": "stubborn",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Lavand",
+   "en": "lazy",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "'Ayghoq",
+   "en": "cheeky",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Jahl giriftan",
+   "en": "to become angry",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Muchi kardan",
+   "en": "to kiss",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Jegh zaned",
+   "en": "call (somebody)",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Sarash kal",
+   "en": "His head is bald.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ü odami xushchaqchaq, jigardüstu mehmondüst bud",
+   "en": "He/she was a pleasant talker, devoted to relatives and hospitable.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Tu nagufta budi",
+   "en": "You hadn't said",
+   "type": "example",
+   "out": "You had not said.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Tu nagufta budi",
+   "en": "You hadn't said (polite)",
+   "type": "example",
+   "out": "You had not said.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Tu nagufta budi",
+   "en": "You (pl.) hadn't said",
+   "type": "example",
+   "out": "You had not said.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Man gufta budam",
+   "en": "I had said",
+   "type": "example",
+   "out": "I had said.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Mo gufta budem",
+   "en": "We had said",
+   "type": "example",
+   "out": "We had said.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Az mihnati halol nest 'or!",
+   "en": "An honest work is not a shame!",
+   "type": "proverb",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "inqilov",
+   "en": "revolution",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "fabrik",
+   "en": "factory",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "akayu uka",
+   "en": "older and younger brothers",
+   "type": "vocab",
+   "out": "Older brother and younger brother",
+   "status": "built",
+   "tier": "medium",
+   "ok": false,
+   "chrf": 0.8476326858434876
+  },
+  {
+   "bux": "aknun",
+   "en": "now",
+   "type": "vocab",
+   "out": "now; soon",
+   "status": "exact",
+   "tier": "high",
+   "ok": true,
+   "chrf": 0.3511821974965229
+  },
+  {
+   "bux": "Kuchuk",
+   "en": "dog",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Murgh",
+   "en": "hen; chicken",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Murghovi",
+   "en": "duck",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Doghim",
+   "en": "fish",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kayk",
+   "en": "flea",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Charm",
+   "en": "leather",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Poyon",
+   "en": "down (feathers)",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Jazira",
+   "en": "island",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "'Umri tavi'i",
+   "en": "natural life",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kunjora",
+   "en": "mill-cake",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Makajuvori",
+   "en": "corn",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Toqat",
+   "en": "patience",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Avchi",
+   "en": "hunter",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Tavar",
+   "en": "ax",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ambur",
+   "en": "pincers; tongs",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Barkashidan",
+   "en": "to weigh",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Davidan",
+   "en": "to run",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Jumbidan",
+   "en": "to move",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Nul zadan",
+   "en": "to peck",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ü rafte",
+   "en": "He/she has gone/been",
+   "type": "example",
+   "out": "He/she has gone.",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.6601764142221674
+  },
+  {
+   "bux": "Ü rafte",
+   "en": "He/she has gone/been",
+   "type": "example",
+   "out": "He/she has gone.",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.6601764142221674
+  },
+  {
+   "bux": "Man mahelo kardim",
+   "en": "I have excused.",
+   "type": "phrase",
+   "out": "I have excused.",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Duxtaraton omade",
+   "en": "Your daughter has come.",
+   "type": "phrase",
+   "out": "Your daughter has come.",
+   "status": "built",
+   "tier": "medium",
+   "ok": true,
+   "chrf": 1
+  },
+  {
+   "bux": "Tu xudat ba man gufta budi",
+   "en": "You had told me yourself.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Sa'udo",
+   "en": "eating; meal",
+   "type": "vocab",
+   "out": "meal",
+   "status": "exact",
+   "tier": "high",
+   "ok": true,
+   "chrf": 0.21919458733027478
+  },
+  {
+   "bux": "Tuxumi saxt",
+   "en": "hard-boiled egg",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Oshi savo",
+   "en": "Saturday's pilaf",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Oshi kichiri",
+   "en": "a meal of rice, chick-peas and mung beans",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Oshi pocha",
+   "en": "a dish from leg bones",
+   "type": "vocab",
+   "out": "The meaty is a leg.",
+   "status": "built",
+   "tier": "low",
+   "ok": false,
+   "chrf": 0.12809424326833796
+  },
+  {
+   "bux": "Uroyi jaz",
+   "en": "acrid soup",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Qaymoq",
+   "en": "cream",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Birinj",
+   "en": "rice",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Qand",
+   "en": "sugar",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Sirko",
+   "en": "vinegar",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Namakdon",
+   "en": "saltcellar",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Haminqadar",
+   "en": "so much",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Taxminan",
+   "en": "approximately",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Taf",
+   "en": "steam",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Dogh",
+   "en": "sorrow; fury",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Dud",
+   "en": "smoke",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Taklif kardan",
+   "en": "to invite",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Chapa shudan",
+   "en": "to get turned upside-down",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Chindan",
+   "en": "to pick",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Girondan",
+   "en": "to fire; to light",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Garm shudan",
+   "en": "to become warm",
+   "type": "example",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Kalon kardan",
+   "en": "to raise",
+   "type": "example",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Yofta ted",
+   "en": "find and give",
+   "type": "example",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Marde, ki az xona buromad, padari man bud",
+   "en": "The man who left the house was my father.",
+   "type": "example",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Qopi xoli rost nameistad.",
+   "en": "An empty sack will not stand straight.",
+   "type": "proverb",
+   "out": "The empty vessel does not stand up.",
+   "status": "built",
+   "tier": "low",
+   "ok": false,
+   "chrf": 0.3215048741993647
+  },
+  {
+   "bux": "Eres Isroel",
+   "en": "Land of Israel",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "'Ayshu 'ishrat",
+   "en": "fun",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Hazil",
+   "en": "joke",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Shaxmatbozi",
+   "en": "chess",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Rux",
+   "en": "castle; rook",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Qimorbozi",
+   "en": "gambling",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Zanozani",
+   "en": "fighting",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Lapar",
+   "en": "duet",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Doyra",
+   "en": "tambourine; frame drum",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Umüt",
+   "en": "nations",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Süne isroel",
+   "en": "enemy of Jews",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Orel",
+   "en": "Christian",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Urus",
+   "en": "Russian",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Hundi",
+   "en": "Indian",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Samarqand",
+   "en": "Samarkand",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Buxoro",
+   "en": "Bukhara",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Man boy dodam",
+   "en": "I failed; I lost.",
+   "type": "phrase",
+   "out": "I gave rich.",
+   "status": "built",
+   "tier": "medium",
+   "ok": false,
+   "chrf": 0.05847953216374268
+  },
+  {
+   "bux": "Vaqtam choq shud",
+   "en": "I became happy.",
+   "type": "phrase",
+   "out": "My time became happy.",
+   "status": "built",
+   "tier": "low",
+   "ok": false,
+   "chrf": 0.8177503970115236
+  },
+  {
+   "bux": "Tabib",
+   "en": "healer",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Marham",
+   "en": "ointment",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Iflos",
+   "en": "filth",
+   "type": "vocab",
+   "out": "dirty",
+   "status": "exact",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.08
+  },
+  {
+   "bux": "Yara",
+   "en": "wound; abscess",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Maxov",
+   "en": "skin disease",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Zarar",
+   "en": "harm; injury",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Tutula",
+   "en": "stutterer",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Rasvo",
+   "en": "scandalous person; dirty person",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Azov dodan",
+   "en": "to hurt",
+   "type": "vocab",
+   "out": "To gnaw",
+   "status": "built",
+   "tier": "low",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Esu xayol paridan",
+   "en": "to lose memory",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Dilam rexsode",
+   "en": "I'm anxious.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Pushtam xala mezanad",
+   "en": "I feel sudden pain in my spine.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Hos vasholüm!",
+   "en": "G-d forbid!",
+   "type": "phrase",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Boyad rafta boshad",
+   "en": "he/she must have gone",
+   "type": "example",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Boyad meraft",
+   "en": "he/she had to go/should have gone",
+   "type": "example",
+   "out": "He/she must go.",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.0735128436232537
+  },
+  {
+   "bux": "Nashriyot",
+   "en": "publishing house",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Qism",
+   "en": "part; volume (of a book)",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Sarsuxan",
+   "en": "introduction; foreword",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Jumla",
+   "en": "sentence",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Mashq",
+   "en": "exercise",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Qisa kütoh",
+   "en": "briefly",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Güyoki",
+   "en": "as if",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "To hole",
+   "en": "until now",
+   "type": "vocab",
+   "out": "Up to a still",
+   "status": "built",
+   "tier": "medium",
+   "ok": false,
+   "chrf": 0.1632331419565462
+  },
+  {
+   "bux": "Haqorat",
+   "en": "abuse; insult",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Taarix",
+   "en": "history",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Fahmonda dodan",
+   "en": "to explain",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Zarb kardan",
+   "en": "to multiply",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Az dahani yak odam girifta ba mo megü",
+   "en": "He tells us from somebody's words.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Namakdon",
+   "en": "saltcellar",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Jodugar",
+   "en": "magician",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "hunarmand",
+   "en": "skillful",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "boodov",
+   "en": "polite",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "notars",
+   "en": "fearless",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "raftuomad",
+   "en": "act of visiting each other",
+   "type": "example",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Shedim",
+   "en": "devil",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Sefar Türo",
+   "en": "Torah",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ner nashomo",
+   "en": "memorial candle or lamp",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Yatim",
+   "en": "orphan",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "boodov",
+   "en": "polite",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Nashomo dodan",
+   "en": "to die",
+   "type": "vocab",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ü xovi mito did",
+   "en": "He/she died in his/her sleep.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Elohim Eres Isroel tinj boshad, miyoni podshoho sholümi aftad, hej ghama nabinem, ba Isroel arzoni shavem!",
+   "en": "May peace fall upon the land of Israel, may there be no wars between the kings, may we not see any sorrows, may we get to Israel and live there!",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Xudasha ba oini kalon dide",
+   "en": "He/she has megalomania.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ba umedi shavi haft",
+   "en": "In another lifetime.",
+   "type": "phrase",
+   "out": "At a hope of evening of seven",
+   "status": "built",
+   "tier": "low",
+   "ok": false,
+   "chrf": 0.1312644564379337
+  },
+  {
+   "bux": "Chishmash siyo rafte",
+   "en": "He/she has euphoria.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Gav a danash aftosode",
+   "en": "He/she is saying an untruth.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Üya yak güshash kar, yak güshash xar",
+   "en": "He/she is deaf in one ear and stupid as a donkey in the other.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ü binusüz",
+   "en": "He/she is a burden.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ü arina",
+   "en": "He/she is mischievous and stubborn.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ü noshud",
+   "en": "He/she is good for nothing.",
+   "type": "phrase",
+   "out": "He/she is failure.",
+   "status": "built",
+   "tier": "high",
+   "ok": false,
+   "chrf": 0.13744795669077767
+  },
+  {
+   "bux": "Üya püstash ghasp",
+   "en": "He/she is unconscionable; an unconcerned person.",
+   "type": "phrase",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ü - a rü - shona, a tag - fona",
+   "en": "He/she has a smile on the face, but holds a knife behind the back.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ü das tiyi, orinjata megira",
+   "en": "He/she is gluttonous.",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "'Ayolmand shaved!",
+   "en": "May you have many children!",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Neketon az Xudo gardad!",
+   "en": "May G-d return your good deeds to you!",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Ba simhoyi hamegi!",
+   "en": "To everybody's joy!",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Xudo 'umr tiyad ba shumo!",
+   "en": "May G-d give you a long life! (condolence)",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Shono tüvo!",
+   "en": "Happy New Year!",
+   "type": "phrase",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Osh shavad!",
+   "en": "Bon appetit!",
+   "type": "phrase",
+   "out": null,
+   "status": "gloss",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Buromadan",
+   "en": "to come out; to leave",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  },
+  {
+   "bux": "Chindan",
+   "en": "to collect; to pick up",
+   "type": "vocab",
+   "out": null,
+   "status": "none",
+   "tier": "none",
+   "ok": false,
+   "chrf": 0
+  }
+ ]
+}

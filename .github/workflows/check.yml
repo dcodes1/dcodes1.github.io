@@ -26,12 +26,14 @@ jobs:
       - name: Compiled index is up to date and reproducible
         run: |
           npm run compile
-          git diff --exit-code -- src/data/buxori-index.json
+          git diff --exit-code -- src/data/buxori-index.json translator/data/review-rows.tsv
 
       - run: npm test
 
       - name: Held-out accuracy does not regress
-        run: npm run eval -- --check
+        run: |
+          npm run eval -- --check
+          npm run eval:reverse -- --check
 
       - name: Built translator app is up to date
         run: |
