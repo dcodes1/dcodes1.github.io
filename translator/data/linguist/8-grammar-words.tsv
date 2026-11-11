@@ -1,0 +1,342 @@
+group	english	translator_has	BUXORI (fill in, or confirm / correct)	NOTES (position in the sentence, suffix or separate word, formal variant)
+subject pronouns	I	Man		
+subject pronouns	you (one person, informal)	Tu		
+subject pronouns	you (one person, polite)	Shumo		
+subject pronouns	he	Ü		
+subject pronouns	she	Ü		
+subject pronouns	it			
+subject pronouns	we	Mo		
+subject pronouns	you (several people)	Shumo		
+subject pronouns	they	Inho		
+object pronouns	me	man (built by rule)		
+object pronouns	you (object, informal)	Tu		
+object pronouns	you (object, polite)	Shumo		
+object pronouns	him	Ü (built by rule)		
+object pronouns	her	Ü (built by rule)		
+object pronouns	it (object)			
+object pronouns	us	mo (built by rule)		
+object pronouns	them	inho (built by rule)		
+"to / for" + pronoun	to me	Manba		
+"to / for" + pronoun	to you			
+"to / for" + pronoun	to him			
+"to / for" + pronoun	to her			
+"to / for" + pronoun	to us			
+"to / for" + pronoun	to them			
+"to / for" + pronoun	for me			
+"to / for" + pronoun	for you			
+"to / for" + pronoun	with me			
+"to / for" + pronoun	with you	tuyi qati (built by rule)		
+"to / for" + pronoun	with him			
+"to / for" + pronoun	from me			
+"to / for" + pronoun	about me			
+possessives	my			
+possessives	your (informal)			
+possessives	your (polite)			
+possessives	his			
+possessives	her	Ü (built by rule)		
+possessives	its			
+possessives	our			
+possessives	their			
+possessives	mine	Azini man		
+possessives	yours			
+possessives	ours			
+possessives	theirs			
+reflexive and reciprocal	myself			
+reflexive and reciprocal	yourself			
+reflexive and reciprocal	himself			
+reflexive and reciprocal	herself			
+reflexive and reciprocal	ourselves			
+reflexive and reciprocal	themselves			
+reflexive and reciprocal	each other	Yakdigar		
+reflexive and reciprocal	one another			
+reflexive and reciprocal	own (my own house)	Doshtan		
+demonstratives	this	In		
+demonstratives	that	Vay		
+demonstratives	these	Vayho		
+demonstratives	those			
+demonstratives	this one	in yak (built by rule)		
+demonstratives	that one	vay yak (built by rule)		
+demonstratives	here	Insun		
+demonstratives	there	Unsun		
+demonstratives	over there			
+demonstratives	such			
+demonstratives	so (like this)	Haminxel		
+demonstratives	the same	Yakxel		
+demonstratives	other	Digar		
+demonstratives	another			
+question words	who	Ki?		
+question words	whom			
+question words	whose			
+question words	what	Chi?		
+question words	which	Kadom?		
+question words	where	Kujo		
+question words	where to	Ba kujo? (built by rule)		
+question words	where from	Az kujo?		
+question words	when	Kay?		
+question words	why	Chuva?		
+question words	how	Chixel?		
+question words	how much	Chand?		
+question words	how many	Chandta?		
+question words	how long	Daroz chixel? (built by rule)		
+question words	how old	Kühna chixel? (built by rule)		
+question words	what kind of			
+question words	what time	Vaqt chi? (built by rule)		
+indefinites and negatives	someone	Faloni		
+indefinites and negatives	something	Kim-chi		
+indefinites and negatives	somewhere			
+indefinites and negatives	sometime			
+indefinites and negatives	somehow	Kim-chixel		
+indefinites and negatives	anyone			
+indefinites and negatives	anything			
+indefinites and negatives	anywhere			
+indefinites and negatives	no one	yaki ne (built by rule)		
+indefinites and negatives	nothing			
+indefinites and negatives	nowhere			
+indefinites and negatives	never	Hej		
+indefinites and negatives	everyone			
+indefinites and negatives	everything			
+indefinites and negatives	everywhere			
+indefinites and negatives	always	Hama vaqt		
+quantifiers	all			
+quantifiers	every			
+quantifiers	each			
+quantifiers	both			
+quantifiers	some	Yakchand		
+quantifiers	any	Yagon		
+quantifiers	many			
+quantifiers	much	Ziyod		
+quantifiers	a lot of			
+quantifiers	few			
+quantifiers	a few	Yakchand		
+quantifiers	little			
+quantifiers	a little	Kam		
+quantifiers	several	Yakchand		
+quantifiers	enough			
+quantifiers	too much	Judo bisyor		
+quantifiers	more	Bisyortar		
+quantifiers	most			
+quantifiers	less	Kamtar		
+quantifiers	least			
+quantifiers	no (no money)	Ne		
+quantifiers	none			
+quantifiers	half	nim		
+quantifiers	whole			
+quantifiers	only			
+quantifiers	also	Ham		
+quantifiers	even			
+prepositions of place	in	Ba		
+prepositions of place	inside	Darun		
+prepositions of place	on	Boli		
+prepositions of place	on top of			
+prepositions of place	under	Ba tagi		
+prepositions of place	below			
+prepositions of place	above	Boli		
+prepositions of place	over	Boli		
+prepositions of place	behind			
+prepositions of place	in front of			
+prepositions of place	next to			
+prepositions of place	beside			
+prepositions of place	between			
+prepositions of place	among			
+prepositions of place	near	Yon		
+prepositions of place	far from			
+prepositions of place	around			
+prepositions of place	opposite	rübarü		
+prepositions of place	outside	Berun		
+prepositions of place	at (at the door)	Ba		
+prepositions of place	at (someone’s house)	Ba		
+prepositions of direction	to	Peshi		
+prepositions of direction	towards			
+prepositions of direction	into			
+prepositions of direction	onto			
+prepositions of direction	from	Az		
+prepositions of direction	out of			
+prepositions of direction	off			
+prepositions of direction	through	Garchande		
+prepositions of direction	across			
+prepositions of direction	along			
+prepositions of direction	up	Bolo		
+prepositions of direction	down	Poyon		
+prepositions of direction	past			
+prepositions of direction	back	Pusht		
+other prepositions	with (together with)	Qati		
+other prepositions	with (using a tool)	Qati		
+other prepositions	without	Be		
+other prepositions	for			
+other prepositions	about	(Az) tüghrigi		
+other prepositions	of			
+other prepositions	by (written by)			
+other prepositions	like (similar to)	borin		
+other prepositions	as	Borin		
+other prepositions	instead of	Ba joyi		
+other prepositions	except			
+other prepositions	against			
+other prepositions	because of	Az baroyi		
+other prepositions	according to			
+other prepositions	in spite of	Garchande		
+other prepositions	thanks to	peshi rahmat (built by rule)		
+prepositions of time	before	Pesh az		
+prepositions of time	after	ba'di		
+prepositions of time	during			
+prepositions of time	until	To		
+prepositions of time	since			
+prepositions of time	for (for two hours)			
+prepositions of time	ago	Pesh		
+prepositions of time	in (in two days)	Ba		
+prepositions of time	at (at five o’clock)	Ba		
+prepositions of time	on (on Saturday)	Boli		
+prepositions of time	by (by tomorrow)			
+prepositions of time	from … to …	peshi az (built by rule)		
+conjunctions	and	Va		
+conjunctions	or	Yo		
+conjunctions	but	Lekin		
+conjunctions	however	Amo		
+conjunctions	because	Azbaski		
+conjunctions	so (therefore)	Haminxel		
+conjunctions	therefore			
+conjunctions	if	Agar		
+conjunctions	unless			
+conjunctions	although			
+conjunctions	even if			
+conjunctions	while			
+conjunctions	when	Kay?		
+conjunctions	as soon as			
+conjunctions	before (before he came)	Pesh az		
+conjunctions	after (after he came)	ba'di		
+conjunctions	until (until he comes)	To		
+conjunctions	since (since he came)			
+conjunctions	that	Vay		
+conjunctions	whether			
+conjunctions	than			
+conjunctions	as … as			
+conjunctions	either … or			
+conjunctions	neither … nor			
+conjunctions	both … and			
+conjunctions	not only … but also			
+conjunctions	in order to			
+conjunctions	so that			
+particles and answers	yes	Hov		
+particles and answers	no	Ne		
+particles and answers	not	Nest		
+particles and answers	maybe	Magar		
+particles and answers	of course			
+particles and answers	please			
+particles and answers	thank you	Rahmat		
+particles and answers	well (well, …)	tinji		
+particles and answers	then	unvaxt		
+particles and answers	still	hole		
+particles and answers	yet	hole		
+particles and answers	already	alakay		
+particles and answers	just			
+particles and answers	only			
+particles and answers	too (too big)	Ham		
+particles and answers	very	Judo		
+particles and answers	quite	Jip (built by rule)		
+particles and answers	almost	qariv		
+particles and answers	really			
+particles and answers	again	Boz		
+particles and answers	together	ba ya		
+particles and answers	alone			
+particles and answers	perhaps	Magar		
+particles and answers	certainly			
+particles and answers	exactly			
+time words	now	aknun		
+time words	today	Imrüz		
+time words	tomorrow	Pagah		
+time words	yesterday	Dina		
+time words	the day after tomorrow	Pagesh		
+time words	the day before yesterday			
+time words	tonight	Imshav		
+time words	this morning	in pagohi (built by rule)		
+time words	this evening	in shav (built by rule)		
+time words	this week	in hafta (built by rule)		
+time words	next week			
+time words	last week			
+time words	this year	Imsol		
+time words	next year	Insol		
+time words	last year	Porsol		
+time words	early	Barmahal		
+time words	late	Bemahal		
+time words	soon	Aknun		
+time words	later	Ba'd		
+time words	before (earlier)	Pesh az		
+time words	then (at that time)	unvaxt		
+time words	often			
+time words	sometimes			
+time words	rarely			
+time words	usually			
+time words	every day	Har rüz		
+time words	once			
+time words	twice			
+time words	three times	seta vaqt (built by rule)		
+time words	at first	yakumi ba (built by rule)		
+time words	finally	Oxir		
+time words	suddenly	Banoxost		
+time words	immediately	Darov		
+time words	for a long time			
+numbers and counting	zero	nol		
+numbers and counting	first	yakum		
+numbers and counting	second	duyum		
+numbers and counting	third	seyum		
+numbers and counting	fourth	chorum		
+numbers and counting	fifth	panjum		
+numbers and counting	sixth	shishtum		
+numbers and counting	seventh	haftum (built by rule)		
+numbers and counting	eighth	hashtum (built by rule)		
+numbers and counting	ninth	nühum (built by rule)		
+numbers and counting	tenth	dahum (built by rule)		
+numbers and counting	twentieth	bistum (built by rule)		
+numbers and counting	hundredth	sadum		
+numbers and counting	last			
+numbers and counting	half	nim		
+numbers and counting	a quarter			
+numbers and counting	one and a half			
+numbers and counting	twice as much			
+numbers and counting	a pair	juft (built by rule)		
+numbers and counting	a dozen			
+numbers and counting	both			
+numbers and counting	once more			
+numbers and counting	number			
+numbers and counting	percent	Prosond		
+"to be", "to have", existence	I am			
+"to be", "to have", existence	you are			
+"to be", "to have", existence	he is			
+"to be", "to have", existence	we are			
+"to be", "to have", existence	they are			
+"to be", "to have", existence	I was			
+"to be", "to have", existence	I will be			
+"to be", "to have", existence	I am not			
+"to be", "to have", existence	there is			
+"to be", "to have", existence	there are			
+"to be", "to have", existence	there is no	neyi unsuni hast (built by rule)		
+"to be", "to have", existence	there was			
+"to be", "to have", existence	I have	Man doram		
+"to be", "to have", existence	I don’t have	Man nadoram		
+"to be", "to have", existence	I had	Man doshtam (built by rule)		
+"to be", "to have", existence	is there?			
+"to be", "to have", existence	it is (it is cold)			
+"to be", "to have", existence	it is necessary	Lozim (built by rule)		
+"to be", "to have", existence	it is possible			
+"to be", "to have", existence	it is forbidden	Osur (built by rule)		
+modal words	can	Tavonistan		
+modal words	cannot			
+modal words	could			
+modal words	must	Boyad		
+modal words	must not	nesti boyad (built by rule)		
+modal words	have to			
+modal words	don’t have to			
+modal words	should			
+modal words	may (permission)	Sivan		
+modal words	might			
+modal words	want	Xostan		
+modal words	need	Darkor		
+modal words	let (let him go)			
+modal words	let’s			
+modal words	would like			
+modal words	be able to			
+modal words	know how to			
+modal words	try to			
+modal words	begin to			
+modal words	finish (doing)			
+modal words	continue to			
+modal words	stop (doing)			

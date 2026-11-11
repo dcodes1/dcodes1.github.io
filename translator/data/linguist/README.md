@@ -15,10 +15,15 @@ Open the `.tsv` files in Excel, Numbers or Google Sheets (tab-separated, UTF-8).
 | 5 | `5-everyday-phrases.tsv` | Give the Buxori for everyday phrases; confirm the ones the book already has. | 62 phrases | Fixed phrases cannot be built word by word ("Good evening" is `Ramsho tüvo!`). |
 | 6 | `6-grammar-questions.md` | Answer 25 short questions, most with sentences to translate. | about 1 hour | Each one is a rule the book leaves open and the translator currently guesses or flags. |
 | 7 | `../review-rows.tsv` | For each of the 9 rows the book's transcriber flagged, say which reading is right. | 9 rows | Confirmed rows go back into use. |
+| 8 | `8-grammar-words.tsv` | Confirm, correct or supply pronouns, prepositions, conjunctions, question words, quantifiers, time words. | 341 words | Every sentence needs these, and the book has under half. |
+| 9 | `9-topic-vocabulary.tsv` | Fill in words by topic (family, body, food, house, nature, religion, work, travel) that the book and worksheet 1 both lack. | 138 words | Fills the gaps a frequency list misses. |
+| 10 | `10-sentences-by-construction.tsv` | Translate one or more sentences for each kind of sentence: tenses, negation, questions, clauses, passive, comparison. | 258 sentences | Shows the grammar of each construction; 151 cannot be translated at all today. |
 
-Suggested order if time is short: 6, 4, 2, then 1 as far as possible, then 3 and 5.
+Suggested order if time is short: 6, 8, 10, 3 (grammar, which applies to every sentence), then 2, 5, 9, 1 (words), then 4 and 7 (checking).
+
+The same material is laid out as one printable document by the brief generator (a 67-page PDF with these spreadsheets attached inside it).
 
 Nothing reads these files back automatically. Return them and the answers are checked,
-entered into the data, and covered by tests. To regenerate worksheets 2–5 after the data
+entered into the data, and covered by tests. To regenerate worksheets 2–5 and 8–10 after the data
 changes: `node scripts/linguist-worksheets.ts` (this overwrites them, so do it before
 they are filled in, not after).

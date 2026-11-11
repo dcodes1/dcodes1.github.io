@@ -396,6 +396,13 @@ export class Engine {
         const k = glossKey(f);
         roots = [...roots].sort((a, b) => Number(!a.glosses.some((g) => g.key === k)) - Number(!b.glosses.some((g) => g.key === k)));
       }
+      // "you (polite)" / "you (pl.)" → the entry the source marks as polite or plural (Shumo), not Tu
+      const address = cleanEnglish(raw).address;
+      if (address && roots.length > 1) {
+        const k = glossKey(f);
+        const marked = (r: RootEntry) => r.glosses.some((g) => g.key === k && !!g.address);
+        roots = [...roots].sort((a, b) => (address === 'informal' ? Number(marked(a)) - Number(marked(b)) : Number(marked(b)) - Number(marked(a))));
+      }
       if (roots.length) return this.fromRoots(roots, f, raw);
       // 3. example sentences / phrases
       const ex = this.lex.examples(f);

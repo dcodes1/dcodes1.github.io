@@ -360,3 +360,12 @@ describe('two clauses joined the way the source joins them', () => {
     expect(T('I am glad')).toMatchObject({ status: 'exact', text: 'Man xursandam' });
   });
 });
+
+describe('address labels on single words', () => {
+  test('“you (polite)” and “you (pl.)” give the source’s polite/plural pronoun', () => {      // used to give Tu for all three
+    expect(T('you (polite)').text).toBe('Shumo');
+    expect(T('you (pl.)').text).toBe('Shumo');
+    expect(T('you (sing.)').text).toBe('Tu');
+    expect(T('you').text).toBe('Tu');
+  });
+});

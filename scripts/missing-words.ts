@@ -47,6 +47,8 @@ if (wn) {
   for (const [w, u] of use) pos.set(w, Object.entries(u).sort((a, b) => b[1] - a[1])[0]![0]);
 }
 /** Not everyday vocabulary: web/chat words and names that a frequency list is full of. */
+/** …and words that do not belong in a worksheet sent to a consultant. */
+const RUDE = new Set('shit fuck fucking fucked damn ass bitch crap hell dick porn sexy bastard piss'.split(' '));
 const SKIP = new Set(('www com http https org net html lol yeah okay hey wow gonna gotta wanna etc via per amp nbsp jpg png pdf inc ltd est '
   + 'john james david michael paul mark george robert william thomas peter mary smith jones brown miller jack joe tom mike '
   + 'america american british english french german chinese japanese european african indian russian spanish italian greek '
@@ -56,11 +58,13 @@ const kept: { en: string; word: string; rank: number; pos: string }[] = [];
 const seen = new Set<string>();
 for (const w of words) {
   if (kept.length >= TOP) break;
-  if (SKIP.has(w) || !engine.unknownWords(w).includes(w)) continue;
+  if (SKIP.has(w) || RUDE.has(w) || !engine.unknownWords(w).includes(w)) continue;
+  // "going", "does": a form of a short verb the source has (unknownWords only trusts lemmas of 4+ letters)
+  if (verbCandidates(w).some((c) => c.lemma !== w && engine.lex.roots(c.lemma).length > 0)) continue;
   // "islands" → "island", "marked" → "mark": list the dictionary form once
   const bases = [...nounCandidates(w), ...verbCandidates(w)].map((c) => c.lemma).filter((l) => l !== w && rank.has(l) && (!wn || pos.has(l)));
   const lemma = bases.sort((a, b) => rank.get(a)! - rank.get(b)!)[0] ?? w;
-  if (seen.has(lemma) || SKIP.has(lemma)) continue;
+  if (seen.has(lemma) || SKIP.has(lemma) || RUDE.has(lemma)) continue;
   if (lemma !== w && !engine.unknownWords(lemma).includes(lemma)) continue;      // its base is in the source after all
   if (wn && !pos.has(lemma)) continue;
   seen.add(lemma);
