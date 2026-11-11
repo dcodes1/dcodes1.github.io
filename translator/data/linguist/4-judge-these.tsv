@@ -1,0 +1,112 @@
+english	translator_output	how_it_was_made	english_words_missing_from_the_book	VERDICT (right / acceptable / wrong)	WHAT_YOU_WOULD_SAY (everyday speech)
+I am happy	Man baxtnokam	built, medium confidence			
+I'm very happy	Man bisyor baxtnokam	built, medium confidence			
+I'm hungry	Man gushna mondam	printed in the book			
+I am not hungry	Man gushna nestam	built, high confidence			
+I don't know	Man namedonam	printed in the book			
+Don't go	narov	printed in the book			
+I can't go	Man rafta nametavonam	built, high confidence			
+You are my friend	Tu hoveri mani (informal)  /  Shumo hoveri maned (formal)	built, high confidence			
+That is good	Vay naghz	built, medium confidence			
+What is your name?	Nomat che? (informal)  /  Nomaton che? (formal)	printed in the book			
+Where is my book?	Kitovam kujo?	built, high confidence			
+I love you	Man tuya naghz mebinam (informal)  /  Man shumoya naghz mebinam (formal)	built, high confidence			
+Thank you	Rahmat	printed in the book			
+How are you?	Chitüyed?	printed in the book			
+Are you ok?	Tu xayi? (informal)  /  Shumo xayed? (formal)	built, high confidence			
+We are happy	Mo baxtnokem	built, medium confidence			
+He is sad	Ü ghamgin	built, high confidence			
+She is very beautiful	Ü bisyor xushrü	built, high confidence			
+They are my friends	Inho hoverhoyam hastand	built, medium confidence			
+I want water	Man maim mexoham	built, low confidence			
+I want to eat	Man xürdani hastam	built, medium confidence			
+Good night	shavi naghz	built, low confidence			
+I am at home	Man ba xona	built, medium confidence			
+It is cold	Xunuk	built, high confidence			
+I like tea	Man choy naghz mebinam	built, low confidence			
+My name is David	Nomam David	built, high confidence			
+I have a brother	Man barodar doram	built, high confidence			
+I don't have money	Man shohel nadoram	built, high confidence			
+I can go	Man rafta metavonam	built, high confidence			
+I have to go	Boyad ravam	printed in the book			
+I must go	Man boyad ravam	built, high confidence			
+I want to go	Man raftani hastam	built, medium confidence			
+I don't want to eat	Man xürdani nestam	built, medium confidence			
+Who are you?	Tu ki? (informal)  /  Shumo ki? (formal)	built, high confidence			
+a very big house	xoni bisyor kalon	built, medium confidence			
+He is here	Ü insun	built, high confidence			
+I am here	Man insun	built, medium confidence			
+He was at home	Ü ba xona budak	built, high confidence			
+Where were you?	Tu kujo budi? (informal)  /  Shumo kujo buded? (formal)	built, high confidence			
+I go home	Man ba xona merum	built, medium confidence			
+We bought bread	Mo non xaridem	built, medium confidence			
+They buy	Inho mexarand	built, high confidence			
+my book	kitovam	built, high confidence			
+three books	seta kitov	built, high confidence			
+my brothers	barodarhoyam	built, medium confidence			
+the big house	xoni kalon	built, medium confidence			
+I live in Israel now	Man aknun ba Isroel zindagi mekunam	built, low confidence			
+Where are you from?	Tu az kujo? (informal)  /  Shumo az kujo? (formal)	built, high confidence			
+I want to buy bread	Man non xaridani hastam	built, low confidence			
+I know that he came	Man medonam, ki ü omadak	built, medium confidence			
+He said that he is sick	Ü guftak, ki ü kasal	built, medium confidence			
+If you go, I go	Agar tu meri, man merum (informal)  /  Agar shumo mered, man merum (formal)	built, medium confidence			
+If he comes, I will go	Agar ü mebiyo, man merum	built, medium confidence			
+When I came home, he was reading	Kay-ki man ba xona omadam, ü xonsoda bud	built, low confidence			
+He came because he is sick	Ü omadak, azbaski ü kasal	built, medium confidence			
+I did not go because I was sick	Man naraftam, azbaski man kasal budam	built, medium confidence			
+He is a doctor	Ü düxtur	built, high confidence			
+I am a doctor	Man düxturam	printed in the book			
+He was a doctor	Ü düxtur budak	built, high confidence			
+The book is here	Kitov insun	built, medium confidence			
+He is not here	Ü insun nest	built, high confidence			
+I went	Man raftam	printed in the book			
+We didn't give	Mo nadodem	printed in the book			
+You used to go	Tu merafti	printed in the book			
+He is talking	Ü gap zasode	printed in the book			
+I had said	Man gufta budam	printed in the book			
+They don't work	Inho kor namekunand	printed in the book			
+He has six books	Ü shishta kitov dorad	printed in the book			
+Where do you live?	Tu kujo zindagi mekuni? (informal)  /  Shumo kujo zindagi mekuned? (formal)	built, medium confidence			
+What do you do?	Tu chi? (informal)  /  Shumo chi? (formal)	built, high confidence			
+Do you have a book?	Tuya kitov kun?	draft only	have		
+I read this book	Man in kitova mexonam	built, medium confidence			
+I bought bread yesterday	Man dina non xaridam	built, low confidence			
+I have three brothers	Man seta barodar doram	built, high confidence			
+My father is not a doctor	Padaram düxtur nest	built, medium confidence			
+This is my book	In kitovi xudam-ku!	printed in the book			
+My book is big	Kitovam kalon	built, medium confidence			
+He is going	Ü rafsode	printed in the book			
+We are going	Mo rafta istodayem	printed in the book			
+I am reading	Man xonsodim	built, high confidence			
+She is reading a book	Ü kitov xonsode	built, medium confidence			
+I will go tomorrow	Man pagah merum	built, medium confidence			
+He doesn't know	Ü namedonad	printed in the book			
+I don't have	Man nadoram	printed in the book			
+They have	Inho dorand	printed in the book			
+I know	Man medonam	printed in the book			
+I took	ġiriftam	printed in the book			
+I became happy	Vaqtam choq shud	printed in the book			
+Come!	biyo (informal)  /  bed (formal)	printed in the book			
+Sit!	Shin! (informal)  /  Shined! (formal)	built, low confidence			
+Give me the book	Ba man kitova te! (informal)  /  Ba man kitova ted! (formal)	built, medium confidence			
+I see you	Man tuya mebinam (informal)  /  Man shumoya mebinam (formal)	built, high confidence			
+He sees me	Ü mana mebinad	built, high confidence			
+I gave him the book	Man ba Ü kitova dodam	built, medium confidence			
+We went to the house	Mo ba xona raftem	built, medium confidence			
+They came from Bukhara	Inho az Buxoro omadand	built, high confidence			
+I am from Bukhara	Man az Buxoro	built, medium confidence			
+He is my brother	Ü barodaram	built, high confidence			
+She is my sister	(no translation)	none	sister		
+This is my mother	In oni man	built, high confidence			
+I have two sisters	Man doram	draft only	sisters		
+The bread is good	Non naghz	built, low confidence			
+The water is cold	Maim xunuk	built, low confidence			
+The house is big	Xona kalon	built, medium confidence			
+My friend is here	Hoveri man insun	built, medium confidence			
+Good evening	Ramsho tüvo!	printed in the book			
+Happy New Year	Shono tüvo!	printed in the book			
+How much money do you have?	Chand pul dored?	printed in the book			
+I am tired	(no translation)	none	tired		
+I am sick	Man kasalam	built, high confidence			
+He is hungry	Ü gushna	built, high confidence			
