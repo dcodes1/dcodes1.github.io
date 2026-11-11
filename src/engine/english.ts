@@ -23,6 +23,10 @@ export const IRREGULAR_VERBS: Record<string, [past: string, participle: string]>
   grow: ['grew', 'grown'], hide: ['hid', 'hidden'], lend: ['lent', 'lent'], light: ['lit', 'lit'], mean: ['meant', 'meant'],
   shoot: ['shot', 'shot'], show: ['showed', 'shown'], sew: ['sewed', 'sewn'], bite: ['bit', 'bitten'], dig: ['dug', 'dug'],
   feed: ['fed', 'fed'], fight: ['fought', 'fought'], hang: ['hung', 'hung'], lead: ['led', 'led'], ring: ['rang', 'rung'],
+  beat: ['beat', 'beaten'], hit: ['hit', 'hit'], hurt: ['hurt', 'hurt'], set: ['set', 'set'], quit: ['quit', 'quit'], spread: ['spread', 'spread'],
+  blow: ['blew', 'blown'], bend: ['bent', 'bent'], burn: ['burnt', 'burnt'], deal: ['dealt', 'dealt'], flee: ['fled', 'fled'], forgive: ['forgave', 'forgiven'],
+  freeze: ['froze', 'frozen'], lay: ['laid', 'laid'], seek: ['sought', 'sought'], shine: ['shone', 'shone'], stick: ['stuck', 'stuck'], strike: ['struck', 'struck'],
+  swear: ['swore', 'sworn'], tear: ['tore', 'torn'], weep: ['wept', 'wept'], sink: ['sank', 'sunk'], forbid: ['forbade', 'forbidden'], bind: ['bound', 'bound'],
   shake: ['shook', 'shaken'], sweep: ['swept', 'swept'], catch: ['caught', 'caught'], cost: ['cost', 'cost'], dream: ['dreamt', 'dreamt'],
 };
 const IRREGULAR_FORMS = new Map<string, { lemma: string; form: 'past' | 'participle' | 'present3' | 'present' }>();

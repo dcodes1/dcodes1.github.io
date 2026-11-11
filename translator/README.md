@@ -30,8 +30,8 @@ sw.js                                offline cache for the site and the translat
 
 GitHub Pages serves the repository as-is, so the built app is committed. The
 portfolio (`index.html`) only downloads it when `/translator` is opened. The
-JavaScript is 107 KB gzipped in six files (entry 69, engine 18, Buxori → English
-12, the rest 8) and the content-hashed index is 191 KB gzipped (1.7 MB raw, under
+JavaScript is 111 KB gzipped in six files (entry 69, engine 19, Buxori → English
+14, the rest 9) and the content-hashed index is 191 KB gzipped (1.7 MB raw, under
 the 2 MB point where it would need splitting). On a desktop the translator is
 ready about 0.25 s after it is opened, and about 0.8 s with the CPU slowed 4× to
 stand in for a mid-range phone. A translation takes a few milliseconds; the first
@@ -76,6 +76,15 @@ Main design points:
   - copula suffixes (`düxturam`);
   - compound verbs (`zindagi mekunam`);
   - nine tenses, negation, imperatives, questions and wh-phrases (`chand pul`).
+- **Two clauses.** "X that Y", "If X, Y", "When X, Y" and "X because Y" are
+  translated clause by clause and joined as the source joins them (`…, ki …`,
+  `Agar …, …`, `Kay-ki …, …`, `…, azbaski …`). If one clause can't be built the
+  result says which. Relative clauses ("the man who came …") are declined in this
+  direction. Joined sentences are capped at medium confidence: none are in the
+  held-out set.
+- **"To be" with a place.** "He is here" → `Ü insun`; the past is never dropped
+  ("He was at home" → `Ü ba xona budak`). "I am / you are" + place has no printed
+  example and is flagged.
 - **Function words** come from the index, never from a hard-coded Buxori list.
   The legacy engine's hard-coded tables produced `charo` and `baroi ki`, which
   are not in the source; the TSV has `Chuva?` and `Azbaski`.
@@ -110,6 +119,17 @@ Linguistic choices, with their evidence and confidence, are in
    result is the word-by-word gloss with that word marked. Spellings that differ
    only by accents or apostrophes (`duxtur`) are accepted and flagged. Looser
    matches are listed as "similar spellings" and never used.
+
+7. **Several clauses.** `Agar X, Y`, `Kay-ki X, Y` / `Vaqte ki X, Y`, `X, ki Y`,
+   `X, azbaski / amo / lekin Y` are rendered clause by clause. A noun with `-e`
+   before `ki` opens a defining clause: `Marde, ki omad, padari man` → "The man who
+   came is my father."
+
+A word with several senses shows first the one the book's examples use for the
+bare word (`xona`: "house", not "room"); only three words have enough examples to
+decide. Adjectives are recognised by their English gloss
+(`scripts/data/english-adjectives.txt`, built from WordNet), since the book labels
+few of them.
 
 Present and future are one form in Buxori; the rendering uses the present and
 says so. Input may be Latin or Cyrillic. Hebrew-script input is not translated.
@@ -149,7 +169,7 @@ A prediction is correct if it equals any attested form for that English.
 |---|---|---|---|---|
 | legacy `engine.js` (removed) | 4.1% | 8.7% | 126 / 270 | 0.331 |
 | before confidence tiers | 13.7% | 59.7% | 62 / 270 | 0.709 |
-| current | **13.7%** | **60.7%** | 61 / 270 | 0.721 |
+| current | **13.7%** | **61.7%** | 60 / 270 | 0.729 |
 
 English → Buxori by tier (strict: the output must equal a form the book gives for that English):
 
@@ -157,7 +177,7 @@ English → Buxori by tier (strict: the output must equal a form the book gives 
 |---|---|---|
 | built, high | 31 / 35 | 89% |
 | built, medium | 4 / 5 | 80% |
-| built, low (shown as a draft) | 1 / 12 | 8% |
+| built, low (shown as a draft) | 1 / 11 | 9% |
 | built answers shown as translations (high + medium) | 35 / 40 | **87.5%** |
 | printed | 1 / 9 | 11% (see below) |
 
@@ -171,14 +191,14 @@ Buxori → English on the same set (`npm run eval:reverse`), strict wording matc
 
 | | correct / answered | precision |
 |---|---|---|
-| built, high | 32 / 44 | 73% |
-| built, medium | 3 / 8 | 38% |
+| built, high | 32 / 43 | 74% |
+| built, medium | 3 / 9 | 33% |
 | built, low (shown as a draft) | 0 / 8 | 0% |
 | all answered | 37 / 67 | 55% (chrF 0.68) |
 
 Strict matching undercounts this direction: "He/she has gone." against the
 book's "He/she has gone/been", "Their dad" against "Their father", and "I'm glad
-that I saw you" against "I'm glad to see you" all count as wrong. Read the 73% as
+that I saw you" against "I'm glad to see you" all count as wrong. Read the 74% as
 a floor for the high tier. 203 of the 270 items get no English at all, almost
 all of them single words that exist nowhere else in the book.
 
@@ -191,7 +211,7 @@ is the trust number. `eval/thresholds.json` makes CI fail on any regression.
 ```bash
 npm ci
 npm run compile     # TSV → src/data/buxori-index.json (byte-identical for the same input)
-npm test            # vitest: data integrity, normalizer, lookup, both engines, suggestions (574 tests)
+npm test            # vitest: data integrity, normalizer, lookup, both engines, suggestions (609 tests)
 npm run typecheck
 npm run eval        # held-out accuracy and per-tier precision; `-- --check` enforces thresholds
 npm run eval:reverse  # the same set, Buxori → English
@@ -347,11 +367,16 @@ enable it, deploy the worker and set
   tier in both directions. That is the measured reliability, not caution.
 - **Buxori → English is a rough rendering.** English articles, the choice among
   an entry's senses (`xona`: room or house), `ba` (to / in / at) and present
-  versus future are decided by simple rules. Relative clauses, passives and
-  conditionals are not re-ordered; they fall back to the word-by-word gloss.
-- **Parts of speech.** The book tags few words as adjectives, so a list of common
-  English adjectives decides "is good" versus "is a doctor". A rare adjective can
-  get an article.
+  versus future are decided by simple rules. Passives, and clauses joined without
+  a comma, are not re-ordered; they fall back to the word-by-word gloss.
+- **Parts of speech.** The book tags few words as adjectives, so the English gloss
+  decides "is good" versus "is a doctor". A word glossed with an English word that
+  is both noun and adjective can be tagged wrongly.
+- **"If" clauses.** After `agar` the book prints both a plain present and a form
+  without `me-`, and states no rule. English → Buxori uses the plain present and
+  flags it; Buxori → English does not recognise the form without `me-`.
+- **Names at the start of a clause** ("If David comes, …") are not recognised as
+  names in English → Buxori.
 - **Spurious analyses.** A word the source lacks can look like a known stem plus a
   suffix. The panel shows the analysis, so it can be checked, but it can be wrong.
 - **Confidence thresholds** were set on the 270 items they are reported on.

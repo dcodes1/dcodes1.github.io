@@ -3,6 +3,7 @@
  * deterministic; every returned form carries the TSV rows it came from.
  */
 import { canonicalKey, glossKey, senses } from '../lib/normalizer.ts';
+import { expandContractions } from './english.ts';
 import type {
   BuxoriIndex, Example, GlossKey, InflectedEntry, PartOfSpeech, PersonNumber, RootEntry, RootId, SourceRef,
 } from '../lib/types.ts';
@@ -42,7 +43,8 @@ export class Lexicon {
       if (!e.en || e.language !== 'buxori') continue;
       // "He/she is sad" is indexed as "he is sad" and "she is sad" too (same as dictionary senses).
       for (const part of e.en.split(/\s*;\s*/)) {
-        const keys = new Set([glossKey(part), ...senses(part).map((x) => x.key)]);
+        // …and "I'm glad" also answers "I am glad"
+        const keys = new Set([glossKey(part), glossKey(expandContractions(part)), ...senses(part).map((x) => x.key)]);
         for (const k of keys) {
           if (!k) continue;
           const list = this.examplesByEn.get(k) ?? [];

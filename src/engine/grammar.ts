@@ -564,24 +564,39 @@ export class Grammar {
         if (b) { verbText = b.text; steps.push(...b.steps); evidence.push(b.evidence); conf *= b.confidence; }
       }
     } else if (isCopula) {
-      const pred = predicate ?? [...placeParts, ...postParts].join(' ');
+      // "He is here": a place adverb is the location, like "ba xona" (the source's own
+      // sentences put it before the verb: "Man haminsun istam").
+      const pred = predicate ?? [...placeParts, ...postParts, ...advParts].join(' ');
       if (predicate === undefined && !pred && !whText) return null;
+      const pastBe = beAux === 'was' || beAux === 'were';
       if (predicate !== undefined) {
         const past = beAux === 'was' || beAux === 'were';
         if (past) {
           const bud = this.verbRoot('be');
           const b = bud ? this.morph.conjugate(bud.root, 'simple_past', subjPn, { negative }) : null;
-          predicate = b ? `${predicate} ${b.text}` : predicate;
+          if (b) verbText = b.text;      // after the predicate and after a question word: Kitov kujo budak?
           if (b) { steps.push(...b.steps); evidence.push(b.evidence); conf *= b.confidence; }
         } else {
           const cop = this.morph.copula(predicate, subjPn, negative);
           predicate = cop.text; steps.push(...cop.steps); evidence.push(cop.evidence); conf *= cop.confidence;
         }
+      } else if (pastBe) {
+        // "He was at home", "Where were you?": the past of "to be" is never left out
+        // (as in the source's "Koram barevah bud", "… padari man bud").
+        const bud = this.verbRoot('be');
+        const b = bud ? this.morph.conjugate(bud.root, 'simple_past', subjPn, { negative }) : null;
+        if (!b) return null;
+        verbText = b.text; steps.push(...b.steps); evidence.push(b.evidence); conf *= b.confidence;
       } else if (negative) {
         const cop = this.morph.copula('', subjPn, true);
         verbText = cop.text.trim(); steps.push(...cop.steps);
       } else {
-        steps.push({ text: '“to be” of location is left out in conversation (e.g. “Sev boli kantür”).' });
+        // The source says hast ("is") is left out in conversation and shows it for the 3rd
+        // person. For "I am / you are" + a place it prints no example, so that is marked weak.
+        const third = subjPn === '3sg' || subjPn === '3pl' || subjPn === '3resp' || !!whText;
+        steps.push(third
+          ? { text: '“to be” of location is left out in conversation (e.g. “Sev boli kantür”).' }
+          : { text: '“to be” of location is left out, as the source does for “is”. It prints no “I am / you are” + place sentence, so this form is not confirmed.', weak: true });
       }
     } else if (!whText) {
       return null;
@@ -589,7 +604,8 @@ export class Grammar {
 
     // Assemble: [subject] [time] [place/goal] [object] [adverbs] [postpositions] [wh] [predicate|verb]
     // "What is your name?" → Nomat chi?  "Where is my book?" → Kitovam kujo?  (question word last with "to be")
-    const whLast = isCopula && !!whText && !verbText;
+    // …and before the past of "to be": Kitov kujo budak?
+    const whLast = isCopula && !!whText;
     const parts = [subjText, ...timeParts, ...placeParts, ...objParts, ...postParts, ...advParts,
       whLast ? '' : whText ?? '', predicate ?? '', whLast ? whText ?? '' : '', verbText].filter(Boolean);
     if (!parts.length) return null;

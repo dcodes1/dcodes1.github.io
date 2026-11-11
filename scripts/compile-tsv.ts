@@ -342,6 +342,19 @@ for (const r of rows) {
 // ═════════════════════════════════════════════════════════════════ 4. ROOTS
 const CONJ = new Set(['and', 'or', 'but', 'however', 'but; however', 'that', 'if', 'because', 'although', 'so', 'than', 'nor']);
 const ADV = new Set(['always', 'never', 'now', 'today', 'tomorrow', 'yesterday', 'here', 'there', 'also', 'too', 'also; too', 'perhaps', 'maybe', 'perhaps; maybe', 'very', 'soon', 'already', 'again', 'still', 'then', 'tonight', 'sometimes', 'often']);
+/**
+ * The book labels few words as adjectives (only its adjective and colour sections). For
+ * the rest, the ENGLISH gloss decides: an entry is an adjective when every sense is one
+ * English word that is (almost) always an adjective (scripts/data/english-adjectives.txt,
+ * from WordNet). Number words and "… shudan / kardan" compounds are never adjectives.
+ */
+const ENGLISH_ADJECTIVES = new Set(readFileSync(resolve(ROOT, 'scripts/data/english-adjectives.txt'), 'utf8').split('\n').filter(Boolean));
+const NUMBER_GLOSS = /^(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\w+teen|\w+ty|hundred|thousand|million)$/;
+function isAdjectiveGloss(r: Row): boolean {
+  if (/an$/.test(lastWord(r.bukhori)) && words(r.bukhori).length > 1) return false;
+  const gl = senses(r.english).map((x) => x.key);
+  return gl.length > 0 && gl.every((g) => ENGLISH_ADJECTIVES.has(g) && !NUMBER_GLOSS.test(g));
+}
 function posOf(r: Row): PartOfSpeech {
   const en = r.english.toLowerCase().trim();
   const lw = lastWord(r.bukhori);
@@ -355,6 +368,7 @@ function posOf(r: Row): PartOfSpeech {
   if (/preposition/i.test(r.section)) return 'preposition';
   if (/copula/i.test(r.section)) return 'particle';
   if (words(r.bukhori).length >= 3) return 'phrase';
+  if (isAdjectiveGloss(r)) return 'adjective';
   return 'noun';
 }
 

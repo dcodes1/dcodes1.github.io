@@ -54,7 +54,7 @@ describe('inflected words → root + affixes', () => {
     ['kitovho', 'book', ['plural']],
     ['kitovhoyam', 'book', ['plural', 'possessive: my']],
     ['kitova', 'book', ['direct object marker']],
-    ['xonaba', 'room', ['to / at / for']],
+    ['xonaba', 'house', ['to / at / for']],
     ['barodaram', 'brother', ['possessive: my']],
     ['seta', 'three', ['counting suffix']],
   ])('%s = %s + %j', (word, gloss, labels) => {
@@ -131,7 +131,7 @@ describe('word order and English generation', () => {
     ['Man se barodar doram', 'I have three brothers.'],          // numeral → plural
     ['Man bistu panj kitov doram', 'I have 25 books.'],          // compound numeral
     ['Dina man non xaridam', 'I bought bread yesterday.'],       // time adverb moves to the end
-    ['Man ba xona merum', 'I go to a room.'],                    // ba + motion verb = to
+    ['Man ba xona merum', 'I go to a house.'],                   // ba + motion verb = to; "house" is the sense the examples use
     ['Man tuya naghz mebinam', 'I like you.'],                   // pronoun object
     ['Man nameravam', 'I do not go.'],
     ['Ü mexarid', 'He/she used to buy.'],
@@ -170,6 +170,60 @@ describe('word order and English generation', () => {
   });
   test('present = future is said, not hidden', () => {
     expect(T('Man kitov doram').notes.join(' ')).toMatch(/same form also means the future/);
+  });
+});
+
+describe('sense and reading choice from the source’s own usage', () => {
+  test('the sense the examples use comes first; the others stay available', () => {
+    const rd = T('xona').tokens[0]!.readings[0]!;
+    expect(rd.gloss).toBe('house');                 // listed as "room; house"; bare "xona" is "house" in 3 examples, "room" in none
+    expect(rd.glosses).toContain('room');
+    // inflected examples are not evidence for the bare word: "zanam" is "my wife", "zan" stays "woman"
+    expect(T('In zan').english).toBe('This woman');
+  });
+  test('a gloss that only repeats the Buxori word is not a sense', () => {
+    expect(rev.analyse('zad').find((x) => x.kind === 'verb')?.gloss).toBe('to beat');
+  });
+  test('a noun wins over a bare imperative spelled the same way, unless there is a “!”', () => {
+    const noun = T('In zan');
+    expect(noun.tokens[1]!.readings[noun.tokens[1]!.chosen]?.kind).toBe('entry');
+    const cmd = T('Zan!');
+    expect(cmd.tokens[0]!.readings.some((x) => x.f.verb?.tense === 'imperative')).toBe(true);
+  });
+  test('one-letter stems: üya = ü + object marker', () => {
+    expect(T('Man üya didam').english).toBe('I saw him/her.');
+    expect(T('Ü üya zad').english).toBe('He/she beat him/her.');
+  });
+  test('adjectives tagged from the English gloss take no article', () => {
+    expect(T('Ü minatdor nest').english).toBe('He/she is not grateful.');
+    expect(T('Mo tayorem').english).toBe('We are ready.');
+  });
+});
+
+describe('sentences of several clauses', () => {
+  test.each([
+    ['Man medonam, ki ü omad', 'I know that he/she came.'],
+    ['Agar tu meri, man merum', 'If you go, I go.'],
+    ['Agar ü mebiyo, man merum', 'If he/she comes, I go.'],
+    ['Vaqte ki man omadam, ü raft', 'When I came, he/she went.'],
+    ['Kay-ki man ba xona omadam, ü xonsoda bud', 'When I came to a house, he/she was reading.'],
+    ['Ü omad, azbaski ü kasal', 'He/she came, because he/she is sick.'],
+    ['Man raftam, amo ü naraft', 'I went, but he/she did not go.'],
+    ['Marde, ki omad, padari man', 'The man who came is my father.'],              // -e + ki: subject of the clause
+    ['Kitove, ki man xondam, naghz', 'The book that I read is good.'],              // clause with its own subject
+  ])('%s → %s', (bux, en) => { expect(T(bux).english).toBe(en); });
+  test('the conjunction is a word in the breakdown; “kay-ki” comes from the stated rule', () => {
+    const r = T('Kay-ki man omadam, ü raft');
+    expect(r.tokens[0]).toMatchObject({ latin: 'kay-ki' });
+    expect(r.tokens[0]!.readings[0]).toMatchObject({ pos: 'conjunction', gloss: 'when' });
+  });
+  test('a clause with an unknown word still stops the whole sentence', () => {
+    const r = T('Agar zorble meri, man merum');
+    expect(r.english).toBeNull();
+    expect(r.unknown).toEqual(['zorble']);
+  });
+  test('commas that are not clause boundaries are left alone', () => {
+    expect(T('Man, tu va ü').english).toBe('I, you and he/she');
   });
 });
 

@@ -2,19 +2,19 @@
  "report": {
   "engine": "src/engine (held-out index)",
   "items": 270,
-  "answered": 61,
+  "answered": 60,
   "correct": 37,
   "accuracy": 0.137,
-  "precision": 0.607,
-  "chrfAnswered": 0.721,
-  "chrfAll": 0.163,
+  "precision": 0.617,
+  "chrfAnswered": 0.729,
+  "chrfAll": 0.162,
   "byStatus": {
    "grammar": {
-    "n": 52,
+    "n": 51,
     "correct": 36
    },
    "none": {
-    "n": 209,
+    "n": 210,
     "correct": 0
    },
    "exact": {
@@ -30,9 +30,9 @@
    "precision": 0.886
   },
   "built:low": {
-   "n": 12,
+   "n": 11,
    "correct": 1,
-   "precision": 0.083
+   "precision": 0.091
   },
   "built:medium": {
    "n": 5,
@@ -1496,12 +1496,12 @@
    "refs": [
     "Ino kelina a Buxoro griftin. Ma qudoshona nameshinosam. Megun, ki oilayi kelin boy-badavlat."
    ],
-   "bux": "Kalo az Bukhara. Man qudoshona namedonam. Kasho vay bisyor boy-badavlati inhoya megun.",
+   "bux": "Kalo az Bukhara. Man qudoshona namedonam. Kasho megun, ki inho bisyor boy-badavlat hastand",
    "status": "grammar",
    "tier": "low",
-   "confidence": 0.03,
+   "confidence": 0.09,
    "ok": false,
-   "chrf": 0.395
+   "chrf": 0.414
   },
   {
    "en": "together",
@@ -2407,12 +2407,12 @@
    "refs": [
     "Marde, ki az xona buromad, padari man bud"
    ],
-   "bux": "Ki mard xonaya padarama mondak",
-   "status": "grammar",
-   "tier": "low",
-   "confidence": 0.16,
+   "bux": null,
+   "status": "none",
+   "tier": "none",
+   "confidence": 0,
    "ok": false,
-   "chrf": 0.274
+   "chrf": 0
   },
   {
    "en": "An empty sack will not stand straight.",

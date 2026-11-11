@@ -8,9 +8,9 @@
   "chrfAnswered": 0.676,
   "byTier": {
    "built:high": {
-    "n": 44,
+    "n": 43,
     "correct": 32,
-    "precision": 0.727
+    "precision": 0.744
    },
    "built:low": {
     "n": 8,
@@ -18,9 +18,9 @@
     "precision": 0
    },
    "built:medium": {
-    "n": 8,
+    "n": 9,
     "correct": 3,
-    "precision": 0.375
+    "precision": 0.333
    },
    "printed": {
     "n": 7,
@@ -378,7 +378,7 @@
    "type": "phrase",
    "out": "Congratulations! I'm glad that I saw you.",
    "status": "built",
-   "tier": "high",
+   "tier": "medium",
    "ok": false,
    "chrf": 0.7758270822536021
   },
@@ -2647,7 +2647,7 @@
    "en": "He/she is unconscionable; an unconcerned person.",
    "type": "phrase",
    "out": null,
-   "status": "none",
+   "status": "gloss",
    "tier": "none",
    "ok": false,
    "chrf": 0

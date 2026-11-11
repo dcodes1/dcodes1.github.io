@@ -58,6 +58,8 @@ export interface Translation {
    * How far to trust `text`: high and medium are shown as the translation, low is shown as
    * a draft with its word-by-word breakdown. Set by Engine.scored from `confidence`.
    */
+  /** Built by Engine.complex: two clauses joined by a pattern the source prints. */
+  joined?: true;
   tier?: Tier;
   /** What the confidence was built from, in plain words. */
   factors?: string[];
@@ -130,7 +132,7 @@ export class Engine {
     if (!key) return this.none(raw, 'Type some English to translate.');
     const cached = this.cache.get(raw);
     if (cached) return cached;
-    let res = this.exact(raw) ?? this.segmented(raw) ?? this.generated(raw) ?? this.fuzzy(raw) ?? this.compositional(raw) ?? this.none(raw);
+    let res = this.exact(raw) ?? this.complex(raw) ?? this.segmented(raw) ?? this.generated(raw) ?? this.fuzzy(raw) ?? this.compositional(raw) ?? this.none(raw);
     if (res.status === 'none' || res.status === 'compositional' || res.status === 'partial') {
       // Spelling correction: retry with unknown English words replaced by their closest
       // source-vocabulary word ("grandfahter" → "grandfather"). Never swaps known words.
@@ -167,6 +169,15 @@ export class Engine {
    */
   private scored(res: Translation, english: string): Translation {
     if (res.status === 'none' || !res.text) return { ...res, confidence: 0, tier: 'none', factors: [] };
+    if (res.joined) {
+      // Each clause was scored on its own; joining them by a printed pattern costs a little more.
+      // No two-clause sentence is in the held-out set, so none reaches the high tier on trust.
+      let c = Math.min(res.confidence * 0.9, TIER_HIGH - 0.01);
+      const factors = ['two clauses joined by a pattern the source prints', 'both clauses have to be right, so their scores multiply'];
+      if (res.steps.some((st) => st.weak)) { c *= 0.85; factors.push('a form the source does not confirm'); }
+      c = Math.round(c * 100) / 100;
+      return { ...res, confidence: c, tier: c >= TIER_HIGH ? 'high' : c >= TIER_LOW ? 'medium' : 'low', factors };
+    }
     if (res.status === 'exact') {
       // Rows numbered above 100000 are the owner's additions (translator/data/missing-words.tsv), not the book.
       const added = res.rows.length > 0 && res.rows.every((r) => r > 100000);
@@ -244,6 +255,80 @@ export class Engine {
         : 'No reliable translation: only individual words were found.', ...r.notes.filter((n) => !/^(Word-by-word gloss|Incomplete:)/.test(n))],
       hint: { kind, text: r.text ?? '', variants: r.variants },
       related: r.related.length ? r.related : this.related(r.matchedEnglish ?? '', 3),
+    };
+  }
+
+  /**
+   * Two clauses joined the way the source joins them. Each clause is translated on its
+   * own (so word order is settled inside each one) and the pattern supplies the rest:
+   *
+   *   X that Y        →  X, ki Y            "Shumo gufta buded, ki …", "Man xursandam, ki shumoya didam"
+   *   If X, Y         →  Agar X, Y          "Agar bovar namekuned, xudaton bined"
+   *   When X, Y       →  Kay-ki X, Y        stated rule (kay-ki; Literal vaqte ki), "Kay-ki man xonaba omadam, …"
+   *   X because Y     →  X, azbaski Y       "Ma bovoma nadidam, abaski ü … gurext"
+   *
+   * Relative clauses ("the man who came …") need the noun to carry -e before ki and the
+   * clause to be threaded into the main one; that is not built, so they get no answer
+   * here instead of a scrambled one.
+   */
+  private complex(raw: string): Translation | null {
+    const text = cleanEnglish(raw).text.replace(/[.!]+$/, '').trim();
+    const question = /\?$/.test(text);
+    const low = text.toLowerCase();
+    if (question) return null;
+    let first = '', second = '', join = '', lead = '', gloss = '';
+    let m: RegExpExecArray | null;
+    if ((m = /^if\s+(.+?),\s*(?:then\s+)?(.+)$/i.exec(text))) { [, first, second] = m as unknown as [string, string, string]; lead = 'if'; }
+    else if ((m = /^when\s+(.+?),\s*(.+)$/i.exec(text))) { [, first, second] = m as unknown as [string, string, string]; lead = 'when'; }
+    else if ((m = /^(.+?),?\s+because\s+(.+)$/i.exec(text)) && !/^because of\b/i.test(m[2]!)) { [, first, second] = m as unknown as [string, string, string]; join = 'because'; }
+    else if ((m = /^(.+?)\s+if\s+(.+)$/i.exec(text))) { [, second, first] = m as unknown as [string, string, string]; lead = 'if'; }
+    else if ((m = /^(.+?)\s+when\s+(.+)$/i.exec(text))) { [, second, first] = m as unknown as [string, string, string]; lead = 'when'; }
+    else if ((m = /^(.+?\b(?:say|says|said|know|knows|knew|think|thinks|thought|hear|hears|heard|see|sees|saw|understand|understands|understood|glad|happy|sure|told|tell|tells)(?:\s+(?:me|you|him|her|us|them))?),?\s+that\s+(.+)$/i.exec(text))) { [, first, second] = m as unknown as [string, string, string]; join = 'that'; }
+    else if (/\b(who|whom|whose|which)\b/.test(low.replace(/^(who|whom|whose|which)\b/, '')) || /\bthe \w+ that \w+/.test(low)) {
+      return { ...this.none(raw, 'No reliable translation: this has a relative clause (“the man who …”), which is not built yet. Try the two halves as separate sentences.'), unknown: [] };
+    } else return null;
+    gloss = lead || join;
+    // Of the entries glossed with this conjunction, take the one the source actually uses
+    // to open a clause after a comma ("…, ki …" dozens of times; "vay" is the pronoun "that").
+    const uses = (r: RootEntry) => { const re = new RegExp(`, ${r.lemma.key}\\b`, 'i'); return this.corpus.filter((e) => re.test(e.bux)).length; };
+    const word = gloss === 'when' ? null : this.lex.roots(gloss, 'conjunction').filter((r) => r.pos === 'conjunction').sort((x, y) => uses(y) - uses(x))[0];
+    const rule = gloss === 'when' ? this.lex.index.syntaxRules.find((r) => r.id === 'subordinate_clauses_of_time') : undefined;
+    const conj = gloss === 'when' ? (rule ? 'kay-ki' : '') : word ? inline(word.lemma.text).toLowerCase() : '';
+    if (!conj) return null;
+    const a = this.translate(first), b = this.translate(second);
+    const usable = (r: Translation) => !!r.text && (r.status === 'exact' || r.status === 'grammar') && !r.unknown.length;
+    if (!usable(a) || !usable(b)) {
+      // Say which half could not be built; the word-order layer would only scramble the two clauses together.
+      const bad = [!usable(a) ? first : '', !usable(b) ? second : ''].filter(Boolean).map((x) => `“${x}”`).join(' and ');
+      const missing = [...new Set([...this.unknownWords(first), ...this.unknownWords(second)])];
+      return { ...this.none(raw, `No reliable translation: ${bad} could not be built${missing.length ? ` (not in the source: ${missing.join(', ')})` : ''}.`), unknown: missing };
+    }
+    const strip = (t: string) => t.replace(/[.!?]+$/, '');
+    // mid-sentence: no capital, unless the first word is a name
+    const lower = (t: string) => {
+      const w = (t.split(' ')[0] ?? '').toLowerCase();
+      const known = (this.lex.index.roots.byKey[w as never] ?? []).map((id) => this.lex.root(id)).some((r) => r && r.pos !== 'proper_noun');
+      return known || /^[A-ZÜ][a-zü']/.test(t) && !(this.lex.index.roots.byKey[w as never] ?? []).length ? t.charAt(0).toLowerCase() + t.slice(1) : t;
+    };
+    const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+    const build = (x: string, y: string) => (lead ? `${cap(conj)} ${lower(strip(x))}, ${lower(strip(y))}` : `${strip(x)}, ${conj} ${lower(strip(y))}`);
+    const pick = (r: Translation, reg: 'informal' | 'formal') => r.variants.find((v) => v.register === reg)?.text ?? r.text!;
+    const variants = a.variants.length || b.variants.length
+      ? (['informal', 'formal'] as const).map((register) => ({ register, text: build(pick(a, register), pick(b, register)) }))
+      : [];
+    const source = gloss === 'when' ? rule!.sources.map((x) => x.row) : word!.sources.map((x) => x.row);
+    const how = lead
+      ? `Two clauses: “${gloss}” clause first, introduced by ${conj}, then the main clause (as in the source’s “${gloss === 'if' ? 'Agar bovar namekuned, xudaton bined' : 'Kay-ki man xonaba omadam, onim avqot puxsoda bud'}”).`
+      : `Two clauses joined by ${conj} (“${gloss}”) after a comma (as in the source’s “${gloss === 'that' ? 'Shumo gufta buded, ki …' : 'Ma bovoma nadidam, abaski …'}”).`;
+    const steps: Step[] = [{ text: how, rows: source }, ...a.steps, ...b.steps];
+    // "if" + present: the source prints both a plain present (namekuned) and a form without me- (lesad) and states no rule
+    if (gloss === 'if') steps.push({ text: 'The verb after agar is left in the plain present; the source also shows forms without me- there and gives no rule.', weak: true });
+    return {
+      status: 'grammar', text: variants[0]?.text ?? build(a.text!, b.text!), variants, alternatives: [],
+      confidence: a.confidence * b.confidence,      // both clauses have to be right
+      evidence: weakest([a.evidence ?? 'attested', b.evidence ?? 'attested', 'attested']), steps, unknown: [],
+      rows: uniqRows([...source, ...a.rows, ...b.rows]), review: false, notes: [...a.notes, ...b.notes].filter((n) => !/^Read as:/.test(n)), related: [],
+      joined: true,
     };
   }
 
@@ -356,7 +441,9 @@ export class Engine {
   }
 
   // ── grammar ─────────────────────────────────────────────────────────────
-  private generated(raw: string): Translation | null {
+  private generated(raw0: string): Translation | null {
+    // "went home" is a goal, like "went to the house" (the source: "xonaba omadam", "ba kor rafsoda budam")
+    const raw = raw0.replace(/\b(go|goes|going|went|gone|come|comes|coming|came|return|returns|returned|returning|arrive|arrives|arrived|run|runs|ran|walk|walks|walked)\s+home\b/gi, '$1 to home');
     const input = analyze(raw);
     if (!input.tokens.length) return null;
     // A bare number: "twenty-five", "5th", "three hundred"

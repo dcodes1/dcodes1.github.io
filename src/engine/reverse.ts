@@ -219,10 +219,51 @@ export class ReverseEngine {
   }
 
   // ── word analysis ─────────────────────────────────────────────────────────
+  /**
+   * Which sense to show first for a word with several: the one the source's own example
+   * sentences use. "Xona" is glossed "room; house", and the examples with bare "xona"
+   * say "house" three times and "room" never. The order only changes on clear evidence (at least three
+   * examples and twice as many as the first-listed sense); every sense stays in the panel.
+   */
+  private preferred: Map<string, number> | null = null;
+  private senseOrder(): Map<string, number> {
+    if (this.preferred) return this.preferred;
+    const out = new Map<string, number>();
+    const ex = [...new Set([...this.sentences.values()].flat())].map((e) => ({
+      words: sentenceKey(e.bux).split(' '), en: ` ${(e.en ?? '').toLowerCase().replace(/[^a-z' ]+/g, ' ')} `,
+    }));
+    for (const root of Object.values(this.index.roots.entries)) {
+      const k = root.lemma.key;
+      if (root.glosses.length < 2 || k.includes(' ') || k.length < 3) continue;
+      // only examples with the word in its bare form: "zanam" (my wife) says nothing about "zan" (woman)
+      const mine = ex.filter((e) => e.words.includes(k));
+      if (mine.length < 3) continue;
+      const counts = root.glosses.map((g) => {
+        const w = g.key.replace(/^to /, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const re = new RegExp(`[^a-z']${w}(s|es|d|ed|ing)?[^a-z']`);
+        return mine.filter((e) => re.test(e.en)).length;
+      });
+      const best = counts.indexOf(Math.max(...counts));
+      if (best > 0 && counts[best]! >= 3 && counts[best]! >= 2 * counts[0]!) out.set(root.id, best);
+    }
+    this.preferred = out;
+    return out;
+  }
+
+  /** The entry's English senses, the one its examples use first. */
+  private sensesOf(root: RootEntry): string[] {
+    const first = this.senseOrder().get(root.id) ?? 0;
+    // a gloss that only repeats the Buxori word ("Zadan": "zadan; to beat") is not a sense
+    const all = root.glosses.map((g) => g.text).filter((t) => t.toLowerCase() !== root.lemma.key || root.glosses.length === 1);
+    const pick = root.glosses[first]?.text;
+    return pick && all.includes(pick) ? [pick, ...all.filter((t) => t !== pick)] : all;
+  }
+
   private entryReading(root: RootEntry, spelling: SpellingTier, matched?: string): Reading {
+    const senses = this.sensesOf(root);
     const via = matched && matched !== root.lemma.key ? root.forms.find((f) => f.key === matched) : undefined;
     return {
-      kind: 'entry', lemma: root.lemma.text, pos: root.pos, gloss: root.glosses[0]?.text ?? '', glosses: root.glosses.map((g) => g.text),
+      kind: 'entry', lemma: root.lemma.text, pos: root.pos, gloss: senses[0] ?? '', glosses: senses,
       parts: via && via.key !== root.lemma.key ? [{ form: via.text, label: `${via.kind.replace('_', ' ')} form of ${root.lemma.text}` }] : [],
       f: {}, rows: root.sources.map((s) => s.row), spelling, root,
       ...(via?.register === 'spoken' || via?.kind === 'spoken' ? { register: 'spoken' as const } : via?.register === 'literal' || via?.kind === 'literary' ? { register: 'literal' as const } : {}),
@@ -242,7 +283,7 @@ export class ReverseEngine {
     const v = h.root.verb!;
     const parts: Part[] = [];
     if (h.negative) parts.push({ form: 'na-', label: 'not' });
-    parts.push({ form: h.root.lemma.text, label: `verb “${h.root.glosses[0]?.text ?? ''}”${v.compound ? `, compound with ${v.compound.preverb}` : ''}` });
+    parts.push({ form: h.root.lemma.text, label: `verb “${this.sensesOf(h.root)[0] ?? ''}”${v.compound ? `, compound with ${v.compound.preverb}` : ''}` });
     parts.push({ form: TENSE_LABEL[h.tense] ?? h.tense, label: `tense${h.alsoFuture ? ' (the same form is the future)' : ''}` });
     parts.push({ form: PERSON_LABEL[h.pn], label: 'person' });
     let everyday: string | undefined;
@@ -251,7 +292,7 @@ export class ReverseEngine {
     }
     return {
       ...(everyday ? { everyday } : {}),
-      kind: 'verb', lemma: h.root.lemma.text, pos: 'verb', gloss: h.root.glosses[0]?.text ?? '', glosses: h.root.glosses.map((g) => g.text), parts,
+      kind: 'verb', lemma: h.root.lemma.text, pos: 'verb', gloss: this.sensesOf(h.root)[0] ?? '', glosses: this.sensesOf(h.root), parts,
       f: { verb: { tense: h.tense, pn: h.pn, negative: h.negative, ...(h.alsoFuture ? { alsoFuture: true as const } : {}) } },
       rows: h.root.sources.map((s) => s.row), spelling: 'exact', root: h.root, ...(h.register === 'literal' ? { register: 'literal' as const } : {}),
       forms: h.root.forms.map((f) => ({ text: f.text, kind: f.kind.replace('_', ' ') })),
@@ -286,7 +327,7 @@ export class ReverseEngine {
     if (depth > 3) return [];
     const out: Reading[] = [];
     for (const s of this.suffixes) {
-      if (s.slot >= maxSlot || !key.endsWith(s.form) || key.length - s.form.length < 2) continue;
+      if (s.slot >= maxSlot || !key.endsWith(s.form) || key.length - s.form.length < 1) continue;      // "üya" = ü + -ya
       const stem = key.slice(0, -s.form.length);
       const stems = s.restore ? s.restore.map((v) => stem + v) : [stem];
       for (const st of stems) {
@@ -468,6 +509,8 @@ export class ReverseEngine {
         if (r.spelling !== 'exact') s += 1;
         s += r.parts.filter((p) => p.form.startsWith('-')).length * 2;
         if (r.kind === 'verb') s += last ? -3 : 1;
+        // "zan" is "woman" before it is the command "beat!": a bare imperative needs "!" to win over a noun
+        if (r.f.verb?.tense === 'imperative' && !t.punct.includes('!') && t.readings.some((x) => x.kind === 'entry')) s += 5;
         if (r.kind === 'entry' && r.pos === 'verb' && !r.parts.length) s -= subject3pl(i) ? 0 : 4;   // "dodan" is the infinitive unless "they" precedes
         if (r.f.and && last) s += 20;                                   // -u "and" needs a following word
         if (r.f.ezafe) s += last ? 20 : -1;
@@ -519,8 +562,89 @@ export class ReverseEngine {
     }).join(' · ');
   }
 
-  // ── one sentence: choose readings in context, chunk, re-order ─────────────
-  private sentence(text: string): { english: string | null; confidence: number; factors: string[]; tokens: Token[]; notes: string[]; printed?: { en: string; bux: string; row: number } } {
+  // ── sentences of several clauses ──────────────────────────────────────────
+  /**
+   * Clauses the source joins with a comma and a conjunction are rendered one at a time and
+   * put back together in English:
+   *
+   *   Agar X, Y                 →  If X, Y
+   *   Kay-ki X, Y / Vaqte ki X, Y  →  When X, Y        (stated rule: kay-ki, Literal vaqte ki)
+   *   X, ki Y                   →  X that Y
+   *   X, azbaski / amo / lekin Y →  X, because / but Y
+   *   N-e, ki X, Y              →  The N who X Y        ("-e comes before the conjunction ki,
+   *                                 marking what follows as a defining subordinate clause")
+   *
+   * Anything else goes to clause() unchanged.
+   */
+  private sentence(text: string): ReturnType<ReverseEngine['clause']> {
+    const whole = this.sentences.get(sentenceKey(text))?.[0];
+    const parts = text.split(/,\s+/).map((x) => x.trim()).filter((x) => sentenceKey(x));
+    if (whole?.en || parts.length < 2 || parts.length > 3) return this.clause(text);
+    const end = /[.!?]+\s*$/.exec(text)?.[0].trim() ?? '';
+    const WHEN = /^(kay-ki|vaqte ki)\s+/i;
+    const conjOf = (seg: string): { en: string; rest: string; word: string } | null => {
+      const w = WHEN.exec(seg);
+      if (w && this.index.syntaxRules.some((r) => r.id === 'subordinate_clauses_of_time')) return { en: 'when', rest: seg.slice(w[0].length), word: w[1]! };
+      const first = seg.split(/\s+/)[0] ?? '';
+      const r = this.direct(sentenceKey(first)).find((x) => x.pos === 'conjunction' && x.lemma.toLowerCase() !== 'vay');
+      const en = r ? (r.gloss.split(';')[0] ?? '').trim().toLowerCase() : '';
+      return r && /^(if|that|because|but|however|and|or)$/.test(en) ? { en: en === 'however' ? 'but' : en, rest: seg.slice(first.length).trim(), word: first } : null;
+    };
+    const conjToken = (word: string, en: string): Token => ({
+      text: word, latin: sentenceKey(word), suggestions: [], chosen: 0, punct: '',
+      readings: [this.direct(sentenceKey(word)).find((x) => x.pos === 'conjunction') ?? { kind: 'entry', lemma: word, pos: 'conjunction', gloss: en, glosses: [en], parts: [], f: {}, rows: this.index.syntaxRules.find((r) => r.id === 'subordinate_clauses_of_time')?.sources.map((x) => x.row) ?? [], spelling: 'exact', forms: [] }],
+    });
+    const lower = (e: string) => (/^(I\b|[A-Z][a-z]+’s)/.test(e) || /^[A-Z][a-z]+ /.test(e) && !/^(He\/she|They|We|You|The|This|That|My|Your|His\/her|Our|Their|A|An|It|There|Where|What|Who|When|Do|Does|Did|Is|Are|Was|Were)\b/.test(e) ? e : e.charAt(0).toLowerCase() + e.slice(1));
+    // no final punctuation, and none of the book's "(sing.)" / "(polite)" labels inside a longer sentence
+    const bare = (e: string) => e.replace(/\s*\((sing|polite|pol|pl|plural)\.?\)/gi, '').replace(/[.!?]+$/, '').trim();
+    const fail = (): ReturnType<ReverseEngine['clause']> => this.clause(text);
+    const join = (subs: ReturnType<ReverseEngine['clause']>[], english: string, tokens: Token[], why: string) => ({
+      english: english.charAt(0).toUpperCase() + english.slice(1) + (end || '.'),
+      // every clause has to be right, so their confidences multiply; no joined sentence has been
+      // measured on the held-out set, so none is allowed to reach the high tier on trust
+      confidence: Math.min(subs.reduce((c, x) => c * x.confidence, 0.9), TIER_HIGH - 0.01),
+      factors: [...new Set([why, ...subs.flatMap((x) => x.factors)])], tokens, notes: [...new Set(subs.flatMap((x) => x.notes))],
+    });
+
+    // N-e, ki X, Y: a defining clause on a noun
+    const lead = conjOf(parts[0]!);
+    const second = conjOf(parts[1]!);
+    const headToks = this.pick(this.tokenise(parts[0]!, false));
+    // ("marde" is also printed on its own as an example of -e; the reading with the suffix is the one that matters here)
+    const head = headToks.length === 1 ? headToks[0]!.readings.find((r) => r.f.indefinite) ?? headToks[0]!.readings[headToks[0]!.chosen] : undefined;
+    if (head?.f.indefinite && headToks[0]) headToks[0].chosen = headToks[0].readings.indexOf(head);
+    if (!lead && second?.en === 'that' && parts.length === 3 && head?.f.indefinite && second.rest) {
+      const relToks = this.pick(this.tokenise(second.rest, false));
+      const verb = relToks.map((t) => t.readings[t.chosen]).find((r) => r?.kind === 'verb');
+      const ownSubject = relToks.some((t) => t.readings[t.chosen]?.pos === 'pronoun' && !t.readings[t.chosen]!.f.object && !t.readings[t.chosen]!.f.to) || (!!verb?.f.verb && !verb.f.verb.pn.startsWith('3'));
+      const rel = this.clause(ownSubject ? second.rest : `Ü ${second.rest}`);
+      const main = this.clause(`Ü ${parts[2]}`);
+      if (!rel.english || !main.english || !/^He\/she /.test(main.english) || (!ownSubject && !/^He\/she /.test(rel.english))) return fail();
+      const noun = (head.gloss.split(/[;,]/)[0] ?? '').replace(/\s*\([^)]*\)/g, '').replace(/^(a|an|the) /, '').trim();
+      const relEn = ownSubject ? `that ${lower(bare(rel.english))}` : `who ${bare(rel.english).replace(/^He\/she /, '')}`;
+      const english = `the ${noun} ${relEn} ${bare(main.english).replace(/^He\/she /, '')}`;
+      const tokens = [...headToks, conjToken(second.word, 'who / that'), ...(ownSubject ? rel.tokens : rel.tokens.slice(1)), ...main.tokens.slice(1)];
+      return join([rel, main], english, tokens, 'a defining clause (-e + ki) threaded into the main clause');
+    }
+    if (parts.length !== 2) return fail();
+    // Agar X, Y  /  Kay-ki X, Y
+    if (lead && (lead.en === 'if' || lead.en === 'when') && lead.rest) {
+      const a = this.clause(lead.rest), b = this.clause(parts[1]!);
+      if (!a.english || !b.english) return fail();
+      return join([a, b], `${lead.en} ${lower(bare(a.english))}, ${lower(bare(b.english))}`, [conjToken(lead.word, lead.en), ...a.tokens, ...b.tokens], 'two clauses joined by a pattern the source prints');
+    }
+    // X, ki Y  /  X, azbaski Y  /  X, amo Y
+    if (!lead && second && second.rest && second.en !== 'if') {
+      const a = this.clause(parts[0]!), b = this.clause(second.rest);
+      if (!a.english || !b.english) return fail();
+      const glue = second.en === 'that' ? ' that ' : `, ${second.en} `;
+      return join([a, b], `${bare(a.english)}${glue}${lower(bare(b.english))}`, [...a.tokens, conjToken(second.word, second.en), ...b.tokens], 'two clauses joined by a pattern the source prints');
+    }
+    return fail();
+  }
+
+  // ── one clause: choose readings in context, chunk, re-order ───────────────
+  private clause(text: string): { english: string | null; confidence: number; factors: string[]; tokens: Token[]; notes: string[]; printed?: { en: string; bux: string; row: number } } {
     const key = sentenceKey(text);
     const tokens = this.tokenise(text);
     const ex = this.sentences.get(key)?.[0];

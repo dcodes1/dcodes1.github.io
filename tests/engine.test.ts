@@ -288,3 +288,75 @@ describe('fractions are answered only when printed', () => {
     expect(T('two hundred first').text).toBe('dusadu yakum');
   });
 });
+
+describe('“to be” with a place (here / there / at home)', () => {
+  test('a place adverb is the location, “is” left out as the source does', () => {
+    expect(T('He is here').text).toBe('Ü insun');
+    expect(T('The book is here').text).toBe('Kitov insun');
+    expect(T('He is not here').text).toBe('Ü insun nest');
+    expect(T('He is here').tier).toBe('high');
+  });
+  test('“I am / you are” + place has no printed example, so it is flagged, not high', () => {
+    const r = T('I am here');
+    expect(r.text).toBe('Man insun');
+    expect(r.steps.some((s) => s.weak)).toBe(true);
+    expect(r.tier).toBe('medium');
+  });
+  test('the past of “to be” is never dropped', () => {      // used to give the present: "Ü ba xona"
+    expect(T('He was at home').text).toBe('Ü ba xona budak');
+    expect(T('I was not at home').text).toBe('Man ba xona nabudam');
+    expect(T('They were in Israel').text).toBe('Inho ba Isroel budand');
+    expect(T('He was a doctor').text).toBe('Ü düxtur budak');
+  });
+  test('question word comes before the past of “to be”', () => {
+    expect(T('Where was the book?').text).toBe('Kitov kujo budak?');
+    expect(T('Where is my book?').text).toBe('Kitovam kujo?');
+  });
+});
+
+describe('two clauses joined the way the source joins them', () => {
+  test.each([
+    ['I know that he came', 'Man medonam, ki ü omadak'],
+    ['He said that he is sick', 'Ü guftak, ki ü kasal'],
+    ['He came because he is sick', 'Ü omadak, azbaski ü kasal'],
+    ['I did not go because I was sick', 'Man naraftam, azbaski man kasal budam'],
+    ['If he comes, I will go', 'Agar ü mebiyo, man merum'],
+    ['When I came home, he was reading', 'Kay-ki man ba xona omadam, ü xonsoda bud'],
+  ])('%s → %s', (en, bux) => {
+    const r = T(en);
+    expect(r.text).toBe(bux);
+    expect(r.joined).toBe(true);
+    expect(r.steps[0]?.rows?.length).toBeGreaterThan(0);
+  });
+  test('“that” is the conjunction ki, not the pronoun vay', () => {      // used to give "Ü vay kasali üya guftak"
+    expect(T('I am glad that you came').variants.map((v) => v.text)).toEqual(['Man xursandam, ki tu omadi', 'Man xursandam, ki shumo omaded']);
+  });
+  test('“if” is flagged: the source prints two verb shapes after agar and no rule', () => {
+    const r = T('If you go, I go');
+    expect(r.variants[0]?.text).toBe('Agar tu meri, man merum');
+    expect(r.steps.some((s) => s.weak)).toBe(true);
+    expect(r.tier).toBe('medium');
+  });
+  test('a clause that cannot be built is named, and nothing is scrambled together', () => {
+    const r = T('If you zorble, I go');
+    expect(r.status).toBe('none');
+    expect(r.notes[0]).toMatch(/“you zorble” could not be built/);
+    expect(r.unknown).toEqual(['zorble']);
+  });
+  test('relative clauses are declined, not guessed', () => {              // used to give "Ki mard padarama omadak"
+    const r = T('The man who came is my father');
+    expect(r.status).toBe('none');
+    expect(r.notes[0]).toMatch(/relative clause/);
+  });
+  test('questions and single clauses are untouched', () => {
+    expect(T('Who came?').text).toBe('Ki omad?');
+    expect(T('When did you come?').status).toBe('exact');
+  });
+  test('“went home” is a goal', () => {
+    expect(T('I go home').text).toBe('Man ba xona merum');
+    expect(T('my home').text).toBe('xonim');
+  });
+  test('a printed sentence is found with or without its contraction', () => {
+    expect(T('I am glad')).toMatchObject({ status: 'exact', text: 'Man xursandam' });
+  });
+});
