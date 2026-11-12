@@ -369,3 +369,43 @@ describe('address labels on single words', () => {
     expect(T('you').text).toBe('Tu');
   });
 });
+
+describe('patterns the source prints (found by checking a Tajik-based draft against the book)', () => {
+  test('a postposition follows the bare noun or pronoun, with no ezafe', () => {      // used to give "tuyi qati"
+    expect(T('with you').variants.map((v) => v.text)).toEqual(['tu qati', 'shumo qati']);
+    expect(T('with me').text).toBe('man qati');
+    expect(T('with my brother').text).toBe('barodaram qati');
+  });
+  test('“never” is hej + a negative verb, not just “not”', () => {                     // used to give "Ü namebiyo"
+    expect(T('He never comes').text).toBe('Ü hej namebiyo');
+    expect(T('I never go').text).toBe('Man hej namerum');
+    expect(T('He never comes').steps.some((s) => /Hej gham nabined/.test(s.text))).toBe(true);
+  });
+  test('time expressions take the forms the source prints', () => {
+    expect(T('on Saturday').text).toBe('rüzi shabot');                                  // not "shaboti boli"
+    expect(T('We eat on Saturday').text).toBe('Mo rüzi shabot mexurem');
+    expect(T('I will come in two days').text).toBe("Man ba'di du rüz mebiyom");         // not "ba duta rüz"
+    expect(T('I have lived here for ten years').text).toMatch(/^Man dah sol insun/);    // no "baroyi"
+    expect(T('in the house').text).toBe('ba xona');                                     // ordinary phrases unchanged
+    expect(T('in the evening').text).toBe('Namozigar');                                 // the printed word, not ba + shav
+    expect(T('at night').status).toBe('none');                                          // used to give "shavi ba"
+  });
+  test('English-only constructions are declined with a reason, not calqued', () => {
+    for (const s of ['There is a book on the table', 'Is there water?', 'What time is it?', 'How long?', 'What a beautiful day!', 'How good!']) {
+      const r = T(s);
+      expect(r.status, s).toBe('none');
+      expect(r.notes[0], s).toMatch(/prints no pattern/);
+    }
+    expect(T('How old are you?').status).toBe('exact');      // printed sentences still win
+    expect(T('How are you?').status).toBe('exact');
+    expect(T('What is this?').text).toBe('In chi?');
+  });
+  test('the pronoun ü is lower-case inside a sentence', () => {
+    expect(T('I see him').text).toBe('Man üya mebinam');
+    expect(T('I went with him').text).toBe('Man ü qati raftam');
+  });
+  test('where the book and the draft disagree, the book stands', () => {
+    expect(T('I want to go').text).toBe('Man raftani hastam');      // book: "Man guftani hastam" = I want to say
+    expect(T('He went').text).toMatch(/raftak$/);                   // book: -ak is the Regular 3sg past
+  });
+});

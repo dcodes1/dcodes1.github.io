@@ -18,7 +18,8 @@ export function inlineName(text: string): string {
 
 export function inline(text: string): string {
   const t = text.replace(/[?!.]+$/, '').trim();
-  return /^[A-ZÜ'][a-zü']/.test(t) && !/^[A-Z][a-z]+[A-Z]/.test(t) ? t.charAt(0).toLowerCase() + t.slice(1) : t;
+  // (a one-letter word too: the pronoun "Ü" is "ü" inside a sentence)
+  return /^[A-ZÜ']([a-zü']|$)/.test(t) && !/^[A-Z][a-z]+[A-Z]/.test(t) ? t.charAt(0).toLowerCase() + t.slice(1) : t;
 }
 
 export class Lexicon {

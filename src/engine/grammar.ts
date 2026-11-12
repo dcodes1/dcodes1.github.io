@@ -30,6 +30,9 @@ const QUANTIFIERS = new Set(['many', 'much', 'some', 'all', 'every', 'few', 'sev
 const PREPOSITIONS = new Set(['in', 'at', 'to', 'into', 'on', 'from', 'with', 'for', 'of', 'about', 'under', 'near', 'behind', 'after', 'before', 'without', 'by', 'over', 'between', 'inside', 'outside', 'until', 'like']);
 /** English preposition → the gloss key whose index entry is that preposition. */
 const PREP_GLOSS: Record<string, string> = { in: 'in', at: 'in', to: 'in', into: 'in', on: 'on', from: 'from', with: 'with' };
+const WEEKDAYS = new Set(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
+const TIME_UNITS = new Set(['second', 'seconds', 'minute', 'minutes', 'hour', 'hours', 'day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years']);
+const TIME_NOUNS = new Set(['morning', 'afternoon', 'evening', 'night', 'noon', 'midnight', 'day', 'week', 'month', 'year', 'spring', 'summer', 'autumn', 'fall', 'winter', 'time', 'moment', 'weekend', ...TIME_UNITS, ...WEEKDAYS]);
 const MOTION = new Set(['go', 'come', 'walk', 'run', 'fly', 'travel', 'move', 'return', 'arrive', 'drive', 'ride', 'enter']);
 const DATIVE_VERBS = new Set(['give', 'tell', 'say', 'send', 'show', 'bring', 'write', 'teach', 'sell', 'buy', 'pay', 'read']);
 const MODALS = new Set(['can', 'could', 'should', 'must', 'may', 'might', 'would', 'shall']);
@@ -484,6 +487,8 @@ export class Grammar {
         // "Where are you from?": the preposition is stranded at the end in English and
         // belongs to the question word in Buxori (az kujo, "from where").
         if (!c.tokens.length && wh) { strandedPrep = c.prep; continue; }
+        const time = this.timePhrase(c.prep!, c.tokens);
+        if (time) { timeParts.push(time.text); steps.push(...time.steps); evidence.push(time.evidence); continue; }
         const np = this.nounPhrase(c.tokens, input, register);
         if (!np) { unknown.push(c.prep!, ...c.tokens); continue; }
         steps.push(...np.steps); evidence.push(...np.evidence); unknown.push(...np.unknown); names.push(...np.names); conf *= np.confidence || 0.5;
@@ -602,6 +607,13 @@ export class Grammar {
       return null;
     }
 
+    // "never" = hej + a negative verb, as the source prints it ("Hej gham nabined!"). It used to be
+    // reduced to plain "not".
+    if (toks.includes('never')) {
+      const hej = this.lex.best('never', 'adverb') ?? this.lex.best('never');
+      if (hej) { advParts.push(inline(hej.lemma.text).toLowerCase()); steps.push({ text: `“never” → ${hej.lemma.text} before a negative verb (as in “Hej gham nabined!”).`, rows: [hej.sources[0]?.row ?? 0] }); evidence.push('attested'); }
+      else unknown.push('never');
+    }
     // Assemble: [subject] [time] [place/goal] [object] [adverbs] [postpositions] [wh] [predicate|verb]
     // "What is your name?" → Nomat chi?  "Where is my book?" → Kitovam kujo?  (question word last with "to be")
     // …and before the past of "to be": Kitov kujo budak?
@@ -674,6 +686,60 @@ export class Grammar {
     const after = rule?.kind === 'adposition' && rule.placement === 'after';
     void verb; void np; void MOTION;
     return { word: w, after, evidence: 'stated', step: { text: `“${prep}” → ${r.lemma.text}${after ? ', placed after its noun (prepositions_qati)' : ''}.`, rows: [r.sources[0]?.row ?? 0] } };
+  }
+
+  /**
+   * Time expressions the source prints in a form of their own, instead of preposition + noun:
+   *   in five minutes   →  ba'di panj minut     ("Man ba shumo ba'di panj minut telefon mekunam")
+   *   for fifty years   →  panjo sol            ("Panjo sol ü kalontari jamo'at … budin")
+   *   on Sunday         →  rüzi yakshanbe       ("rüzi yakshame … guzarondam", "Imrüz rüzi shabot")
+   */
+  timePhrase(prep: string, tokens: string[]): { text: string; steps: Step[]; evidence: Evidence } | null {
+    const toks = tokens.filter((t) => !ARTICLES.has(t));
+    if (prep === 'on' && toks.length === 1 && WEEKDAYS.has(toks[0]!)) {
+      const day = this.lex.best('day', 'noun'), wd = this.lex.best(toks[0]!);
+      if (!day || !wd) return null;
+      const ez = this.morph.ezafe(inline(day.lemma.text).toLowerCase());
+      return { text: `${ez.text} ${inline(wd.lemma.text).toLowerCase()}`, evidence: 'attested',
+        steps: [{ text: `“on ${toks[0]}” → ${day.lemma.text} + ezafe + ${wd.lemma.text} (“the day of …”, as in “Imrüz rüzi shabot”).`, rows: [day.sources[0]?.row ?? 0, wd.sources[0]?.row ?? 0] }] };
+    }
+    if (prep !== 'in' && prep !== 'for') return null;
+    const num = parseNumber(toks, 0);
+    const unit = toks[num?.length ?? 0];
+    if (!num || num.ordinal || toks.length !== num.length + 1 || !unit || !TIME_UNITS.has(unit)) return null;
+    const n = this.numbers.cardinal(num.value);
+    const u = this.lex.best(unit.replace(/s$/, ''), 'noun') ?? this.lex.best(unit.replace(/s$/, ''));
+    if (!n || !u) return null;
+    const span = `${n.text} ${inline(u.lemma.text).toLowerCase()}`;       // the bare number, no counting suffix: "panj minut", "du so'at"
+    if (prep === 'for') {
+      return { text: span, evidence: 'attested', steps: [...n.steps, { text: `“for ${toks.join(' ')}” → ${span}, with no preposition (as in “Panjo sol ü kalontari jamo'at … budin”).`, rows: [u.sources[0]?.row ?? 0] }] };
+    }
+    const after = this.lex.roots('after').find((r) => /i$/.test(r.lemma.key));       // ba'di, the linking form
+    if (!after) return null;
+    return { text: `${inline(after.lemma.text).toLowerCase()} ${span}`, evidence: 'attested',
+      steps: [...n.steps, { text: `“in ${toks.join(' ')}” → ${after.lemma.text} + ${span} (“after …”, as in “ba'di panj minut telefon mekunam”).`, rows: [after.sources[0]?.row ?? 0, u.sources[0]?.row ?? 0] }] };
+  }
+
+  /**
+   * A prepositional phrase on its own ("with you", "on Saturday", "in the house").
+   * A postposition follows the bare noun or pronoun, with no ezafe: "shumo qati", "jonam qati".
+   */
+  /** The phrase opens with an English preposition (so it is not a plain noun phrase). */
+  opensWithPreposition(tokens: string[]): boolean { return !!tokens[0] && PREPOSITIONS.has(tokens[0]) && tokens[0] !== 'of'; }
+
+  prepPhrase(tokens: string[], input: EnglishInput, register: 'default' | 'informal' | 'formal'): Draft | null {
+    const prep = tokens[0];
+    if (!prep || !PREPOSITIONS.has(prep) || prep === 'of' || tokens.length < 2) return null;
+    const time = this.timePhrase(prep, tokens.slice(1));
+    if (time) return { text: time.text, steps: time.steps, evidence: [time.evidence], confidence: 0.9, unknown: [], names: [] };
+    // "in the evening", "at night", "in summer": the source has its own words for these (Namozigar),
+    // so preposition + noun would be a guess. On the held-out set it was wrong.
+    if (tokens.slice(1).some((t) => TIME_NOUNS.has(t))) return null;
+    const np = this.nounPhrase(tokens.slice(1), input, register);
+    if (!np?.text || np.unknown.length) return null;
+    const pr = this.preposition(prep, undefined, np.text);
+    if (!pr) return null;
+    return { text: pr.after ? `${np.text} ${pr.word}` : `${pr.word} ${np.text}`, steps: [...np.steps, pr.step], evidence: [...np.evidence, pr.evidence], confidence: np.confidence, unknown: [], names: np.names };
   }
 
   /** Split the post-subject tokens into noun phrases, prepositional phrases and adverbs. */

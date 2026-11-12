@@ -79,6 +79,19 @@ spelling (ü, ' for ayin). "Translator" is what the site outputs today.
 
 24. "bigger", "the biggest", "A goose is bigger than a pigeon" (book: `Qoz az kaftar kalon hast`). Is `-tar` used in speech (`kalontar`)?
 
+## N. Where the book and a Tajik-based draft disagree
+
+A draft of answers built from Tajik (not from a speaker) disagrees with the lesson book on these points. The translator follows the book. Please say which is right for Buxori.
+
+26. Does the past ending `-ak` (`raftak`, `dodak`) simply mean "he/she went / gave", as the book's "Regular form" says? Or does it add "apparently / I am told", with plain `raft` as the neutral past? Please translate "He went home yesterday" (you saw it) and "They say he went home".
+27. The book prints `Man guftani hastam` = "I want to say". Does `-ani hastam` mean "want to", or "about to / intend to"? How would you say "I want to go" and "I am about to go"?
+28. The book glosses `vayho` as "these". Is it "these" or "those"? What are "these books" and "those books"?
+29. The book glosses `garchande` as "through; in spite of". Is it a preposition with that meaning, or the conjunction "although"? Please give a sentence.
+30. The book gives the present stem of `Gazidan` (to sting) as `-gazid-`, of `Püshondan` (to dress someone) as `-püsh-`, and of `Shumurdan` (to count) as `-shumur-`. What are "it stings", "I dress him", "I count"?
+31. "There is a book on the table", "There is no time", "Is there water?": the book prints no pattern. How are these said?
+32. "Nobody came", "I saw nothing", "I never go": the book has only `hej` with a negative verb (`Hej gham nabined!`). Are `hej kas` and `hej chiz` used?
+33. "What time is it?", "How long?", "What a beautiful day!": please translate.
+
 ## M. Anything the translator gets wrong in a pattern
 
-25. While doing worksheet 4, if you see the same kind of mistake more than once, describe the rule here.
+34. While doing worksheet 4, if you see the same kind of mistake more than once, describe the rule here.

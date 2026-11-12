@@ -46,11 +46,32 @@ if (wn) {
   }
   for (const [w, u] of use) pos.set(w, Object.entries(u).sort((a, b) => b[1] - a[1])[0]![0]);
 }
+// Proper names: nouns ALL of whose WordNet senses are an instance of something (a person, a
+// city). "Chicago" qualifies; "job" does not, although Job is also a name.
+const names = new Set<string>();
+if (wn) {
+  const senses = new Map<string, [instance: number, all: number]>();
+  for (const line of readFileSync(resolve(wn, 'data.noun'), 'utf8').split('\n')) {
+    if (!line || line.startsWith(' ')) continue;
+    const f = line.split(' ');
+    const n = parseInt(f[3]!, 16);
+    const inst = / @i /.test(line) ? 1 : 0;
+    for (let i = 0; i < n; i++) {
+      const w = f[4 + 2 * i]!.toLowerCase();
+      const c = senses.get(w) ?? senses.set(w, [0, 0]).get(w)!;
+      c[0] += inst; c[1]++;
+    }
+  }
+  for (const [w, [inst, all]] of senses) if (inst === all) names.add(w);
+}
 /** Not everyday vocabulary: web/chat words and names that a frequency list is full of. */
 /** …and words that do not belong in a worksheet sent to a consultant. */
 const RUDE = new Set('shit fuck fucking fucked damn ass bitch crap hell dick porn sexy bastard piss'.split(' '));
 const SKIP = new Set(('www com http https org net html lol yeah okay hey wow gonna gotta wanna etc via per amp nbsp jpg png pdf inc ltd est '
   + 'john james david michael paul mark george robert william thomas peter mary smith jones brown miller jack joe tom mike '
+  + 'trump harry sub obama biden clinton bush donald charles henry richard edward martin scott lee kim chris alex sam ben max ryan kevin brian steve '
+  + 'jesus christ christian muslim islam catholic jewish jew arab israeli twitter facebook google youtube instagram netflix amazon apple microsoft iphone '
+  + 'chicago boston paris berlin moscow rome tokyo beijing dallas houston miami seattle florida ohio michigan georgia virginia carolina '
   + 'america american british english french german chinese japanese european african indian russian spanish italian greek '
   + 'london york california texas washington europe asia africa china japan india france germany canada australia').split(' '));
 
@@ -67,6 +88,7 @@ for (const w of words) {
   if (seen.has(lemma) || SKIP.has(lemma) || RUDE.has(lemma)) continue;
   if (lemma !== w && !engine.unknownWords(lemma).includes(lemma)) continue;      // its base is in the source after all
   if (wn && !pos.has(lemma)) continue;
+  if (names.has(lemma) && pos.get(lemma) === 'noun') continue;
   seen.add(lemma);
   const p = pos.get(lemma) ?? '';
   kept.push({ en: p === 'verb' ? `to ${lemma}` : lemma, word: lemma, rank: rank.get(w)!, pos: p });

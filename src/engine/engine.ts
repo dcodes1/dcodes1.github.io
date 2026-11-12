@@ -460,6 +460,15 @@ export class Engine {
       if (!b) return null;
       return this.result('grammar', b.text, { steps: b.steps, evidence: [b.evidence], confidence: b.evidence === 'stated' ? 0.9 : 0.7, rows: b.steps.flatMap((x) => x.rows ?? []), raw });
     }
+    // Expressions English builds in its own way. Translating them word by word gives a calque
+    // ("What time is it?" → "Chi vaqt?"), so unless the source prints the sentence (the exact
+    // layer runs first) they get no answer, with the reason.
+    const low = input.tokens.join(' ');
+    const calque = /^there (is|are|was|were|will be)\b|^(is|are|was|were) there\b/.test(low) ? '“there is / there are”'
+      : /^what time\b|^how (long|old|far|often)\b/.test(low) ? 'this kind of question'
+      : (/^what an? \b/.test(low) || /^how [a-z]+$/.test(low)) && /!\s*$/.test(raw0) ? 'exclamations of this kind'
+      : '';
+    if (calque) return { ...this.none(raw0, `No reliable translation: the source prints no pattern for ${calque}, and building it word by word from English would be wrong.`), unknown: [] };
     // Fractions ("one third", "three fourths") are only answered when printed: the source
     // gives four of them and no rule, and number + ordinal would build nonsense (seta chorum).
     if (input.tokens.length === 2 && NUMBER_WORDS[input.tokens[0]!] !== undefined && /^(half|halves|third|fourth|quarter|fifth|sixth|seventh|eighth|ninth|tenth)s?$/.test(input.tokens[1]!)) return null;
@@ -467,6 +476,20 @@ export class Engine {
     if (input.tokens[0] === 'to' && input.tokens.length <= 3) return null;
     let variants: Variant[] | null = null;
     try { variants = this.grammar.clause(input); } catch { variants = null; }
+    if (!variants && input.tokens.length >= 2) {
+      // a prepositional phrase on its own ("with you", "on Saturday")
+      const one = this.grammar.prepPhrase(input.tokens, input, 'default');
+      if (one) {
+        variants = [{ register: 'default', draft: one }];
+        if (input.tokens.some((t) => t === 'you' || t === 'your')) {
+          const inf = this.grammar.prepPhrase(input.tokens, input, 'informal'), fm = this.grammar.prepPhrase(input.tokens, input, 'formal');
+          if (inf && fm && inf.text !== fm.text) variants = [{ register: 'informal', draft: inf }, { register: 'formal', draft: fm }];
+        }
+      }
+    }
+    // "at night": a prepositional phrase that could not be built is not a noun phrase either
+    // (it used to come out as "shavi ba").
+    if (!variants && this.grammar.opensWithPreposition(input.tokens)) return null;
     if (!variants) {
       // bare noun phrase ("two red apples", "my brothers")
       const np = this.grammar.nounPhrase(input.tokens, input, 'default');

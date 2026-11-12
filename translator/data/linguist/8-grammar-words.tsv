@@ -11,8 +11,8 @@ subject pronouns	they	Inho
 object pronouns	me	man (built by rule)		
 object pronouns	you (object, informal)	Tu		
 object pronouns	you (object, polite)	Shumo		
-object pronouns	him	Ü (built by rule)		
-object pronouns	her	Ü (built by rule)		
+object pronouns	him	ü (built by rule)		
+object pronouns	her	ü (built by rule)		
 object pronouns	it (object)			
 object pronouns	us	mo (built by rule)		
 object pronouns	them	inho (built by rule)		
@@ -22,18 +22,18 @@ object pronouns	them	inho (built by rule)
 "to / for" + pronoun	to her			
 "to / for" + pronoun	to us			
 "to / for" + pronoun	to them			
-"to / for" + pronoun	for me			
-"to / for" + pronoun	for you			
-"to / for" + pronoun	with me			
-"to / for" + pronoun	with you	tuyi qati (built by rule)		
-"to / for" + pronoun	with him			
-"to / for" + pronoun	from me			
-"to / for" + pronoun	about me			
+"to / for" + pronoun	for me	baroyi man (built by rule)		
+"to / for" + pronoun	for you	baroyi tu / baroyi shumo (built by rule)		
+"to / for" + pronoun	with me	man qati (built by rule)		
+"to / for" + pronoun	with you	tu qati / shumo qati (built by rule)		
+"to / for" + pronoun	with him	ü qati (built by rule)		
+"to / for" + pronoun	from me	az man (built by rule)		
+"to / for" + pronoun	about me	(az) tüghrigi man (built by rule)		
 possessives	my			
 possessives	your (informal)			
 possessives	your (polite)			
 possessives	his			
-possessives	her	Ü (built by rule)		
+possessives	her	ü (built by rule)		
 possessives	its			
 possessives	our			
 possessives	their			
@@ -77,10 +77,10 @@ question words	why	Chuva?
 question words	how	Chixel?		
 question words	how much	Chand?		
 question words	how many	Chandta?		
-question words	how long	Daroz chixel? (built by rule)		
-question words	how old	Kühna chixel? (built by rule)		
+question words	how long			
+question words	how old			
 question words	what kind of			
-question words	what time	Vaqt chi? (built by rule)		
+question words	what time			
 indefinites and negatives	someone	Faloni		
 indefinites and negatives	something	Kim-chi		
 indefinites and negatives	somewhere			
@@ -186,7 +186,7 @@ prepositions of time	in (in two days)	Ba
 prepositions of time	at (at five o’clock)	Ba		
 prepositions of time	on (on Saturday)	Boli		
 prepositions of time	by (by tomorrow)			
-prepositions of time	from … to …	peshi az (built by rule)		
+prepositions of time	from … to …	az peshi (built by rule)		
 conjunctions	and	Va		
 conjunctions	or	Yo		
 conjunctions	but	Lekin		
@@ -269,7 +269,7 @@ time words	every day	Har rüz
 time words	once			
 time words	twice			
 time words	three times	seta vaqt (built by rule)		
-time words	at first	yakumi ba (built by rule)		
+time words	at first	ba yakum (built by rule)		
 time words	finally	Oxir		
 time words	suddenly	Banoxost		
 time words	immediately	Darov		
@@ -308,7 +308,7 @@ numbers and counting	percent	Prosond
 "to be", "to have", existence	I am not			
 "to be", "to have", existence	there is			
 "to be", "to have", existence	there are			
-"to be", "to have", existence	there is no	neyi unsuni hast (built by rule)		
+"to be", "to have", existence	there is no			
 "to be", "to have", existence	there was			
 "to be", "to have", existence	I have	Man doram		
 "to be", "to have", existence	I don’t have	Man nadoram		
