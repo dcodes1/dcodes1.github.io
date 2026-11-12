@@ -2,19 +2,19 @@
  "report": {
   "engine": "src/engine (held-out index)",
   "items": 270,
-  "answered": 60,
-  "correct": 37,
-  "accuracy": 0.137,
-  "precision": 0.617,
-  "chrfAnswered": 0.729,
-  "chrfAll": 0.162,
+  "answered": 61,
+  "correct": 38,
+  "accuracy": 0.141,
+  "precision": 0.623,
+  "chrfAnswered": 0.728,
+  "chrfAll": 0.165,
   "byStatus": {
    "grammar": {
-    "n": 51,
-    "correct": 36
+    "n": 52,
+    "correct": 37
    },
    "none": {
-    "n": 210,
+    "n": 209,
     "correct": 0
    },
    "exact": {
@@ -35,9 +35,9 @@
    "precision": 0.091
   },
   "built:medium": {
-   "n": 5,
-   "correct": 4,
-   "precision": 0.8
+   "n": 6,
+   "correct": 5,
+   "precision": 0.833
   },
   "printed": {
    "n": 9,
@@ -45,8 +45,8 @@
    "precision": 0.111
   }
  },
- "shownPrecision": 0.875,
- "variantHits": 0,
+ "shownPrecision": 0.878,
+ "variantHits": 1,
  "legacy": {
   "engine": "legacy engine.js (index_train.json)",
   "items": 270,
@@ -2105,12 +2105,12 @@
    "refs": [
     "Duxtaraton omade"
    ],
-   "bux": null,
-   "status": "none",
-   "tier": "none",
-   "confidence": 0,
-   "ok": false,
-   "chrf": 0
+   "bux": "Duxtarat omade",
+   "status": "grammar",
+   "tier": "medium",
+   "confidence": 0.65,
+   "ok": true,
+   "chrf": 0.707
   },
   {
    "en": "You had told me yourself.",

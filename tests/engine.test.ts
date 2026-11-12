@@ -409,3 +409,30 @@ describe('patterns the source prints (found by checking a Tajik-based draft agai
     expect(T('He went').text).toMatch(/raftak$/);                   // book: -ak is the Regular 3sg past
   });
 });
+
+describe('dataset audit: vocabulary already printed with articles or commas', () => {
+  test.each([
+    ['child', 'Bacha', 156], ['kid', 'Bacha', 156],
+    ['daughter', 'Duxtar', 159], ['girl', 'Duxtar', 159],
+    ['grandson', 'Navera', 165], ['granddaughter', 'Navera', 165],
+  ])('%s resolves to its book entry', (en, bux, row) => {
+    const r = T(en);
+    expect(r.status).toBe('exact');
+    expect(r.text).toBe(bux);
+    expect(r.rows).toContain(row);
+  });
+  test('recovered nouns work in possessives, plurals and questions', () => {
+    expect(T('my daughter').text).toBe('duxtaram');
+    expect(T('children').text).toBe('bachaho');
+    const r = T('How many children do you have?');
+    expect(r.variants.map((v) => v.text)).toEqual(['Tu chandta bacha dori?', 'Shumo chandta bacha dored?']);
+    expect(r.unknown).toEqual([]);
+    expect(r.rows).toContain(156);
+  });
+  test('unverified draft senses do not overwrite conflicting book entries', () => {
+    expect(T('garlic').text).toBeNull(); // draft says sir; book uses Sir for cheese
+    expect(T('ugly').text).toBeNull();   // draft says xunuk; book uses Xunuk for cold
+    expect(T('cheese').text?.toLowerCase()).toBe('sir');
+    expect(T('cold').text?.toLowerCase()).toBe('xunuk');
+  });
+});

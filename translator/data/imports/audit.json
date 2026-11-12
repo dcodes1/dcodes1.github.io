@@ -1,0 +1,53 @@
+{
+  "provenance": "Unverified AI draft derived from Tajik; confidence labels are supplied, not calibrated.",
+  "warning": "Agreement is not measured accuracy. The training pairs restate this dataset, not independent evidence. Nothing here is automatically imported.",
+  "files": [
+    {
+      "name": "buxori_dataset.jsonl",
+      "sha256": "f3a36e1ba10393b9047e5c95febe13c040a6b2e326754334a11d9c153d9c8f86"
+    },
+    {
+      "name": "buxori_train_pairs.jsonl",
+      "sha256": "0689052b3fe662552ec2025c2285d9ef137feb12a85bf21e8e7afc50279dd84b"
+    }
+  ],
+  "datasetRecords": 2614,
+  "trainingRecords": 2610,
+  "tasks": {
+    "answer_grammar_question": 25,
+    "translate_grammar_word": 341,
+    "translate_sentence": 258,
+    "conjugate_verb": 536,
+    "choose_everyday_word": 127,
+    "translate_phrase": 62,
+    "translate_word": 1138,
+    "judge_translation": 111,
+    "resolve_flagged_reading": 9,
+    "usage_note": 7
+  },
+  "counts": {
+    "manual_review": 581,
+    "matches_book_entry": 232,
+    "gap_needs_speaker": 1468,
+    "differs_needs_review": 225,
+    "agrees_with_rules_unverified": 108
+  },
+  "omittedTrainingRecords": [
+    {
+      "id": "p08-0478",
+      "reason": "not_vocabulary"
+    },
+    {
+      "id": "p08-0526",
+      "reason": "needs_native_speaker"
+    },
+    {
+      "id": "p08-0824",
+      "reason": "not_vocabulary"
+    },
+    {
+      "id": "p08-0955",
+      "reason": "not_vocabulary"
+    }
+  ]
+}
