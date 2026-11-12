@@ -15,7 +15,8 @@
     "dev": "vite",
     "build": "vite build",
     "e2e": "node tests/e2e/site.e2e.mjs",
-    "eval:reverse": "node eval/evaluate-reverse.ts"
+    "eval:reverse": "node eval/evaluate-reverse.ts",
+    "audit:imports": "node scripts/audit-buxori-import.ts"
   },
   "dependencies": {
     "react": "19.2.9",

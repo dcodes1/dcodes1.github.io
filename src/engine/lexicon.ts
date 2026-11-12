@@ -25,6 +25,7 @@ export function inline(text: string): string {
 export class Lexicon {
   readonly index: BuxoriIndex;
   private readonly examplesByEn = new Map<GlossKey, Example[]>();
+  private readonly dictionaryAliases = new Map<GlossKey, RootId[]>();
 
   /** How often each word appears in the source's example sentences (canonical key → count). */
   private readonly corpusFreq = new Map<string, number>();
@@ -36,6 +37,26 @@ export class Lexicon {
 
   constructor(index: BuxoriIndex) {
     this.index = index;
+    // Dictionary glosses sometimes include an article ("a child; a kid") or a
+    // comma-separated list ("daughter, girl"). Index those single-word nouns
+    // without altering the source gloss or applying this to sentence examples.
+    for (const root of Object.values(index.roots.entries)) {
+      if (root.pos !== 'noun') continue;
+      for (const gloss of root.glosses) {
+        if (gloss.qualifiers?.length) continue;
+        const bare = gloss.text.replace(/\([^()]*\)/g, '').trim();
+        if (!/^(?:(?:a|an) )?[a-z-]+(?:,\s*(?:(?:a|an) )?[a-z-]+)*$/i.test(bare)) continue;
+        for (const item of bare.split(/,\s*/)) {
+          // These are fixed quantity/time expressions, not an optional article.
+          if (/^a (little|lot|few|while)$/i.test(item)) continue;
+          const key = glossKey(item.replace(/^(a|an) /i, ''));
+          if (key === gloss.key) continue;
+          const ids = this.dictionaryAliases.get(key) ?? [];
+          if (!ids.includes(root.id)) ids.push(root.id);
+          this.dictionaryAliases.set(key, ids);
+        }
+      }
+    }
     for (const e of Object.values(index.examples)) {
       if (e.language !== 'buxori') continue;
       for (const w of canonicalKey(e.bux).split(/[^a-zü']+/)) if (w) this.corpusFreq.set(w, (this.corpusFreq.get(w) ?? 0) + 1);
@@ -66,7 +87,7 @@ export class Lexicon {
    */
   roots(english: string, pos?: PartOfSpeech | PartOfSpeech[], opts: { examples?: boolean } = {}): RootEntry[] {
     const k = glossKey(english);
-    const ids = this.index.roots.byGloss[k] ?? [];
+    const ids = [...new Set([...(this.index.roots.byGloss[k] ?? []), ...(this.dictionaryAliases.get(k) ?? [])])];
     const want = pos ? (Array.isArray(pos) ? pos : [pos]) : null;
     const list = ids.map((id) => this.root(id)).filter((e): e is RootEntry => !!e);
     if (!list.length && opts.examples) list.push(...this.exampleWords(k));
@@ -140,6 +161,6 @@ export class Lexicon {
   }
 
   allGlossKeys(): string[] {
-    return Object.keys(this.index.roots.byGloss);
+    return [...new Set([...Object.keys(this.index.roots.byGloss), ...this.dictionaryAliases.keys()])];
   }
 }

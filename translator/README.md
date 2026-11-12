@@ -359,6 +359,13 @@ enable it, deploy the worker and set
   serve as expected answers. They are used as a robustness test for Buxori →
   English (all analysed, at least 85% of their words recognised).
 
+## Supplied dataset audit
+
+The uploaded JSONL datasets, reproducible audit, review queue and source-backed
+lookup fixes are documented in [`data/imports/README.md`](data/imports/README.md).
+Run `npm run audit:imports` to regenerate the review files; the unverified draft
+is not part of the runtime dictionary.
+
 ## Known limitations
 
 - **Vocabulary.** About 1,650 words. Most everyday words are missing, and no
