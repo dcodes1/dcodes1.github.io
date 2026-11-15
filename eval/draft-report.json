@@ -1,0 +1,436 @@
+{
+  "what": "AI draft (Tajik-derived, unverified) compared with the lesson book, on English items for which the book prints Buxori.",
+  "caveat": "Agreement overstates the draft wherever it was shown the book: rows rated \"high\" often repeat a printed form, and \"Everyday word choice\" rows only pick among translations the book prints. The fair measure is \"Grammar words\" rated \"medium\", written without the book's answer in view. Rows rated \"low\" are not imported at all.",
+  "rowsInDraft": 2614,
+  "agreementByConfidence": {
+    "high": {
+      "agree": 142,
+      "compared": 147
+    },
+    "low": {
+      "agree": 18,
+      "compared": 25
+    },
+    "medium": {
+      "agree": 107,
+      "compared": 132
+    }
+  },
+  "agreementByPart": {
+    "Everyday phrases": {
+      "high": {
+        "agree": 21,
+        "compared": 22
+      },
+      "low": {
+        "agree": 1,
+        "compared": 1
+      },
+      "medium": {
+        "agree": 0,
+        "compared": 1
+      }
+    },
+    "Everyday word choice": {
+      "high": {
+        "agree": 30,
+        "compared": 30
+      },
+      "low": {
+        "agree": 17,
+        "compared": 21
+      },
+      "medium": {
+        "agree": 76,
+        "compared": 76
+      }
+    },
+    "Grammar words": {
+      "high": {
+        "agree": 86,
+        "compared": 90
+      },
+      "low": {
+        "agree": 0,
+        "compared": 3
+      },
+      "medium": {
+        "agree": 31,
+        "compared": 53
+      }
+    },
+    "Sentences by construction": {
+      "high": {
+        "agree": 5,
+        "compared": 5
+      },
+      "medium": {
+        "agree": 0,
+        "compared": 2
+      }
+    }
+  },
+  "disagreements": [
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "you (object, informal)",
+      "draft": "tuya",
+      "book": [
+        "tu",
+        "shumo"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "you (object, polite)",
+      "draft": "shumoya",
+      "book": [
+        "tu",
+        "shumo"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "to me",
+      "draft": "ba man",
+      "book": [
+        "manba"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "own (my own house)",
+      "draft": "xudam (my own: xoni xudam)",
+      "book": [
+        "doshtan"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "these",
+      "draft": "inho",
+      "book": [
+        "vayho",
+        "vayo",
+        "hamunho"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "near",
+      "draft": "yoni",
+      "book": [
+        "yon",
+        "peshi"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "opposite",
+      "draft": "rübarüyi",
+      "book": [
+        "rübarü"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "through",
+      "draft": "az",
+      "book": [
+        "garchande"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "back",
+      "draft": "pas",
+      "book": [
+        "pusht",
+        "aqiv"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "low",
+      "english": "in spite of",
+      "draft": "bo vujudi",
+      "book": [
+        "garchande"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "in (in two days)",
+      "draft": "ba'd az",
+      "book": [
+        "ba",
+        "dar"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "at (at five o’clock)",
+      "draft": "so'at ...",
+      "book": [
+        "ba",
+        "dar",
+        "peshi"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "on (on Saturday)",
+      "draft": "(no preposition)",
+      "book": [
+        "boli"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "when",
+      "draft": "vaqte ki",
+      "book": [
+        "kay",
+        "vaqti"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "before (before he came)",
+      "draft": "pesh az on ki",
+      "book": [
+        "pesh az"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "after (after he came)",
+      "draft": "ba'd az on ki",
+      "book": [
+        "ba'di",
+        "ba'd"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "high",
+      "english": "not",
+      "draft": "na- (verb prefix)",
+      "book": [
+        "nest"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "low",
+      "english": "maybe",
+      "draft": "balki",
+      "book": [
+        "magar",
+        "balke"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "low",
+      "english": "well (well, …)",
+      "draft": "xay",
+      "book": [
+        "tinji",
+        "safetbax"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "too (too big)",
+      "draft": "judo",
+      "book": [
+        "ham"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "together",
+      "draft": "yakjoya",
+      "book": [
+        "ba ya"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "perhaps",
+      "draft": "shoyad",
+      "book": [
+        "magar",
+        "balke"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "soon",
+      "draft": "zud",
+      "book": [
+        "aknun",
+        "hozir",
+        "xozir"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "before (earlier)",
+      "draft": "pesh",
+      "book": [
+        "pesh az"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "high",
+      "english": "sixth",
+      "draft": "shishum",
+      "book": [
+        "shishtum"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "percent",
+      "draft": "foiz",
+      "book": [
+        "prosond"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "high",
+      "english": "I have",
+      "draft": "doram",
+      "book": [
+        "man doram"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "high",
+      "english": "I don’t have",
+      "draft": "nadoram",
+      "book": [
+        "man nadoram"
+      ]
+    },
+    {
+      "part": "Grammar words",
+      "confidence": "medium",
+      "english": "may (permission)",
+      "draft": "mumkin (+ ki)",
+      "book": [
+        "sivan",
+        "may",
+        "may"
+      ]
+    },
+    {
+      "part": "Sentences by construction",
+      "confidence": "medium",
+      "english": "Don’t go!",
+      "draft": "Narav!",
+      "book": [
+        "narov"
+      ]
+    },
+    {
+      "part": "Sentences by construction",
+      "confidence": "medium",
+      "english": "How are you? (to a friend)",
+      "draft": "Chitüy?",
+      "book": [
+        "chitüyed"
+      ]
+    },
+    {
+      "part": "Everyday word choice",
+      "confidence": "low",
+      "english": "die",
+      "draft": "vafot kardan",
+      "book": [
+        "nashomo dodan",
+        "jon dodan",
+        "pasi parda shudan"
+      ]
+    },
+    {
+      "part": "Everyday word choice",
+      "confidence": "low",
+      "english": "queen",
+      "draft": "malika",
+      "book": [
+        "motka",
+        "malko",
+        "farzin"
+      ]
+    },
+    {
+      "part": "Everyday word choice",
+      "confidence": "low",
+      "english": "to die",
+      "draft": "vafot kardan",
+      "book": [
+        "nashomo dodan",
+        "jon dodan",
+        "pasi parda shudan"
+      ]
+    },
+    {
+      "part": "Everyday word choice",
+      "confidence": "low",
+      "english": "well",
+      "draft": "tinj",
+      "book": [
+        "tinji",
+        "safetbax"
+      ]
+    },
+    {
+      "part": "Everyday phrases",
+      "confidence": "medium",
+      "english": "Thank you very much",
+      "draft": "Rahmat kalon!",
+      "book": [
+        "rahmat",
+        "quluq"
+      ]
+    },
+    {
+      "part": "Everyday phrases",
+      "confidence": "high",
+      "english": "What is your name?",
+      "draft": "Nomat chi? / Nomaton chi?",
+      "book": [
+        "nomat che",
+        "nomat che",
+        "nomaton che"
+      ]
+    }
+  ]
+}

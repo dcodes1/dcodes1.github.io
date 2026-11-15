@@ -16,7 +16,7 @@ function ReadingLine({ r, show }: { r: Reading; show: (s: string) => string }) {
   return (
     <>
       <strong>{show(r.lemma)}</strong> <span className="tr-pos">{POS[r.pos] ?? r.pos}</span>
-      {r.register && <span className="tr-reg-tag">{REGISTER[r.register]}</span>} — {r.glosses.slice(0, 4).join('; ')}
+      {r.register && <span className="tr-reg-tag">{REGISTER[r.register]}</span>}{r.draft && <span className="tr-reg-tag tr-draft-tag">AI draft</span>} — {r.glosses.slice(0, 4).join('; ')}
       {r.parts.length > 0 && (
         <div className="tr-entry-sub">{r.parts.map((p, i) => (
           <span key={i} className="tr-part"><code>{/^[-a-zü']+-?$/i.test(p.form) && p.label !== 'tense' && p.label !== 'person' ? show(p.form) : p.form}</code> {p.label}</span>
@@ -55,6 +55,7 @@ export function Breakdown({ tokens, reverse, show, heading = 'Word by word' }: {
               <span className="tr-word-gloss">{rd ? short(rd) : 'not in the source'}</span>
               {rd && affixes(rd).length > 0 && <span className="tr-word-tags">{affixes(rd).map((p) => show(p.form)).join(' ')}</span>}
               {rd?.register && <span className="tr-reg-tag">{REGISTER[rd.register]}</span>}
+              {rd?.draft && <span className="tr-reg-tag tr-draft-tag">AI draft</span>}
               {more > 0 && <span className="tr-word-more" title="More readings or forms">+{more}</span>}
             </button>
           );
@@ -63,7 +64,8 @@ export function Breakdown({ tokens, reverse, show, heading = 'Word by word' }: {
       {t && (
         <div className="tr-word-detail" id="trWordDetail" aria-live="polite">
           {r ? <div className="tr-entry"><ReadingLine r={r} show={show} />
-            {r.rows.length > 0 && <span className="tr-rows" title="Line numbers in translator/data/bukhori.tsv"> TSV {r.rows.slice(0, 4).join(', ')}{r.rows.length > 4 ? '…' : ''}</span>}
+            {r.draft && <div className="tr-entry-sub">From the AI draft (written from Tajik and Farsi). Not in the lesson book and not confirmed by a speaker.</div>}
+            {r.rows.length > 0 && !r.draft && <span className="tr-rows" title="Line numbers in translator/data/bukhori.tsv"> TSV {r.rows.slice(0, 4).join(', ')}{r.rows.length > 4 ? '…' : ''}</span>}
             {r.forms.length > 0 && <div className="tr-entry-sub">Also written or said: {r.forms.slice(0, 6).map((f, i) => <span key={i} className="tr-part"><code>{show(f.text)}</code> {f.kind}</span>)}</div>}
             {r.everyday && r.everyday.toLowerCase() !== t.latin && <div className="tr-entry-sub">Everyday (Regular) form: <code>{show(r.everyday)}</code></div>}
             {r.spelling !== 'exact' && <div className="tr-entry-sub">Matched without accents or apostrophes; the source spells it <code>{show(r.lemma)}</code>.</div>}

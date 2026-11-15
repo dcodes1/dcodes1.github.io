@@ -4,6 +4,7 @@
  */
 import { canonicalKey, glossKey, senses } from '../lib/normalizer.ts';
 import { expandContractions } from './english.ts';
+import { isDraftRoot } from '../lib/draft.ts';
 import type {
   BuxoriIndex, Example, GlossKey, InflectedEntry, PartOfSpeech, PersonNumber, RootEntry, RootId, SourceRef,
 } from '../lib/types.ts';
@@ -37,7 +38,7 @@ export class Lexicon {
   constructor(index: BuxoriIndex) {
     this.index = index;
     for (const e of Object.values(index.examples)) {
-      if (e.language !== 'buxori') continue;
+      if (e.language !== 'buxori' || e.source.draft) continue;      // draft sentences are never evidence
       for (const w of canonicalKey(e.bux).split(/[^a-zü']+/)) if (w) this.corpusFreq.set(w, (this.corpusFreq.get(w) ?? 0) + 1);
     }
     for (const e of Object.values(index.examples)) {
@@ -49,6 +50,8 @@ export class Lexicon {
         for (const k of keys) {
           if (!k) continue;
           const list = this.examplesByEn.get(k) ?? [];
+          // the book's sentence for this English is the only answer when there is one
+          if (e.source.draft && list.some((x) => !x.source.draft)) continue;
           if (!list.includes(e)) list.push(e);
           this.examplesByEn.set(k, list);
         }
@@ -62,7 +65,7 @@ export class Lexicon {
 
   /**
    * Roots glossed with this English key, best first:
-   * requested POS → not REVIEW-only → fewer senses (more specific) → shorter → earlier row.
+   * requested POS → from the book (AI-draft entries after) → not REVIEW-only → fewer senses (more specific) → shorter → earlier row.
    */
   roots(english: string, pos?: PartOfSpeech | PartOfSpeech[], opts: { examples?: boolean } = {}): RootEntry[] {
     const k = glossKey(english);
@@ -72,6 +75,7 @@ export class Lexicon {
     if (!list.length && opts.examples) list.push(...this.exampleWords(k));
     const score = (e: RootEntry) => [
       want && !want.includes(e.pos) ? 1 : 0,
+      isDraftRoot(e) ? 1 : 0,                      // the book's entry always comes before an AI-draft one
       isReview(e.sources) ? 1 : 0,
       // a restricted sense ("red (about hair)", "hello (on the phone)") ranks below a plain one
       e.glosses.some((g) => g.key === k && g.qualifiers?.length) ? 1 : 0,

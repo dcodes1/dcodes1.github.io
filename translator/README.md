@@ -211,10 +211,12 @@ is the trust number. `eval/thresholds.json` makes CI fail on any regression.
 ```bash
 npm ci
 npm run compile     # TSV → src/data/buxori-index.json (byte-identical for the same input)
-npm test            # vitest: data integrity, normalizer, lookup, both engines, suggestions (609 tests)
+npm run import:draft  # ai-draft/buxori_dataset.jsonl → ai-draft.tsv (then `npm run compile` writes buxori-draft.json)
+npm test            # vitest: data integrity, normalizer, lookup, both engines, suggestions, the AI draft rules (636 tests)
 npm run typecheck
 npm run eval        # held-out accuracy and per-tier precision; `-- --check` enforces thresholds
 npm run eval:reverse  # the same set, Buxori → English
+npm run eval:draft  # AI draft compared with the book, where both answer
 npm run build       # React app → translator/app/
 npm run e2e         # real-browser test of the site, served like GitHub Pages
 npm run check       # all of the above, as CI runs it
@@ -243,6 +245,62 @@ one, so they can never pass as the book's own entries. To regenerate the list
 ```bash
 node scripts/missing-words.ts --freq words.txt --wordnet node_modules/wordnet-db/dict
 ```
+
+## AI draft layer (unverified)
+
+`translator/data/ai-draft/buxori_dataset.jsonl` is the linguist worksheets filled in by
+an AI working from Tajik and Farsi. Every row is marked
+`ai_draft_tajik_derived_unverified`: it is **not** the lesson book and **no speaker has
+confirmed it**. It is used so that a learner gets a labelled guess instead of nothing,
+under three rules that tests enforce (`tests/draft.test.ts`):
+
+1. **The book always wins.** Both engines ask the book-only index first. Whatever the book
+   prints or can build is returned exactly as it would be without the draft. The draft
+   only fills what the book cannot answer.
+2. **Draft results are labelled and capped.** Anything resting on a draft entry is
+   flagged `draft`, tier **low**, badge "AI draft · unverified", and each draft word is
+   tagged in the word-by-word panel. It is never called printed, built or verified.
+3. **Draft sentences are never evidence.** They are not "similar sentences in the
+   source", do not feed sense choice or frequency, and a word only the draft has still
+   counts as "not in the source" for the similar-words offer.
+
+Pipeline (the book's index is not touched; its checksum is unchanged):
+
+```
+ai-draft/buxori_dataset.jsonl ──► scripts/import-ai-draft.ts ──► translator/data/ai-draft.tsv   (1,239 rows)
+ai-draft.tsv ──► scripts/compile-tsv.ts --draft ──► src/data/buxori-draft.json                 (885 words, 203 sentences)
+```
+
+Draft rows are numbered from 200001. The app loads `buxori-draft.json` as a separate
+file (about 64 KB gzipped) and merges it with `withDraft()` (`src/lib/draft.ts`); if
+that file fails to load, the translator is the lesson book alone.
+
+**What is imported:** worksheet parts 2 (grammar words), 3 (sentences by construction),
+6 (everyday phrases), 7 (vocabulary by topic) and 8 (common words missing from the
+book), rows rated high or medium.
+**What is not:** rows the draft itself rated low (445), answers that are explanations
+rather than forms (85), duplicates (32), and parts 1, 4, 5, 9, 10, 11 (grammar
+questions, verb forms, word choice among the book's own options, judgements of the
+translator, flagged rows; 815 rows): those would change or overrule the book, and need
+a speaker.
+
+**How good is it?** It cannot be checked against a speaker. Where the draft and the
+book both answer, `npm run eval:draft` compares them (`eval/draft-report.json`):
+
+| Draft's own rating | Agrees with the book |
+|---|---|
+| high | 142 / 147 (97%), mostly rows where the draft was shown the book's form |
+| medium, grammar words (the fair measure) | 31 / 53 (58%) |
+| low (not imported) | 18 / 25 |
+
+So expect roughly 6 in 10 draft words to match what the book would have said. That is
+why draft results are capped at low.
+
+`ai-draft/buxori_train_pairs.jsonl` is the same content as chat-format pairs for
+fine-tuning a language model. Nothing here uses it: this translator is rule-based and
+runs in the browser with no model to train. It is stored for reference only.
+
+To remove the layer: delete `src/data/buxori-draft.json` and rebuild.
 
 ## Offline
 

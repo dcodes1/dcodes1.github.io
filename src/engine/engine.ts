@@ -12,6 +12,7 @@
  * The engine never outputs a Buxori word that is not in the index or produced by a
  * cited rule. Unknown English words are listed, not translated.
  */
+import { isDraftRoot, isDraftRow } from '../lib/draft.ts';
 import { glossKey, similarity } from '../lib/normalizer.ts';
 import type { BuxoriIndex, Evidence, Example, RootEntry } from '../lib/types.ts';
 import {
@@ -58,6 +59,11 @@ export interface Translation {
    * How far to trust `text`: high and medium are shown as the translation, low is shown as
    * a draft with its word-by-word breakdown. Set by Engine.scored from `confidence`.
    */
+  /**
+   * The result uses at least one entry of the AI draft (Tajik-derived, not in the book, not
+   * confirmed by a speaker). Always tier "low"; the UI shows it as an AI draft.
+   */
+  draft?: true;
   /** Built by Engine.complex: two clauses joined by a pattern the source prints. */
   joined?: true;
   tier?: Tier;
@@ -112,18 +118,38 @@ export class Engine {
   private readonly entryKeys: { key: string; tg: Set<string> }[];
   private readonly cache = new Map<string, Translation>();
 
-  constructor(index: BuxoriIndex) {
+  /** The same engine over the lesson book alone, when `index` also holds the AI draft. */
+  private readonly book: Engine | null;
+
+  /**
+   * @param book the lesson-book index without the AI draft, when `index` is the merged one.
+   *   The book is then asked first and the draft only fills what the book cannot answer.
+   */
+  constructor(index: BuxoriIndex, book?: BuxoriIndex) {
+    this.book = book && book !== index ? new Engine(book) : null;
     this.lex = new Lexicon(index);
     this.morph = new Morphology(index);
     this.grammar = new Grammar(this.lex, this.morph);
     this.corpus = Object.values(index.examples)
-      .filter((e): e is Example & { en: string } => !!e.en && e.language === 'buxori')
+      .filter((e): e is Example & { en: string } => !!e.en && e.language === 'buxori' && !e.source.draft)      // "similar sentences in the source" are the book's only
       .map((e) => ({ en: e.en, bux: e.bux, row: e.source.row, tg: trigrams(e.en), toks: new Set(glossKey(e.en).split(/\W+/).filter(Boolean)) }));
     const keys = new Set([...Object.keys(index.roots.byGloss), ...Object.keys(index.roots.inflectedByGloss)]);
     this.entryKeys = [...keys].map((key) => ({ key, tg: trigrams(key) }));
   }
 
   translate(input: string): Translation {
+    if (!this.book) return this.translateOwn(input);
+    // Rule 1 of the draft layer (src/lib/draft.ts): the book always wins. Whatever the book
+    // alone can print or build is the answer, exactly as it would be without the draft.
+    const b = this.book.translate(input);
+    if (b.status === 'exact' || b.status === 'grammar') return b;
+    const d = this.translateOwn(input);
+    // The draft fills a gap (the book has nothing), or has the exact words where the book
+    // only has something spelled alike.
+    return d.draft && d.text && (b.status === 'none' || d.status === 'exact') ? d : b;
+  }
+
+  private translateOwn(input: string): Translation {
     const typed = (input ?? '').slice(0, 2000).trim();
     // Everyday typing ("im so happy!!", "thx", "how r u") → standard English first.
     const informal = normalizeInformal(typed);
@@ -167,8 +193,26 @@ export class Engine {
    * and tiers are cut at 0.8 (high) and 0.55 (low). See eval/report.json for the measured
    * precision of each tier. Low-tier output is shown as a draft, not as a translation.
    */
-  private scored(res: Translation, english: string): Translation {
+  private scored(res0: Translation, english: string): Translation {
+    // Whatever rests on an AI-draft entry says so: steps, and alternatives offered beside a book answer.
+    const res: Translation = {
+      ...res0,
+      steps: res0.steps.map((st) => (st.rows?.some(isDraftRow)
+        ? { ...st, text: /^(Printed in the source|Dictionary entry)/.test(st.text) ? 'From the AI draft, not from the lesson book.' : `${st.text} (AI draft, not from the lesson book)` }
+        : st)),
+      alternatives: res0.alternatives.map((a) => (a.rows?.some(isDraftRow) ? { ...a, note: [a.note, 'AI draft, unverified'].filter(Boolean).join(' · ') } : a)),
+    };
     if (res.status === 'none' || !res.text) return { ...res, confidence: 0, tier: 'none', factors: [] };
+    // A book answer is shown with the book's alternatives only.
+    if (!res.rows.some(isDraftRow)) res.alternatives = res.alternatives.filter((x) => !x.rows?.some(isDraftRow));
+    if (res.rows.some(isDraftRow)) {
+      // Rule 2 of the draft layer: never above low, never "verified".
+      return {
+        ...res, draft: true, tier: 'low', confidence: Math.min(Math.round(res.confidence * 50) / 100, TIER_LOW - 0.05),
+        factors: ['uses the AI draft: written by an AI from Tajik and Farsi, not in the lesson book and not confirmed by a speaker'],
+        notes: res.notes.filter((n) => !/^Printed in the source/.test(n)),
+      };
+    }
     if (res.joined) {
       // Each clause was scored on its own; joining them by a printed pattern costs a little more.
       // No two-clause sentence is in the held-out set, so none reaches the high tier on trust.
@@ -225,16 +269,19 @@ export class Engine {
    * book" (src/ai/similar.ts). Function words (the, to, my…) are never listed.
    */
   unknownWords(input: string): string[] {
+    // "Not in the source" means not in the BOOK: a word the AI draft supplies still counts,
+    // so the reader is offered the book's own nearest words as well.
     const whole = this.translate(input);
-    if (whole.status !== 'none') return whole.unknown;
+    if (whole.status !== 'none' && !whole.draft) return whole.unknown;
     const text = expandContractions(cleanEnglish(normalizeInformal(input ?? '').text.slice(0, 2000)).text);
     const words = text.match(/[a-z]+(?:[-'][a-z]+)*/g) ?? [];
-    const has = (lemma: string) => this.lex.roots(lemma).length > 0;
+    const has = (lemma: string) => this.lex.roots(lemma).some((r) => !isDraftRoot(r));
     const out: string[] = [];
     words.forEach((w0, i) => {
       const w = w0.replace(/'s$/, '');
       if (w.length < 2 || FUNCTION_WORDS.has(w) || out.includes(w) || parseNumber(words, i)) return;
-      if (this.translate(w).status !== 'none') return;
+      const alone = this.translate(w);
+      if (alone.status !== 'none' && !alone.draft) return;
       // "went" → go, "dogs" → dog: an inflected form of a source word is not unknown. Regular
       // verb endings are only trusted for lemmas of 4+ letters ("seed" is not "see" + -d).
       if (verbCandidates(w).some((c, k) => (k === 0 && c.lemma !== w ? has(c.lemma) : c.lemma !== w && c.lemma.length >= 4 && has(c.lemma)))) return;

@@ -326,6 +326,8 @@ export class Grammar {
     if (toks[0] === 'do' && toks[1] === 'not') i = 2;
     else if (toks[0] === 'never') i = 1;
     const w = toks[i];
+    // "Do you have a book?" / "Does he know?": do + subject is a question, not the command "do!"
+    if ((w === 'do' || w === 'does' || w === 'did') && (SUBJECT_PRONOUNS[toks[i + 1] ?? ''] || ARTICLES.has(toks[i + 1] ?? '') || POSSESSIVE_DETERMINERS[toks[i + 1] ?? ''])) return false;
     if (!w || SUBJECT_PRONOUNS[w] || WH_WORDS.has(w) || BE_FORMS.has(w) || MODALS.has(w)) return w === 'be' && i === 0;
     const v = this.verbRoot(w);
     return !!v && v.form === 'base' && !this.nounRoot(w) || (!!v && v.form === 'base' && toks.length > 1 && !this.verbRoot(toks[i + 1] ?? '#'));
@@ -354,12 +356,15 @@ export class Grammar {
         if (j > i && j < toks.length) { whNp = toks.slice(i, j); i = j; }
       }
     }
+    let sawDo = false;
     const eatAux = () => {
       while (i < toks.length) {
         const t = toks[i]!;
         if (t === 'not' || t === 'never') { negative = true; i++; continue; }
-        if (t === 'do' || t === 'does') { i++; continue; }
-        if (t === 'did') { tense = 'simple_past'; i++; continue; }
+        // only the first do/does/did is an auxiliary: in "What do you do?" the second is the verb
+        if ((t === 'do' || t === 'does' || t === 'did') && sawDo) break;
+        if (t === 'do' || t === 'does') { sawDo = true; i++; continue; }
+        if (t === 'did') { sawDo = true; tense = 'simple_past'; i++; continue; }
         if (t === 'will' || t === 'shall') { future = true; i++; continue; }
         if (MODALS.has(t)) { modal = t; i++; continue; }
         if (t === 'used' && toks[i + 1] === 'to') { usedTo = true; i += 2; continue; }
@@ -435,6 +440,11 @@ export class Grammar {
       if (!this.word(t, [...ADVERB_POS]) && !['also', 'always', 'often', 'usually', 'still', 'already', 'just', 'really'].includes(t)) break;
     }
 
+    // The conjugation steps cite rules, not the dictionary row. When the verb itself comes from
+    // the AI draft, say so, so that the result is recognised as resting on the draft.
+    if (verb && verb.sources.length > 0 && verb.sources.every((x) => x.draft)) {
+      steps.push({ text: `“${toks[vIdx]}” → ${verb.lemma.text}.`, rows: [verb.sources[0]!.row] });
+    }
     // Tense from English morphology
     if (verb) {
       if (usedTo) tense = 'descriptive_past';

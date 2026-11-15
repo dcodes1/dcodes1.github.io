@@ -43,6 +43,8 @@ export interface SourceRef {
   section: string;
   entryType: EntryType;
   review?: true;        // TSV flag == "REVIEW"
+  /** From the AI draft (translator/data/ai-draft.tsv), not from the lesson book. TSV row ≥ 200001. */
+  draft?: true;
   note?: string;        // original `notes` cell, verbatim
 }
 
@@ -370,4 +372,21 @@ export interface BuxoriIndex {
   examples: Record<ExampleId, Example>;
   /** Audit trail: every TSV row not turned into a root/affix/rule/example, and why. */
   excluded: { row: number; reason: ExclusionReason }[];
+}
+
+// ── AI DRAFT OVERLAY ─────────────────────────────────────────────────────────
+/** First row number of translator/data/ai-draft.tsv entries (book rows are below 100000, owner additions 100001+). */
+export const DRAFT_ROW_BASE = 200000;
+/**
+ * buxori-draft.json: entries written by an AI from Tajik and Farsi, not by a speaker and
+ * not in the lesson book. Kept in its own file so the book index stays exactly the book.
+ * Merged at load time by src/lib/draft.ts; every entry's sources carry `draft: true`.
+ */
+export interface DraftOverlay {
+  meta: { source: string; rows: number; roots: number; examples: number; note: string };
+  entries: Record<RootId, RootEntry>;
+  byKey: Record<BuxKey, RootId[]>;
+  byGloss: Record<GlossKey, RootId[]>;
+  byStem: Record<string, { root: RootId; stem: 'present' | 'past' | 'literary_present' }[]>;
+  examples: Record<ExampleId, Example>;
 }

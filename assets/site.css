@@ -1272,6 +1272,10 @@ footer .hi { color: var(--green); }
 .tr-alts-head { margin-bottom: 0.35rem; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
 .tr-alts .tr-entries { margin-bottom: 0; }
 .tr-low { display: grid; gap: 0.45rem; }
+.tr-aidraft .tr-low-head { color: #c084fc; }
+.tr-aidraft .tr-draft { border-left-color: rgba(192, 132, 252, 0.6); }
+.tr-badge.draft { color: #c084fc; border-color: rgba(192, 132, 252, 0.4); background: rgba(192, 132, 252, 0.09); }
+.tr-draft-tag { color: #c084fc; border-color: rgba(192, 132, 252, 0.4); }
 .tr-low-head { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
 .tr-draft { padding-left: 0.75rem; border-left: 2px dashed rgba(251, 191, 36, 0.5); color: var(--text-dim); font-style: italic; }
 .tr-low-foot { font-size: 0.8rem; color: var(--text-faint); }

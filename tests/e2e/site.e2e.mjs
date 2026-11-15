@@ -385,6 +385,27 @@ try {
   ok('similar: pick keeps the tense (purchased → bought)', (await sp.inputValue('#trInput')) === 'we bought it' && (await sp.textContent('#trOutput')).trim() === 'Mo xaridem', await sp.inputValue('#trInput'));
   await sctx.close();
 
+  // ── 8b2. AI draft layer: used only where the book has nothing, always labelled ──
+  const dctx = await browser.newContext();
+  const dp = await dctx.newPage(); watch(dp);
+  await dp.goto(BASE + '/translator', { waitUntil: 'load' });
+  await ready(dp);
+  ok('draft: the status line counts book entries and AI-draft entries separately', /book entries \+ [\d,]+ AI draft/.test(await dp.textContent('#trStatus')), await dp.textContent('#trStatus'));
+  r = await translate(dp, 'computer');
+  ok('draft: a word only the draft has is shown as an AI draft, not as a translation', await dp.$('#trAiDraft') !== null && /AI draft · unverified/.test(r.badge) && !/Printed|Built|high|medium/i.test(r.badge), r.badge);
+  ok('draft: says it is not from the book and not checked by a speaker', /not from the book, not checked by a speaker/.test(await dp.textContent('#trAiDraft')));
+  r = await translate(dp, 'Good morning');
+  ok('draft: a book answer carries no AI-draft label anywhere', r.out === 'Safro tüvo!' && await dp.$('#trAiDraft') === null && !/AI draft/.test(r.badge) && !/AI draft/.test(await dp.textContent('.tr-result').catch(() => '') ?? ''), r.badge);
+  r = await translate(dp, 'three books');
+  ok('draft: what the book can build stays the book’s (the draft prints it too)', r.out === 'seta kitov' && await dp.$('#trAiDraft') === null && !/AI draft/.test(r.badge), r);
+  await dp.click('.tr-tabs > button:nth-child(2)');
+  r = await translate(dp, 'Man moshin doram');
+  ok('draft: Buxori → English with one draft word is labelled, and only that word is tagged', /I have a car/.test(r.out) && /AI draft · unverified/.test(r.badge)
+    && (await dp.$$eval('#trBreakdown .tr-word', (els) => els.map((e) => !!e.querySelector('.tr-draft-tag')))).join() === 'false,true,false', r);
+  r = await translate(dp, 'Man kitov doram');
+  ok('draft: Buxori → English from the book is unlabelled', r.out === 'I have a book.' && !/AI draft/.test(r.badge) && await dp.$('.tr-draft-tag') === null, r.badge);
+  await dctx.close();
+
   // ── 8c. Offline (service worker) ─────────────────────────────────────────
   const octx = await browser.newContext();
   const op = await octx.newPage(); watch(op);
@@ -411,6 +432,8 @@ try {
   await op.click('.tr-tabs > button:nth-child(2)');
   r = await translate(op, 'Man kitov doram');
   ok('offline: Buxori → English works', r.out === 'I have a book.', r.out);
+  r = await translate(op, 'Man moshin doram');
+  ok('offline: the AI draft is cached too, and still labelled', /I have a car/.test(r.out) && /AI draft/.test(r.badge), r);
   await op.goto(BASE + '/', { waitUntil: 'domcontentloaded' }).catch(() => {});
   s = await state(op).catch(() => ({}));
   ok('offline: portfolio opens from the cache', s.portHidden === false, s);

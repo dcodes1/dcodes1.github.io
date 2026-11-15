@@ -17,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 import { readTsv, sourceRef, type Row } from './lib/tsv.ts';
 import { affixForm, canonicalKey, dedupeBy, foldTsvStress, glossKey, senses, similarity, stemFinal } from '../src/lib/normalizer.ts';
 import {
+  DRAFT_ROW_BASE, type DraftOverlay,
   EVIDENCE_PRECEDENCE,
   type Affix, type AffixCategory, type AffixId, type Allomorph, type AttachesTo, type BuxKey, type BuxoriIndex,
   type Environment, type Example, type ExampleId, type ExclusionReason, type Form, type Gloss, type GlossKey,
@@ -29,6 +30,12 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // CLI: [file.tsv] [--out path] [--exclude-rows eval/testset.json]
 const argv = process.argv.slice(2);
 const flag = (name: string) => { const i = argv.indexOf(name); return i >= 0 ? argv.splice(i, 2)[1] : undefined; };
+// --draft: build the AI-draft overlay (src/data/buxori-draft.json) and nothing else. The draft
+// rows are compiled together with the book so they get the same treatment (senses, verb
+// stems, compound verbs), then only the entries that come purely from the draft are written.
+// The book index itself is always built WITHOUT them, by the plain invocation.
+const DRAFT_MODE = argv.includes('--draft');
+if (DRAFT_MODE) argv.splice(argv.indexOf('--draft'), 1);
 const OUT_ARG = flag('--out');
 const EXCLUDE_ARG = flag('--exclude-rows');
 const TSV_PATH = resolve(argv[0] ?? resolve(ROOT, 'translator/data/bukhori.tsv'));
@@ -106,6 +113,10 @@ const ADDITIONS_PATH = resolve(ROOT, 'translator/data/missing-words.tsv');
 const ADDITION_ROW_BASE = 100000;
 const additions = !argv[0] && existsSync(ADDITIONS_PATH)
   ? readTsv(ADDITIONS_PATH).rows.filter((r) => r.bukhori).map((r) => ({ ...r, row: ADDITION_ROW_BASE + r.row }))
+  : [];
+const DRAFT_PATH = resolve(ROOT, 'translator/data/ai-draft.tsv');
+const draftRows = DRAFT_MODE && existsSync(DRAFT_PATH)
+  ? readTsv(DRAFT_PATH).rows.filter((r) => r.bukhori).map((r) => ({ ...r, row: DRAFT_ROW_BASE + r.row, draft: true }))
   : [];
 const allRows = [...bookRows, ...additions];
 // Rows the source itself flags REVIEW are kept out of everything the translator uses
@@ -315,7 +326,7 @@ const excluded: { row: number; reason: ExclusionReason }[] = [];
 const exclude = (r: Row, reason: ExclusionReason) => { excluded.push({ row: r.row, reason }); use(r, 'excluded'); };
 const seenPairs = new Set<string>();
 
-for (const r of rows) {
+for (const r of [...rows, ...draftRows]) {
   if (r.entryType === 'grammar' || r.entryType === 'vocab' || r.entryType === 'paradigm') continue;
   if (isInflected(r)) continue;                                     // → inflected entries
   if (!r.bukhori) { exclude(r, r.entryType === 'reading' && /not transcribed/i.test(r.notes) ? 'not_transcribed' : 'no_answer'); continue; }
@@ -384,13 +395,15 @@ const roots = new Map<RootId, RootEntry>();
 const rootGroup = new Map<string, RootId>();      // `${lemmaKey}|${pos}` → id
 const rootRows = new Map<RootId, Row[]>();
 const rootRowsList = rows.filter((r) => r.entryType === 'vocab' && r.bukhori && !r.bukhori.startsWith('-') && !isInflected(r));
-for (const r of [...rootRowsList, ...paradigmWordRows]) {
+const draftRootRows = draftRows.filter((r) => r.entryType === 'vocab' && !r.bukhori.startsWith('-'));
+for (const r of [...rootRowsList, ...paradigmWordRows, ...draftRootRows]) {
   const pieces = r.bukhori.split(';').map((s) => s.trim()).filter(Boolean);
   const lemmaText = pieces[0] ?? r.bukhori;
   const pos: PartOfSpeech = r.entryType === 'paradigm'
     ? (/copula/i.test(r.section) ? 'particle' : /conjunction/i.test(r.section) ? 'conjunction' : 'noun')
     : posOf(r);
-  const gk = `${buxKey(lemmaText)}|${pos}`;
+  // a draft row never merges into a book entry: its gloss must not pass as the book's
+  const gk = `${buxKey(lemmaText)}|${pos}${r.draft ? '|draft' : ''}`;
   let id = rootGroup.get(gk);
   if (!id) {
     id = `r${r.row}` as RootId;
@@ -426,7 +439,8 @@ for (const e of roots.values()) e.forms = dedupeBy(e.forms, (f) => `${f.key}|${f
 
 // 4b. Verb information -----------------------------------------------------
 const verbRootByInf = new Map<string, RootId>();
-for (const e of roots.values()) if (e.pos === 'verb' && words(e.lemma.text).length === 1) verbRootByInf.set(e.lemma.key, e.id);
+// (a draft verb never displaces the book's verb of the same spelling as an auxiliary)
+for (const e of roots.values()) if (e.pos === 'verb' && words(e.lemma.text).length === 1 && !(verbRootByInf.has(e.lemma.key) && e.sources.every((x) => x.draft))) verbRootByInf.set(e.lemma.key, e.id);
 const findVerb = (inf: string): RootId | undefined =>
   verbRootByInf.get(inf) ?? [...verbRootByInf.entries()].find(([k]) => k.replace(/ü/g, 'u') === inf.replace(/ü/g, 'u'))?.[1];
 
@@ -464,6 +478,12 @@ for (const e of roots.values()) {
     ...(distinct.length > 1 ? { conflicts: [{ field: 'presentStem' as const, values: distinct.map((s) => s.text), sources: distinct.flatMap((s) => (s.source ? [s.source] : [])) }] } : {}),
   };
   e.verb = verb;
+  // A draft row that reuses a verb the book has ("giriftan" for "to get") conjugates exactly as
+  // the book's verb does: its stems come from the book, never from a second derivation.
+  if (e.sources.every((x) => x.draft)) {
+    const bookVerb = [...roots.values()].find((b) => b !== e && b.lemma.key === e.lemma.key && b.verb && !b.sources.every((x) => x.draft));
+    if (bookVerb?.verb) e.verb = { ...bookVerb.verb, infinitive: verb.infinitive };
+  }
 }
 // Verbs whose present stem the TSV never states. For -idan verbs the TSV's own
 // stated stems follow "infinitive − -idan" in 21 of 24 cases (exceptions: didan
@@ -884,6 +904,31 @@ const index: BuxoriIndex = {
 const missing = rows.filter((r) => !used.has(r.row)).map((r) => r.row);
 if (missing.length) throw new Error(`Unaccounted TSV rows: ${missing.slice(0, 20).join(', ')}${missing.length > 20 ? ' …' : ''}`);
 
+if (DRAFT_MODE) {
+  const isDraft = (e: RootEntry) => e.sources.length > 0 && e.sources.every((x) => x.draft);
+  const ids = new Set([...roots.values()].filter(isDraft).map((e) => e.id));
+  const slice = <K extends string, V>(m: Map<K, V[]>, keep: (v: V) => boolean) => {
+    const out: Record<string, V[]> = {};
+    for (const k of [...m.keys()].sort()) { const l = m.get(k)!.filter(keep); if (l.length) out[k] = l; }
+    return out;
+  };
+  const draftExamples = [...examples.values()].filter((x) => x.source.draft);
+  const overlay: DraftOverlay = {
+    meta: {
+      source: relative(ROOT, DRAFT_PATH), rows: draftRows.length, roots: ids.size, examples: draftExamples.length,
+      note: 'Written by an AI from Tajik and Farsi. Not from the lesson book and not confirmed by a speaker. Used only where the book has nothing; never shown as verified.',
+    },
+    entries: Object.fromEntries([...roots.values()].filter(isDraft).map((e) => [e.id, e])) as DraftOverlay['entries'],
+    byKey: slice(rootsByKey, (id) => ids.has(id)) as DraftOverlay['byKey'],
+    byGloss: slice(byGloss, (id) => ids.has(id)) as DraftOverlay['byGloss'],
+    byStem: slice(byStem, (x) => ids.has(x.root)),
+    examples: Object.fromEntries(draftExamples.map((x) => [x.id, x])) as DraftOverlay['examples'],
+  };
+  const DRAFT_OUT = resolve(OUT_ARG ?? resolve(ROOT, 'src/data/buxori-draft.json'));
+  writeFileSync(DRAFT_OUT, JSON.stringify(overlay));
+  console.log(JSON.stringify({ out: relative(ROOT, DRAFT_OUT), bytes: Buffer.byteLength(JSON.stringify(overlay)), ...overlay.meta, note: undefined }, null, 1));
+  process.exit(0);
+}
 mkdirSync(dirname(OUT_PATH), { recursive: true });
 writeFileSync(OUT_PATH, JSON.stringify(index));
 // The REVIEW list, for manual checking (only for the real build, not the held-out one).

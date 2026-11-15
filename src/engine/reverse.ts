@@ -18,9 +18,10 @@
  * verbs ("zindagi mekunam") and two-word tenses ("gufta budam"). Noun suffixes are
  * stripped with the allomorphs of the index's affix table.
  */
+import { isDraftRoot } from '../lib/draft.ts';
 import { canonicalKey, detectScript, foldTsvStress, fuzzyKey, type Script } from '../lib/normalizer.ts';
 import type { Lookup, Tier as SpellingTier } from '../lib/lookup.ts';
-import type { BuxoriIndex, Example, InflectedEntry, PartOfSpeech, PersonNumber, RootEntry, Tense } from '../lib/types.ts';
+import { DRAFT_ROW_BASE, type BuxoriIndex, type Example, type InflectedEntry, type PartOfSpeech, type PersonNumber, type RootEntry, type Tense } from '../lib/types.ts';
 import {
   ADJECTIVES, MASS, OBJECT_FORM, POSSESSIVE, articleFor, beForm, ordinalOf, pluralOf, subjectPronoun, verbPhrase, vpText, withDoSupport, type VerbPhrase,
 } from './english-gen.ts';
@@ -50,6 +51,8 @@ export interface Reading {
   /** Spoken / variant / synonym forms the source lists for this entry. */
   forms: { text: string; kind: string }[];
   root?: RootEntry;
+  /** The entry is from the AI draft (Tajik-derived, not in the book, not confirmed by a speaker). */
+  draft?: true;
   /** For a Literal-register verb form: the everyday (Regular) form of the same tense and person. */
   everyday?: string;
 }
@@ -72,6 +75,8 @@ export interface Reverse {
   confidence: number;
   tier: Tier;
   factors: string[];
+  /** At least one word or the printed sentence comes from the AI draft. Always tier "low". */
+  draft?: true;
   tokens: Token[];
   /** Printed source rows behind an exact answer. */
   printed: { en: string; bux: string; row: number }[];
@@ -109,12 +114,23 @@ export class ReverseEngine {
   private maxVerbWords = 1;
   private readonly suffixes: Suffix[] = [];
 
-  constructor(index: BuxoriIndex, lookup: Lookup, morph: Morphology) {
+  /** The same engine over the lesson book alone, when `index` also holds the AI draft. */
+  private readonly book: ReverseEngine | null;
+
+  /**
+   * @param book the lesson-book index (and its lookup) without the AI draft, when `index` is
+   *   the merged one. The book is then asked first; the draft only fills what it cannot read.
+   */
+  constructor(index: BuxoriIndex, lookup: Lookup, morph: Morphology, book?: { index: BuxoriIndex; lookup: Lookup }) {
     this.index = index; this.lookup = lookup; this.morph = morph;
+    this.book = book && book.index !== index ? new ReverseEngine(book.index, book.lookup, morph) : null;
     for (const e of Object.values(index.examples)) {
       if (!e.en || e.language !== 'buxori') continue;
       for (const k of new Set([sentenceKey(e.bux), ...(e.spoken ? [sentenceKey(e.spoken)] : [])])) {
-        if (k) (this.sentences.get(k) ?? this.sentences.set(k, []).get(k)!).push(e);
+        if (!k) continue;
+        const list = this.sentences.get(k) ?? this.sentences.set(k, []).get(k)!;
+        if (e.source.draft && list.some((x) => !x.source.draft)) continue;      // the book's reading of a sentence is the only one
+        list.push(e);
       }
     }
     this.buildSuffixes();
@@ -168,7 +184,7 @@ export class ReverseEngine {
   }
 
   /** Build the verb-form table ahead of the first translation (about 0.3 s; the UI calls this when idle). */
-  warm(): void { this.verbs(); }
+  warm(): void { this.book?.warm(); this.verbs(); }
 
   private verbs(): Map<string, VerbHit[]> {
     if (this.verbForms) return this.verbForms;
@@ -229,7 +245,7 @@ export class ReverseEngine {
   private senseOrder(): Map<string, number> {
     if (this.preferred) return this.preferred;
     const out = new Map<string, number>();
-    const ex = [...new Set([...this.sentences.values()].flat())].map((e) => ({
+    const ex = [...new Set([...this.sentences.values()].flat())].filter((e) => !e.source.draft).map((e) => ({
       words: sentenceKey(e.bux).split(' '), en: ` ${(e.en ?? '').toLowerCase().replace(/[^a-z' ]+/g, ' ')} `,
     }));
     for (const root of Object.values(this.index.roots.entries)) {
@@ -263,6 +279,7 @@ export class ReverseEngine {
     const senses = this.sensesOf(root);
     const via = matched && matched !== root.lemma.key ? root.forms.find((f) => f.key === matched) : undefined;
     return {
+      ...(isDraftRoot(root) ? { draft: true as const } : {}),
       kind: 'entry', lemma: root.lemma.text, pos: root.pos, gloss: senses[0] ?? '', glosses: senses,
       parts: via && via.key !== root.lemma.key ? [{ form: via.text, label: `${via.kind.replace('_', ' ')} form of ${root.lemma.text}` }] : [],
       f: {}, rows: root.sources.map((s) => s.row), spelling, root,
@@ -291,6 +308,7 @@ export class ReverseEngine {
       try { everyday = this.morph.conjugate(h.root, h.tense, h.pn, { negative: h.negative })?.text; } catch { everyday = undefined; }
     }
     return {
+      ...(isDraftRoot(h.root) ? { draft: true as const } : {}),
       ...(everyday ? { everyday } : {}),
       kind: 'verb', lemma: h.root.lemma.text, pos: 'verb', gloss: this.sensesOf(h.root)[0] ?? '', glosses: this.sensesOf(h.root), parts,
       f: { verb: { tense: h.tense, pn: h.pn, negative: h.negative, ...(h.alsoFuture ? { alsoFuture: true as const } : {}) } },
@@ -315,7 +333,7 @@ export class ReverseEngine {
     if (!out.length && !key.includes(' ')) {
       for (const e of this.sentences.get(key) ?? []) {
         if (!e.en || / /.test(e.en.split(/[;,]/)[0]!.trim().replace(/^to /, ''))) continue;
-        out.push({ kind: 'entry', lemma: e.bux.replace(/[.!?]+$/, ''), pos: 'adjective', gloss: e.en.split(/[;,]/)[0]!.trim(), glosses: e.en.split(/[;,]/).map((x) => x.trim()), parts: [], f: {}, rows: [e.source.row], spelling: 'exact', forms: e.spoken ? [{ text: e.spoken, kind: 'spoken' }] : [] });
+        out.push({ ...(e.source.draft ? { draft: true as const } : {}), kind: 'entry', lemma: e.bux.replace(/[.!?]+$/, ''), pos: 'adjective', gloss: e.en.split(/[;,]/)[0]!.trim(), glosses: e.en.split(/[;,]/).map((x) => x.trim()), parts: [], f: {}, rows: [e.source.row], spelling: 'exact', forms: e.spoken ? [{ text: e.spoken, kind: 'spoken' }] : [] });
         break;
       }
     }
@@ -363,7 +381,12 @@ export class ReverseEngine {
       const seen = new Set(readings.map((r) => `${r.lemma}|${r.parts.map((p) => p.label).join('+')}`));
       for (const r of stripped) { const id = `${r.lemma}|${r.parts.map((p) => p.label).join('+')}`; if (!seen.has(id)) { seen.add(id); readings.push(r); } }
     }
-    return readings.slice(0, 8);
+    return this.bookFirst(readings).slice(0, 8);
+  }
+
+  /** A word (or unit) the book has is read as the book has it; the draft's reading is used only when there is no other. */
+  private bookFirst(readings: Reading[]): Reading[] {
+    return readings.some((r) => !r.draft) ? readings.filter((r) => !r.draft) : readings;
   }
 
   /** "Did you mean": entries whose spelling is close to a word the source does not have. */
@@ -423,8 +446,8 @@ export class ReverseEngine {
         const key = sentenceKey(text);
         const readings: Reading[] = [...this.direct(key), ...(verbs.get(key) ?? []).map((h) => this.verbReading(h))];
         const ex = phrases && n <= 4 && !readings.length ? this.sentences.get(key)?.[0] : undefined;
-        if (ex?.en) readings.push({ kind: 'phrase', lemma: ex.bux, pos: 'phrase', gloss: ex.en.replace(/[.!]+$/, ''), glosses: [ex.en], parts: [], f: {}, rows: [ex.source.row], spelling: 'exact', forms: [] });
-        if (readings.length) { tokens.push({ text, latin: key, readings, suggestions: [], chosen: 0, punct: span[n - 1]!.punct }); taken = n; }
+        if (ex?.en) readings.push({ ...(ex.source.draft ? { draft: true as const } : {}), kind: 'phrase', lemma: ex.bux, pos: 'phrase', gloss: ex.en.replace(/[.!]+$/, ''), glosses: [ex.en], parts: [], f: {}, rows: [ex.source.row], spelling: 'exact', forms: [] });
+        if (readings.length) { tokens.push({ text, latin: key, readings: this.bookFirst(readings), suggestions: [], chosen: 0, punct: span[n - 1]!.punct }); taken = n; }
       }
       if (!taken) {
         const w = raw[i]!;
@@ -441,6 +464,22 @@ export class ReverseEngine {
 
   // ── public entry point ────────────────────────────────────────────────────
   translate(input: string): Reverse {
+    // Rule 1 of the draft layer (src/lib/draft.ts): the book always wins. What the book alone
+    // reads in full is the answer, exactly as it would be without the draft.
+    const b = this.book?.translate(input);
+    if (b?.english && !b.unknown.length) return b;
+    const r = this.translateBook(input);
+    // Rule 2 of the draft layer (src/lib/draft.ts): anything resting on an AI-draft entry is
+    // flagged, capped at the low tier, and never called printed or verified.
+    const draft = r.tokens.some((t) => t.readings[t.chosen]?.draft) || r.printed.some((p) => p.row > DRAFT_ROW_BASE);
+    if (!draft || !r.english) return b ?? r;      // the draft added nothing: the book's own reading stands
+    return {
+      ...r, draft: true, tier: 'low', confidence: Math.min(Math.round(r.confidence * 50) / 100, TIER_LOW - 0.05),
+      factors: ['uses the AI draft: written by an AI from Tajik and Farsi, not in the lesson book and not confirmed by a speaker'],
+    };
+  }
+
+  private translateBook(input: string): Reverse {
     const typed = (input ?? '').slice(0, 2000).trim();
     const latin = sentenceKey(typed);
     const base = { script: detectScript(typed), latin, printed: [], unknown: [], notes: [], factors: [], tokens: [] as Token[] };
@@ -463,7 +502,8 @@ export class ReverseEngine {
       if (!r) return { ...base, status: 'none', english: null, confidence: 0, tier: 'none', tokens: [t], unknown: [t.text], notes: [t.suggestions.length ? 'Not in the source under this spelling.' : 'Not found in the source, in any spelling.'] };
       const plain = (r.kind === 'entry' || r.kind === 'inflected' || r.kind === 'phrase') && !r.parts.some((p) => p.form.startsWith('-')) && r.spelling === 'exact';
       if (plain) {
-        const same = t.readings.filter((x) => x.kind !== 'verb' && !x.parts.some((p) => p.form.startsWith('-')));
+        // senses of the book's entries only, unless the word exists only in the AI draft
+        const same = t.readings.filter((x) => x.kind !== 'verb' && !x.parts.some((p) => p.form.startsWith('-')) && (r.draft || !x.draft));
         return {
           ...base, status: 'exact', english: [...new Set(same.flatMap((x) => x.glosses))].slice(0, 6).join('; '), confidence: 1, tier: 'high',
           factors: ['printed in the source'], tokens: [t], printed: [],
@@ -507,6 +547,7 @@ export class ReverseEngine {
       const rank = (r: Reading): number => {
         let s = 0;
         if (r.spelling !== 'exact') s += 1;
+        if (r.draft) s += 0.75;                                         // after the book's own entry, before a guess at suffixes
         s += r.parts.filter((p) => p.form.startsWith('-')).length * 2;
         if (r.kind === 'verb') s += last ? -3 : 1;
         // "zan" is "woman" before it is the command "beat!": a bare imperative needs "!" to win over a noun

@@ -28,6 +28,14 @@ entered into the data, and covered by tests. To regenerate worksheets 2–5 and 
 changes: `node scripts/linguist-worksheets.ts` (this overwrites them, so do it before
 they are filled in, not after).
 
+## The AI draft is in the translator, labelled
+
+The worksheets as filled in by an AI from Tajik and Farsi
+(`../ai-draft/buxori_dataset.jsonl`) are now used by the translator where the book has
+nothing, always labelled "AI draft · unverified" and capped at low confidence. A
+speaker's answers replace them: fill the worksheets (or `../missing-words.tsv`) and the
+book-and-speaker entry wins automatically. See "AI draft layer" in `translator/README.md`.
+
 ## Checked against the book: `answers-ai-draft-unverified.md`
 
 That file is a set of answers to the grammar questions written from Tajik and Farsi, not

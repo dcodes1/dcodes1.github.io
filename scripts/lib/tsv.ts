@@ -23,6 +23,8 @@ export interface Row {
   numeric: string;
   notes: string;
   review: boolean;
+  /** Row of translator/data/ai-draft.tsv: AI-written, Tajik-derived, not confirmed by a speaker. */
+  draft?: boolean;
 }
 
 export function readTsv(path: string): { rows: Row[]; raw: Buffer } {
@@ -59,6 +61,8 @@ export function sourceRef(r: Row): SourceRef {
   return {
     row: r.row, page: r.page, lesson: r.lesson, section: r.section, entryType: r.entryType,
     ...(r.review ? { review: true as const } : {}),
-    ...(r.notes ? { note: r.notes } : {}),
+    ...(r.draft ? { draft: true as const } : {}),
+    // draft rows carry a fixed provenance sentence, not worth repeating 1,200 times in the data file
+    ...(r.notes && !r.draft ? { note: r.notes } : {}),
   };
 }

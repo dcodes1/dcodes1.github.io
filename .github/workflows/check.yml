@@ -28,12 +28,19 @@ jobs:
           npm run compile
           git diff --exit-code -- src/data/buxori-index.json translator/data/review-rows.tsv
 
+      - name: AI draft overlay is up to date and reproducible
+        run: |
+          npm run import:draft
+          npm run compile
+          git diff --exit-code -- translator/data/ai-draft.tsv src/data/buxori-draft.json
+
       - run: npm test
 
       - name: Held-out accuracy does not regress
         run: |
           npm run eval -- --check
           npm run eval:reverse -- --check
+          npm run eval:draft -- --check
 
       - name: Built translator app is up to date
         run: |
