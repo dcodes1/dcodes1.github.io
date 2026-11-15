@@ -13,7 +13,7 @@
  * downloaded from other hosts on request and is cached by the browser itself, not here.
  */
 const CACHE = 'site-v1';
-const SHELL = ['/', '/index.html', '/assets/site.css', '/assets/nav.js', '/assets/email-gate.js', '/translator/app/translator.js'];
+const SHELL = ['/', '/index.html', '/assets/site.css', '/assets/nav.js', '/assets/home.js', '/assets/favicon.svg', '/assets/email-gate.js', '/translator/app/translator.js'];
 const HASHED = /^\/translator\/app\/(chunks|assets)\/.+-[A-Za-z0-9_-]{8}\.[a-z0-9]+$/;
 
 async function precache() {

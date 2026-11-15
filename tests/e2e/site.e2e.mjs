@@ -285,7 +285,63 @@ try {
   const after = await d.evaluate(() => document.querySelector('.carousel-track-wrap').scrollLeft);
   ok('desktop: carousel next scrolls', after > before, { before, after });
   ok('desktop: one carousel dot active', (await d.locator('.carousel-dot.active').count()) === 1);
+  // Projects, favicon, share image
+  ok('projects: three cards, FogJack featured', (await d.locator('.project-card').count()) === 3 && (await d.locator('.project-card.featured .project-name').textContent()) === 'FogJack');
+  ok('hero: four at-a-glance stats', (await d.locator('.hero-stats .stat').count()) === 4);
+  for (const f of ['/assets/favicon.svg', '/assets/og.png', '/assets/home.js']) ok('asset served: ' + f, (await d.request.get(BASE + f)).status() === 200);
+  ok('hero: status terminal finishes printing', await d.waitForFunction(() => !document.querySelector('.term-body .term-hide') && document.querySelector('.term-cmd').textContent === './status --operator', null, { timeout: 8000 }).then(() => true, () => false));
+  ok('hero: signal grid canvas present', (await d.locator('#hero canvas.hero-canvas').count()) === 1);
+  // Reveal on scroll never leaves content hidden
+  await d.evaluate(async () => { for (let y = 0; y <= document.body.scrollHeight; y += 400) { scrollTo({ top: y, behavior: 'instant' }); await new Promise((r) => setTimeout(r, 60)); } });
+  await d.waitForTimeout(1300);
+  ok('reveal: nothing left hidden after scrolling the page', (await d.locator('.rv').count()) === 0);
+  await d.evaluate(() => document.getElementById('skills').scrollIntoView({ behavior: 'instant', block: 'center' }));
+  await d.waitForFunction(() => document.querySelector('.nav-links a.current')?.getAttribute('href') === '#skills', null, { timeout: 3000 }).then(() => ok('nav: current section highlighted', true), () => ok('nav: current section highlighted', false));
+  ok('nav: scroll progress advances', await d.evaluate(() => new DOMMatrix(getComputedStyle(document.querySelector('.scroll-progress')).transform).a) > 0.1);
+  // Command palette
+  ok('palette: button in the nav', await d.isVisible('.nav-cmdk'));
+  await d.keyboard.press('Control+k');
+  ok('palette: Ctrl+K opens it', await d.isVisible('dialog.cmdk[open]'));
+  ok('palette: lists every destination', (await d.locator('.cmdk-item').count()) === 11);
+  await d.keyboard.type('cert');
+  ok('palette: typing filters', (await d.locator('.cmdk-item').count()) === 1 && /Certifications/.test(await d.textContent('.cmdk-item[aria-selected="true"]')));
+  await d.keyboard.press('Enter');
+  await d.waitForFunction(() => Math.abs(document.getElementById('certifications').getBoundingClientRect().top) < 140, null, { timeout: 4000 }).catch(() => {});
+  ok('palette: Enter jumps to the section and closes', !(await d.isVisible('dialog.cmdk')) && Math.abs(await d.evaluate(() => document.getElementById('certifications').getBoundingClientRect().top)) < 140);
+  await d.keyboard.press('/');
+  await d.keyboard.type('re');
+  ok('palette: "/" opens it; best title match first', /^§?\s*Research/.test((await d.textContent('.cmdk-item[aria-selected="true"]')).trim()), await d.textContent('.cmdk-item[aria-selected="true"]'));
+  await d.keyboard.press('Escape');
+  ok('palette: Escape closes', !(await d.isVisible('dialog.cmdk')));
+  await d.keyboard.press('Control+k'); await d.keyboard.type('zzzz');
+  ok('palette: no matches message', /No matches/.test(await d.textContent('.cmdk-list')));
+  await d.keyboard.press('Escape');
+  await d.keyboard.press('Control+k'); await d.keyboard.type('translator'); await d.keyboard.press('Enter');
+  s = await state(d);
+  ok('palette: opens the translator through the router', s.path === '/translator' && !s.transHidden, s);
+  await ready(d);
+  await d.focus('#trInput'); await d.keyboard.type('a/b');
+  ok('palette: "/" typed in a text field does not open it', !(await d.isVisible('dialog.cmdk')) && (await d.inputValue('#trInput')) === 'a/b');
+  await d.goBack();
+  await d.waitForFunction(() => scrollY === 0);          // the router scrolls to the top on back
+  await d.locator('.project-card.live').scrollIntoViewIfNeeded();
+  await d.waitForTimeout(1300);                          // let the card's reveal finish
+  const descBox = await d.locator('.project-card.live .project-desc').boundingBox();   // the card's link covers the text
+  await d.mouse.click(descBox.x + descBox.width / 2, descBox.y + descBox.height / 2);
+  s = await state(d);
+  ok('projects: translator card is one big link', s.path === '/translator' && !s.transHidden, s);
   await d.close();
+  // Palette on a page without the router falls back to normal navigation
+  const rpal = await browser.newPage({ viewport: { width: 1280, height: 900 } }); watch(rpal);
+  await rpal.goto(BASE + '/research/', { waitUntil: 'load' });
+  await rpal.keyboard.press('Control+k'); await rpal.keyboard.type('skills'); await rpal.keyboard.press('Enter');
+  await rpal.waitForFunction(() => location.pathname === '/' && location.hash === '#skills', null, { timeout: 5000 }).then(() => ok('palette (research page): goes to /#skills', true), () => ok('palette (research page): goes to /#skills', false));
+  await rpal.close();
+  // Reduced motion: no hidden content, no animation canvas
+  const rm = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' }); watch(rm);
+  await rm.goto(BASE + '/', { waitUntil: 'load' });
+  ok('reduced motion: nothing hidden, no canvas, terminal printed', (await rm.locator('.rv, .term-hide, .hero-canvas').count()) === 0 && (await rm.textContent('.term-cmd')) === './status --operator');
+  await rm.close();
 
   const m = await browser.newPage({ viewport: { width: 375, height: 800 }, isMobile: true, hasTouch: true }); watch(m);
   await m.goto(BASE + '/', { waitUntil: 'networkidle' });
@@ -298,8 +354,10 @@ try {
   ok('mobile: aria-expanded true', (await m.getAttribute('.nav-toggle', 'aria-expanded')) === 'true');
   await m.tap(".nav-links a[href='#skills']"); await m.waitForTimeout(700);
   ok('mobile: menu closes after link', !(await m.isVisible('.nav-links')));
+  // the smooth scroll takes longer now that three projects sit above Skills
+  await m.waitForFunction(() => Math.abs(document.getElementById('skills').getBoundingClientRect().top) < 120, null, { timeout: 4000 }).catch(() => {});
   ok('mobile: scrolled to skills', Math.abs(await m.evaluate(() => document.getElementById('skills').getBoundingClientRect().top)) < 120);
-  const wide = await m.evaluate(() => [...document.querySelectorAll('section, .project-card, .intel-box, .contact-card, .hero-corner')]
+  const wide = await m.evaluate(() => [...document.querySelectorAll('section, .project-card, .intel-box, .contact-card, .hero-corner, .hero-stats, .cap-panel')]
     .filter((el) => el.offsetParent && el.getBoundingClientRect().right > innerWidth + 1).map((el) => el.id || el.className));
   ok('mobile: no element overflows the viewport', wide.length === 0, wide);
   await m.evaluate(() => document.getElementById('certifications').scrollIntoView());
@@ -307,6 +365,8 @@ try {
   await m.evaluate(() => document.querySelector('.carousel-track-wrap').scrollBy({ left: 400, behavior: 'instant' }));
   await m.waitForTimeout(400);
   ok('mobile: carousel dots follow swipe', await m.evaluate(() => [...document.querySelectorAll('.carousel-dot')].findIndex((x) => x.classList.contains('active'))) > 0);
+  ok('mobile: palette button hidden (menu instead)', !(await m.isVisible('.nav-cmdk')));
+  ok('mobile: stats in two columns', await m.evaluate(() => { const r = [...document.querySelectorAll('.hero-stats .stat')].map((e) => e.getBoundingClientRect()); return r[0].top === r[1].top && r[2].top > r[0].top; }));
   ok('mobile: nav touch targets ≥ 40px', await m.evaluate(() => ['.nav-toggle', '.nav-cta'].every((q) => document.querySelector(q).getBoundingClientRect().height >= 40)));
   await m.evaluate(() => document.getElementById('emailGate').scrollIntoView());
   await m.tap('#emailOpen');
