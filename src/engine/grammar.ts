@@ -42,6 +42,14 @@ const NOT_NOUNS = new Set(['ago', 'now', 'then', 'here', 'there', 'so', 'too', '
   'just', 'again', 'soon', 'together', 'away', 'back', 'out', 'up', 'down', 'off', 'much', 'many', 'more', 'most', 'less', 'ever',
   'never', 'always', 'often', 'sometimes', 'yet', 'only', 'even', 'almost', 'quite', 'rather', 'if', 'as', 'than', 'whether']);
 
+/**
+ * English adverbs of time and manner. The book files several of their Buxori words under
+ * another part of speech ("now; soon" → Aknun is listed with the time nouns), so the English
+ * word decides that this is an adverb: "I will come soon" is not "I will come [a] soon".
+ */
+const ENGLISH_ADVERBS = new Set(['now', 'soon', 'later', 'then', 'still', 'already', 'again', 'together', 'always', 'often', 'sometimes',
+  'today', 'tomorrow', 'yesterday', 'tonight', 'early', 'late', 'quickly', 'slowly', 'fast', 'here', 'there', 'yet', 'just']);      // not "well": the book's words for it mean "in good health"
+
 export class Grammar {
   readonly numbers: Numbers;
   /** Second person plural requested ("You (pl.)"): 2pl instead of 2pol. */
@@ -488,7 +496,7 @@ export class Grammar {
         const r = this.word(c.tokens.join(' '), [...ADVERB_POS]) ?? this.word(c.tokens.join(' '));
         if (r) {
           const w = inline(r.lemma.text).toLowerCase();
-          (r.pos === 'adverb' && /^(today|tomorrow|yesterday|tonight|now|always|never|sometimes|often|then|soon)$/.test(c.tokens.join(' ')) ? timeParts : advParts).push(w);
+          (/^(today|tomorrow|yesterday|tonight|now|always|never|sometimes|often|then|soon|later|already|still)$/.test(c.tokens.join(' ')) ? timeParts : advParts).push(w);
           steps.push({ text: `“${c.tokens.join(' ')}” → ${r.lemma.text}.`, rows: [r.sources[0]?.row ?? 0] }); evidence.push('stated');
         } else unknown.push(...c.tokens);
         continue;
@@ -761,7 +769,7 @@ export class Grammar {
       const t = toks[k]!;
       if (t === 'not' || t === 'never' || BE_FORMS.has(t) || t === 'to' && !cur) { if (t === 'to') { flush(); cur = { kind: 'pp', tokens: [], prep: 'to' }; } continue; }
       if (PREPOSITIONS.has(t) && t !== 'of') { flush(); cur = { kind: 'pp', tokens: [], prep: t }; continue; }
-      const adverb = !ARTICLES.has(t) && !POSSESSIVE_DETERMINERS[t] && !DEMONSTRATIVES.has(t) && this.word(t)?.pos === 'adverb';
+      const adverb = !ARTICLES.has(t) && !POSSESSIVE_DETERMINERS[t] && !DEMONSTRATIVES.has(t) && (this.word(t)?.pos === 'adverb' || (ENGLISH_ADVERBS.has(t) && !!this.word(t)));      // a fixed list: "family" and "friendly" also end in -ly
       if (adverb) { flush(); out.push({ kind: 'adverb', tokens: [t] }); continue; }
       if (!cur) cur = { kind: 'np', tokens: [] };
       // a new determiner after a complete noun starts a new phrase ("give me the book")

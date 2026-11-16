@@ -409,3 +409,23 @@ describe('patterns the source prints (found by checking a Tajik-based draft agai
     expect(T('He went').text).toMatch(/raftak$/);                   // book: -ak is the Regular 3sg past
   });
 });
+
+describe('adverbs the book files under another part of speech', () => {
+  const T = (x: string) => E.translate(x);
+  test('"soon" (Aknun, listed with the time nouns) is placed as an adverb, before the verb', () => {
+    expect(T('I will come soon')).toMatchObject({ status: 'grammar', text: 'Man aknun mebiyom' });
+    expect(T('I will come soon').unknown).toEqual([]);
+    expect(T('He will come later').text).toBe("Ü ba'd mebiyo");
+    expect(T('She speaks slowly').text).toBe('Ü sek-sekin gap mezanad');
+    expect(T('They sing together').text).toBe('Inho ba ya mexonand');
+    expect(T('Come soon!').text).toBe('Aknun biyo!');
+  });
+  test('the other word the book prints for "soon" is offered', () => {
+    expect(JSON.stringify(T('soon'))).toMatch(/Xozir/i);
+  });
+  test('a word that merely ends in -ly is not taken for an adverb', () => {
+    expect(T('I love my friendly brother').text).toBe('Man barodari odamdüsti mana naghz mebinam');
+    expect(T('the early bird').text).toBe('parandi barmahal');
+    expect(T('How is your family?').text).toBe('Mishpohot chixel?');      // "family" ends in -ly and is a noun
+  });
+});
