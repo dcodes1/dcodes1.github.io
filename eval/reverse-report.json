@@ -1,16 +1,16 @@
 {
  "report": {
   "items": 270,
-  "answered": 67,
-  "correct": 37,
-  "accuracy": 0.137,
-  "precision": 0.552,
-  "chrfAnswered": 0.676,
+  "answered": 68,
+  "correct": 38,
+  "accuracy": 0.141,
+  "precision": 0.559,
+  "chrfAnswered": 0.681,
   "byTier": {
    "built:high": {
-    "n": 43,
-    "correct": 32,
-    "precision": 0.744
+    "n": 44,
+    "correct": 33,
+    "precision": 0.75
    },
    "built:low": {
     "n": 8,
@@ -30,9 +30,9 @@
   },
   "byType": {
    "example": {
-    "n": 39,
-    "correct": 30,
-    "precision": 0.769
+    "n": 40,
+    "correct": 31,
+    "precision": 0.775
    },
    "phrase": {
     "n": 13,
@@ -286,11 +286,11 @@
    "bux": "Modarshüsh",
    "en": "her mother-in-law",
    "type": "example",
-   "out": null,
-   "status": "none",
-   "tier": "none",
-   "ok": false,
-   "chrf": 0
+   "out": "His/her mother-in-law",
+   "status": "built",
+   "tier": "high",
+   "ok": true,
+   "chrf": 1
   },
   {
    "bux": "Bovomo",

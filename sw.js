@@ -9,8 +9,7 @@
  *               online, with the cached copy as the offline fallback
  *  - /translator offline: served from the cached index.html (the router reads the URL)
  *
- * Only same-origin GET requests are handled. The optional "similar words" model is
- * downloaded from other hosts on request and is cached by the browser itself, not here.
+ * Only same-origin GET requests are handled. The translator makes no others.
  */
 const CACHE = 'site-v1';
 const SHELL = ['/', '/index.html', '/assets/site.css', '/assets/nav.js', '/assets/email-gate.js', '/translator/app/translator.js'];

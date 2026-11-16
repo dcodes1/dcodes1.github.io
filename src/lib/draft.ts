@@ -12,7 +12,8 @@
  *      feed sense choice or frequency, and are not offered as "similar sentences".
  *
  * Where the draft could be checked against the book (words both have), its "medium"
- * answers matched the book 31 times in 53 on grammar words. See eval/draft-report.json.
+ * answers matched the book 31 times in 53 on grammar words, so grammar words are not
+ * imported at all (src/transducer/tajikToBuxori.ts). See eval/draft-report.json.
  */
 import { DRAFT_ROW_BASE, type BuxoriIndex, type DraftOverlay, type RootEntry, type SourceRef } from './types.ts';
 

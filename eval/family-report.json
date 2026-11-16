@@ -1,0 +1,249 @@
+{
+  "what": "Family-event sentences built from the translator’s vocabulary, translated English → Buxori and checked for grammar consistency. Not a measure of what a speaker would say.",
+  "seed": 1,
+  "sentences": 1819,
+  "answered": 1773,
+  "tiers": {
+    "high": 336,
+    "medium": 464,
+    "low": 973
+  },
+  "usedFallback": 267,
+  "sentencesWithAGrammarFailure": 0,
+  "failuresByCheck": {},
+  "roundTrip": {
+    "tried": 1751,
+    "sameContentWords": 1706,
+    "identicalEnglish": 946
+  },
+  "byFrame": {
+    "adjective + noun": {
+      "n": 109,
+      "answered": 109,
+      "high": 0,
+      "medium": 50,
+      "low": 59,
+      "fallback": 12,
+      "failed": 0
+    },
+    "future": {
+      "n": 109,
+      "answered": 109,
+      "high": 0,
+      "medium": 3,
+      "low": 106,
+      "fallback": 28,
+      "failed": 0
+    },
+    "greeting or fixed phrase": {
+      "n": 20,
+      "answered": 16,
+      "high": 14,
+      "medium": 1,
+      "low": 1,
+      "fallback": 0,
+      "failed": 0
+    },
+    "have + number": {
+      "n": 69,
+      "answered": 66,
+      "high": 48,
+      "medium": 9,
+      "low": 9,
+      "fallback": 9,
+      "failed": 0
+    },
+    "imperative": {
+      "n": 20,
+      "answered": 20,
+      "high": 8,
+      "medium": 0,
+      "low": 12,
+      "fallback": 1,
+      "failed": 0
+    },
+    "imperative, negative": {
+      "n": 20,
+      "answered": 20,
+      "high": 14,
+      "medium": 5,
+      "low": 1,
+      "fallback": 1,
+      "failed": 0
+    },
+    "is + adjective": {
+      "n": 109,
+      "answered": 109,
+      "high": 5,
+      "medium": 58,
+      "low": 46,
+      "fallback": 16,
+      "failed": 0
+    },
+    "is at a place": {
+      "n": 109,
+      "answered": 109,
+      "high": 7,
+      "medium": 75,
+      "low": 27,
+      "fallback": 16,
+      "failed": 0
+    },
+    "is here": {
+      "n": 75,
+      "answered": 75,
+      "high": 3,
+      "medium": 54,
+      "low": 18,
+      "fallback": 9,
+      "failed": 0
+    },
+    "is not + adjective": {
+      "n": 109,
+      "answered": 109,
+      "high": 9,
+      "medium": 58,
+      "low": 42,
+      "fallback": 16,
+      "failed": 0
+    },
+    "past": {
+      "n": 109,
+      "answered": 98,
+      "high": 2,
+      "medium": 2,
+      "low": 94,
+      "fallback": 15,
+      "failed": 0
+    },
+    "past, negative": {
+      "n": 109,
+      "answered": 109,
+      "high": 2,
+      "medium": 7,
+      "low": 100,
+      "fallback": 14,
+      "failed": 0
+    },
+    "possessive": {
+      "n": 109,
+      "answered": 109,
+      "high": 80,
+      "medium": 15,
+      "low": 14,
+      "fallback": 14,
+      "failed": 0
+    },
+    "present": {
+      "n": 109,
+      "answered": 81,
+      "high": 0,
+      "medium": 10,
+      "low": 71,
+      "fallback": 14,
+      "failed": 0
+    },
+    "present continuous": {
+      "n": 109,
+      "answered": 109,
+      "high": 0,
+      "medium": 6,
+      "low": 103,
+      "fallback": 19,
+      "failed": 0
+    },
+    "present, negative": {
+      "n": 109,
+      "answered": 109,
+      "high": 0,
+      "medium": 9,
+      "low": 100,
+      "fallback": 24,
+      "failed": 0
+    },
+    "question: when": {
+      "n": 109,
+      "answered": 109,
+      "high": 74,
+      "medium": 29,
+      "low": 6,
+      "fallback": 6,
+      "failed": 0
+    },
+    "question: where": {
+      "n": 23,
+      "answered": 23,
+      "high": 17,
+      "medium": 3,
+      "low": 3,
+      "fallback": 3,
+      "failed": 0
+    },
+    "question: who": {
+      "n": 23,
+      "answered": 23,
+      "high": 17,
+      "medium": 3,
+      "low": 3,
+      "fallback": 3,
+      "failed": 0
+    },
+    "question: who + verb": {
+      "n": 20,
+      "answered": 20,
+      "high": 13,
+      "medium": 6,
+      "low": 1,
+      "fallback": 1,
+      "failed": 0
+    },
+    "request": {
+      "n": 109,
+      "answered": 109,
+      "high": 0,
+      "medium": 0,
+      "low": 109,
+      "fallback": 19,
+      "failed": 0
+    },
+    "this is": {
+      "n": 23,
+      "answered": 23,
+      "high": 17,
+      "medium": 3,
+      "low": 3,
+      "fallback": 3,
+      "failed": 0
+    },
+    "was + adjective": {
+      "n": 109,
+      "answered": 109,
+      "high": 6,
+      "medium": 58,
+      "low": 45,
+      "fallback": 24,
+      "failed": 0
+    }
+  },
+  "familyWordsTheBookLacks": [
+    "cake",
+    "child",
+    "daughter",
+    "laugh",
+    "market",
+    "sister",
+    "tasty",
+    "tired"
+  ],
+  "familyWordsNoSourceHas": [
+    "cake",
+    "tasty"
+  ],
+  "mostCommonReasonsForNoAnswer": {
+    "(could not be built)": 37,
+    "my": 5,
+    "rabbis": 3,
+    "cooks": 1
+  },
+  "failures": []
+}

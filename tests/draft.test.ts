@@ -79,9 +79,9 @@ describe('rule 2: draft-based results are flagged, low tier, never â€œverifiedâ€
     expect(bookEngine.translate('computer').status).toBe('none');
     expect(r).toMatchObject({ draft: true, tier: 'low' });
     expect(r.confidence).toBeLessThanOrEqual(0.5);
-    expect(r.factors?.join(' ')).toMatch(/AI draft/);
+    expect(r.factors?.join(' ')).toMatch(/Tajik fallback/);
     expect(r.steps.map((s) => s.text).join(' ')).not.toMatch(/Printed in the source|Dictionary entry/);
-    expect(r.steps[0]?.text).toMatch(/AI draft/);
+    expect(r.steps[0]?.text).toMatch(/AI draft|Tajik fallback/);
   });
   test('a sentence built with a draft noun, and with a draft verb', () => {
     expect(T('I have two sisters')).toMatchObject({ draft: true, tier: 'low' });

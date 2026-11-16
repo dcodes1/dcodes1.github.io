@@ -32,7 +32,8 @@ they are filled in, not after).
 
 The worksheets as filled in by an AI from Tajik and Farsi
 (`../ai-draft/buxori_dataset.jsonl`) are now used by the translator where the book has
-nothing, always labelled "AI draft · unverified" and capped at low confidence. A
+nothing (content words and whole sentences only, never grammar words), always labelled
+"Tajik fallback" or "AI draft" and capped at low confidence. A
 speaker's answers replace them: fill the worksheets (or `../missing-words.tsv`) and the
 book-and-speaker entry wins automatically. See "AI draft layer" in `translator/README.md`.
 

@@ -350,3 +350,12 @@ describe('English generation helpers', () => {
     expect([ordinalOf(5), ordinalOf(23), ordinalOf(111)]).toEqual(['fifth', '23rd', '111th']);
   });
 });
+
+describe('possessives on nouns ending in ü or o (found by the family-event sweep)', () => {
+  test('shü + -ümo is "our husband", not the look-alike shumo "you"', () => {
+    expect(rev.translate('shümo').english).toBe('Our husband');
+    expect(rev.translate('shüm').english).toBe('My husband');
+    expect(rev.translate('shumo').english).toBe('you');
+    expect(rev.translate('duxtur').english).toBe('Doctor');      // a look-alike is still accepted when nothing reads exactly
+  });
+});

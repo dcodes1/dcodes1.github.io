@@ -77,6 +77,8 @@ export interface Reverse {
   factors: string[];
   /** At least one word or the printed sentence comes from the AI draft. Always tier "low". */
   draft?: true;
+  /** `tajik_adapted`: fallback words under the book's grammar; `ai_draft_unverified`: a whole draft sentence or phrase. Set whenever `draft` is. */
+  authority?: 'tajik_adapted' | 'ai_draft_unverified';
   tokens: Token[];
   /** Printed source rows behind an exact answer. */
   printed: { en: string; bux: string; row: number }[];
@@ -150,6 +152,8 @@ export class ReverseEngine {
           form, label: label(a), slot, on, set: (f) => set(f, a.personNumber),
           // "xona" + -im → "xonim": the Regular form drops a final a/i, so put it back when analysing
           ...(env.kind === 'after_vowel' && env.dropFinalVowel ? { restore: [...(env.vowels ?? ['a', 'i'])] } : {}),
+          // "shü" + -ümo → "shümo", "bobo" + -omo → "bobomo": the suffix opens with the stem's own final vowel
+          ...(env.kind === 'after_vowel' && !env.dropFinalVowel && env.vowels?.some((v) => form.startsWith(v)) ? { restore: env.vowels.filter((v) => form.startsWith(v)) } : {}),
           ...(al.register === 'literal' || al.register === 'spoken' ? { register: al.register } : {}),
         });
       }
@@ -381,6 +385,9 @@ export class ReverseEngine {
       const seen = new Set(readings.map((r) => `${r.lemma}|${r.parts.map((p) => p.label).join('+')}`));
       for (const r of stripped) { const id = `${r.lemma}|${r.parts.map((p) => p.label).join('+')}`; if (!seen.has(id)) { seen.add(id); readings.push(r); } }
     }
+    // A word that analyses exactly as written (shü + -mo, "our husband") is read that way before
+    // a different word that only resembles it (shumo, "you", by ü/u).
+    if (readings.some((r) => r.spelling === 'exact')) readings.sort((x, y) => Number(x.spelling !== 'exact') - Number(y.spelling !== 'exact'));
     return this.bookFirst(readings).slice(0, 8);
   }
 
@@ -474,8 +481,9 @@ export class ReverseEngine {
     const draft = r.tokens.some((t) => t.readings[t.chosen]?.draft) || r.printed.some((p) => p.row > DRAFT_ROW_BASE);
     if (!draft || !r.english) return b ?? r;      // the draft added nothing: the book's own reading stands
     return {
-      ...r, draft: true, tier: 'low', confidence: Math.min(Math.round(r.confidence * 50) / 100, TIER_LOW - 0.05),
-      factors: ['uses the AI draft: written by an AI from Tajik and Farsi, not in the lesson book and not confirmed by a speaker'],
+      ...r, draft: true, tier: 'low',
+      authority: r.printed.some((p) => p.row > DRAFT_ROW_BASE) || r.tokens.some((t) => { const x = t.readings[t.chosen]; return !!x?.draft && x.kind === 'phrase'; }) ? 'ai_draft_unverified' : 'tajik_adapted', confidence: Math.min(Math.round(r.confidence * 50) / 100, TIER_LOW - 0.05),
+      factors: ['uses the Tajik fallback: written by an AI from Tajik and Farsi, not in the lesson book and not confirmed by a speaker'],
     };
   }
 
@@ -546,7 +554,7 @@ export class ReverseEngine {
       const last = i === tokens.length - 1 || !!t.punct;
       const rank = (r: Reading): number => {
         let s = 0;
-        if (r.spelling !== 'exact') s += 1;
+        if (r.spelling !== 'exact') s += 3;                              // a look-alike word comes after the word as written plus one suffix (shü + -ümo before shumo)
         if (r.draft) s += 0.75;                                         // after the book's own entry, before a guess at suffixes
         s += r.parts.filter((p) => p.form.startsWith('-')).length * 2;
         if (r.kind === 'verb') s += last ? -3 : 1;

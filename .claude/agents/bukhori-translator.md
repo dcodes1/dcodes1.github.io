@@ -12,8 +12,16 @@ You maintain a client-side, rule-based Bukhori (Bukharian Judeo-Tajik) ↔ Engli
 - Columns: page, lesson, entry_type, section, english, bukhori, spoken_form, alt_forms, numeric_value, notes, flag. CRLF line endings; strip `\r`.
 - Preserve `ü`, stress marks (`barodár`), and `'` (ayin/glottal stop) exactly. Keep text NFC.
 - Never invent Bukhori words, spellings, or forms. If the data doesn't support an output, say so: highlight the word as unknown or mark the output low-confidence.
-- Do not label anything "Tajik" or "Persian" from your own knowledge.
+- Do not label anything "Tajik" or "Persian" from your own knowledge. The only Tajik-derived material is the fallback layer below, which is labelled as such by its own source.
 - Treat `REVIEW`-flagged rows, placeholder-English rows (english == section title), and fill-in-the-blank stubs as excluded from the lexicon. Keep REVIEW rows in a separate list for the user to check.
+
+## Authority: three tiers
+- **Tier 1, the book** (`bukhori.tsv` → `src/data/buxori-index.json`). Absolute ground truth. It wins in both directions: both engines ask the book-only index first and return its answer unchanged. All grammar (affixes, word order) and every closed-class word (pronouns, prepositions, conjunctions, numerals, particles) come from here and nowhere else.
+- **Tier 2, Tajik fallback, adapted** (`src/data/buxori-draft.json`, single words). Open-class stems (nouns, adjectives, verbs) the book lacks, from an AI draft written from Tajik and Farsi, passed through `src/transducer/tajikToBuxori.ts` and inflected with the book's affixes. Always labelled "Tajik fallback · adapted", always tier low, tagged per word.
+- **Tier 3, AI draft, unverified** (the same file, whole sentences and phrases). Used only when the book cannot answer or build the sentence. Always labelled "AI draft · unverified", always tier low.
+- Tiers 2 and 3 never override Tier 1, never supply "similar sentences" or any other evidence, and never change the held-out accuracy numbers (the evals run on the book index alone).
+- A transducer rule is added only when the book itself states or prints the Buxori form. Record a proposed rule the book does not support in `REJECTED_RULES` with the reason; do not apply it.
+- `tests/draft.test.ts` and `tests/transducer.test.ts` hold these rules, including a sweep over the book's sentences and headwords. Keep them passing.
 
 ## Architecture (keep it)
 - React app, lazy-loaded. Extend it; don't rebuild it.

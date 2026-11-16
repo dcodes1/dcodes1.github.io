@@ -64,6 +64,12 @@ export interface Translation {
    * confirmed by a speaker). Always tier "low"; the UI shows it as an AI draft.
    */
   draft?: true;
+  /**
+   * Which kind of fallback: `tajik_adapted` = words from the Tajik-derived fallback carrying
+   * the book's own grammar; `ai_draft_unverified` = a whole sentence or phrase as the AI
+   * draft wrote it, grammar included. Set whenever `draft` is.
+   */
+  authority?: 'tajik_adapted' | 'ai_draft_unverified';
   /** Built by Engine.complex: two clauses joined by a pattern the source prints. */
   joined?: true;
   tier?: Tier;
@@ -120,6 +126,8 @@ export class Engine {
 
   /** The same engine over the lesson book alone, when `index` also holds the AI draft. */
   private readonly book: Engine | null;
+  /** Rows of the AI draft that are whole sentences or phrases (as opposed to single words). */
+  private readonly draftSentenceRows: Set<number>;
 
   /**
    * @param book the lesson-book index without the AI draft, when `index` is the merged one.
@@ -128,6 +136,7 @@ export class Engine {
   constructor(index: BuxoriIndex, book?: BuxoriIndex) {
     this.book = book && book !== index ? new Engine(book) : null;
     this.lex = new Lexicon(index);
+    this.draftSentenceRows = new Set(Object.values(index.examples).filter((e) => e.source.draft).map((e) => e.source.row));
     this.morph = new Morphology(index);
     this.grammar = new Grammar(this.lex, this.morph);
     this.corpus = Object.values(index.examples)
@@ -198,7 +207,7 @@ export class Engine {
     const res: Translation = {
       ...res0,
       steps: res0.steps.map((st) => (st.rows?.some(isDraftRow)
-        ? { ...st, text: /^(Printed in the source|Dictionary entry)/.test(st.text) ? 'From the AI draft, not from the lesson book.' : `${st.text} (AI draft, not from the lesson book)` }
+        ? { ...st, text: /^(Printed in the source|Dictionary entry)/.test(st.text) ? 'From the Tajik-derived AI draft, not from the lesson book.' : `${st.text} (Tajik fallback, not from the lesson book)` }
         : st)),
       alternatives: res0.alternatives.map((a) => (a.rows?.some(isDraftRow) ? { ...a, note: [a.note, 'AI draft, unverified'].filter(Boolean).join(' · ') } : a)),
     };
@@ -208,8 +217,8 @@ export class Engine {
     if (res.rows.some(isDraftRow)) {
       // Rule 2 of the draft layer: never above low, never "verified".
       return {
-        ...res, draft: true, tier: 'low', confidence: Math.min(Math.round(res.confidence * 50) / 100, TIER_LOW - 0.05),
-        factors: ['uses the AI draft: written by an AI from Tajik and Farsi, not in the lesson book and not confirmed by a speaker'],
+        ...res, draft: true, authority: res.rows.some((r) => this.draftSentenceRows.has(r)) ? 'ai_draft_unverified' : 'tajik_adapted', tier: 'low', confidence: Math.min(Math.round(res.confidence * 50) / 100, TIER_LOW - 0.05),
+        factors: ['uses the Tajik fallback: written by an AI from Tajik and Farsi, not in the lesson book and not confirmed by a speaker'],
         notes: res.notes.filter((n) => !/^Printed in the source/.test(n)),
       };
     }
@@ -266,7 +275,7 @@ export class Engine {
   /**
    * English content words in the input that the source has nothing for: no entry,
    * inflected form, synonym or spelling fix. Used to offer "similar words in the
-   * book" (src/ai/similar.ts). Function words (the, to, my…) are never listed.
+   * book" (src/search/offlineSimilarWords.ts). Function words (the, to, my…) are never listed.
    */
   unknownWords(input: string): string[] {
     // "Not in the source" means not in the BOOK: a word the AI draft supplies still counts,

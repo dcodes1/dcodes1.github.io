@@ -212,18 +212,18 @@ is the trust number. `eval/thresholds.json` makes CI fail on any regression.
 npm ci
 npm run compile     # TSV → src/data/buxori-index.json (byte-identical for the same input)
 npm run import:draft  # ai-draft/buxori_dataset.jsonl → ai-draft.tsv (then `npm run compile` writes buxori-draft.json)
-npm test            # vitest: data integrity, normalizer, lookup, both engines, suggestions, the AI draft rules (636 tests)
+npm test            # vitest: data integrity, normalizer, lookup, both engines, suggestions, the fallback rules, the transducer
 npm run typecheck
 npm run eval        # held-out accuracy and per-tier precision; `-- --check` enforces thresholds
 npm run eval:reverse  # the same set, Buxori → English
 npm run eval:draft  # AI draft compared with the book, where both answer
+npm run sweep:family  # family-event sentences, grammar consistency; `-- --check` enforces the baseline
 npm run build       # React app → translator/app/
 npm run e2e         # real-browser test of the site, served like GitHub Pages
 npm run check       # all of the above, as CI runs it
 ```
 
-After editing the TSV, run `npm run compile && npm run build` and commit the results
-(and regenerate the gloss vectors, see "Similar words").
+After editing the TSV, run `npm run compile && npm run build` and commit the results.
 CI (`.github/workflows/check.yml`) fails if the committed index or app differs
 from a fresh build.
 
@@ -235,7 +235,7 @@ in the same 11 columns as `bukhori.tsv`, with the `bukhori` cell empty.
 
 1. Fill in the `bukhori` cell of any rows (and `spoken_form`, `alt_forms`,
    `notes` if you have them). Verbs are listed as "to …": give the infinitive.
-2. Run `npm run compile && npm run build`, regenerate the gloss vectors, and commit.
+2. Run `npm run compile && npm run build` and commit.
 
 Only filled rows are read. They are numbered from 100001, their lesson reads
 "Additions (not from the lesson book)", and the translator says so when it uses
@@ -246,61 +246,94 @@ one, so they can never pass as the book's own entries. To regenerate the list
 node scripts/missing-words.ts --freq words.txt --wordnet node_modules/wordnet-db/dict
 ```
 
-## AI draft layer (unverified)
+## AI draft layer (Tajik fallback, unverified)
 
 `translator/data/ai-draft/buxori_dataset.jsonl` is the linguist worksheets filled in by
 an AI working from Tajik and Farsi. Every row is marked
 `ai_draft_tajik_derived_unverified`: it is **not** the lesson book and **no speaker has
-confirmed it**. It is used so that a learner gets a labelled guess instead of nothing,
-under three rules that tests enforce (`tests/draft.test.ts`):
+confirmed it**. It is used so that a learner gets a labelled guess instead of nothing.
+
+| Tier | Source | Label | Used for |
+|---|---|---|---|
+| 1 | the lesson book | verified / built, with its own confidence | everything the book prints or can build; **all grammar and every grammar word** |
+| 2 | fallback, single content words | "Tajik fallback · adapted", low | a noun, adjective or verb the book lacks, inflected with the book's affixes |
+| 3 | fallback, whole sentences and phrases | "AI draft · unverified", low | a sentence the book can neither print nor build |
+
+Rules, held by `tests/draft.test.ts` and `tests/transducer.test.ts`:
 
 1. **The book always wins.** Both engines ask the book-only index first. Whatever the book
-   prints or can build is returned exactly as it would be without the draft. The draft
-   only fills what the book cannot answer.
-2. **Draft results are labelled and capped.** Anything resting on a draft entry is
-   flagged `draft`, tier **low**, badge "AI draft · unverified", and each draft word is
-   tagged in the word-by-word panel. It is never called printed, built or verified.
-3. **Draft sentences are never evidence.** They are not "similar sentences in the
-   source", do not feed sense choice or frequency, and a word only the draft has still
-   counts as "not in the source" for the similar-words offer.
+   prints or can build is returned exactly as it would be without the fallback.
+2. **Closed-class lock.** Pronouns, prepositions, conjunctions, numerals and particles
+   are never imported from the fallback (352 rows locked out).
+3. **Fallback results are labelled and capped** at the low tier, and each fallback word
+   is tagged in the word-by-word panel.
+4. **Fallback sentences are never evidence.** They are not "similar sentences in the
+   source" and do not feed sense choice or frequency.
 
-Pipeline (the book's index is not touched; its checksum is unchanged):
+### The transducer (`src/transducer/tajikToBuxori.ts`)
+
+Rewrites Literary Tajik forms as the book's Buxori. Every rule must be one the book
+states or prints; the tests re-check that evidence against the index.
+
+| Rule | Evidence in the book | Status |
+|---|---|---|
+| object marker `-ro` → `-a` / `-ya`, inside a sentence, on a known noun | affix table: `-a`, `-ya` Regular; `-ro` Literal | applied |
+| `onho` / `eshon` → `inho` | "they" is `inho` (41 sentences); the others are never printed | applied |
+| spelling `ū` → `ü`, `ī` → `i` | the book's alphabet | applied |
+| literary progressive `… istoda-` | the book's Regular progressive is `-sod-`; `istoda` is Literal | row refused, not converted |
+| copula `-ast` → `-ay` / `-as` | the book prints neither | **rejected** |
+| 3pl `-and` → `-an` | the book's Regular 3pl is `-and` (71 sentences) | **rejected** |
+| cluster drop `düst` → `düs`, `baland` → `balan` | the book prints `düst`, `rost`, `baland` only | **rejected** |
+| vowel-shift retries | no such rule in the book | **rejected** |
+
+On the current data the transducer changes **0 rows**: the draft was already written
+in the book's spelling and uses none of these Literary forms. It is a guard for future
+imports, not a source of accuracy today.
+
+### Pipeline (the book's index is not touched; its checksum is unchanged)
 
 ```
-ai-draft/buxori_dataset.jsonl ──► scripts/import-ai-draft.ts ──► translator/data/ai-draft.tsv   (1,239 rows)
-ai-draft.tsv ──► scripts/compile-tsv.ts --draft ──► src/data/buxori-draft.json                 (885 words, 203 sentences)
+ai-draft/buxori_dataset.jsonl ──► scripts/import-ai-draft.ts ──► translator/data/ai-draft.tsv   (985 rows)
+ai-draft.tsv ──► scripts/compile-tsv.ts --draft ──► src/data/buxori-draft.json                 (685 words, 205 sentences)
 ```
 
-Draft rows are numbered from 200001. The app loads `buxori-draft.json` as a separate
-file (about 64 KB gzipped) and merges it with `withDraft()` (`src/lib/draft.ts`); if
-that file fails to load, the translator is the lesson book alone.
+Fallback rows are numbered from 200001. The app loads `buxori-draft.json` as a separate
+file and merges it with `withDraft()` (`src/lib/draft.ts`); if that file fails to load,
+the translator is the lesson book alone.
 
-**What is imported:** worksheet parts 2 (grammar words), 3 (sentences by construction),
-6 (everyday phrases), 7 (vocabulary by topic) and 8 (common words missing from the
-book), rows rated high or medium.
-**What is not:** rows the draft itself rated low (445), answers that are explanations
-rather than forms (85), duplicates (32), and parts 1, 4, 5, 9, 10, 11 (grammar
-questions, verb forms, word choice among the book's own options, judgements of the
-translator, flagged rows; 815 rows): those would change or overrule the book, and need
-a speaker.
+**Imported:** worksheet parts 3 (sentences by construction), 6 (everyday phrases),
+7 (vocabulary by topic) and 8 (common words missing from the book), rated high or medium.
+**Not imported:** grammar words (352, locked), rows the draft rated low (409),
+explanations that are not forms (53), duplicates, and parts 1, 4, 5, 9, 10, 11 (815
+rows that would change or overrule the book and need a speaker).
 
-**How good is it?** It cannot be checked against a speaker. Where the draft and the
-book both answer, `npm run eval:draft` compares them (`eval/draft-report.json`):
-
-| Draft's own rating | Agrees with the book |
-|---|---|
-| high | 142 / 147 (97%), mostly rows where the draft was shown the book's form |
-| medium, grammar words (the fair measure) | 31 / 53 (58%) |
-| low (not imported) | 18 / 25 |
-
-So expect roughly 6 in 10 draft words to match what the book would have said. That is
-why draft results are capped at low.
+**How good is it?** Unknown for the words that are imported: they are exactly the words
+the book lacks, so there is nothing to compare them with. `npm run eval:draft`
+(`eval/draft-report.json`) compares the draft with the book where both answer: 142 / 147
+on rows the draft rated high (mostly where it was shown the book's form) and 31 / 53 on
+medium grammar words, which is why grammar words are locked out.
 
 `ai-draft/buxori_train_pairs.jsonl` is the same content as chat-format pairs for
 fine-tuning a language model. Nothing here uses it: this translator is rule-based and
-runs in the browser with no model to train. It is stored for reference only.
+runs in the browser with no model to train.
 
 To remove the layer: delete `src/data/buxori-draft.json` and rebuild.
+
+## Family-event sentence sweep
+
+`npm run sweep:family` builds about 1,800 sentences of the kind said at a family
+gathering (who came, who is eating what, greetings, questions, requests) from the
+vocabulary the translator has, translates each, and checks that the grammar holds:
+verb last, verb ending agrees with the subject, tense and negation as asked, the answer
+reads back to the same content, fallback answers labelled and low, same answer twice.
+
+It checks consistency with the book's rules. It cannot say a sentence is what a speaker
+would say, so it also writes `translator/data/linguist/11-family-event-sentences.tsv`
+for a speaker to mark, and lists the family-event words the book lacks
+(`eval/family-report.json`). `-- --check` enforces `eval/family-baseline.json`, a
+ratchet that CI runs on every push. `--seed N` samples other sentences from the same
+frames. The `bukhori-sentence-tester` agent (`.claude/agents/`) runs it, extends it and
+triages what it finds.
 
 ## Offline
 
@@ -331,57 +364,21 @@ Hebrew output is deliberately absent: its spelling could not be checked against
 anything in the source. `src/lib/normalizer.ts` has the hook
 (`registerOutputScript('hebrew', …)`) for when verified Hebrew-script data exists.
 
-## Similar words (local language model)
+## Similar spellings (offline)
 
-When a sentence can't be translated because an English word isn't in the source,
-the translator can suggest source words with a similar meaning. For example, for
-"physician" it suggests `doctor → düxtur`, `medicine → Doru`, …. The user picks one,
-the sentence is edited ("I am a doctor"), and that sentence is translated normally.
+When a sentence can't be translated because an English word isn't in the book, the
+translator offers the book's words spelled most like it ("docter" → `doctor → düxtur`).
+The user picks one, the sentence is edited, and that sentence is translated normally.
 The pick keeps the word's form: "purchased" + buy → "bought".
 
-- **Model.** [all-MiniLM-L6-v2](https://huggingface.co/Xenova/all-MiniLM-L6-v2)
-  (Apache-2.0, int8 ONNX), run in the browser on WebAssembly with transformers.js.
-  It works on phones and needs no WebGPU.
-- **Opt-in, on the device.** Nothing loads until the user clicks *Suggest similar
-  words*. The first use downloads about 30 MB, which the browser then caches:
-  - transformers.js 4.3.1 and its WebAssembly runtime, from jsDelivr;
-  - the model, pinned to one commit, from Hugging Face;
-  - 0.8 MB of precomputed gloss vectors, from this site.
-- **Privacy.** Nothing the user types is sent anywhere.
-- **Grounded.** It can only point at English glosses that are in the index, and
-  each suggestion shows the Buxori entry and that entry's other glosses.
-  Suggestions are labelled *ai suggestion*, and a picked word is labelled *your pick*.
+It is plain edit distance over the book's own English glosses
+(`src/search/offlineSimilarWords.ts`): one letter may differ in words up to 4 letters,
+two up to 9, three beyond. Nothing is downloaded and nothing leaves the page.
 
-**Why it suggests instead of translating.** `node eval/suggestions.ts` measures it
-(`eval/suggestions-report.json`):
-
-| measurement | result |
-|---|---|
-| Held-out items the engine can't answer whose correct answer appears anywhere else in the book | 6 of 208 |
-| Replacing each unknown word with the model's nearest gloss, automatically | 0 correct of 151 answered |
-| Everyday words with a synonym in the book (52 hand-picked English pairs): synonym is the 1st suggestion | 33 / 52 |
-| … the synonym is among the first 3 / 5 suggestions | 47 / 52, 50 / 52 |
-
-The model's nearest word is often *related* but different: Saturday → Friday,
-grandfather → grandmother, three → two, question → answer. Used automatically, it
-would turn "no translation" into a confident wrong one. Shown as choices, the right
-word is almost always on the list.
-
-Other models were tried on the same held-out set and the same synonym pairs:
-paraphrase-MiniLM-L3-v2, bge-small-en-v1.5, gte-small, potion-base-8M
-(Model2Vec), and WordNet synonyms. All scored 0 correct when used automatically.
-MiniLM-L6 gave the best suggestions (synonym in the top 5 for 49 of 52 pairs,
-against 44–47 for the others) and is the smallest download.
-
-The engine's results and the held-out accuracy are unchanged: suggestions never
-replace or add a translation.
-
-After the index changes, regenerate the vectors (a unit test fails until you do):
-
-```bash
-npm i --no-save @huggingface/transformers@4.3.1
-node scripts/embed-glosses.ts
-```
+This replaced an opt-in language model (all-MiniLM-L6-v2) that was fetched from
+jsDelivr and Hugging Face, removed so that the translator uses no external service at
+all. The trade-off is real: the model could point from "physician" to "doctor";
+spelling cannot. Words with no similarly spelled book word get no offer.
 
 ## Optional AI fallback
 
@@ -410,8 +407,10 @@ enable it, deploy the worker and set
   listed in `translator/data/review-rows.tsv` (written by the compiler) for manual
   checking; remove the flag in the TSV to bring a row back.
 - **Section-title words:** 12 vocabulary rows have an English cell equal to their
-  section title ("family" → `Mishpoho`, "food" → `Axilo`). They are real entries
-  and are kept. The 106 grammar rows with the same property hold rules, not words,
+  section title ("family" → `Mishpoho`, "food" → `Axilo`, "body" → `Badan`,
+  "music" → `Musiqa`). Each is the heading printed with its Buxori word: real
+  vocabulary, not a header without a translation. They are kept; excluding them
+  would remove "family", "food", "body" and nine more words from the dictionary. The 106 grammar rows with the same property hold rules, not words,
   and were never in the lexicon.
 - **Exercises:** 98 exercise sentences have Buxori but no English, so they cannot
   serve as expected answers. They are used as a robustness test for Buxori →

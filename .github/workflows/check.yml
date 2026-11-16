@@ -42,6 +42,11 @@ jobs:
           npm run eval:reverse -- --check
           npm run eval:draft -- --check
 
+      - name: Family-event sentence sweep (grammar consistency)
+        run: |
+          npm run sweep:family -- --check
+          git diff --exit-code -- eval/family-report.json translator/data/linguist/11-family-event-sentences.tsv
+
       - name: Built translator app is up to date
         run: |
           npm run build

@@ -11,13 +11,14 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p .",
     "eval": "node eval/evaluate.ts",
-    "check": "npm run typecheck && npm run compile && npm test && npm run eval -- --check && npm run eval:reverse -- --check && npm run eval:draft -- --check && npm run build && npm run e2e",
+    "check": "npm run typecheck && npm run compile && npm test && npm run eval -- --check && npm run eval:reverse -- --check && npm run eval:draft -- --check && npm run sweep:family -- --check && npm run build && npm run e2e",
     "dev": "vite",
     "build": "vite build",
     "e2e": "node tests/e2e/site.e2e.mjs",
     "eval:reverse": "node eval/evaluate-reverse.ts",
     "eval:draft": "node eval/draft-agreement.ts",
-    "import:draft": "node scripts/import-ai-draft.ts"
+    "import:draft": "node scripts/import-ai-draft.ts",
+    "sweep:family": "node scripts/family-sweep.ts"
   },
   "dependencies": {
     "react": "19.2.9",

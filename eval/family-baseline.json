@@ -1,0 +1,5 @@
+{
+  "note": "Ratchet for `npm run sweep:family -- --check` (seed 1). Lower maxSentencesWithAGrammarFailure and raise minAnswered as the translator improves; never loosen them to make a change pass.",
+  "maxSentencesWithAGrammarFailure": 0,
+  "minAnswered": 1773
+}

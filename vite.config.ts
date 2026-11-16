@@ -11,11 +11,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react(), {
     // List of the built files, for the service worker (sw.js) to cache for offline use.
-    // The optional similar-words vectors are left out: they are only useful with the
-    // model, which needs a connection for its first download anyway.
     name: 'precache-manifest',
     generateBundle(_options, bundle) {
-      const files = Object.keys(bundle).filter((f) => f !== 'translator.js' && !/gloss-vectors/.test(f)).sort();
+      const files = Object.keys(bundle).filter((f) => f !== 'translator.js').sort();
       this.emitFile({ type: 'asset', fileName: 'precache.json', source: JSON.stringify({ files }) + '\n' });
     },
   }],

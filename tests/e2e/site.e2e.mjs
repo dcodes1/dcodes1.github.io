@@ -336,53 +336,29 @@ try {
   ok('mobile translator: touch targets ≥ 32px', small.length === 0, small);
   await m.close();
 
-  // ── 8b. Similar words (local language model; transformers.js stubbed) ───
-  // The real model is a ~30 MB download, so CI swaps transformers.js for a stand-in
-  // that embeds "physician" as the source's "doctor" vector and "purchased" as "buy".
-  const gvFile = JSON.parse(readFileSync(join(ROOT, 'src/data/gloss-vectors.json'), 'utf8'));
-  const gvData = Buffer.from(gvFile.vectors, 'base64'), gvScaleBuf = Buffer.from(gvFile.scales, 'base64');
-  const gvScales = new Float32Array(gvScaleBuf.buffer.slice(gvScaleBuf.byteOffset, gvScaleBuf.byteOffset + gvScaleBuf.length));
-  const vecOf = (k) => { const i = gvFile.keys.indexOf(k); return [...new Int8Array(gvData.buffer, gvData.byteOffset + i * gvFile.dim, gvFile.dim)].map((x) => x * gvScales[i]); };
-  const FAKE_TF = `export const env = {};
-    const V = ${JSON.stringify({ physician: vecOf('doctor'), purchased: vecOf('buy') })};
-    export async function pipeline(task, model, o) {
-      o.progress_callback?.({ status: 'progress', file: 'model.onnx', loaded: 1, total: 2 });
-      return async (texts) => { const d = ${gvFile.dim}; const data = new Float32Array(texts.length * d); texts.forEach((t, i) => { if (V[t]) data.set(V[t], i * d); }); return { data, dims: [texts.length, d] }; };
-    }`;
-  const sctx = await browser.newContext();   // fresh storage: suggestions not yet switched on
+  // ── 8b. Similar spellings (offline; no model, no download) ─────────────
+  const sctx = await browser.newContext();
   const sp = await sctx.newPage(); watch(sp);
-  const cdn = [], sreq = [];
-  sp.on('request', (q) => sreq.push(q.url()));
-  await sp.route(/cdn\.jsdelivr\.net|huggingface\.co/, (route) => {
-    cdn.push(route.request().url());
-    return /\/@huggingface\/transformers@[\d.]+\/dist\/transformers\.min\.js$/.test(route.request().url())
-      ? route.fulfill({ status: 200, contentType: 'text/javascript', headers: { 'access-control-allow-origin': '*' }, body: FAKE_TF })
-      : route.abort();
-  });
+  const offsite = [];
+  sp.on('request', (q) => { if (!q.url().startsWith(BASE)) offsite.push(q.url()); });
   await sp.goto(BASE + '/translator', { waitUntil: 'domcontentloaded' });
   await ready(sp);
-  r = await translate(sp, 'I am a physician');
-  const offer = await sp.textContent('#trSimilar').catch(() => '');
-  ok('similar: offered when a word is not in the source', /physician/.test(offer) && await sp.isVisible('#trSimilar .tr-similar-go'), offer);
-  ok('similar: nothing downloaded until the user asks', cdn.length === 0 && !sreq.some((u) => /gloss-vectors/.test(u)), cdn);
-  await sp.click('#trSimilar .tr-similar-go');
-  await sp.waitForSelector('#trSimilar .tr-chip', { timeout: 10000 }).catch(() => {});
+  await sp.waitForLoadState('networkidle').catch(() => {});
+  offsite.length = 0;      // the portfolio's own web fonts load with the page; from here on, only the translator is working
+  r = await translate(sp, 'I am a docter');
+  await sp.waitForSelector('#trSimilar .tr-chip', { timeout: 5000 }).catch(() => {});
   const chips = await sp.$$eval('#trSimilar .tr-chip', (els) => els.map((e) => e.textContent));
-  ok('similar: suggests the source word (doctor → düxtur)', /^doctor\s*düxtur/.test(chips[0] ?? ''), chips);
-  ok('similar: labelled as AI suggestions, not translations', /ai suggestion/i.test(await sp.textContent('#trSimilar')) && /not translations/.test(await sp.textContent('#trSimilar')));
-  ok('similar: loads the pinned transformers.js build', cdn.length === 1 && /@huggingface\/transformers@4\.3\.1\//.test(cdn[0]), cdn);
+  ok('similar: a misspelled word is offered the book word spelled like it (doctor → düxtur)', /^doctor\s*düxtur/.test(chips[0] ?? ''), chips);
+  ok('similar: labelled as spellings, not translations, and not as AI', /not translations/.test(await sp.textContent('#trSimilar')) && !/\bAI\b|model/i.test(await sp.textContent('#trSimilar')));
   await sp.click('#trSimilar .tr-chip >> nth=0');
-  await sp.waitForFunction(() => document.getElementById('trInput').value !== 'I am a physician', null, { timeout: 5000 }).catch(() => {});
+  await sp.waitForFunction(() => document.getElementById('trInput').value !== 'I am a docter', null, { timeout: 5000 }).catch(() => {});
   ok('similar: picking edits the sentence', (await sp.inputValue('#trInput')) === 'I am a doctor', await sp.inputValue('#trInput'));
   await sp.waitForFunction(() => /düxturam/.test(document.getElementById('trOutput').textContent), null, { timeout: 5000 }).catch(() => {});
   ok('similar: edited sentence translated from the source', (await sp.textContent('#trOutput')).trim() === 'Man düxturam', await sp.textContent('#trOutput'));
   ok('similar: the pick is labelled', /your pick/i.test(await sp.textContent('#trNote')), await sp.textContent('#trNote'));
-  r = await translate(sp, 'we purchased it');
-  await sp.waitForSelector('#trSimilar .tr-chip', { timeout: 5000 }).catch(() => {});
-  ok('similar: once switched on, runs without asking again', (await sp.$$eval('#trSimilar .tr-chip', (els) => els.map((e) => e.textContent))).some((t) => /^buy/.test(t)));
-  await sp.click('#trSimilar .tr-chip:has-text("buy")');
-  await sp.waitForFunction(() => /xaridem/.test(document.getElementById('trOutput').textContent), null, { timeout: 5000 }).catch(() => {});
-  ok('similar: pick keeps the tense (purchased → bought)', (await sp.inputValue('#trInput')) === 'we bought it' && (await sp.textContent('#trOutput')).trim() === 'Mo xaridem', await sp.inputValue('#trInput'));
+  r = await translate(sp, 'I am a physician');
+  ok('similar: no offer when nothing in the book is spelled alike', await sp.$('#trSimilar') === null);
+  ok('similar: translating and suggesting make no request to any other site', offsite.length === 0, offsite);
   await sctx.close();
 
   // ── 8b2. AI draft layer: used only where the book has nothing, always labelled ──
@@ -392,15 +368,19 @@ try {
   await ready(dp);
   ok('draft: the status line counts book entries and AI-draft entries separately', /book entries \+ [\d,]+ AI draft/.test(await dp.textContent('#trStatus')), await dp.textContent('#trStatus'));
   r = await translate(dp, 'computer');
-  ok('draft: a word only the draft has is shown as an AI draft, not as a translation', await dp.$('#trAiDraft') !== null && /AI draft · unverified/.test(r.badge) && !/Printed|Built|high|medium/i.test(r.badge), r.badge);
-  ok('draft: says it is not from the book and not checked by a speaker', /not from the book, not checked by a speaker/.test(await dp.textContent('#trAiDraft')));
+  ok('draft: a word only the fallback has is shown as “Tajik fallback · adapted”, not as a translation', await dp.$('#trAiDraft') !== null && /Tajik fallback · adapted/.test(r.badge) && !/Printed|Built|high|medium/i.test(r.badge), r.badge);
+  ok('draft: says the word is not in the book and not checked by a speaker', /a word the book lacks, not checked by a speaker/.test(await dp.textContent('#trAiDraft')));
+  r = await translate(dp, 'Nobody came.');
+  ok('draft: a whole sentence from the draft is shown as “AI draft · unverified”', r.out.includes('Hej kas naomad') && /AI draft · unverified/.test(r.badge) && /not from the book, not checked by a speaker/.test(await dp.textContent('#trAiDraft')), r.badge);
+  r = await translate(dp, 'they');
+  ok('draft: grammar words come from the book only (closed-class lock)', !/Tajik fallback|AI draft/.test(r.badge) && await dp.$('#trAiDraft') === null, r);
   r = await translate(dp, 'Good morning');
   ok('draft: a book answer carries no AI-draft label anywhere', r.out === 'Safro tüvo!' && await dp.$('#trAiDraft') === null && !/AI draft/.test(r.badge) && !/AI draft/.test(await dp.textContent('.tr-result').catch(() => '') ?? ''), r.badge);
   r = await translate(dp, 'three books');
   ok('draft: what the book can build stays the book’s (the draft prints it too)', r.out === 'seta kitov' && await dp.$('#trAiDraft') === null && !/AI draft/.test(r.badge), r);
   await dp.click('.tr-tabs > button:nth-child(2)');
   r = await translate(dp, 'Man moshin doram');
-  ok('draft: Buxori → English with one draft word is labelled, and only that word is tagged', /I have a car/.test(r.out) && /AI draft · unverified/.test(r.badge)
+  ok('draft: Buxori → English with one draft word is labelled, and only that word is tagged', /I have a car/.test(r.out) && /Tajik fallback · adapted/.test(r.badge)
     && (await dp.$$eval('#trBreakdown .tr-word', (els) => els.map((e) => !!e.querySelector('.tr-draft-tag')))).join() === 'false,true,false', r);
   r = await translate(dp, 'Man kitov doram');
   ok('draft: Buxori → English from the book is unlabelled', r.out === 'I have a book.' && !/AI draft/.test(r.badge) && await dp.$('.tr-draft-tag') === null, r.badge);
@@ -421,7 +401,6 @@ try {
     return [];
   });
   ok('offline: translator app and data cached after one visit', cached.length > 0, cached);
-  ok('offline: optional model vectors are not precached', !cached.some((k) => /gloss-vectors/.test(k)), cached);
   await octx.setOffline(true);
   await op.goto(BASE + '/translator', { waitUntil: 'domcontentloaded' }).catch(() => {});
   s = await state(op).catch(() => ({}));
@@ -433,7 +412,7 @@ try {
   r = await translate(op, 'Man kitov doram');
   ok('offline: Buxori → English works', r.out === 'I have a book.', r.out);
   r = await translate(op, 'Man moshin doram');
-  ok('offline: the AI draft is cached too, and still labelled', /I have a car/.test(r.out) && /AI draft/.test(r.badge), r);
+  ok('offline: the AI draft is cached too, and still labelled', /I have a car/.test(r.out) && /Tajik fallback/.test(r.badge), r);
   await op.goto(BASE + '/', { waitUntil: 'domcontentloaded' }).catch(() => {});
   s = await state(op).catch(() => ({}));
   ok('offline: portfolio opens from the cache', s.portHidden === false, s);

@@ -1,0 +1,1774 @@
+frame	english	translator_output	tier	failed_checks	correct? (y/n)	correct_buxori
+present	The groom invites my aunt.	Hoton 'amima taklif mekunad	low			
+present	The baby loves my uncle.	Chaqaloq taghoyima naghz mebinad	low			
+present	The mother meets my teacher.	Modar xalfima vo mexurad	low			
+present	The groom brings fruit.	Hoton meva mebiyorad	low			
+present	We eat bread.	Mo non mexurem	medium			
+present	Our son loves my brother.	Pisaramo barodarama naghz mebinad	low			
+present	My older brother takes tea.	Akim choy megirad	low			
+present	My brother invites my husband.	Barodaram shüma taklif mekunad	low			
+present	She takes food.	Ü axilo megirad	low			
+present	My wife eats water.	Zanam maim mexurad	low			
+present	My child invites my son.	Bachim pisarama taklif mekunad	fallback			
+present	My grandfather loves my child.	Bovom bachima naghz mebinad	fallback			
+present	My teacher takes gift.	Xalfim matono megirad	low			
+present	He invites my father.	Ü padarama taklif mekunad	low			
+present	Our grandmother invites my wife.	Bivimo zanama taklif mekunad	low			
+present	My grandmother meets my husband.	Bivim shüma vo mexurad	low			
+present	My rabbi eats fruit.	Horovam meva mexurad	low			
+present	Our rabbi buys meat.	Horovamo bosor mexarad	low			
+present	Our older brother meets my sister.	Akimo xoharama vo mexurad	fallback			
+present	Our rabbi loves my child.	Horovamo bachima naghz mebinad	fallback			
+present	My neighbor eats book.	Hamsoyim kitov mexurad	low			
+present	The aunt buys rice.	'ama birinj mexarad	low			
+present	My daughter invites my husband.	Duxtaram shüma taklif mekunad	fallback			
+present	My brother invites my friend.	Barodaram hoveri mana taklif mekunad	low			
+present	You eat food.	Tu axilo mexuri	low			
+present	My groom comes.	Hotonam mebiyo	low			
+present	Our uncle buys tea.	Taghoyimo choy mexarad	low			
+present	Our grandmother eats candle.	Bivimo sham' mexurad	low			
+present	Our brother eats candle.	Akayi mo sham' mexurad	low			
+present	My guest meets my uncle.	Mehmonam taghoyima vo mexurad	low			
+present	The baby buys soup.	Chaqaloq shürbo mexarad	low			
+present	She brings book.	Ü kitov mebiyorad	medium			
+present	They meet my neighbor.	Inho hamsoyima vo mexurand	medium			
+present	My baby sees my child.	Chaqaloqam bachima mebinad	fallback			
+present	The father takes soup.	Padar shürbo megirad	low			
+present	The teacher loves my husband.	Xalfa shüma naghz mebinad	low			
+present	Our husband buys song.	Shümo ashula mexarad	low			
+present	The older brother takes letter.	Aka xat megirad	low			
+present	He eats meat.	Ü bosor mexurad	medium			
+present	My teacher meets my baby.	Xalfim chaqaloqama vo mexurad	low			
+present	Our teacher invites my uncle.	Xalfimo taghoyima taklif mekunad	low			
+present	My younger sister sees my bride.	Xoharam kaloma mebinad	low			
+present	Our bride sees my groom.	Kalomo hotonama mebinad	low			
+present	She drinks candle.	Ü sham' menüshad	low			
+present	We buy gift.	Mo matono mexarem	medium			
+present	My guest loves my teacher.	Mehmonam xalfima naghz mebinad	low			
+present	My teacher loves my baby.	Xalfim chaqaloqama naghz mebinad	low			
+present	The groom meets my neighbor.	Hoton hamsoyima vo mexurad	low			
+present	The aunt sees my wife.	'ama zanama mebinad	low			
+present	Our daughter meets my wife.	Duxtaramo zanama vo mexurad	fallback			
+present	My brother eats rice.	Barodaram birinj mexurad	low			
+present	The teacher takes wine.	Xalfa mayo megirad	low			
+present	Our father loves my teacher.	Padaramo xalfima naghz mebinad	low			
+present	My husband brings food.	Shüm axilo mebiyorad	low			
+present	She meets my husband.	Ü shüma vo mexurad	medium			
+present	My guest loves my grandmother.	Mehmonam bivima naghz mebinad	low			
+present	You love my bride.	Tu kaloma naghz mebini	medium			
+present	My brother meets my sister.	Barodaram xoharama vo mexurad	fallback			
+present	You buy bread.	Tu non mexari	medium			
+present	She helps my father.	Ü padarama yordam metiyad	low			
+present	My bride loves my son.	Kalom pisarama naghz mebinad	low			
+present	I love my son.	Man pisarama naghz mebinam	medium			
+present	My husband sees my daughter.	Shüm duxtarama mebinad	fallback			
+present	My grandmother meets my child.	Bivim bachima vo mexurad	fallback			
+present	My grandfather meets my husband.	Bovom shüma vo mexurad	low			
+present	My grandfather buys fruit.	Bovom meva mexarad	low			
+present	Our father loves my brother.	Padaramo barodarama naghz mebinad	low			
+present	The brother loves my baby.	Barodar chaqaloqama naghz mebinad	low			
+present	He helps my brother.	Ü barodarama yordam metiyad	low			
+present	Our teacher arrives.	Xalfimo mebiyo	medium			
+present	Our bride invites my daughter.	Kalomo duxtarama taklif mekunad	fallback			
+present	Our groom meets my child.	Hotonamo bachima vo mexurad	fallback			
+present	Our grandfather eats candle.	Bovomo sham' mexurad	low			
+present	The brother invites my child.	Barodar bachima taklif mekunad	fallback			
+present	My wife eats apple.	Zanam sev mexurad	low			
+present	Our mother takes song.	Modaramo ashula megirad	low			
+present	We drink rice.	Mo birinj menüshem	low			
+present	My sister loves my bride.	Xoharam kaloma naghz mebinad	fallback			
+present	Our uncle sees my younger sister.	Taghoyimo xoharama mebinad	low			
+present	Our baby loves my grandmother.	Chaqaloqamo bivima naghz mebinad	low			
+present	The grandmother invites my groom.	Bivi hotonama taklif mekunad	low			
+past	Our guest bought food.	Mehmonamo axilo xaridak	low			
+past	The baby invited my neighbor.	Chaqaloq hamsoyima taklif kardak	low			
+past	My uncle drank gift.	Taghoyim matono nüshidak	low			
+past	Our child helped my husband.	Bachimo shüma yordam dodak	fallback			
+past	My rabbi met my friend.	Horovam hoveri mana vo xürdak	low			
+past	The father invited my younger sister.	Padar xoharama taklif kardak	low			
+past	The grandfather invited my guest.	Bovo mehmonama taklif kardak	low			
+past	The grandfather bought meat.	Bovo bosor xaridak	low			
+past	Our daughter kissed my neighbor.	Duxtaramo hamsoyima muchi kardak	fallback			
+past	My grandmother met my uncle.	Bivim taghoyima vo xürdak	low			
+past	My teacher took candle.	Xalfim sham' giriftak	low			
+past	Our guest helped my baby.	Mehmonamo chaqaloqama yordam dodak	low			
+past	My grandmother kissed my daughter.	Bivim duxtarama muchi kardak	fallback			
+past	Our child met my friend.	Bachimo hoveri mana vo xürdak	fallback			
+past	The teacher helped my older brother.	Xalfa akima yordam dodak	low			
+past	The bride invited my groom.	Kalo hotonama taklif kardak	low			
+past	Our daughter bought water.	Duxtaramo maim xaridak	fallback			
+past	The guest ate meat.	Mehmon bosor xürdak	low			
+past	Our older brother loved my mother.	Akimo oni mana naghz didak	low			
+past	Our son helped my daughter.	Pisaramo duxtarama yordam dodak	fallback			
+past	My husband bought meat.	Shüm bosor xaridak	low			
+past	Our grandfather loved my husband.	Bovomo shüma naghz didak	low			
+past	My bride invited my younger sister.	Kalom xoharama taklif kardak	low			
+past	The brother cooked bread.	Barodar non puxtak	low			
+past	Our husband cooked apple.	Shümo sev puxtak	low			
+past	Our brother kissed my mother.	Akayi mo oni mana muchi kardak	low			
+past	Our sister bought tea.	Xoharamo choy xaridak	fallback			
+past	My husband took gift.	Shüm matono giriftak	low			
+past	Our grandfather cooked apple.	Bovomo sev puxtak	low			
+past	The baby kissed my guest.	Chaqaloq mehmonama muchi kardak	low			
+past	He bought meat.	Ü bosor xaridak	medium			
+past	The teacher loved my baby.	Xalfa chaqaloqama naghz didak	low			
+past	My guest helped my brother.	Mehmonam barodarama yordam dodak	low			
+past	The husband loved my baby.	Shü chaqaloqama naghz didak	low			
+past	My child helped my neighbor.	Bachim hamsoyima yordam dodak	fallback			
+past	My wife helped my husband.	Zanam shüma yordam dodak	low			
+past	The father helped my husband.	Padar shüma yordam dodak	low			
+past	The younger sister brought food.	Xohar axilo ovardak	low			
+past	My baby invited my bride.	Chaqaloqam kaloma taklif kardak	low			
+past	The friend cooked letter.	Hover xat puxtak	low			
+past	My older brother bought song.	Akim ashula xaridak	low			
+past	The daughter met my baby.	Duxtar chaqaloqama vo xürdak	fallback			
+past	Our aunt drank bread.	Tüti mo non nüshidak	low			
+past	Our guest drank food.	Mehmonamo axilo nüshidak	low			
+past	The son kissed my rabbi.	Pisar horovama muchi kardak	low			
+past	The rabbi kissed my older brother.	Horov akima muchi kardak	low			
+past	My sister drank tea.	Xoharam choy nüshidak	fallback			
+past	The bride drank fruit.	Kalo meva nüshidak	low			
+past	My neighbor cooked tea.	Hamsoyim choy puxtak	low			
+past	Our neighbor ate apple.	Hamsoyimo sev xürdak	low			
+past	The baby helped my friend.	Chaqaloq hoveri mana yordam dodak	low			
+past	My teacher met my grandfather.	Xalfim bovoma vo xürdak	low			
+past	The mother invited my neighbor.	Modar hamsoyima taklif kardak	low			
+past	Our brother cooked rice.	Akayi mo birinj puxtak	low			
+past	My bride helped my brother.	Kalom barodarama yordam dodak	low			
+past	The aunt drank song.	'ama ashula nüshidak	low			
+past	My older brother kissed my aunt.	Akim 'amima muchi kardak	low			
+past	She helped my teacher.	Ü xalfima yordam dodak	low			
+past	We saw my child.	Mo bachima didem	fallback			
+past	My son loved my older brother.	Pisaram akima naghz didak	low			
+past	The sister met my brother.	Xohar barodarama vo xürdak	fallback			
+past	He loved my mother.	Ü oni mana naghz didak	medium			
+past	My guest drank rice.	Mehmonam birinj nüshidak	low			
+past	Our child drank bread.	Bachimo non nüshidak	fallback			
+past	The son loved my aunt.	Pisar 'amima naghz didak	low			
+past	Our younger sister brought meat.	Xoharamo bosor ovardak	low			
+past	You sat.	Tu shishti	high			
+past	Our groom helped my rabbi.	Hotonamo horovama yordam dodak	low			
+past	The husband bought wine.	Shü mayo xaridak	low			
+past	The baby brought rice.	Chaqaloq birinj ovardak	low			
+past	They cried.	Inho giryon shudand	high			
+past	My husband took food.	Shüm axilo giriftak	low			
+past	The aunt helped my friend.	'ama hoveri mana yordam dodak	low			
+past	My husband kissed my aunt.	Shüm 'amima muchi kardak	low			
+past	My brother kissed my bride.	Barodaram kaloma muchi kardak	low			
+past	The guest loved my grandfather.	Mehmon bovoma naghz didak	low			
+past	Our younger sister brought letter.	Xoharamo xat ovardak	low			
+past	Our baby invited my father.	Chaqaloqamo padarama taklif kardak	low			
+past	The teacher met my aunt.	Xalfa 'amima vo xürdak	low			
+past	My grandfather met my friend.	Bovom hoveri mana vo xürdak	low			
+past	Our grandmother helped my uncle.	Bivimo taghoyima yordam dodak	low			
+past	They loved my older brother.	Inho akima naghz didand	low			
+past	Our husband helped my grandfather.	Shümo bovoma yordam dodak	low			
+past	We kissed my guest.	Mo mehmonama muchi kardem	low			
+past	My rabbi cooked meat.	Horovam bosor puxtak	low			
+past	My younger sister kissed my wife.	Xoharam zanama muchi kardak	low			
+past	My baby kissed my bride.	Chaqaloqam kaloma muchi kardak	low			
+past	The son met my daughter.	Pisar duxtarama vo xürdak	fallback			
+past	My groom ate water.	Hotonam maim xürdak	low			
+past	Our grandfather met my older brother.	Bovomo akima vo xürdak	low			
+past	My son drank wine.	Pisaram mayo nüshidak	low			
+past	The husband invited my baby.	Shü chaqaloqama taklif kardak	low			
+past	Our neighbor invited my son.	Hamsoyimo pisarama taklif kardak	low			
+past	My mother loved my daughter.	Oni man duxtarama naghz didak	fallback			
+past	My rabbi brought rice.	Horovam birinj ovardak	low			
+past	Our rabbi invited my aunt.	Horovamo 'amima taklif kardak	low			
+past	They helped my aunt.	Inho 'amima yordam dodand	low			
+past	The friend brought apple.	Hover sev ovardak	low			
+future	Our friend will kiss my teacher.	Hoveri mo xalfima muchi mekunad	low			
+future	Our friend will love my sister.	Hoveri mo xoharama naghz mebinad	fallback			
+future	They will love my sister.	Inho xoharama naghz mebinand	fallback			
+future	Our child will help my neighbor.	Bachimo hamsoyima yordam metiyad	fallback			
+future	My neighbor will take soup.	Hamsoyim shürbo megirad	low			
+future	Our wife will love my uncle.	Zanamo taghoyima naghz mebinad	low			
+future	My teacher will drink bread.	Xalfim non menüshad	low			
+future	My grandfather will see my teacher.	Bovom xalfima mebinad	low			
+future	Our aunt will see my younger sister.	Tüti mo xoharama mebinad	low			
+future	My wife will invite my grandmother.	Zanam bivima taklif mekunad	low			
+future	The child will meet my husband.	Bacha shüma vo mexurad	fallback			
+future	The sister will dance.	Xohar bozi mekunad	fallback			
+future	The older brother will meet my child.	Aka bachima vo mexurad	fallback			
+future	My daughter will buy water.	Duxtaram maim mexarad	fallback			
+future	Our daughter will meet my mother.	Duxtaramo oni mana vo mexurad	fallback			
+future	My sister will love my father.	Xoharam padarama naghz mebinad	fallback			
+future	Our mother will go.	Modaramo merü	medium			
+future	You will cook song.	Tu ashula mepazi	low			
+future	The younger sister will come.	Xohar mebiyo	low			
+future	My mother will help my daughter.	Oni man duxtarama yordam metiyad	fallback			
+future	Our teacher will drink tea.	Xalfimo menüshad	low			
+future	We will see my younger sister.	Mo xoharama mebinem	low			
+future	Our baby will buy fruit.	Chaqaloqamo meva mexarad	low			
+future	Our daughter will help my teacher.	Duxtaramo xalfima yordam metiyad	fallback			
+future	The grandmother will love my brother.	Bivi barodarama naghz mebinad	low			
+future	Our brother will kiss my uncle.	Akayi mo taghoyima muchi mekunad	low			
+future	My daughter will meet my son.	Duxtaram pisarama vo mexurad	fallback			
+future	My neighbor will take gift.	Hamsoyim matono megirad	low			
+future	Our bride will drink water.	Kalomo maim menüshad	low			
+future	My husband will meet my child.	Shüm bachima vo mexurad	fallback			
+future	Our son will kiss my teacher.	Pisaramo xalfima muchi mekunad	low			
+future	My grandfather will drink water.	Bovom maim menüshad	low			
+future	Our husband will kiss my teacher.	Shümo xalfima muchi mekunad	low			
+future	My younger sister will drink wine.	Xoharam mayo menüshad	low			
+future	The son will see my brother.	Pisar barodarama mebinad	low			
+future	She will drink fruit.	Ü meva menüshad	low			
+future	The teacher will drink fruit.	Xalfa meva menüshad	low			
+future	Our friend will eat food.	Hoveri mo axilo mexurad	low			
+future	My younger sister will see my sister.	Xoharam xoharama mebinad	fallback			
+future	Our daughter will take candle.	Duxtaramo sham' megirad	fallback			
+future	My wife will meet my grandfather.	Zanam bovoma vo mexurad	low			
+future	Our child will see my younger sister.	Bachimo xoharama mebinad	fallback			
+future	The friend will eat wine.	Hover mayo mexurad	low			
+future	My husband will help my groom.	Shüm hotonama yordam metiyad	low			
+future	My guest will meet my rabbi.	Mehmonam horovama vo mexurad	low			
+future	Our mother will drink soup.	Modaramo shürbo menüshad	low			
+future	My guest will laugh.	Mehmonam mexandad	fallback			
+future	The older brother will take bread.	Aka non megirad	low			
+future	Our rabbi will meet my sister.	Horovamo xoharama vo mexurad	fallback			
+future	Our son will kiss my older brother.	Pisaramo akima muchi mekunad	low			
+future	My uncle will kiss my teacher.	Taghoyim xalfima muchi mekunad	low			
+future	Our groom will help my grandmother.	Hotonamo bivima yordam metiyad	low			
+future	Our bride will meet my husband.	Kalomo shüma vo mexurad	low			
+future	Our bride will eat candle.	Kalomo sham' mexurad	low			
+future	My teacher will see my rabbi.	Xalfim horovama mebinad	low			
+future	The father will take gift.	Padar matono megirad	low			
+future	My son will kiss my younger sister.	Pisaram xoharama muchi mekunad	low			
+future	Our sister will eat meat.	Xoharamo bosor mexurad	fallback			
+future	The son will cook bread.	Pisar non mepazad	low			
+future	The aunt will meet my teacher.	'ama xalfima vo mexurad	low			
+future	Our friend will invite my rabbi.	Hoveri mo horovama taklif mekunad	low			
+future	Our grandmother will help my uncle.	Bivimo taghoyima yordam metiyad	low			
+future	My child will bring candle.	Bachim sham' mebiyorad	fallback			
+future	Our bride will help my brother.	Kalomo barodarama yordam metiyad	low			
+future	The groom will help my guest.	Hoton mehmonama yordam metiyad	low			
+future	Our teacher will invite my husband.	Xalfimo shüma taklif mekunad	low			
+future	The younger sister will see my grandmother.	Xohar bivima mebinad	low			
+future	The child will meet my father.	Bacha padarama vo mexurad	fallback			
+future	My grandfather will kiss my daughter.	Bovom duxtarama muchi mekunad	fallback			
+future	The mother will see my uncle.	Modar taghoyima mebinad	low			
+future	My son will love my daughter.	Pisaram duxtarama naghz mebinad	fallback			
+future	Our wife will take meat.	Zanamo bosor megirad	low			
+future	Our rabbi will help my baby.	Horovamo chaqaloqama yordam metiyad	low			
+future	My guest will see my older brother.	Mehmonam akima mebinad	low			
+future	Our husband will see my wife.	Shümo zanama mebinad	low			
+future	The brother will invite my teacher.	Barodar xalfima taklif mekunad	low			
+future	Our friend will meet my mother.	Hoveri mo oni mana vo mexurad	low			
+future	The bride will eat fruit.	Kalo meva mexurad	low			
+future	The daughter will love my grandfather.	Duxtar bovoma naghz mebinad	fallback			
+future	The brother will meet my groom.	Barodar hotonama vo mexurad	low			
+future	Our brother will invite my wife.	Akayi mo zanama taklif mekunad	low			
+future	Our teacher will take bread.	Xalfimo non megirad	low			
+future	Our neighbor will invite my grandmother.	Hamsoyimo bivima taklif mekunad	low			
+future	I will bring fruit.	Man meva mebiyoram	medium			
+future	Our sister will see my father.	Xoharamo padarama mebinad	fallback			
+future	My aunt will cook letter.	'amim xat mepazad	low			
+future	My brother will see my teacher.	Barodaram xalfima mebinad	low			
+future	We will help my younger sister.	Mo xoharama yordam metiyem	low			
+future	Our son will see my younger sister.	Pisaramo xoharama mebinad	low			
+future	Our child will drink soup.	Bachimo shürbo menüshad	fallback			
+future	The aunt will bring tea.	'ama choy mebiyorad	low			
+future	The child will drink bread.	Bacha non menüshad	fallback			
+future	The rabbi will kiss my child.	Horov bachima muchi mekunad	fallback			
+future	My bride will meet my wife.	Kalom zanama vo mexurad	low			
+future	Our bride will take book.	Kalomo kitov megirad	low			
+future	Our groom will bring wine.	Hotonamo mayo mebiyorad	low			
+future	My guest will love my father.	Mehmonam padarama naghz mebinad	low			
+future	Our older brother will see my guest.	Akimo mehmonama mebinad	low			
+future	Our groom will take letter.	Hotonamo xat megirad	low			
+future	Our younger sister will help my aunt.	Xoharamo 'amima yordam metiyad	low			
+future	My baby will invite my mother.	Chaqaloqam oni mana taklif mekunad	low			
+future	My husband will cook letter.	Shüm xat mepazad	low			
+future	My friend will help my aunt.	Hoveri man 'amima yordam metiyad	low			
+future	Our grandfather will see my husband.	Bovomo shüma mebinad	low			
+future	Our son will buy meat.	Pisaramo bosor mexarad	low			
+future	My baby will take food.	Chaqaloqam axilo megirad	low			
+future	Our older brother will meet my rabbi.	Akimo horovama vo mexurad	low			
+future	Our older brother will cook water.	Akimo maim mepazad	low			
+future	The teacher will come.	Xalfa mebiyo	medium			
+present continuous	The mother is eating candle.	Modar sham' xürsode	low			
+present continuous	Our father is meeting my guest.	Padaramo mehmonama vo xürsode	low			
+present continuous	My uncle is inviting my wife.	Taghoyim zanama taklif karsode	low			
+present continuous	Our friend is seeing my rabbi.	Hoveri mo horovama disode	low			
+present continuous	My grandfather is kissing my uncle.	Bovom taghoyima muchi karsode	low			
+present continuous	The sister is kissing my baby.	Xohar chaqaloqama muchi karsode	fallback			
+present continuous	The sister is helping my brother.	Xohar barodarama yordam dosode	fallback			
+present continuous	My aunt is meeting my grandmother.	'amim bivima vo xürsode	low			
+present continuous	The child is eating soup.	Bacha shürbo xürsode	fallback			
+present continuous	My uncle is inviting my daughter.	Taghoyim duxtarama taklif karsode	fallback			
+present continuous	Our wife is helping my grandmother.	Zanamo bivima yordam dosode	low			
+present continuous	Our younger sister is buying soup.	Xoharamo shürbo xarisode	low			
+present continuous	Our wife is kissing my rabbi.	Zanamo horovama muchi karsode	low			
+present continuous	We are drinking fruit.	Mo meva nüshisodim	low			
+present continuous	Our younger sister is eating wine.	Xoharamo mayo xürsode	low			
+present continuous	The bride is meeting my father.	Kalo padarama vo xürsode	low			
+present continuous	The bride is drinking apple.	Kalo sev nüshisode	low			
+present continuous	My younger sister is loving my grandfather.	Xoharam bovoma naghz disode	low			
+present continuous	Our groom is loving my aunt.	Hotonamo 'amima naghz disode	low			
+present continuous	My baby is going.	Chaqaloqam rafsode	medium			
+present continuous	My rabbi is kissing my mother.	Horovam oni mana muchi karsode	low			
+present continuous	My grandmother is inviting my older brother.	Bivim akima taklif karsode	low			
+present continuous	My grandfather is meeting my daughter.	Bovom duxtarama vo xürsode	fallback			
+present continuous	I am helping my father.	Man padarama yordam dosodim	low			
+present continuous	My brother is bringing soup.	Barodaram shürbo ovarsode	low			
+present continuous	The bride is taking song.	Kalo ashula girifsode	low			
+present continuous	Our mother is loving my rabbi.	Modaramo horovama naghz disode	low			
+present continuous	I am bringing gift.	Man matono ovarsodim	medium			
+present continuous	I am buying food.	Man axilo xarisodim	low			
+present continuous	My mother is helping my neighbor.	Oni man hamsoyima yordam dosode	low			
+present continuous	The brother is drinking tea.	Barodar choy nüshisode	low			
+present continuous	You are helping my grandmother.	Tu bivima yordam dosodi	low			
+present continuous	My baby is loving my grandfather.	Chaqaloqam bovoma naghz disode	low			
+present continuous	My teacher is kissing my uncle.	Xalfim taghoyima muchi karsode	low			
+present continuous	My teacher is seeing my older brother.	Xalfim akima disode	low			
+present continuous	The older brother is kissing my child.	Aka bachima muchi karsode	fallback			
+present continuous	Our daughter is seeing my aunt.	Duxtaramo 'amima disode	fallback			
+present continuous	The younger sister is meeting my uncle.	Xohar taghoyima vo xürsode	low			
+present continuous	The aunt is seeing my teacher.	'ama xalfima disode	low			
+present continuous	Our grandfather is drinking soup.	Bovomo shürbo nüshisode	low			
+present continuous	My mother is seeing my child.	Oni man bachima disode	fallback			
+present continuous	My husband is cooking gift.	Shüm matono puxsode	low			
+present continuous	The grandmother is kissing my husband.	Bivi shüma muchi karsode	low			
+present continuous	Our son is meeting my sister.	Pisaramo xoharama vo xürsode	fallback			
+present continuous	The daughter is inviting my neighbor.	Duxtar hamsoyima taklif karsode	fallback			
+present continuous	The bride is helping my grandmother.	Kalo bivima yordam dosode	low			
+present continuous	The brother is taking candle.	Barodar sham' girifsode	low			
+present continuous	Our daughter is buying letter.	Duxtaramo xat xarisode	fallback			
+present continuous	I am meeting my neighbor.	Man hamsoyima vo xürsodim	medium			
+present continuous	My younger sister is seeing my baby.	Xoharam chaqaloqama disode	low			
+present continuous	The mother is seeing my son.	Modar pisarama disode	low			
+present continuous	Our brother is bringing book.	Akayi mo kitov ovarsode	low			
+present continuous	Our uncle is cooking soup.	Taghoyimo shürbo puxsode	low			
+present continuous	My husband is drinking book.	Shüm kitov nüshisode	low			
+present continuous	The older brother is helping my sister.	Aka xoharama yordam dosode	fallback			
+present continuous	The husband is kissing my friend.	Shü hoveri mana muchi karsode	low			
+present continuous	You are inviting my son.	Tu pisarama taklif karsodi	low			
+present continuous	My friend is buying book.	Hoveri man kitov xarisode	low			
+present continuous	My aunt is drinking rice.	'amim birinj nüshisode	low			
+present continuous	Our brother is cooking water.	Akayi mo maim puxsode	low			
+present continuous	The uncle is kissing my younger sister.	Taghoyi xoharama muchi karsode	low			
+present continuous	The daughter is meeting my husband.	Duxtar shüma vo xürsode	fallback			
+present continuous	Our bride is taking tea.	Kalomo choy girifsode	low			
+present continuous	My rabbi is helping my husband.	Horovam shüma yordam dosode	low			
+present continuous	Our wife is meeting my bride.	Zanamo kaloma vo xürsode	low			
+present continuous	Our husband is inviting my son.	Shümo pisarama taklif karsode	low			
+present continuous	The brother is drinking book.	Barodar kitov nüshisode	low			
+present continuous	The daughter is meeting my brother.	Duxtar barodarama vo xürsode	fallback			
+present continuous	My rabbi is arriving.	Horovam omasode	medium			
+present continuous	The friend is helping my father.	Hover padarama yordam dosode	low			
+present continuous	The guest is inviting my bride.	Mehmon kaloma taklif karsode	low			
+present continuous	My grandfather is drinking bread.	Bovom non nüshisode	low			
+present continuous	She is drinking soup.	Ü shürbo nüshisode	low			
+present continuous	The friend is taking candle.	Hover sham' girifsode	low			
+present continuous	Our daughter is eating food.	Duxtaramo axilo xürsode	fallback			
+present continuous	The sister is loving my uncle.	Xohar taghoyima naghz disode	fallback			
+present continuous	My bride is inviting my younger sister.	Kalom xoharama taklif karsode	low			
+present continuous	My wife is coming.	Zanam omasode	medium			
+present continuous	My younger sister is bringing apple.	Xoharam sev ovarsode	low			
+present continuous	My brother is seeing my bride.	Barodaram kaloma disode	low			
+present continuous	My son is kissing my wife.	Pisaram zanama muchi karsode	low			
+present continuous	The aunt is loving my mother.	'ama oni mana naghz disode	low			
+present continuous	Our husband is meeting my teacher.	Shümo xalfima vo xürsode	low			
+present continuous	My guest is meeting my bride.	Mehmonam kaloma vo xürsode	low			
+present continuous	My son is meeting my brother.	Pisaram barodarama vo xürsode	low			
+present continuous	The father is inviting my wife.	Padar zanama taklif karsode	low			
+present continuous	The husband is helping my bride.	Shü kaloma yordam dosode	low			
+present continuous	Our neighbor is drinking water.	Hamsoyimo maim nüshisode	low			
+present continuous	The older brother is cooking song.	Aka ashula puxsode	low			
+present continuous	My aunt is kissing my father.	'amim padarama muchi karsode	low			
+present continuous	Our older brother is seeing my brother.	Akimo barodarama disode	low			
+present continuous	The husband is inviting my uncle.	Shü taghoyima taklif karsode	low			
+present continuous	Our baby is kissing my uncle.	Chaqaloqamo taghoyima muchi karsode	low			
+present continuous	They are inviting my uncle.	Inho taghoyima taklif karsodin	low			
+present continuous	The grandmother is helping my aunt.	Bivi 'amima yordam dosode	low			
+present continuous	The aunt is eating fruit.	'ama meva xürsode	low			
+present continuous	Our guest is cooking soup.	Mehmonamo shürbo puxsode	low			
+present continuous	We are seeing my teacher.	Mo xalfima disodim	medium			
+present continuous	The grandfather is kissing my teacher.	Bovo xalfima muchi karsode	low			
+present continuous	My daughter is buying book.	Duxtaram kitov xarisode	fallback			
+present continuous	My father is helping my son.	Padaram pisarama yordam dosode	low			
+present continuous	They are drinking food.	Inho axilo nüshisodin	low			
+present continuous	My mother is loving my guest.	Oni man mehmonama naghz disode	low			
+present continuous	The sister is helping my husband.	Xohar shüma yordam dosode	fallback			
+present continuous	The grandmother is loving my baby.	Bivi chaqaloqama naghz disode	low			
+present continuous	The child is buying song.	Bacha ashula xarisode	fallback			
+present continuous	My groom is helping my older brother.	Hotonam akima yordam dosode	low			
+present continuous	Our grandfather is cooking gift.	Bovomo matono puxsode	low			
+present continuous	My mother is cooking gift.	Oni man matono puxsode	low			
+present, negative	The older brother does not invite my husband.	Aka shüma taklif namekunad	low			
+present, negative	They do not love my uncle.	Inho taghoyima naghz namebinand	medium			
+present, negative	My wife does not invite my groom.	Zanam hotonama taklif namekunad	low			
+present, negative	The neighbor does not take water.	Hamsoya maim namegirad	low			
+present, negative	Our wife does not see my aunt.	Zanamo 'amima namebinad	low			
+present, negative	The sister does not see my aunt.	Xohar 'amima namebinad	fallback			
+present, negative	Our rabbi does not see my guest.	Horovamo mehmonama namebinad	low			
+present, negative	Our wife does not love my older brother.	Zanamo akima naghz namebinad	low			
+present, negative	They do not bring soup.	Inho shürbo namebiyorand	medium			
+present, negative	Our aunt does not buy book.	Tüti mo kitov namexarad	low			
+present, negative	The husband does not meet my daughter.	Shü duxtarama vo namexurad	fallback			
+present, negative	My mother does not love my son.	Oni man pisarama naghz namebinad	low			
+present, negative	My son does not meet my grandfather.	Pisaram bovoma vo namexurad	low			
+present, negative	The uncle does not take candle.	Taghoyi sham' namegirad	low			
+present, negative	We do not take bread.	Mo non namegirem	medium			
+present, negative	My groom does not sit.	Hotonam nameshinad	low			
+present, negative	The bride does not love my younger sister.	Kalo xoharama naghz namebinad	low			
+present, negative	My grandmother does not kiss my baby.	Bivim chaqaloqama muchi namekunad	low			
+present, negative	My teacher does not drink book.	Xalfim kitov namenüshad	low			
+present, negative	The guest does not take water.	Mehmon maim namegirad	low			
+present, negative	Our wife does not help my sister.	Zanamo xoharama yordam nametiyad	fallback			
+present, negative	Our groom does not see my rabbi.	Hotonamo horovama namebinad	low			
+present, negative	The brother does not buy apple.	Barodar sev namexarad	low			
+present, negative	The child does not see my son.	Bacha pisarama namebinad	fallback			
+present, negative	Our bride does not take water.	Kalomo maim namegirad	low			
+present, negative	The rabbi does not dance.	Horov bozi namekunad	medium			
+present, negative	The sister does not kiss my child.	Xohar bachima muchi namekunad	fallback			
+present, negative	She does not eat rice.	Ü birinj namexurad	medium			
+present, negative	My bride does not take food.	Kalom axilo namegirad	low			
+present, negative	My older brother does not buy candle.	Akim sham' namexarad	low			
+present, negative	The uncle does not drink gift.	Taghoyi matono namenüshad	low			
+present, negative	My sister does not drink tea.	Xoharam namenüshad	fallback			
+present, negative	Our baby does not arrive.	Chaqaloqamo namebiyo	medium			
+present, negative	The wife does not eat wine.	Zan mayo namexurad	low			
+present, negative	The rabbi does not cook tea.	Horov choy namepazad	low			
+present, negative	The guest does not invite my teacher.	Mehmon xalfima taklif namekunad	low			
+present, negative	The uncle does not meet my baby.	Taghoyi chaqaloqama vo namexurad	low			
+present, negative	My neighbor does not love my friend.	Hamsoyim hoveri mana naghz namebinad	low			
+present, negative	The younger sister does not dance.	Xohar bozi namekunad	low			
+present, negative	The bride does not invite my friend.	Kalo hoveri mana taklif namekunad	low			
+present, negative	The brother does not love my grandmother.	Barodar bivima naghz namebinad	low			
+present, negative	Our friend does not take rice.	Hoveri mo birinj namegirad	low			
+present, negative	Our child does not meet my son.	Bachimo pisarama vo namexurad	fallback			
+present, negative	The baby does not invite my daughter.	Chaqaloq duxtarama taklif namekunad	fallback			
+present, negative	We do not eat apple.	Mo sev namexurem	medium			
+present, negative	My baby does not cook gift.	Chaqaloqam matono namepazad	low			
+present, negative	The child does not love my wife.	Bacha zanama naghz namebinad	fallback			
+present, negative	My younger sister does not bring tea.	Xoharam choy namebiyorad	low			
+present, negative	Our rabbi does not drink apple.	Horovamo sev namenüshad	low			
+present, negative	Our guest does not meet my aunt.	Mehmonamo 'amima vo namexurad	low			
+present, negative	The brother does not see my daughter.	Barodar duxtarama namebinad	fallback			
+present, negative	My younger sister does not see my uncle.	Xoharam taghoyima namebinad	low			
+present, negative	The rabbi does not take letter.	Horov xat namegirad	low			
+present, negative	They do not take food.	Inho axilo namegirand	low			
+present, negative	The father does not eat water.	Padar maim namexurad	low			
+present, negative	You do not help my older brother.	Tu akima yordam nametiyi	low			
+present, negative	The grandfather does not invite my friend.	Bovo hoveri mana taklif namekunad	low			
+present, negative	Our baby does not drink gift.	Chaqaloqamo matono namenüshad	low			
+present, negative	Our teacher does not bring letter.	Xalfimo xat namebiyorad	low			
+present, negative	Our baby does not invite my child.	Chaqaloqamo bachima taklif namekunad	fallback			
+present, negative	My daughter does not love my wife.	Duxtaram zanama naghz namebinad	fallback			
+present, negative	I do not see my uncle.	Man taghoyima namebinam	medium			
+present, negative	My baby does not bring letter.	Chaqaloqam xat namebiyorad	low			
+present, negative	My younger sister does not eat rice.	Xoharam birinj namexurad	low			
+present, negative	Our friend does not buy letter.	Hoveri mo xat namexarad	low			
+present, negative	The groom does not sit.	Hoton nameshinad	low			
+present, negative	The guest does not see my friend.	Mehmon hoveri mana namebinad	low			
+present, negative	Our son does not cry.	Pisaramo giryon nameshü	medium			
+present, negative	My friend does not drink song.	Hoveri man ashula namenüshad	low			
+present, negative	Our younger sister does not help my son.	Xoharamo pisarama yordam nametiyad	low			
+present, negative	The sister does not see my baby.	Xohar chaqaloqama namebinad	fallback			
+present, negative	The brother does not bring candle.	Barodar sham' namebiyorad	low			
+present, negative	The mother does not kiss my daughter.	Modar duxtarama muchi namekunad	fallback			
+present, negative	My uncle does not invite my brother.	Taghoyim barodarama taklif namekunad	low			
+present, negative	My husband does not cook apple.	Shüm sev namepazad	low			
+present, negative	The older brother does not help my husband.	Aka shüma yordam nametiyad	low			
+present, negative	Our father does not invite my son.	Padaramo pisarama taklif namekunad	low			
+present, negative	The brother does not kiss my neighbor.	Barodar hamsoyima muchi namekunad	low			
+present, negative	The older brother does not help my sister.	Aka xoharama yordam nametiyad	fallback			
+present, negative	The groom does not help my neighbor.	Hoton hamsoyima yordam nametiyad	low			
+present, negative	Our father does not kiss my grandfather.	Padaramo bovoma muchi namekunad	low			
+present, negative	My sister does not invite my husband.	Xoharam shüma taklif namekunad	fallback			
+present, negative	The grandmother does not eat water.	Bivi maim namexurad	low			
+present, negative	My wife does not bring rice.	Zanam birinj namebiyorad	low			
+present, negative	My daughter does not see my baby.	Duxtaram chaqaloqama namebinad	fallback			
+present, negative	The husband does not love my guest.	Shü mehmonama naghz namebinad	low			
+present, negative	My mother does not take meat.	Oni man bosor namegirad	low			
+present, negative	My younger sister does not see my friend.	Xoharam hoveri mana namebinad	low			
+present, negative	Our mother does not see my sister.	Modaramo xoharama namebinad	fallback			
+present, negative	Our son does not kiss my grandfather.	Pisaramo bovoma muchi namekunad	low			
+present, negative	My sister does not love my grandfather.	Xoharam bovoma naghz namebinad	fallback			
+present, negative	The neighbor does not bring gift.	Hamsoya matono namebiyorad	low			
+present, negative	Our child does not buy fruit.	Bachimo meva namexarad	fallback			
+present, negative	The neighbor does not kiss my mother.	Hamsoya oni mana muchi namekunad	low			
+present, negative	The child does not meet my mother.	Bacha oni mana vo namexurad	fallback			
+present, negative	My daughter does not invite my bride.	Duxtaram kaloma taklif namekunad	fallback			
+present, negative	My neighbor does not love my older brother.	Hamsoyim akima naghz namebinad	low			
+present, negative	My grandfather does not see my uncle.	Bovom taghoyima namebinad	low			
+present, negative	Our teacher does not buy water.	Xalfimo maim namexarad	low			
+present, negative	The father does not kiss my grandmother.	Padar bivima muchi namekunad	low			
+present, negative	The uncle does not buy food.	Taghoyi axilo namexarad	low			
+present, negative	Our bride does not love my neighbor.	Kalomo hamsoyima naghz namebinad	low			
+present, negative	Our wife does not kiss my older brother.	Zanamo akima muchi namekunad	low			
+present, negative	The father does not meet my younger sister.	Padar xoharama vo namexurad	low			
+present, negative	My guest does not help my son.	Mehmonam pisarama yordam nametiyad	low			
+present, negative	Our sister does not help my older brother.	Xoharamo akima yordam nametiyad	fallback			
+present, negative	The grandfather does not take candle.	Bovo sham' namegirad	low			
+present, negative	My older brother does not help my sister.	Akim xoharama yordam nametiyad	fallback			
+present, negative	Our grandfather does not love my brother.	Bovomo barodarama naghz namebinad	low			
+past, negative	Our grandfather did not buy rice.	Bovomo birinj naxaridak	low			
+past, negative	My son did not see my grandmother.	Pisaram bivima nadidak	low			
+past, negative	My grandmother did not laugh.	Bivim naxandidak	fallback			
+past, negative	We did not kiss my uncle.	Mo taghoyima muchi nakardem	low			
+past, negative	Our father did not come.	Padaramo naomadak	medium			
+past, negative	Our younger sister did not kiss my wife.	Xoharamo zanama muchi nakardak	low			
+past, negative	Our brother did not buy soup.	Akayi mo shürbo naxaridak	low			
+past, negative	Our aunt did not buy candle.	Tüti mo sham' naxaridak	low			
+past, negative	Our aunt did not drink bread.	Tüti mo non nanüshidak	low			
+past, negative	The groom did not laugh.	Hoton naxandidak	fallback			
+past, negative	We did not see my father.	Mo padarama nadidem	medium			
+past, negative	My brother did not buy letter.	Barodaram xat naxaridak	low			
+past, negative	My daughter did not meet my older brother.	Duxtaram akima vo naxürdak	fallback			
+past, negative	My aunt did not cry.	'amim giryon nashudak	medium			
+past, negative	My sister did not cook song.	Xoharam ashula napuxtak	fallback			
+past, negative	The husband did not drink bread.	Shü non nanüshidak	low			
+past, negative	She did not go.	Ü naraftak	high			
+past, negative	Our groom did not sit.	Hotonamo nashishtak	low			
+past, negative	We did not eat gift.	Mo matono naxürdem	medium			
+past, negative	My uncle did not see my grandmother.	Taghoyim bivima nadidak	low			
+past, negative	My neighbor did not cook apple.	Hamsoyim sev napuxtak	low			
+past, negative	The neighbor did not eat wine.	Hamsoya mayo naxürdak	low			
+past, negative	My guest did not invite my older brother.	Mehmonam akima taklif nakardak	low			
+past, negative	My younger sister did not cook letter.	Xoharam xat napuxtak	low			
+past, negative	Our teacher did not kiss my son.	Xalfimo pisarama muchi nakardak	low			
+past, negative	Our rabbi did not kiss my bride.	Horovamo kaloma muchi nakardak	low			
+past, negative	Our baby did not kiss my older brother.	Chaqaloqamo akima muchi nakardak	low			
+past, negative	My baby did not see my sister.	Chaqaloqam xoharama nadidak	fallback			
+past, negative	My child did not meet my uncle.	Bachim taghoyima vo naxürdak	fallback			
+past, negative	We did not love my brother.	Mo barodarama naghz nadidem	medium			
+past, negative	Our groom did not help my baby.	Hotonamo chaqaloqama yordam nadodak	low			
+past, negative	The husband did not kiss my grandmother.	Shü bivima muchi nakardak	low			
+past, negative	Our older brother did not take water.	Akimo maim nagiriftak	low			
+past, negative	She did not sing.	Ü naxondak	high			
+past, negative	The neighbor did not meet my brother.	Hamsoya barodarama vo naxürdak	low			
+past, negative	My aunt did not help my father.	'amim padarama yordam nadodak	low			
+past, negative	My friend did not bring soup.	Hoveri man shürbo naovardak	low			
+past, negative	My older brother did not bring bread.	Akim non naovardak	low			
+past, negative	The daughter did not go.	Duxtar naraftak	fallback			
+past, negative	The baby did not love my grandfather.	Chaqaloq bovoma naghz nadidak	low			
+past, negative	My grandmother did not buy soup.	Bivim shürbo naxaridak	low			
+past, negative	The baby did not help my son.	Chaqaloq pisarama yordam nadodak	low			
+past, negative	Our mother did not kiss my uncle.	Modaramo taghoyima muchi nakardak	low			
+past, negative	My younger sister did not kiss my bride.	Xoharam kaloma muchi nakardak	low			
+past, negative	The aunt did not eat wine.	'ama mayo naxürdak	low			
+past, negative	We did not kiss my daughter.	Mo duxtarama muchi nakardem	fallback			
+past, negative	My mother did not bring soup.	Oni man shürbo naovardak	low			
+past, negative	Our brother did not laugh.	Akayi mo naxandidak	fallback			
+past, negative	The aunt did not help my neighbor.	'ama hamsoyima yordam nadodak	low			
+past, negative	The father did not take food.	Padar axilo nagiriftak	low			
+past, negative	The rabbi did not help my uncle.	Horov taghoyima yordam nadodak	low			
+past, negative	The sister did not eat candle.	Xohar sham' naxürdak	fallback			
+past, negative	My sister did not meet my brother.	Xoharam barodarama vo naxürdak	fallback			
+past, negative	The rabbi did not eat water.	Horov maim naxürdak	low			
+past, negative	Our wife did not cook rice.	Zanamo birinj napuxtak	low			
+past, negative	My son did not cook water.	Pisaram maim napuxtak	low			
+past, negative	The younger sister did not help my rabbi.	Xohar horovama yordam nadodak	low			
+past, negative	Our baby did not see my groom.	Chaqaloqamo hotonama nadidak	low			
+past, negative	The older brother did not love my rabbi.	Aka horovama naghz nadidak	low			
+past, negative	The guest did not bring apple.	Mehmon sev naovardak	low			
+past, negative	Our friend did not cook rice.	Hoveri mo birinj napuxtak	low			
+past, negative	Our brother did not meet my baby.	Akayi mo chaqaloqama vo naxürdak	low			
+past, negative	The teacher did not meet my wife.	Xalfa zanama vo naxürdak	low			
+past, negative	You did not help my rabbi.	Tu horovama yordam nadodi	low			
+past, negative	My groom did not drink wine.	Hotonam mayo nanüshidak	low			
+past, negative	The husband did not take book.	Shü kitov nagiriftak	low			
+past, negative	You did not see my neighbor.	Tu hamsoyima nadidi	medium			
+past, negative	Our brother did not take tea.	Akayi mo choy nagiriftak	low			
+past, negative	My brother did not help my rabbi.	Barodaram horovama yordam nadodak	low			
+past, negative	My neighbor did not meet my rabbi.	Hamsoyim horovama vo naxürdak	low			
+past, negative	The brother did not see my groom.	Barodar hotonama nadidak	low			
+past, negative	The brother did not see my wife.	Barodar zanama nadidak	low			
+past, negative	The uncle did not see my grandfather.	Taghoyi bovoma nadidak	low			
+past, negative	My uncle did not drink candle.	Taghoyim sham' nanüshidak	low			
+past, negative	My grandfather did not see my mother.	Bovom oni mana nadidak	low			
+past, negative	Our baby did not buy meat.	Chaqaloqamo bosor naxaridak	low			
+past, negative	The older brother did not see my husband.	Aka shüma nadidak	low			
+past, negative	My sister did not eat song.	Xoharam ashula naxürdak	fallback			
+past, negative	Our mother did not cook song.	Modaramo ashula napuxtak	low			
+past, negative	She did not invite my son.	Ü pisarama taklif nakardak	low			
+past, negative	Our guest did not invite my grandmother.	Mehmonamo bivima taklif nakardak	low			
+past, negative	Our guest did not invite my father.	Mehmonamo padarama taklif nakardak	low			
+past, negative	Our grandmother did not invite my wife.	Bivimo zanama taklif nakardak	low			
+past, negative	Our brother did not love my groom.	Akayi mo hotonama naghz nadidak	low			
+past, negative	The son did not eat letter.	Pisar xat naxürdak	low			
+past, negative	The husband did not meet my older brother.	Shü akima vo naxürdak	low			
+past, negative	The neighbor did not help my grandmother.	Hamsoya bivima yordam nadodak	low			
+past, negative	My groom did not meet my brother.	Hotonam barodarama vo naxürdak	low			
+past, negative	Our uncle did not love my bride.	Taghoyimo kaloma naghz nadidak	low			
+past, negative	My bride did not meet my daughter.	Kalom duxtarama vo naxürdak	fallback			
+past, negative	My grandfather did not buy apple.	Bovom sev naxaridak	low			
+past, negative	Our younger sister did not buy meat.	Xoharamo bosor naxaridak	low			
+past, negative	The wife did not see my grandmother.	Zan bivima nadidak	low			
+past, negative	My wife did not cook soup.	Zanam shürbo napuxtak	low			
+past, negative	The rabbi did not kiss my son.	Horov pisarama muchi nakardak	low			
+past, negative	Our groom did not kiss my brother.	Hotonamo barodarama muchi nakardak	low			
+past, negative	They did not meet my guest.	Inho mehmonama vo naxürdand	medium			
+past, negative	My mother did not bring book.	Oni man kitov naovardak	low			
+past, negative	The groom did not eat song.	Hoton ashula naxürdak	low			
+past, negative	My teacher did not see my bride.	Xalfim kaloma nadidak	low			
+past, negative	The uncle did not buy apple.	Taghoyi sev naxaridak	low			
+past, negative	The groom did not invite my friend.	Hoton hoveri mana taklif nakardak	low			
+past, negative	Our father did not cook bread.	Padaramo non napuxtak	low			
+past, negative	Our grandfather did not meet my uncle.	Bovomo taghoyima vo naxürdak	low			
+past, negative	Our bride did not drink rice.	Kalomo birinj nanüshidak	low			
+past, negative	Our bride did not invite my wife.	Kalomo zanama taklif nakardak	low			
+past, negative	Our husband did not cook candle.	Shümo sham' napuxtak	low			
+past, negative	The grandmother did not bring tea.	Bivi choy naovardak	low			
+past, negative	The child did not drink gift.	Bacha matono nanüshidak	fallback			
+is + adjective	The younger sister is young.	Xohar yosh	low			
+is + adjective	The song is small.	Ashula mayda	medium			
+is + adjective	Our grandfather is good.	Bovomo naghz	low			
+is + adjective	My rabbi is beautiful.	Horovam xushrü	medium			
+is + adjective	My uncle is young.	Taghoyim yosh	medium			
+is + adjective	My older brother is old.	Akim kühna	low			
+is + adjective	My son is beautiful.	Pisaram xushrü	medium			
+is + adjective	We are healthy.	Mo binoyiyem	high			
+is + adjective	The candle is beautiful.	Sham' xushrü	medium			
+is + adjective	Our uncle is tired.	Taghoyimo monda	fallback			
+is + adjective	The song is old.	Ashula kühna	medium			
+is + adjective	Our son is hungry.	Pisaramo gushna	medium			
+is + adjective	The teacher is tired.	Xalfa monda	fallback			
+is + adjective	My child is small.	Bachim mayda	fallback			
+is + adjective	My younger sister is new.	Xoharam nav	low			
+is + adjective	The uncle is young.	Taghoyi yosh	medium			
+is + adjective	The brother is healthy.	Barodar binoyi	medium			
+is + adjective	The neighbor is young.	Hamsoya yosh	medium			
+is + adjective	The older brother is young.	Aka yosh	low			
+is + adjective	The husband is good.	Shü naghz	low			
+is + adjective	The meat is beautiful.	Bosor xushrü	medium			
+is + adjective	Our grandmother is healthy.	Bivimo binoyi	medium			
+is + adjective	My child is good.	Bachim naghz	fallback			
+is + adjective	My aunt is small.	'amim mayda	medium			
+is + adjective	The soup is happy.	Shürbo baxtnok	low			
+is + adjective	My grandmother is healthy.	Bivim binoyi	medium			
+is + adjective	Our friend is hungry.	Hoveri mo gushna	medium			
+is + adjective	Our bride is beautiful.	Kalomo xushrü	medium			
+is + adjective	The grandfather is new.	Bovo nav	medium			
+is + adjective	My sister is old.	Xoharam kühna	fallback			
+is + adjective	The brother is tired.	Barodar monda	fallback			
+is + adjective	My groom is small.	Hotonam mayda	low			
+is + adjective	The gift is good.	Matono naghz	low			
+is + adjective	The son is sweet.	Pisar shirin	medium			
+is + adjective	The son is small.	Pisar mayda	medium			
+is + adjective	My mother is beautiful.	Oni man xushrü	medium			
+is + adjective	The brother is beautiful.	Barodar xushrü	medium			
+is + adjective	My bride is good.	Kalom naghz	low			
+is + adjective	Our daughter is happy.	Duxtaramo baxtnok	fallback			
+is + adjective	My sister is tired.	Xoharam monda	fallback			
+is + adjective	Our rabbi is young.	Horovamo yosh	medium			
+is + adjective	My older brother is hungry.	Akim gushna	low			
+is + adjective	She is happy.	Ü baxtnok	medium			
+is + adjective	My son is big.	Pisaram kalon	medium			
+is + adjective	Our guest is hungry.	Mehmonamo gushna	medium			
+is + adjective	The groom is hungry.	Hoton gushna	low			
+is + adjective	I am beautiful.	Man xushrüyam	high			
+is + adjective	My wife is beautiful.	Zanam xushrü	medium			
+is + adjective	Our father is beautiful.	Padaramo xushrü	medium			
+is + adjective	The soup is small.	Shürbo mayda	medium			
+is + adjective	My wife is young.	Zanam yosh	medium			
+is + adjective	Our older brother is sweet.	Akimo shirin	low			
+is + adjective	The father is hungry.	Padar gushna	medium			
+is + adjective	My brother is tired.	Barodaram monda	fallback			
+is + adjective	I am tired.	Man monda shudam.	fallback			
+is + adjective	My grandfather is good.	Bovom naghz	low			
+is + adjective	My aunt is big.	'amim kalon	medium			
+is + adjective	The song is happy.	Ashula baxtnok	low			
+is + adjective	Our brother is old.	Akayi mo kühna	medium			
+is + adjective	Our rabbi is old.	Horovamo kühna	medium			
+is + adjective	The groom is beautiful.	Hoton xushrü	low			
+is + adjective	Our baby is sweet.	Chaqaloqamo shirin	medium			
+is + adjective	Our guest is big.	Mehmonamo kalon	medium			
+is + adjective	My aunt is hungry.	'amim gushna	medium			
+is + adjective	My husband is good.	Shüm naghz	low			
+is + adjective	The fruit is small.	Meva mayda	medium			
+is + adjective	The uncle is good.	Taghoyi naghz	low			
+is + adjective	You are sweet.	Tu shirini	high			
+is + adjective	Our wife is tired.	Zanamo monda	fallback			
+is + adjective	My bride is young.	Kalom yosh	medium			
+is + adjective	The neighbor is big.	Hamsoya kalon	medium			
+is + adjective	The child is tired.	Bacha monda	fallback			
+is + adjective	Our younger sister is young.	Xoharamo yosh	low			
+is + adjective	Our bride is happy.	Kalomo baxtnok	low			
+is + adjective	My teacher is small.	Xalfim mayda	medium			
+is + adjective	The guest is young.	Mehmon yosh	medium			
+is + adjective	The groom is tired.	Hoton monda	fallback			
+is + adjective	He is young.	Ü yosh	high			
+is + adjective	My aunt is healthy.	'amim binoyi	medium			
+is + adjective	The aunt is tired.	'ama monda	fallback			
+is + adjective	Our aunt is good.	Tüti mo naghz	low			
+is + adjective	Our younger sister is new.	Xoharamo nav	low			
+is + adjective	My rabbi is happy.	Horovam baxtnok	low			
+is + adjective	The husband is old.	Shü kühna	medium			
+is + adjective	My grandmother is small.	Bivim mayda	medium			
+is + adjective	Our wife is young.	Zanamo yosh	medium			
+is + adjective	The wife is good.	Zan naghz	low			
+is + adjective	My rabbi is good.	Horovam naghz	low			
+is + adjective	Our aunt is healthy.	Tüti mo binoyi	medium			
+is + adjective	The soup is old.	Shürbo kühna	medium			
+is + adjective	Our husband is old.	Shümo kühna	medium			
+is + adjective	The meat is happy.	Bosor baxtnok	low			
+is + adjective	The book is big.	Kitov kalon	medium			
+is + adjective	The food is small.	Axilo mayda	low			
+is + adjective	The guest is new.	Mehmon nav	medium			
+is + adjective	My baby is happy.	Chaqaloqam baxtnok	low			
+is + adjective	My groom is good.	Hotonam naghz	low			
+is + adjective	My aunt is tired.	'amim monda	fallback			
+is + adjective	My teacher is sweet.	Xalfim shirin	medium			
+is + adjective	Our son is beautiful.	Pisaramo xushrü	medium			
+is + adjective	Our aunt is big.	Tüti mo kalon	medium			
+is + adjective	My neighbor is healthy.	Hamsoyim binoyi	medium			
+is + adjective	The rice is big.	Birinj kalon	medium			
+is + adjective	The gift is happy.	Matono baxtnok	low			
+is + adjective	The uncle is beautiful.	Taghoyi xushrü	medium			
+is + adjective	My neighbor is old.	Hamsoyim kühna	medium			
+is + adjective	The rabbi is young.	Horov yosh	medium			
+is + adjective	He is new.	Ü nav	high			
+is + adjective	The daughter is hungry.	Duxtar gushna	fallback			
+was + adjective	Our baby was healthy.	Chaqaloqamo binoyi budak	medium			
+was + adjective	My grandmother was healthy.	Bivim binoyi budak	medium			
+was + adjective	My bride was small.	Kalom mayda budak	medium			
+was + adjective	The child was young.	Bacha yosh budak	fallback			
+was + adjective	Our child was new.	Bachimo nav budak	fallback			
+was + adjective	Our younger sister was small.	Xoharamo mayda budak	low			
+was + adjective	My guest was young.	Mehmonam yosh budak	medium			
+was + adjective	My father was good.	Padaram naghz budak	low			
+was + adjective	My daughter was healthy.	Duxtaram binoyi budak	fallback			
+was + adjective	The brother was young.	Barodar yosh budak	medium			
+was + adjective	My father was big.	Padaram kalon budak	medium			
+was + adjective	My teacher was big.	Xalfim kalon budak	medium			
+was + adjective	Our rabbi was tired.	Horovamo monda budak	fallback			
+was + adjective	We were good.	Mo naghz budem	medium			
+was + adjective	The friend was tired.	Hover monda budak	fallback			
+was + adjective	My guest was small.	Mehmonam mayda budak	medium			
+was + adjective	My friend was healthy.	Hoveri man binoyi budak	medium			
+was + adjective	Our rabbi was old.	Horovamo kühna budak	medium			
+was + adjective	Our aunt was young.	Tüti mo yosh budak	medium			
+was + adjective	My older brother was good.	Akim naghz budak	low			
+was + adjective	Our friend was happy.	Hoveri mo baxtnok budak	low			
+was + adjective	My husband was sweet.	Shüm shirin budak	medium			
+was + adjective	Our younger sister was old.	Xoharamo kühna budak	low			
+was + adjective	My child was good.	Bachim naghz budak	fallback			
+was + adjective	My husband was old.	Shüm kühna budak	medium			
+was + adjective	Our wife was healthy.	Zanamo binoyi budak	medium			
+was + adjective	My son was sweet.	Pisaram shirin budak	medium			
+was + adjective	The older brother was tired.	Aka monda budak	fallback			
+was + adjective	My grandmother was small.	Bivim mayda budak	medium			
+was + adjective	My older brother was tired.	Akim monda budak	fallback			
+was + adjective	Our groom was beautiful.	Hotonamo xushrü budak	low			
+was + adjective	The grandmother was sweet.	Bivi shirin budak	medium			
+was + adjective	My brother was tired.	Barodaram monda budak	fallback			
+was + adjective	My guest was happy.	Mehmonam baxtnok budak	low			
+was + adjective	Our guest was old.	Mehmonamo kühna budak	medium			
+was + adjective	He was young.	Ü yosh budak	high			
+was + adjective	Our daughter was new.	Duxtaramo nav budak	fallback			
+was + adjective	The baby was tired.	Chaqaloq monda budak	fallback			
+was + adjective	Our daughter was healthy.	Duxtaramo binoyi budak	fallback			
+was + adjective	The guest was sweet.	Mehmon shirin budak	medium			
+was + adjective	My husband was happy.	Shüm baxtnok budak	low			
+was + adjective	The daughter was small.	Duxtar mayda budak	fallback			
+was + adjective	My bride was new.	Kalom nav budak	medium			
+was + adjective	My son was big.	Pisaram kalon budak	medium			
+was + adjective	Our sister was old.	Xoharamo kühna budak	fallback			
+was + adjective	She was happy.	Ü baxtnok budak	medium			
+was + adjective	The uncle was small.	Taghoyi mayda budak	medium			
+was + adjective	My friend was good.	Hoveri man naghz budak	low			
+was + adjective	The child was sweet.	Bacha shirin budak	fallback			
+was + adjective	My younger sister was happy.	Xoharam baxtnok budak	low			
+was + adjective	Our teacher was sweet.	Xalfimo shirin budak	medium			
+was + adjective	The teacher was happy.	Xalfa baxtnok budak	low			
+was + adjective	The sister was tired.	Xohar monda budak	fallback			
+was + adjective	He was beautiful.	Ü xushrü budak	high			
+was + adjective	My neighbor was old.	Hamsoyim kühna budak	medium			
+was + adjective	My aunt was new.	'amim nav budak	medium			
+was + adjective	The husband was healthy.	Shü binoyi budak	medium			
+was + adjective	My father was tired.	Padaram monda budak	fallback			
+was + adjective	She was young.	Ü yosh budak	high			
+was + adjective	The friend was happy.	Hover baxtnok budak	low			
+was + adjective	The husband was old.	Shü kühna budak	medium			
+was + adjective	Our neighbor was sweet.	Hamsoyimo shirin budak	medium			
+was + adjective	My younger sister was small.	Xoharam mayda budak	low			
+was + adjective	Our father was beautiful.	Padaramo xushrü budak	medium			
+was + adjective	Our grandfather was old.	Bovomo kühna budak	medium			
+was + adjective	My father was happy.	Padaram baxtnok budak	low			
+was + adjective	I was young.	Man yosh budam	high			
+was + adjective	The wife was hungry.	Zan gushna budak	medium			
+was + adjective	He was healthy.	Ü binoyi budak	high			
+was + adjective	Our sister was beautiful.	Xoharamo xushrü budak	fallback			
+was + adjective	I was small.	Man mayda budam	high			
+was + adjective	The father was beautiful.	Padar xushrü budak	medium			
+was + adjective	My baby was tired.	Chaqaloqam monda budak	fallback			
+was + adjective	Our grandmother was small.	Bivimo mayda budak	medium			
+was + adjective	The uncle was healthy.	Taghoyi binoyi budak	medium			
+was + adjective	Our friend was big.	Hoveri mo kalon budak	medium			
+was + adjective	Our grandfather was tired.	Bovomo monda budak	fallback			
+was + adjective	The son was hungry.	Pisar gushna budak	medium			
+was + adjective	The sister was beautiful.	Xohar xushrü budak	fallback			
+was + adjective	Our uncle was sweet.	Taghoyimo shirin budak	medium			
+was + adjective	Our son was healthy.	Pisaramo binoyi budak	medium			
+was + adjective	Our mother was happy.	Modaramo baxtnok budak	low			
+was + adjective	The neighbor was good.	Hamsoya naghz budak	low			
+was + adjective	The neighbor was sweet.	Hamsoya shirin budak	medium			
+was + adjective	The brother was new.	Barodar nav budak	medium			
+was + adjective	The rabbi was happy.	Horov baxtnok budak	low			
+was + adjective	The guest was hungry.	Mehmon gushna budak	medium			
+was + adjective	The grandfather was healthy.	Bovo binoyi budak	medium			
+was + adjective	Our wife was sweet.	Zanamo shirin budak	medium			
+was + adjective	The guest was good.	Mehmon naghz budak	low			
+was + adjective	My older brother was old.	Akim kühna budak	low			
+was + adjective	My baby was beautiful.	Chaqaloqam xushrü budak	medium			
+was + adjective	Our guest was beautiful.	Mehmonamo xushrü budak	medium			
+was + adjective	Our rabbi was hungry.	Horovamo gushna budak	medium			
+was + adjective	Our older brother was old.	Akimo kühna budak	low			
+was + adjective	My aunt was beautiful.	'amim xushrü budak	medium			
+was + adjective	My aunt was old.	'amim kühna budak	medium			
+was + adjective	The father was good.	Padar naghz budak	low			
+was + adjective	Our bride was young.	Kalomo yosh budak	medium			
+was + adjective	You were tired.	Tu monda budi	fallback			
+was + adjective	Our husband was old.	Shümo kühna budak	medium			
+was + adjective	My neighbor was hungry.	Hamsoyim gushna budak	medium			
+was + adjective	The neighbor was healthy.	Hamsoya binoyi budak	medium			
+was + adjective	The aunt was sweet.	'ama shirin budak	medium			
+was + adjective	I was tired.	Man monda budam	fallback			
+was + adjective	My wife was healthy.	Zanam binoyi budak	medium			
+was + adjective	The sister was young.	Xohar yosh budak	fallback			
+was + adjective	Our friend was sweet.	Hoveri mo shirin budak	medium			
+was + adjective	Our guest was small.	Mehmonamo mayda budak	medium			
+is not + adjective	Our brother is not old.	Akayi mo kühna nest	medium			
+is not + adjective	We are not happy.	Mo baxtnok nestem	medium			
+is not + adjective	The neighbor is not happy.	Hamsoya baxtnok nest	low			
+is not + adjective	Our guest is not young.	Mehmonamo yosh nest	medium			
+is not + adjective	The wife is not happy.	Zan baxtnok nest	low			
+is not + adjective	The father is not beautiful.	Padar xushrü nest	medium			
+is not + adjective	My father is not sweet.	Padaram shirin nest	medium			
+is not + adjective	She is not hungry.	Ü gushna nest	high			
+is not + adjective	They are not good.	Inho naghz nestand	medium			
+is not + adjective	The husband is not tired.	Shü monda nest	fallback			
+is not + adjective	Our grandfather is not beautiful.	Bovomo xushrü nest	medium			
+is not + adjective	My husband is not healthy.	Shüm binoyi nest	medium			
+is not + adjective	Our grandfather is not happy.	Bovomo baxtnok nest	low			
+is not + adjective	She is not tired.	Ü monda nest	fallback			
+is not + adjective	Our older brother is not tired.	Akimo monda nest	fallback			
+is not + adjective	My friend is not old.	Hoveri man kühna nest	medium			
+is not + adjective	My neighbor is not good.	Hamsoyim naghz nest	low			
+is not + adjective	The younger sister is not new.	Xohar nav nest	low			
+is not + adjective	My grandfather is not happy.	Bovom baxtnok nest	low			
+is not + adjective	The friend is not young.	Hover yosh nest	medium			
+is not + adjective	He is not old.	Ü kühna nest	high			
+is not + adjective	You are not tired.	Tu monda nesti	fallback			
+is not + adjective	The older brother is not happy.	Aka baxtnok nest	low			
+is not + adjective	Our bride is not sweet.	Kalomo shirin nest	medium			
+is not + adjective	The younger sister is not small.	Xohar mayda nest	low			
+is not + adjective	Our bride is not tired.	Kalomo monda nest	fallback			
+is not + adjective	My brother is not young.	Barodaram yosh nest	medium			
+is not + adjective	My grandmother is not old.	Bivim kühna nest	medium			
+is not + adjective	Our son is not hungry.	Pisaramo gushna nest	medium			
+is not + adjective	We are not old.	Mo kühna nestem	high			
+is not + adjective	Our brother is not small.	Akayi mo mayda nest	medium			
+is not + adjective	You are not healthy.	Tu binoyi nesti	high			
+is not + adjective	The older brother is not big.	Aka kalon nest	low			
+is not + adjective	The friend is not big.	Hover kalon nest	medium			
+is not + adjective	Our grandfather is not hungry.	Bovomo gushna nest	medium			
+is not + adjective	Our teacher is not beautiful.	Xalfimo xushrü nest	medium			
+is not + adjective	My son is not happy.	Pisaram baxtnok nest	low			
+is not + adjective	The younger sister is not happy.	Xohar baxtnok nest	low			
+is not + adjective	Our sister is not hungry.	Xoharamo gushna nest	fallback			
+is not + adjective	Our teacher is not hungry.	Xalfimo gushna nest	medium			
+is not + adjective	My wife is not healthy.	Zanam binoyi nest	medium			
+is not + adjective	The husband is not hungry.	Shü gushna nest	medium			
+is not + adjective	Our grandmother is not healthy.	Bivimo binoyi nest	medium			
+is not + adjective	The child is not small.	Bacha mayda nest	fallback			
+is not + adjective	I am not young.	Man yosh nestam	high			
+is not + adjective	My older brother is not happy.	Akim baxtnok nest	low			
+is not + adjective	My neighbor is not new.	Hamsoyim nav nest	medium			
+is not + adjective	Our daughter is not tired.	Duxtaramo monda nest	fallback			
+is not + adjective	The groom is not healthy.	Hoton binoyi nest	low			
+is not + adjective	Our wife is not big.	Zanamo kalon nest	medium			
+is not + adjective	The teacher is not young.	Xalfa yosh nest	medium			
+is not + adjective	Our brother is not young.	Akayi mo yosh nest	medium			
+is not + adjective	The daughter is not healthy.	Duxtar binoyi nest	fallback			
+is not + adjective	The guest is not young.	Mehmon yosh nest	medium			
+is not + adjective	Our brother is not new.	Akayi mo nav nest	medium			
+is not + adjective	My groom is not sweet.	Hotonam shirin nest	low			
+is not + adjective	My neighbor is not healthy.	Hamsoyim binoyi nest	medium			
+is not + adjective	My groom is not hungry.	Hotonam gushna nest	low			
+is not + adjective	The husband is not good.	Shü naghz nest	low			
+is not + adjective	They are not young.	Inho yosh nestand	high			
+is not + adjective	The baby is not happy.	Chaqaloq baxtnok nest	low			
+is not + adjective	My mother is not young.	Oni man yosh nest	medium			
+is not + adjective	The guest is not good.	Mehmon naghz nest	low			
+is not + adjective	Our baby is not old.	Chaqaloqamo kühna nest	medium			
+is not + adjective	The husband is not old.	Shü kühna nest	medium			
+is not + adjective	Our neighbor is not new.	Hamsoyimo nav nest	medium			
+is not + adjective	Our neighbor is not happy.	Hamsoyimo baxtnok nest	low			
+is not + adjective	Our grandfather is not new.	Bovomo nav nest	medium			
+is not + adjective	The neighbor is not hungry.	Hamsoya gushna nest	medium			
+is not + adjective	My younger sister is not small.	Xoharam mayda nest	low			
+is not + adjective	The son is not sweet.	Pisar shirin nest	medium			
+is not + adjective	The younger sister is not big.	Xohar kalon nest	low			
+is not + adjective	My younger sister is not young.	Xoharam yosh nest	low			
+is not + adjective	Our father is not tired.	Padaramo monda nest	fallback			
+is not + adjective	The baby is not small.	Chaqaloq mayda nest	medium			
+is not + adjective	My father is not old.	Padaram kühna nest	medium			
+is not + adjective	My grandmother is not big.	Bivim kalon nest	medium			
+is not + adjective	My aunt is not beautiful.	'amim xushrü nest	medium			
+is not + adjective	My husband is not sweet.	Shüm shirin nest	medium			
+is not + adjective	The son is not healthy.	Pisar binoyi nest	medium			
+is not + adjective	The brother is not old.	Barodar kühna nest	medium			
+is not + adjective	My mother is not beautiful.	Oni man xushrü nest	medium			
+is not + adjective	I am not good.	Man naghz nestam	medium			
+is not + adjective	My child is not small.	Bachim mayda nest	fallback			
+is not + adjective	Our son is not sweet.	Pisaramo shirin nest	medium			
+is not + adjective	You are not sweet.	Tu shirin nesti	high			
+is not + adjective	We are not young.	Mo yosh nestem	high			
+is not + adjective	Our father is not healthy.	Padaramo binoyi nest	medium			
+is not + adjective	The mother is not new.	Modar nav nest	medium			
+is not + adjective	The friend is not old.	Hover kühna nest	medium			
+is not + adjective	The groom is not small.	Hoton mayda nest	low			
+is not + adjective	My mother is not tired.	Oni man monda nest	fallback			
+is not + adjective	I am not small.	Man mayda nestam	high			
+is not + adjective	The neighbor is not new.	Hamsoya nav nest	medium			
+is not + adjective	My grandfather is not hungry.	Bovom gushna nest	medium			
+is not + adjective	The mother is not beautiful.	Modar xushrü nest	medium			
+is not + adjective	The mother is not big.	Modar kalon nest	medium			
+is not + adjective	Our sister is not healthy.	Xoharamo binoyi nest	fallback			
+is not + adjective	My grandmother is not good.	Bivim naghz nest	low			
+is not + adjective	My sister is not healthy.	Xoharam binoyi nest	fallback			
+is not + adjective	You are not good.	Tu naghz nesti	medium			
+is not + adjective	Our son is not young.	Pisaramo yosh nest	medium			
+is not + adjective	My aunt is not big.	'amim kalon nest	medium			
+is not + adjective	My uncle is not sweet.	Taghoyim shirin nest	medium			
+is not + adjective	The sister is not happy.	Xohar baxtnok nest	fallback			
+is not + adjective	The child is not old.	Bacha kühna nest	fallback			
+is not + adjective	Our guest is not beautiful.	Mehmonamo xushrü nest	medium			
+is not + adjective	The son is not good.	Pisar naghz nest	low			
+is not + adjective	The baby is not good.	Chaqaloq naghz nest	low			
+is at a place	My teacher is at the house.	Xalfim ba xona	medium			
+is at a place	The uncle is at the party.	Taghoyi ba tüy	medium			
+is at a place	The bride is at the party.	Kalo ba tüy	medium			
+is at a place	Our father is at the table.	Padaramo ba kantür	medium			
+is at a place	He is at the table.	Ü ba kantür	high			
+is at a place	They are at the kitchen.	Inho ba oshxona	high			
+is at a place	My brother is at the market.	Barodaram ba bozor	fallback			
+is at a place	Our friend is at the party.	Hoveri mo ba tüy	medium			
+is at a place	She is at the table.	Ü ba kantür	high			
+is at a place	The uncle is at the synagogue.	Taghoyi ba kaneso	medium			
+is at a place	Our wife is at the kitchen.	Zanamo ba oshxona	medium			
+is at a place	My bride is at the kitchen.	Kalom ba oshxona	medium			
+is at a place	The friend is at the party.	Hover ba tüy	medium			
+is at a place	My wife is at the house.	Zanam ba xona	medium			
+is at a place	Our rabbi is at the kitchen.	Horovamo ba oshxona	medium			
+is at a place	My aunt is at the wedding.	'amim ba tüy	medium			
+is at a place	The neighbor is at the party.	Hamsoya ba tüy	medium			
+is at a place	My child is at the wedding.	Bachim ba tüy	fallback			
+is at a place	My aunt is at the home.	'amim ba xona	medium			
+is at a place	Our guest is at the party.	Mehmonamo ba tüy	medium			
+is at a place	Our grandmother is at the market.	Bivimo ba bozor	fallback			
+is at a place	My aunt is at the table.	'amim ba kantür	medium			
+is at a place	Our friend is at the house.	Hoveri mo ba xona	medium			
+is at a place	My sister is at the table.	Xoharam ba kantür	fallback			
+is at a place	My younger sister is at the party.	Xoharam ba tüy	low			
+is at a place	My bride is at the synagogue.	Kalom ba kaneso	medium			
+is at a place	Our father is at the home.	Padaramo ba xona	medium			
+is at a place	They are at the party.	Inho ba tüy	high			
+is at a place	My friend is at the house.	Hoveri man ba xona	medium			
+is at a place	Our wife is at the wedding.	Zanamo ba tüy	medium			
+is at a place	The older brother is at the garden.	Aka ba bogh	low			
+is at a place	My husband is at the home.	Shüm ba xona	medium			
+is at a place	Our older brother is at the home.	Akimo ba xona	low			
+is at a place	The daughter is at the party.	Duxtar ba tüy	fallback			
+is at a place	The groom is at the table.	Hoton ba kantür	low			
+is at a place	My friend is at the home.	Hoveri man ba xona	medium			
+is at a place	My aunt is at the house.	'amim ba xona	medium			
+is at a place	You are at the table.	Tu ba kantür	medium			
+is at a place	The teacher is at the house.	Xalfa ba xona	medium			
+is at a place	My wife is at the table.	Zanam ba kantür	medium			
+is at a place	Our younger sister is at the house.	Xoharamo ba xona	low			
+is at a place	The mother is at the garden.	Modar ba bogh	medium			
+is at a place	We are at the party.	Mo ba tüy	medium			
+is at a place	Our wife is at the party.	Zanamo ba tüy	medium			
+is at a place	The mother is at the wedding.	Modar ba tüy	medium			
+is at a place	The grandfather is at the kitchen.	Bovo ba oshxona	medium			
+is at a place	The grandfather is at the party.	Bovo ba tüy	medium			
+is at a place	My mother is at the home.	Oni man ba xona	medium			
+is at a place	Our neighbor is at the house.	Hamsoyimo ba xona	medium			
+is at a place	The wife is at the home.	Zan ba xona	medium			
+is at a place	Our wife is at the garden.	Zanamo ba bogh	medium			
+is at a place	Our sister is at the kitchen.	Xoharamo ba oshxona	fallback			
+is at a place	The uncle is at the house.	Taghoyi ba xona	medium			
+is at a place	My wife is at the garden.	Zanam ba bogh	medium			
+is at a place	The aunt is at the party.	'ama ba tüy	medium			
+is at a place	My mother is at the wedding.	Oni man ba tüy	medium			
+is at a place	My rabbi is at the market.	Horovam ba bozor	fallback			
+is at a place	The older brother is at the kitchen.	Aka ba oshxona	low			
+is at a place	The teacher is at the table.	Xalfa ba kantür	medium			
+is at a place	My grandmother is at the garden.	Bivim ba bogh	medium			
+is at a place	Our older brother is at the house.	Akimo ba xona	low			
+is at a place	Our neighbor is at the wedding.	Hamsoyimo ba tüy	medium			
+is at a place	My friend is at the party.	Hoveri man ba tüy	medium			
+is at a place	Our aunt is at the house.	Tüti mo ba xona	medium			
+is at a place	The guest is at the synagogue.	Mehmon ba kaneso	medium			
+is at a place	Our grandfather is at the garden.	Bovomo ba bogh	medium			
+is at a place	The son is at the table.	Pisar ba kantür	medium			
+is at a place	My son is at the table.	Pisaram ba kantür	medium			
+is at a place	The brother is at the house.	Barodar ba xona	medium			
+is at a place	Our child is at the wedding.	Bachimo ba tüy	fallback			
+is at a place	Our baby is at the synagogue.	Chaqaloqamo ba kaneso	medium			
+is at a place	My groom is at the house.	Hotonam ba xona	low			
+is at a place	Our uncle is at the garden.	Taghoyimo ba bogh	medium			
+is at a place	My guest is at the market.	Mehmonam ba bozor	fallback			
+is at a place	Our child is at the garden.	Bachimo ba bogh	fallback			
+is at a place	My rabbi is at the garden.	Horovam ba bogh	medium			
+is at a place	My groom is at the kitchen.	Hotonam ba oshxona	low			
+is at a place	Our uncle is at the home.	Taghoyimo ba xona	medium			
+is at a place	Our sister is at the wedding.	Xoharamo ba tüy	fallback			
+is at a place	The neighbor is at the wedding.	Hamsoya ba tüy	medium			
+is at a place	The friend is at the garden.	Hover ba bogh	medium			
+is at a place	Our son is at the party.	Pisaramo ba tüy	medium			
+is at a place	The uncle is at the market.	Taghoyi ba bozor	fallback			
+is at a place	My sister is at the home.	Xoharam ba xona	fallback			
+is at a place	They are at the garden.	Inho ba bogh	high			
+is at a place	My teacher is at the home.	Xalfim ba xona	medium			
+is at a place	Our grandfather is at the house.	Bovomo ba xona	medium			
+is at a place	You are at the home.	Tu ba xona	medium			
+is at a place	The friend is at the home.	Hover ba xona	medium			
+is at a place	The guest is at the party.	Mehmon ba tüy	medium			
+is at a place	Our husband is at the home.	Shümo ba xona	medium			
+is at a place	My brother is at the home.	Barodaram ba xona	medium			
+is at a place	The friend is at the kitchen.	Hover ba oshxona	medium			
+is at a place	He is at the party.	Ü ba tüy	high			
+is at a place	She is at the garden.	Ü ba bogh	high			
+is at a place	The older brother is at the synagogue.	Aka ba kaneso	low			
+is at a place	Our grandfather is at the kitchen.	Bovomo ba oshxona	medium			
+is at a place	My aunt is at the garden.	'amim ba bogh	medium			
+is at a place	The daughter is at the table.	Duxtar ba kantür	fallback			
+is at a place	Our guest is at the market.	Mehmonamo ba bozor	fallback			
+is at a place	The father is at the table.	Padar ba kantür	medium			
+is at a place	The friend is at the house.	Hover ba xona	medium			
+is at a place	Our baby is at the table.	Chaqaloqamo ba kantür	medium			
+is at a place	My neighbor is at the synagogue.	Hamsoyim ba kaneso	medium			
+is at a place	My baby is at the kitchen.	Chaqaloqam ba oshxona	medium			
+is at a place	I am at the kitchen.	Man ba oshxona	medium			
+is at a place	The son is at the kitchen.	Pisar ba oshxona	medium			
+is at a place	Our younger sister is at the home.	Xoharamo ba xona	low			
+is at a place	My daughter is at the party.	Duxtaram ba tüy	fallback			
+is here	The daughter is here.	Duxtar insun	fallback			
+is here	He is here.	Ü insun	high			
+is here	Our rabbi is here.	Horovamo insun	medium			
+is here	The rabbi is here.	Horov insun	medium			
+is here	My neighbor is here.	Hamsoyim insun	medium			
+is here	My bride is here.	Kalom insun	medium			
+is here	The teacher is here.	Xalfa insun	medium			
+is here	My grandfather is here.	Bovom insun	medium			
+is here	Our grandmother is here.	Bivimo insun	medium			
+is here	The grandmother is here.	Bivi insun	medium			
+is here	My mother is here.	Oni man insun	medium			
+is here	Our father is here.	Padaramo insun	medium			
+is here	The neighbor is here.	Hamsoya insun	medium			
+is here	My rabbi is here.	Horovam insun	medium			
+is here	Our groom is here.	Hotonamo insun	low			
+is here	The sister is here.	Xohar insun	fallback			
+is here	Our wife is here.	Zanamo insun	medium			
+is here	My friend is here.	Hoveri man insun	medium			
+is here	My daughter is here.	Duxtaram insun	fallback			
+is here	The son is here.	Pisar insun	medium			
+is here	Our neighbor is here.	Hamsoyimo insun	medium			
+is here	Our aunt is here.	Tüti mo insun	medium			
+is here	We are here.	Mo insun	medium			
+is here	The wife is here.	Zan insun	medium			
+is here	My son is here.	Pisaram insun	medium			
+is here	My guest is here.	Mehmonam insun	medium			
+is here	The child is here.	Bacha insun	fallback			
+is here	The guest is here.	Mehmon insun	medium			
+is here	My child is here.	Bachim insun	fallback			
+is here	The father is here.	Padar insun	medium			
+is here	Our teacher is here.	Xalfimo insun	medium			
+is here	My uncle is here.	Taghoyim insun	medium			
+is here	My groom is here.	Hotonam insun	low			
+is here	Our older brother is here.	Akimo insun	low			
+is here	Our child is here.	Bachimo insun	fallback			
+is here	My baby is here.	Chaqaloqam insun	medium			
+is here	I am here.	Man insun	medium			
+is here	The groom is here.	Hoton insun	low			
+is here	My younger sister is here.	Xoharam insun	low			
+is here	My older brother is here.	Akim insun	low			
+is here	Our uncle is here.	Taghoyimo insun	medium			
+is here	Our younger sister is here.	Xoharamo insun	low			
+is here	She is here.	Ü insun	high			
+is here	You are here.	Tu insun	medium			
+is here	Our bride is here.	Kalomo insun	medium			
+is here	The baby is here.	Chaqaloq insun	medium			
+is here	My grandmother is here.	Bivim insun	medium			
+is here	The grandfather is here.	Bovo insun	medium			
+is here	The friend is here.	Hover insun	medium			
+is here	The younger sister is here.	Xohar insun	low			
+is here	My teacher is here.	Xalfim insun	medium			
+is here	Our mother is here.	Modaramo insun	medium			
+is here	My husband is here.	Shüm insun	medium			
+is here	The husband is here.	Shü insun	medium			
+is here	Our friend is here.	Hoveri mo insun	medium			
+is here	The bride is here.	Kalo insun	medium			
+is here	Our guest is here.	Mehmonamo insun	medium			
+is here	The uncle is here.	Taghoyi insun	medium			
+is here	The mother is here.	Modar insun	medium			
+is here	Our sister is here.	Xoharamo insun	fallback			
+is here	My aunt is here.	'amim insun	medium			
+is here	My sister is here.	Xoharam insun	fallback			
+is here	My father is here.	Padaram insun	medium			
+is here	Our daughter is here.	Duxtaramo insun	fallback			
+is here	Our brother is here.	Akayi mo insun	medium			
+is here	Our son is here.	Pisaramo insun	medium			
+is here	The brother is here.	Barodar insun	medium			
+is here	My wife is here.	Zanam insun	medium			
+is here	Our grandfather is here.	Bovomo insun	medium			
+is here	Our husband is here.	Shümo insun	medium			
+is here	The aunt is here.	'ama insun	medium			
+is here	The older brother is here.	Aka insun	low			
+is here	Our baby is here.	Chaqaloqamo insun	medium			
+is here	They are here.	Inho insun	high			
+is here	My brother is here.	Barodaram insun	medium			
+possessive	my groom	hotonam	medium			
+possessive	her neighbor	hamsoyesh	high			
+possessive	their friend	hoveri inho	high			
+possessive	our bride	kalomo	high			
+possessive	our uncle	taghoyimo	high			
+possessive	her husband	shüyash	high			
+possessive	their neighbor	hamsoyeshon	high			
+possessive	your daughter	duxtarat	fallback			
+possessive	her uncle	taghoyesh	high			
+possessive	their younger sister	xoharashon	medium			
+possessive	my father	Padaram	high			
+possessive	your bride	kalot	high			
+possessive	her wife	zanash	high			
+possessive	his teacher	xalfesh	high			
+possessive	my husband	shüm	high			
+possessive	his guest	mehmonash	high			
+possessive	his son	pisarash	high			
+possessive	her grandmother	bivi ü	high			
+possessive	your groom	hotonat	medium			
+possessive	her bride	kalosh	high			
+possessive	her aunt	'amesh	high			
+possessive	your grandfather	Bovot	high			
+possessive	my guest	mehmonam	high			
+possessive	their baby	chaqaloqashon	high			
+possessive	my wife	zanam	high			
+possessive	his uncle	taghoyesh	high			
+possessive	our mother	modaramo	high			
+possessive	our sister	xoharamo	fallback			
+possessive	his baby	chaqaloqash	high			
+possessive	your grandmother	bivet	high			
+possessive	his older brother	akesh	medium			
+possessive	our father	Padaramo	high			
+possessive	our baby	chaqaloqamo	high			
+possessive	our child	bachimo	fallback			
+possessive	his aunt	'amesh	high			
+possessive	your husband	shüt	high			
+possessive	their aunt	'ameshon	high			
+possessive	her guest	mehmonash	high			
+possessive	our older brother	akimo	medium			
+possessive	my grandmother	Bivim	high			
+possessive	his wife	zanash	high			
+possessive	our daughter	duxtaramo	fallback			
+possessive	his grandfather	Bovosh	high			
+possessive	my bride	kalom	high			
+possessive	their teacher	xalfeshon	high			
+possessive	her son	pisarash	high			
+possessive	their daughter	duxtarashon	fallback			
+possessive	our son	pisaramo	high			
+possessive	his neighbor	hamsoyesh	high			
+possessive	his sister	xoharash	fallback			
+possessive	their child	bacheshon	fallback			
+possessive	my uncle	taghoyim	high			
+possessive	their grandfather	Bovoshon	high			
+possessive	his brother	barodarash	high			
+possessive	their wife	zanashon	high			
+possessive	your younger sister	xoharat	medium			
+possessive	his groom	hotonash	medium			
+possessive	her older brother	akesh	medium			
+possessive	their mother	modarashon	high			
+possessive	your father	Padarat	high			
+possessive	his grandmother	bivi ü	high			
+possessive	their rabbi	horovashon	high			
+possessive	my aunt	'amim	high			
+possessive	our friend	hoveri mo	high			
+possessive	their son	pisarashon	high			
+possessive	our husband	shümo	high			
+possessive	her rabbi	horovash	high			
+possessive	her younger sister	xoharash	medium			
+possessive	her child	bachesh	fallback			
+possessive	my son	pisaram	high			
+possessive	her mother	Onesh	high			
+possessive	their brother	barodarashon	high			
+possessive	their grandmother	Biveshon	high			
+possessive	my child	bachim	fallback			
+possessive	our teacher	xalfimo	high			
+possessive	your older brother	aket	medium			
+possessive	our grandmother	Bivimo	high			
+possessive	their bride	kaloshon	high			
+possessive	her daughter	duxtarash	fallback			
+possessive	their older brother	akeshon	medium			
+possessive	our grandfather	Bovomo	high			
+possessive	my mother	oni man	high			
+possessive	my teacher	xalfim	high			
+possessive	her grandfather	Bovosh	high			
+possessive	our guest	mehmonamo	high			
+possessive	my daughter	duxtaram	fallback			
+possessive	their father	dadi inho	high			
+possessive	your sister	xoharat	fallback			
+possessive	his child	bachesh	fallback			
+possessive	your mother	onayat	high			
+possessive	our brother	akayi mo	high			
+possessive	my brother	barodaram	high			
+possessive	your brother	barodarat	high			
+possessive	my younger sister	xoharam	medium			
+possessive	your aunt	'ami tu	high			
+possessive	your uncle	taghoet	high			
+possessive	her sister	xoharash	fallback			
+possessive	my older brother	akim	medium			
+possessive	your guest	mehmonat	high			
+possessive	your neighbor	hamsoyet	high			
+possessive	their groom	hotonashon	medium			
+possessive	your child	bachét	high			
+possessive	our rabbi	horovamo	high			
+possessive	our neighbor	hamsoyimo	high			
+possessive	our wife	zanamo	high			
+possessive	their guest	mehmonashon	high			
+possessive	his mother	Onesh	high			
+possessive	his younger sister	xoharash	medium			
+possessive	your rabbi	horovat	high			
+have + number	I have two grandfathers.	Man duta bovo doram	high			
+have + number	I have five younger sisters.	Man panjta xohar doram	medium			
+have + number	I have three grandmothers.	Man seta bivi doram	high			
+have + number	I have five grandfathers.	Man panjta bovo doram	high			
+have + number	I have three mothers.	Man seta modar doram	high			
+have + number	I have two grooms.	Man duta hoton doram	medium			
+have + number	I have three babies.	Man seta chaqaloq doram	high			
+have + number	I have three aunts.	Man seta 'ama doram	high			
+have + number	I have three older brothers.	Man seta aka doram	medium			
+have + number	I have three younger sisters.	Man seta xohar doram	medium			
+have + number	I have two neighbors.	Man duta hamsoya doram	high			
+have + number	I have two wives.	Man duta zan doram	high			
+have + number	I have five sons.	Man panjta pisar doram	high			
+have + number	I have two guests.	Man duta mehmon doram	high			
+have + number	I have three husbands.	Man seta shü doram	high			
+have + number	I have two sisters.	Man duta xohar doram	fallback			
+have + number	I have three grandfathers.	Man seta bovo doram	high			
+have + number	I have two sons.	Man duta pisar doram	high			
+have + number	I have two brides.	Man duta kalo doram	high			
+have + number	I have two grandmothers.	Man duta bivi doram	high			
+have + number	I have two friends.	Man duta hover doram	high			
+have + number	I have five daughters.	Man panjta duxtar doram	fallback			
+have + number	I have five aunts.	Man panjta 'ama doram	high			
+have + number	I have three friends.	Man seta hover doram	high			
+have + number	I have three grooms.	Man seta hoton doram	medium			
+have + number	I have five teachers.	Man panjta xalfa doram	high			
+have + number	I have two teachers.	Man duta xalfa doram	high			
+have + number	I have two daughters.	Man duta duxtar doram	fallback			
+have + number	I have three sons.	Man seta pisar doram	high			
+have + number	I have two brothers.	Man duta barodar doram	high			
+have + number	I have two mothers.	Man duta modar doram	high			
+have + number	I have five brothers.	Man panjta barodar doram	high			
+have + number	I have three brothers.	Man seta barodar doram	high			
+have + number	I have five older brothers.	Man panjta aka doram	medium			
+have + number	I have two children.	Man duta bacha doram	fallback			
+have + number	I have two older brothers.	Man duta aka doram	medium			
+have + number	I have two aunts.	Man duta 'ama doram	high			
+have + number	I have five mothers.	Man panjta modar doram	high			
+have + number	I have three uncles.	Man seta taghoyi doram	high			
+have + number	I have three guests.	Man seta mehmon doram	high			
+have + number	I have two fathers.	Man duta padar doram	high			
+have + number	I have five children.	Man panjta bacha doram	fallback			
+have + number	I have five uncles.	Man panjta taghoyi doram	high			
+have + number	I have two babies.	Man duta chaqaloq doram	high			
+have + number	I have three children.	Man seta bacha doram	fallback			
+have + number	I have five friends.	Man panjta hover doram	high			
+have + number	I have two husbands.	Man duta shü doram	high			
+have + number	I have five babies.	Man panjta chaqaloq doram	high			
+have + number	I have three sisters.	Man seta xohar doram	fallback			
+have + number	I have five brides.	Man panjta kalo doram	high			
+have + number	I have three fathers.	Man seta padar doram	high			
+have + number	I have three brides.	Man seta kalo doram	high			
+have + number	I have three neighbors.	Man seta hamsoya doram	high			
+have + number	I have five grandmothers.	Man panjta bivi doram	high			
+have + number	I have two younger sisters.	Man duta xohar doram	medium			
+have + number	I have five grooms.	Man panjta hoton doram	medium			
+have + number	I have five wives.	Man panjta zan doram	high			
+have + number	I have three wives.	Man seta zan doram	high			
+have + number	I have five fathers.	Man panjta padar doram	high			
+have + number	I have five neighbors.	Man panjta hamsoya doram	high			
+have + number	I have five guests.	Man panjta mehmon doram	high			
+have + number	I have two uncles.	Man duta taghoyi doram	high			
+have + number	I have three daughters.	Man seta duxtar doram	fallback			
+have + number	I have three teachers.	Man seta xalfa doram	high			
+have + number	I have five husbands.	Man panjta shü doram	high			
+have + number	I have five sisters.	Man panjta xohar doram	fallback			
+question: where	Where is your bride?	Kalot kujo?	high			
+question: where	Where is your child?	Bachet kujo?	fallback			
+question: where	Where is your guest?	Mehmonat kujo?	high			
+question: where	Where is your grandmother?	Bivet kujo?	high			
+question: where	Where is your mother?	Onayat kujo?	high			
+question: where	Where is your neighbor?	Hamsoyet kujo?	high			
+question: where	Where is your grandfather?	Bovot kujo?	high			
+question: where	Where is your husband?	Shüt kujo?	high			
+question: where	Where is your older brother?	Aket kujo?	medium			
+question: where	Where is your younger sister?	Xoharat kujo?	medium			
+question: where	Where is your wife?	Zanat kujo?	high			
+question: where	Where is your sister?	Xoharat kujo?	fallback			
+question: where	Where is your uncle?	Taghoet kujo?	high			
+question: where	Where is your friend?	Hoveri tu kujo?	high			
+question: where	Where is your son?	Pisarat kujo?	high			
+question: where	Where is your rabbi?	Horovat kujo?	high			
+question: where	Where is your teacher?	Xalfet kujo?	high			
+question: where	Where is your aunt?	'ami tu kujo?	high			
+question: where	Where is your baby?	Chaqaloqat kujo?	high			
+question: where	Where is your daughter?	Duxtarat kujo?	fallback			
+question: where	Where is your brother?	Barodarat kujo?	high			
+question: where	Where is your father?	Padarat kujo?	high			
+question: where	Where is your groom?	Hotonat kujo?	medium			
+this is	This is my younger sister.	In xoharam	medium			
+this is	This is my grandfather.	In bovom	high			
+this is	This is my wife.	In zanam	high			
+this is	This is my friend.	In hoveri man	high			
+this is	This is my older brother.	In akim	medium			
+this is	This is my grandmother.	In bivim	high			
+this is	This is my groom.	In hotonam	medium			
+this is	This is my teacher.	In xalfim	high			
+this is	This is my daughter.	In duxtaram	fallback			
+this is	This is my mother.	In oni man	high			
+this is	This is my father.	In padaram	high			
+this is	This is my guest.	In mehmonam	high			
+this is	This is my neighbor.	In hamsoyim	high			
+this is	This is my bride.	In kalom	high			
+this is	This is my husband.	In shüm	high			
+this is	This is my son.	In pisaram	high			
+this is	This is my uncle.	In taghoyim	high			
+this is	This is my aunt.	In 'amim	high			
+this is	This is my brother.	In barodaram	high			
+this is	This is my baby.	In chaqaloqam	high			
+this is	This is my sister.	In xoharam	fallback			
+this is	This is my rabbi.	In horovam	high			
+this is	This is my child.	In bachim	fallback			
+question: who	Who is your bride?	Kalot ki?	high			
+question: who	Who is your guest?	Mehmonat ki?	high			
+question: who	Who is your child?	Bachet ki?	fallback			
+question: who	Who is your husband?	Shüt ki?	high			
+question: who	Who is your brother?	Barodarat ki?	high			
+question: who	Who is your aunt?	'ami tu ki?	high			
+question: who	Who is your grandfather?	Bovot ki?	high			
+question: who	Who is your baby?	Chaqaloqat ki?	high			
+question: who	Who is your older brother?	Aket ki?	medium			
+question: who	Who is your son?	Pisarat ki?	high			
+question: who	Who is your uncle?	Taghoet ki?	high			
+question: who	Who is your teacher?	Xalfet ki?	high			
+question: who	Who is your groom?	Hotonat ki?	medium			
+question: who	Who is your wife?	Zanat ki?	high			
+question: who	Who is your father?	Padarat ki?	high			
+question: who	Who is your grandmother?	Bivet ki?	high			
+question: who	Who is your daughter?	Duxtarat ki?	fallback			
+question: who	Who is your mother?	Onayat ki?	high			
+question: who	Who is your friend?	Hoveri tu ki?	high			
+question: who	Who is your neighbor?	Hamsoyet ki?	high			
+question: who	Who is your younger sister?	Xoharat ki?	medium			
+question: who	Who is your sister?	Xoharat ki?	fallback			
+question: who	Who is your rabbi?	Horovat ki?	high			
+adjective + noun	my beautiful friend	hoveri xushrüyi man	medium			
+adjective + noun	my small child	bachi maydi man	fallback			
+adjective + noun	my small father	padari maydi man	medium			
+adjective + noun	my good son	pisari naghzi man	low			
+adjective + noun	my small rabbi	horovi maydi man	medium			
+adjective + noun	my beautiful neighbor	hamsoyi xushrüyi man	medium			
+adjective + noun	my beautiful mother	modari xushrüyi man	medium			
+adjective + noun	my big brother	barodari kaloni man	medium			
+adjective + noun	my good grandfather	bovoyi naghzi man	low			
+adjective + noun	my big friend	hoveri kaloni man	medium			
+adjective + noun	my big baby	chaqaloqi kaloni man	medium			
+adjective + noun	my happy teacher	xalfi baxtnoki man	low			
+adjective + noun	my small bride	kaloyi maydi man	medium			
+adjective + noun	my happy father	padari baxtnoki man	low			
+adjective + noun	my beautiful younger sister	xohari xushrüyi man	low			
+adjective + noun	my good daughter	duxtari naghzi man	fallback			
+adjective + noun	my big grandmother	bivi kaloni man	medium			
+adjective + noun	my happy grandmother	bivi baxtnoki man	low			
+adjective + noun	my small brother	barodari maydi man	medium			
+adjective + noun	my big neighbor	hamsoyi kaloni man	medium			
+adjective + noun	my good older brother	aki naghzi man	low			
+adjective + noun	my good brother	barodari naghzi man	low			
+adjective + noun	my good groom	hotoni naghzi man	low			
+adjective + noun	my small guest	mehmoni maydi man	medium			
+adjective + noun	my big teacher	xalfi kaloni man	medium			
+adjective + noun	my small neighbor	hamsoyi maydi man	medium			
+adjective + noun	my good grandmother	bivi naghzi man	low			
+adjective + noun	my small wife	zani maydi man	medium			
+adjective + noun	my small son	pisari maydi man	medium			
+adjective + noun	my good wife	zani naghzi man	low			
+adjective + noun	my beautiful bride	kaloyi xushrüyi man	medium			
+adjective + noun	my happy groom	hotoni baxtnoki man	low			
+adjective + noun	my beautiful aunt	'ami xushrüyi man	medium			
+adjective + noun	my big younger sister	xohari kaloni man	low			
+adjective + noun	my small older brother	aki maydi man	low			
+adjective + noun	my happy neighbor	hamsoyi baxtnoki man	low			
+adjective + noun	my happy older brother	aki baxtnoki man	low			
+adjective + noun	my beautiful guest	mehmoni xushrüyi man	medium			
+adjective + noun	my beautiful grandfather	bovoyi xushrüyi man	medium			
+adjective + noun	my good mother	modari naghzi man	low			
+adjective + noun	my small friend	hoveri maydi man	medium			
+adjective + noun	my happy sister	xohari baxtnoki man	fallback			
+adjective + noun	my big bride	kaloyi kaloni man	medium			
+adjective + noun	my beautiful baby	chaqaloqi xushrüyi man	medium			
+adjective + noun	my happy uncle	taghoyi baxtnoki man	low			
+adjective + noun	my happy mother	modari baxtnoki man	low			
+adjective + noun	my good child	bachi naghzi man	fallback			
+adjective + noun	my beautiful older brother	aki xushrüyi man	low			
+adjective + noun	my big rabbi	horovi kaloni man	medium			
+adjective + noun	my big father	padari kaloni man	medium			
+adjective + noun	my good uncle	taghoyi naghzi man	low			
+adjective + noun	my big child	bachi kaloni man	fallback			
+adjective + noun	my small grandfather	bovoyi maydi man	medium			
+adjective + noun	my good father	padari naghzi man	low			
+adjective + noun	my beautiful daughter	duxtari xushrüyi man	fallback			
+adjective + noun	my big older brother	aki kaloni man	low			
+adjective + noun	my beautiful wife	zani xushrüyi man	medium			
+adjective + noun	my happy grandfather	bovoyi baxtnoki man	low			
+adjective + noun	my big sister	xohari kaloni man	fallback			
+adjective + noun	my beautiful teacher	xalfi xushrüyi man	medium			
+adjective + noun	my good teacher	xalfi naghzi man	low			
+adjective + noun	my good rabbi	horovi naghzi man	low			
+adjective + noun	my beautiful husband	shüyi xushrüyi man	medium			
+adjective + noun	my small mother	modari maydi man	medium			
+adjective + noun	my beautiful child	bachi xushrüyi man	fallback			
+adjective + noun	my good friend	hoveri naghzi man	low			
+adjective + noun	my beautiful rabbi	horovi xushrüyi man	medium			
+adjective + noun	my happy brother	barodari baxtnoki man	low			
+adjective + noun	my small husband	shüyi maydi man	medium			
+adjective + noun	my good neighbor	hamsoyi naghzi man	low			
+adjective + noun	my small teacher	xalfi maydi man	medium			
+adjective + noun	my small younger sister	xohari maydi man	low			
+adjective + noun	my good younger sister	xohari naghzi man	low			
+adjective + noun	my small grandmother	bivi maydi man	medium			
+adjective + noun	my big aunt	'ami kaloni man	medium			
+adjective + noun	my big wife	zani kaloni man	medium			
+adjective + noun	my happy bride	kaloyi baxtnoki man	low			
+adjective + noun	my small daughter	duxtari maydi man	fallback			
+adjective + noun	my good husband	shüyi naghzi man	low			
+adjective + noun	my happy daughter	duxtari baxtnoki man	fallback			
+adjective + noun	my happy friend	hoveri baxtnoki man	low			
+adjective + noun	my big mother	modari kaloni man	medium			
+adjective + noun	my beautiful sister	xohari xushrüyi man	fallback			
+adjective + noun	my happy aunt	'ami baxtnoki man	low			
+adjective + noun	my small groom	hotoni maydi man	low			
+adjective + noun	my beautiful uncle	taghoyi xushrüyi man	medium			
+adjective + noun	my happy younger sister	xohari baxtnoki man	low			
+adjective + noun	my beautiful grandmother	bivi xushrüyi man	medium			
+adjective + noun	my big uncle	taghoyi kaloni man	medium			
+adjective + noun	my small aunt	'ami maydi man	medium			
+adjective + noun	my beautiful brother	barodari xushrüyi man	medium			
+adjective + noun	my beautiful son	pisari xushrüyi man	medium			
+adjective + noun	my big groom	hotoni kaloni man	low			
+adjective + noun	my happy guest	mehmoni baxtnoki man	low			
+adjective + noun	my good bride	kaloyi naghzi man	low			
+adjective + noun	my big son	pisari kaloni man	medium			
+adjective + noun	my beautiful groom	hotoni xushrüyi man	low			
+adjective + noun	my small baby	chaqaloqi maydi man	medium			
+adjective + noun	my big husband	shüyi kaloni man	medium			
+adjective + noun	my good baby	chaqaloqi naghzi man	low			
+adjective + noun	my happy son	pisari baxtnoki man	low			
+adjective + noun	my small uncle	taghoyi maydi man	medium			
+adjective + noun	my big guest	mehmoni kaloni man	medium			
+adjective + noun	my small sister	xohari maydi man	fallback			
+adjective + noun	my good guest	mehmoni naghzi man	low			
+adjective + noun	my good aunt	'ami naghzi man	low			
+adjective + noun	my beautiful father	padari xushrüyi man	medium			
+adjective + noun	my happy baby	chaqaloqi baxtnoki man	low			
+adjective + noun	my happy wife	zani baxtnoki man	low			
+request	Give my guest wine.	Mayoyi mehmoni mana te!	low			
+request	Give my friend wine.	Mayoyi hoveri mana te!	low			
+request	Give my aunt bread.	Noni 'ami mana te!	low			
+request	Give my rabbi meat.	Bosori horovi mana te!	low			
+request	Give my daughter meat.	Bosori duxtari mana te!	fallback			
+request	Give my sister rice.	Birinji xohari mana te!	fallback			
+request	Give my father rice.	Birinji padari mana te!	low			
+request	Give my guest tea.	Choyi mehmoni mana te!	low			
+request	Give my younger sister meat.	Bosori xurdtari xohari mana te!	fallback			
+request	Give my neighbor rice.	Birinji hamsoyi mana te!	low			
+request	Give my younger sister water.	Maimi xurdtari xohari mana te!	fallback			
+request	Give my groom rice.	Birinji hotoni mana te!	low			
+request	Give my mother tea.	Choyi modari mana te!	low			
+request	Give my bride bread.	Noni kaloyi mana te!	low			
+request	Give my baby wine.	Mayoyi chaqaloqi mana te!	low			
+request	Give my teacher water.	Maimi xalfi mana te!	low			
+request	Give my husband bread.	Noni shüyi mana te!	low			
+request	Give my brother meat.	Bosori barodari mana te!	low			
+request	Give my sister bread.	Noni xohari mana te!	fallback			
+request	Give my mother rice.	Birinji modari mana te!	low			
+request	Give my father water.	Maimi padari mana te!	low			
+request	Give my groom wine.	Mayoyi hotoni mana te!	low			
+request	Give my husband wine.	Mayoyi shüyi mana te!	low			
+request	Give my daughter bread.	Noni duxtari mana te!	fallback			
+request	Give my bride wine.	Mayoyi kaloyi mana te!	low			
+request	Give my son tea.	Choyi pisari mana te!	low			
+request	Give my uncle tea.	Choyi taghoyi mana te!	low			
+request	Give my son wine.	Mayoyi pisari mana te!	low			
+request	Give my sister wine.	Mayoyi xohari mana te!	fallback			
+request	Give my neighbor wine.	Mayoyi hamsoyi mana te!	low			
+request	Give my younger sister wine.	Mayoyi xurdtari xohari mana te!	fallback			
+request	Give my neighbor meat.	Bosori hamsoyi mana te!	low			
+request	Give my guest bread.	Noni mehmoni mana te!	low			
+request	Give my teacher meat.	Bosori xalfi mana te!	low			
+request	Give my grandmother meat.	Bosori bivi mana te!	low			
+request	Give my grandfather meat.	Bosori bovoyi mana te!	low			
+request	Give my grandfather rice.	Birinji bovoyi mana te!	low			
+request	Give my brother water.	Maimi barodari mana te!	low			
+request	Give my uncle rice.	Birinji taghoyi mana te!	low			
+request	Give my grandmother bread.	Noni bivi mana te!	low			
+request	Give my baby water.	Maimi chaqaloqi mana te!	low			
+request	Give my groom bread.	Noni hotoni mana te!	low			
+request	Give my grandfather bread.	Noni bovoyi mana te!	low			
+request	Give my daughter water.	Maimi duxtari mana te!	fallback			
+request	Give my grandmother rice.	Birinji bivi mana te!	low			
+request	Give my neighbor water.	Maimi hamsoyi mana te!	low			
+request	Give my guest rice.	Birinji mehmoni mana te!	low			
+request	Give my child wine.	Mayoyi bachi mana te!	fallback			
+request	Give my brother tea.	Choyi barodari mana te!	low			
+request	Give my brother wine.	Mayoyi barodari mana te!	low			
+request	Give my younger sister rice.	Birinji xurdtari xohari mana te!	fallback			
+request	Give my child water.	Maimi bachi mana te!	fallback			
+request	Give my aunt wine.	Mayoyi 'ami mana te!	low			
+request	Give my wife tea.	Choyi zani mana te!	low			
+request	Give my wife wine.	Mayoyi zani mana te!	low			
+request	Give my teacher tea.	Choyi xalfi mana te!	low			
+request	Give my teacher rice.	Birinji xalfi mana te!	low			
+request	Give my aunt rice.	Birinji 'ami mana te!	low			
+request	Give my baby meat.	Bosori chaqaloqi mana te!	low			
+request	Give my younger sister bread.	Noni xurdtari xohari mana te!	fallback			
+request	Give my uncle bread.	Noni taghoyi mana te!	low			
+request	Give my guest meat.	Bosori mehmoni mana te!	low			
+request	Give my friend meat.	Bosori hoveri mana te!	low			
+request	Give my uncle wine.	Mayoyi taghoyi mana te!	low			
+request	Give my child bread.	Noni bachi mana te!	fallback			
+request	Give my friend water.	Maimi hoveri mana te!	low			
+request	Give my younger sister tea.	Choyi xurdtari xohari mana te!	fallback			
+request	Give my son rice.	Birinji pisari mana te!	low			
+request	Give my rabbi wine.	Mayoyi horovi mana te!	low			
+request	Give my bride rice.	Birinji kaloyi mana te!	low			
+request	Give my teacher bread.	Noni xalfi mana te!	low			
+request	Give my sister water.	Maimi xohari mana te!	fallback			
+request	Give my rabbi tea.	Choyi horovi mana te!	low			
+request	Give my mother bread.	Noni modari mana te!	low			
+request	Give my son bread.	Noni pisari mana te!	low			
+request	Give my uncle meat.	Bosori taghoyi mana te!	low			
+request	Give my aunt meat.	Bosori 'ami mana te!	low			
+request	Give my wife water.	Maimi zani mana te!	low			
+request	Give my baby rice.	Birinji chaqaloqi mana te!	low			
+request	Give my aunt tea.	Choyi 'ami mana te!	low			
+request	Give my brother rice.	Birinji barodari mana te!	low			
+request	Give my father bread.	Noni padari mana te!	low			
+request	Give my husband rice.	Birinji shüyi mana te!	low			
+request	Give my wife bread.	Noni zani mana te!	low			
+request	Give my teacher wine.	Mayoyi xalfi mana te!	low			
+request	Give my guest water.	Maimi mehmoni mana te!	low			
+request	Give my grandfather tea.	Choyi bovoyi mana te!	low			
+request	Give my older brother meat.	Bosori kalontari barodari mana te!	fallback			
+request	Give my rabbi rice.	Birinji horovi mana te!	low			
+request	Give my aunt water.	Maimi 'ami mana te!	low			
+request	Give my baby bread.	Noni chaqaloqi mana te!	low			
+request	Give my grandfather water.	Maimi bovoyi mana te!	low			
+request	Give my groom tea.	Choyi hotoni mana te!	low			
+request	Give my neighbor bread.	Noni hamsoyi mana te!	low			
+request	Give my son water.	Maimi pisari mana te!	low			
+request	Give my grandfather wine.	Mayoyi bovoyi mana te!	low			
+request	Give my bride water.	Maimi kaloyi mana te!	low			
+request	Give my rabbi water.	Maimi horovi mana te!	low			
+request	Give my friend rice.	Birinji hoveri mana te!	low			
+request	Give my rabbi bread.	Noni horovi mana te!	low			
+request	Give my wife meat.	Bosori zani mana te!	low			
+request	Give my bride tea.	Choyi kaloyi mana te!	low			
+request	Give my neighbor tea.	Choyi hamsoyi mana te!	low			
+request	Give my father tea.	Choyi padari mana te!	low			
+request	Give my father meat.	Bosori padari mana te!	low			
+request	Give my child meat.	Bosori bachi mana te!	fallback			
+request	Give my child tea.	Choyi bachi mana te!	fallback			
+request	Give my uncle water.	Maimi taghoyi mana te!	low			
+request	Give my grandmother wine.	Mayoyi bivi mana te!	low			
+imperative	Buy!	Xar!	low			
+imperative	Love!	Naghz bin!	low			
+imperative	Cry!	Giryon shov!	low			
+imperative	Dance!	Bozi kun!	low			
+imperative	Drink!	Nüshoki	high			
+imperative	See!	Bin!	low			
+imperative	Sit!	Shin!	low			
+imperative	Take!	gir	high			
+imperative	Arrive!	Biyo!	low			
+imperative	Bring!	Biyor!	low			
+imperative	Eat!	xür	high			
+imperative	Go!	rov	high			
+imperative	Help!	Yordam	high			
+imperative	Cook!	Oshpaz	high			
+imperative	Kiss!	Muchi	high			
+imperative	Come!	biyo	high			
+imperative	Invite!	Taklif kun!	low			
+imperative	Laugh!	Xand!	fallback			
+imperative	Meet!	Vo xür!	low			
+imperative	Sing!	Xon!	low			
+imperative, negative	Do not help!	Yordam nate?	medium			
+imperative, negative	Do not meet!	Vo naxür?	high			
+imperative, negative	Do not eat!	naxür	high			
+imperative, negative	Do not see!	Nabin?	high			
+imperative, negative	Do not laugh!	Naxand?	fallback			
+imperative, negative	Do not arrive!	Nabiyo?	high			
+imperative, negative	Do not cry!	Giryon nashov?	high			
+imperative, negative	Do not invite!	Taklif nakun?	medium			
+imperative, negative	Do not dance!	Bozi nakun?	high			
+imperative, negative	Do not take!	Nagir?	high			
+imperative, negative	Do not drink!	Nanüsh?	medium			
+imperative, negative	Do not come!	Nabiyo?	high			
+imperative, negative	Do not buy!	Naxar?	high			
+imperative, negative	Do not cook!	Napaz?	medium			
+imperative, negative	Do not sing!	Naxon?	high			
+imperative, negative	Do not sit!	Nashin?	high			
+imperative, negative	Do not love!	Naghz nabin?	high			
+imperative, negative	Do not kiss!	Muchi nakun?	medium			
+imperative, negative	Do not go!	narov	high			
+imperative, negative	Do not bring!	Nabiyor?	high			
+question: who + verb	Who invited?	Ki taklif kardak?	medium			
+question: who + verb	Who bought?	Ki xaridak?	high			
+question: who + verb	Who came?	Ki omad?	high			
+question: who + verb	Who loved?	Ki naghz didak?	high			
+question: who + verb	Who drank?	Ki nüshidak?	medium			
+question: who + verb	Who arrived?	Ki omadak?	high			
+question: who + verb	Who laughed?	Ki xandidak?	fallback			
+question: who + verb	Who sat?	Ki shishtak?	high			
+question: who + verb	Who ate?	Ki xürdak?	high			
+question: who + verb	Who took?	Ki giriftak?	high			
+question: who + verb	Who met?	Ki vo xürdak?	high			
+question: who + verb	Who kissed?	Ki muchi kardak?	medium			
+question: who + verb	Who brought?	Ki ovardak?	high			
+question: who + verb	Who cried?	Ki giryon shudak?	high			
+question: who + verb	Who sang?	Ki xondak?	high			
+question: who + verb	Who helped?	Ki yordam dodak?	medium			
+question: who + verb	Who cooked?	Ki puxtak?	medium			
+question: who + verb	Who saw?	Ki didak?	medium			
+question: who + verb	Who danced?	Ki bozi kardak?	high			
+question: who + verb	Who went?	Ki raftak?	high			
+question: when	When did he bring?	Ü kay ovardak?	high			
+question: when	When did you cry?	Tu kay giryon shudi?	high			
+question: when	When did he cry?	Ü kay giryon shudak?	high			
+question: when	When did he invite?	Ü kay taklif kardak?	medium			
+question: when	When did we dance?	Mo kay bozi kardem?	high			
+question: when	When did I buy?	Man kay xaridam?	high			
+question: when	When did we meet?	Mo kay vo xürdem?	high			
+question: when	When did you laugh?	Tu kay xandidi?	fallback			
+question: when	When did you dance?	Tu kay bozi kardi?	high			
+question: when	When did they love?	Inho kay naghz didand?	high			
+question: when	When did she go?	Ü kay raftak?	high			
+question: when	When did you bring?	Tu kay ovardi?	high			
+question: when	When did you go?	Tu kay rafti?	high			
+question: when	When did I love?	Man kay naghz didam?	high			
+question: when	When did we bring?	Mo kay ovardem?	high			
+question: when	When did he love?	Ü kay naghz didak?	high			
+question: when	When did I meet?	Man kay vo xürdam?	high			
+question: when	When did they cry?	Inho kay giryon shudand?	high			
+question: when	When did they buy?	Inho kay xaridand?	high			
+question: when	When did we love?	Mo kay naghz didem?	high			
+question: when	When did we kiss?	Mo kay muchi kardem?	medium			
+question: when	When did she eat?	Ü kay xürdak?	high			
+question: when	When did you sit?	Tu kay shishti?	high			
+question: when	When did we laugh?	Mo kay xandidem?	fallback			
+question: when	When did they see?	Inho kay didand?	high			
+question: when	When did she cook?	Ü kay puxtak?	medium			
+question: when	When did you arrive?	Tu kay omadi?	high			
+question: when	When did you sing?	Tu kay xondi?	high			
+question: when	When did they bring?	Inho kay ovardand?	high			
+question: when	When did I see?	Man kay didam?	high			
+question: when	When did he take?	Ü kay giriftak?	high			
+question: when	When did we see?	Mo kay didem?	high			
+question: when	When did we cry?	Mo kay giryon shudem?	high			
+question: when	When did they cook?	Inho kay puxtand?	medium			
+question: when	When did he drink?	Ü kay nüshidak?	medium			
+question: when	When did she kiss?	Ü kay muchi kardak?	medium			
+question: when	When did he kiss?	Ü kay muchi kardak?	medium			
+question: when	When did I cry?	Man kay giryon shudam?	high			
+question: when	When did they sit?	Inho kay shishtand?	high			
+question: when	When did we take?	Mo kay giriftem?	high			
+question: when	When did she bring?	Ü kay ovardak?	high			
+question: when	When did we help?	Mo kay yordam dodem?	medium			
+question: when	When did I laugh?	Man kay xandidam?	fallback			
+question: when	When did you see?	Tu kay didi?	high			
+question: when	When did we eat?	Mo kay xürdem?	high			
+question: when	When did he cook?	Ü kay puxtak?	medium			
+question: when	When did you come?	Kay omaded?	high			
+question: when	When did they help?	Inho kay yordam dodand?	medium			
+question: when	When did she love?	Ü kay naghz didak?	high			
+question: when	When did we buy?	Mo kay xaridem?	high			
+question: when	When did she cry?	Ü kay giryon shudak?	high			
+question: when	When did they meet?	Inho kay vo xürdand?	high			
+question: when	When did we drink?	Mo kay nüshidem?	medium			
+question: when	When did he buy?	Ü kay xaridak?	high			
+question: when	When did we sit?	Mo kay shishtem?	high			
+question: when	When did you invite?	Tu kay taklif kardi?	medium			
+question: when	When did she meet?	Ü kay vo xürdak?	high			
+question: when	When did I help?	Man kay yordam dodam?	medium			
+question: when	When did she see?	Ü kay didak?	high			
+question: when	When did she take?	Ü kay giriftak?	high			
+question: when	When did you kiss?	Tu kay muchi kardi?	medium			
+question: when	When did we invite?	Mo kay taklif kardem?	medium			
+question: when	When did we go?	Mo kay raftem?	high			
+question: when	When did he laugh?	Ü kay xandidak?	fallback			
+question: when	When did I cook?	Man kay puxtam?	medium			
+question: when	When did we arrive?	Mo kay omadem?	high			
+question: when	When did he come?	Ü kay omadak?	high			
+question: when	When did I sit?	Man kay shishtam?	high			
+question: when	When did I come?	Man kay omadam?	high			
+question: when	When did you buy?	Tu kay xaridi?	high			
+question: when	When did I go?	Man kay raftam?	high			
+question: when	When did we sing?	Mo kay xondem?	high			
+question: when	When did he help?	Ü kay yordam dodak?	medium			
+question: when	When did I dance?	Man kay bozi kardam?	high			
+question: when	When did she laugh?	Ü kay xandidak?	fallback			
+question: when	When did we come?	Mo kay omadem?	high			
+question: when	When did I sing?	Man kay xondam?	high			
+question: when	When did I kiss?	Man kay muchi kardam?	medium			
+question: when	When did you take?	Tu kay girifti?	high			
+question: when	When did he sit?	Ü kay shishtak?	high			
+question: when	When did you meet?	Tu kay vo xürdi?	high			
+question: when	When did they dance?	Inho kay bozi kardin?	high			
+question: when	When did he arrive?	Ü kay omadak?	high			
+question: when	When did we cook?	Mo kay puxtem?	medium			
+question: when	When did he sing?	Ü kay xondak?	high			
+question: when	When did I invite?	Man kay taklif kardam?	medium			
+question: when	When did I drink?	Man kay nüshidam?	medium			
+question: when	When did he go?	Ü kay raftak?	high			
+question: when	When did I arrive?	Man kay omadam?	high			
+question: when	When did they laugh?	Inho kay xandidand?	fallback			
+question: when	When did they sing?	Inho kay xondand?	high			
+question: when	When did you drink?	Tu kay nüshidi?	medium			
+question: when	When did you help?	Tu kay yordam dodi?	medium			
+question: when	When did she buy?	Ü kay xaridak?	high			
+question: when	When did you love?	Tu kay naghz didi?	high			
+question: when	When did she help?	Ü kay yordam dodak?	medium			
+question: when	When did she drink?	Ü kay nüshidak?	medium			
+question: when	When did they invite?	Inho kay taklif kardin?	medium			
+question: when	When did she sing?	Ü kay xondak?	high			
+question: when	When did he see?	Ü kay didak?	high			
+question: when	When did she invite?	Ü kay taklif kardak?	medium			
+question: when	When did I eat?	Man kay xürdam?	high			
+question: when	When did I bring?	Man kay ovardam?	high			
+question: when	When did you cook?	Tu kay puxti?	medium			
+question: when	When did they drink?	Inho kay nüshidand?	medium			
+question: when	When did he meet?	Ü kay vo xürdak?	high			
+question: when	When did they go?	Inho kay raftand?	high			
+question: when	When did you eat?	Tu kay xürdi?	high			
+question: when	When did he eat?	Ü kay xürdak?	high			
+greeting or fixed phrase	Congratulations!	Mazoltüv!	high			
+greeting or fixed phrase	Happy holiday!	Nisim morak!	high			
+greeting or fixed phrase	Good Saturday	Shabot sholüm!	high			
+greeting or fixed phrase	I am hungry.	Man gushna mondam	high			
+greeting or fixed phrase	Come here!	Insun biyo!	medium			
+greeting or fixed phrase	What is your name?	Nomat che?	high			
+greeting or fixed phrase	How are you?	Chitüyed?	high			
+greeting or fixed phrase	Goodbye	Xayr, salomat boshed	high			
+greeting or fixed phrase	Welcome!	Borux habo	high			
+greeting or fixed phrase	Thank you	Rahmat	high			
+greeting or fixed phrase	Good evening	Ramsho tüvo!	high			
+greeting or fixed phrase	How old are you?	Tu chand sola shudi?	high			
+greeting or fixed phrase	Where are you from?	Tu az kujo?	high			
+greeting or fixed phrase	Good night	shavi naghz	low			
+greeting or fixed phrase	Good morning	Safro tüvo!	high			
+greeting or fixed phrase	How is your family?	Mishpohot chixel?	high			
