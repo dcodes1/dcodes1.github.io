@@ -1,9 +1,9 @@
 /*
- * "Fragment": the lock on the contact email.
+ * "Mirror": the lock on the contact email.
  *
- * One 7×7 grid: some tiles are fixed (lit or dark), the rest are empty slots.
- * The fixed tiles are a fragment of a pattern with a hidden symmetry; the
- * visitor lights the slots that complete it.
+ * One 7×7 grid showing the left half of a padlock icon (fixed tiles, lit or
+ * dark). The visitor lights the empty slots on the right so both halves match,
+ * like a reflection. The lock opens by itself as soon as the picture is whole.
  *
  * The page never contains the solution or a readable address. The address is
  * stored XOR-encrypted with a key derived from the answer (SHA-256), plus a short
@@ -17,10 +17,10 @@
   if (!card) return;
 
   var N = 7;
-  var KNOWN_LIT = [0, 1, 2, 11, 15, 16, 32, 35, 46];
-  var KNOWN_DARK = [3, 7, 8, 9, 10, 14, 17, 24];
-  var SEALED = [151, 107, 94, 253, 11, 85, 24, 131, 132, 6, 26, 133, 240, 88, 71, 220, 218, 55, 152, 154, 0];
-  var CHECK = "01f732b60ca89f60";
+  var KNOWN_LIT = [2, 3, 8, 15, 21, 22, 23, 24, 28, 29, 30, 35, 36, 37, 42, 43, 44, 45];
+  var KNOWN_DARK = [0, 1, 7, 9, 10, 14, 16, 17, 31, 38];
+  var SEALED = [91, 190, 46, 134, 111, 255, 126, 185, 224, 46, 236, 205, 18, 234, 145, 26, 214, 180, 80, 75, 151];
+  var CHECK = "1c25c35d3a0698b0";
   var ENDPOINT = card.getAttribute("data-endpoint") || "";
   var LINKEDIN = "https://www.linkedin.com/in/davidgmilov/";
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -43,17 +43,17 @@
     var wrap = el("div", "dg-wrap dg-main");
     var g = el("div", "dg");
     g.setAttribute("role", "group");
-    g.setAttribute("aria-label", "Pattern grid. Fixed tiles are given; light the empty slots.");
+    g.setAttribute("aria-label", "Padlock grid. The left half is given; light the slots on the right so it matches, like a mirror.");
     for (var i = 0; i < N * N; i++) {
       var r = Math.floor(i / N), c = i % N, cell;
       if (known[i]) {
-        cell = el("span", "dc dc-fixed " + (known[i] === "lit" ? "dc-given-on" : "dc-given-off"));
+        cell = el("span", "dc dc-fixed " + (known[i] === "lit" ? "dc-given-on" : "dc-given-off") + (c === 3 ? " dc-axis" : ""));
         cell.setAttribute("aria-hidden", "true");
       } else {
         cell = el("button", "dc dc-tap");
         cell.type = "button";
         cell.setAttribute("aria-pressed", "false");
-        cell.setAttribute("aria-label", "Slot, row " + (r + 1) + ", column " + (c + 1));
+        cell.setAttribute("aria-label", "Slot, row " + (r + 1) + ", column " + (c + 1) + "; its mirror tile is " + (known[r * N + (N - 1 - c)] === "lit" ? "lit" : "dark"));
         cell.dataset.i = String(i);
         slots[i] = cell;
       }
@@ -73,6 +73,22 @@
     var any = Object.keys(lit).length > 0;
     sendBtn.disabled = !any || busy;
     clearBtn.disabled = !any || busy;
+    if (!ENDPOINT) autoCheck();
+  }
+
+  // Local mode: open as soon as the picture is whole, no button press needed.
+  var checkSeq = 0;
+  function autoCheck() {
+    var seq = ++checkSeq;
+    clearTimeout(autoCheck.t);
+    autoCheck.t = setTimeout(function () {
+      if (busy || solvedEmail) return;
+      var list = Object.keys(lit).map(Number).sort(function (a, b) { return a - b; });
+      if (!list.length) return;
+      openLocally(list.join(",")).then(function (res) {
+        if (seq === checkSeq && !solvedEmail && res && res.ok) unlock(res.email);
+      }, function () {});
+    }, 120);
   }
 
   // Tap toggles; dragging paints (or erases, if the drag started on a lit slot).
@@ -118,23 +134,23 @@
 
     var head = el("div", "vault-head");
     head.appendChild(el("span", "vault-tag", "// lock"));
-    var title = el("h3", "vault-title", "Fragment");
+    var title = el("h3", "vault-title", "Mirror");
     title.id = "vaultTitle";
     head.appendChild(title);
-    var prompt = el("p", "vault-prompt", "Part of a pattern survived. Restore the rest.");
+    var prompt = el("p", "vault-prompt", "Half a padlock is drawn on the left. Tap the empty squares on the right to mirror it. The lock opens when both sides match.");
 
     var board = buildGrid();
     wirePainting(gridEl);
 
     var legend = el("p", "vault-controls-hint");
-    legend.innerHTML = '<span class="lg lg-on"></span> given &nbsp; <span class="lg lg-off"></span> given (dark) &nbsp; <span class="lg lg-slot"></span> tap to light';
+    legend.innerHTML = '<span class="lg lg-on"></span> lit &nbsp; <span class="lg lg-off"></span> dark &nbsp; <span class="lg lg-slot"></span> tap to light';
 
     var controls = el("div", "vault-controls");
     clearBtn = el("button", "eg-btn eg-ghost", "Clear");
     clearBtn.type = "button";
     clearBtn.disabled = true;
     clearBtn.addEventListener("click", function () { Object.keys(lit).forEach(function (i) { setLit(i, false); }); });
-    sendBtn = el("button", "eg-btn", "Transmit");
+    sendBtn = el("button", "eg-btn", ENDPOINT ? "Transmit" : "Check");
     sendBtn.type = "button";
     sendBtn.disabled = true;
     sendBtn.addEventListener("click", submit);
@@ -161,7 +177,7 @@
     gridEl.classList.remove("dg-wrong");
     void gridEl.offsetWidth;
     gridEl.classList.add("dg-wrong");
-    say("Not whole yet.", "warn");
+    say("Not whole yet. Each lit square on the left needs a lit square in the same spot on the right.", "warn");
   }
 
   function unlock(email) {

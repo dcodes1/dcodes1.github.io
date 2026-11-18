@@ -1,9 +1,9 @@
 # Email lock
 
-The contact card on the portfolio opens a puzzle ("Fragment",
-`assets/email-gate.js`): a 7×7 grid where some tiles are fixed and the rest
-are slots. The fixed tiles are part of a symmetric pattern; the visitor lights
-the slots that complete it.
+The contact card on the portfolio opens a puzzle ("Mirror",
+`assets/email-gate.js`): a 7×7 grid showing the left half of a padlock icon.
+The visitor lights the empty slots on the right so both halves match. In the
+default (no server) mode it opens by itself as soon as the picture is right.
 
 ## How it opens (default: no server)
 

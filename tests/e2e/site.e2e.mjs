@@ -108,12 +108,14 @@ try {
   // Local mode (no endpoint configured): wrong answers are refused without any network call.
   await page.click('#emailOpen');
   await page.waitForSelector('dialog.vault[open]');
-  ok('lock: one grid with fixed tiles and 32 slots', (await page.locator('.dg-main .dc-fixed').count()) === 17 && (await page.locator('.dg-main .dc-tap').count()) === 32);
+  ok('lock: left half given (28 tiles), right half is 21 slots', (await page.locator('.dg-main .dc-fixed').count()) === 28 && (await page.locator('.dg-main .dc-tap').count()) === 21
+    && (await page.$$eval('.dg-main .dc-tap', (els) => els.every((e) => +e.dataset.i % 7 > 3))));
+  ok('lock: plain-language instructions', /mirror it/.test(await page.textContent('.vault-prompt')));
   ok('lock: transmit disabled until a cell is lit', await page.isDisabled('.vault-controls .eg-btn:not(.eg-ghost)'));
   const box = async (p, i) => (await p.locator(`.dc-tap[data-i="${i}"]`).boundingBox());
-  const b21 = await box(page, 21), b23 = await box(page, 23);
-  await page.mouse.move(b21.x + b21.width / 2, b21.y + b21.height / 2); await page.mouse.down();
-  await page.mouse.move(b23.x + b23.width / 2, b23.y + b23.height / 2, { steps: 8 }); await page.mouse.up();
+  const b32 = await box(page, 32), b34 = await box(page, 34);
+  await page.mouse.move(b32.x + b32.width / 2, b32.y + b32.height / 2); await page.mouse.down();
+  await page.mouse.move(b34.x + b34.width / 2, b34.y + b34.height / 2, { steps: 8 }); await page.mouse.up();
   ok('lock: dragging paints a run of slots', (await page.locator('.dc-tap.on').count()) === 3);
   const reqBefore = requested.length;
   await page.click('.vault-controls .eg-btn:not(.eg-ghost)');
@@ -126,6 +128,24 @@ try {
   await page.click('.vault-controls .eg-ghost');
   await page.keyboard.press('Escape');
   ok('lock: Escape closes the dialog', !(await page.isVisible('dialog.vault')));
+  // Solving it: light every slot whose mirror tile on the left is lit. It opens with no button press.
+  const solve = await browser.newPage(); watch(solve);
+  await solve.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await solve.click('#emailOpen');
+  await solve.waitForSelector('dialog.vault[open]');
+  const mirrorLit = await solve.$$eval('.dg-main .dg > *', (cells) => cells.map((c, i) => [i, c]).filter(([i]) => i % 7 > 3)
+    .filter(([i]) => cells[Math.floor(i / 7) * 7 + (6 - i % 7)].classList.contains('dc-given-on')).map(([i]) => i));
+  ok('lock: answer is 15 of the 21 slots', mirrorLit.length === 15, mirrorLit.length);
+  for (const i of mirrorLit.slice(0, -1)) await solve.click(`.dc-tap[data-i="${i}"]`);
+  await solve.waitForTimeout(400);
+  ok('lock: nearly right does not open', !(await solve.isVisible('.vault-email')));
+  const solveReqs = []; solve.on('request', (q) => solveReqs.push(q.url()));
+  await solve.click(`.dc-tap[data-i="${mirrorLit.at(-1)}"]`);
+  await solve.waitForFunction(() => /@/.test(document.querySelector('.vault-email')?.textContent ?? '') && !/[▪▫◆◇○●◦⋅∴∵]/.test(document.querySelector('.vault-email').textContent), null, { timeout: 6000 })
+    .then(() => ok('lock: mirroring the padlock opens it automatically', true), () => ok('lock: mirroring the padlock opens it automatically', false));
+  ok('lock (local): unlocking makes no network request', solveReqs.length === 0, solveReqs);
+  ok('lock: revealed address is a mailto link on the card', /^mailto:[^@\s]+@[^@\s]+\.[a-z]+$/.test(await solve.getAttribute('#emailHandle a', 'href') ?? ''));
+  await solve.close();
   // Server mode (data-endpoint set): mock worker accepts only the fake answer [0].
   lockEndpoint = '/api/reveal';
   const sv = await browser.newPage(); watch(sv);
